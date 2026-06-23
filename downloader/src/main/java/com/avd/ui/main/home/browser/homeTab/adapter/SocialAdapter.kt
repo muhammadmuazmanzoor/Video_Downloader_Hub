@@ -41,6 +41,15 @@ class SocialAdapter(
             else if(item.link.contains("facebook")){
                 title.text = "Facebook"
             }
+            else if(item.link.contains("bing")){
+                title.text = "Bing"
+            }
+            else if(item.link.contains("duckduckgo")){
+                title.text = "DuckDuckGo"
+            }
+            else if(item.link.contains("google")){
+                title.text = "Google"
+            }
             else if(item.link.contains("tiktok")){
                 title.text = "TikTok"
             }

@@ -211,19 +211,19 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
 
     var isUrlReceived = false
 
-    private val moviesWebList = listOf(
-        IconItem(R.drawable.plex_movie_icon, "Plex",R.drawable.plex_thumb),
-        IconItem(R.drawable.movie_123, "123Movies",R.drawable.tubi_thumb),
-        IconItem(R.drawable.justwatch, "JustWatch",R.drawable.justwatch_thumb),
-        IconItem(R.drawable.moviebox, "MovieBox",R.drawable.moviebox_thumb),
-    )
-
-    private val dramasWebList = listOf(
-        IconItem(R.drawable.good_short_icon, "GoodShorts",R.drawable.goodshorts_thumb),
-        IconItem(R.drawable.stardust_icon, "Stardust",R.drawable.shortmax_thumb),
-        IconItem(R.drawable.reel_short_icon, "ReelShorts",R.drawable.topshorts_thumb),
-        IconItem(R.drawable.net_short_icon, "NetShorts",R.drawable.dramabox_thumb),
-    )
+//    private val moviesWebList = listOf(
+//        IconItem(R.drawable.plex_movie_icon, "Plex",R.drawable.plex_thumb),
+//        IconItem(R.drawable.movie_123, "123Movies",R.drawable.tubi_thumb),
+//        IconItem(R.drawable.justwatch, "JustWatch",R.drawable.justwatch_thumb),
+//        IconItem(R.drawable.moviebox, "MovieBox",R.drawable.moviebox_thumb),
+//    )
+//
+//    private val dramasWebList = listOf(
+//        IconItem(R.drawable.good_short_icon, "GoodShorts",R.drawable.goodshorts_thumb),
+//        IconItem(R.drawable.stardust_icon, "Stardust",R.drawable.shortmax_thumb),
+//        IconItem(R.drawable.reel_short_icon, "ReelShorts",R.drawable.topshorts_thumb),
+//        IconItem(R.drawable.net_short_icon, "NetShorts",R.drawable.dramabox_thumb),
+//    )
 
 
     override fun onAttach(context: Context) {
@@ -672,8 +672,8 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
             "BrowserHomeFragment",
             requireActivity()
         )
-        moviesItems()
-        dramaItems()
+//        moviesItems()
+//        dramaItems()
         // Start both view models
         videoViewModel.start()
         progressViewModel.start()
@@ -1314,56 +1314,56 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
         }
     }
 
-    private fun moviesItems() {
-        val recyclerView = binding.recyclerViewMovies
-        recyclerView.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        recyclerView.adapter = MovieItemAdapter(moviesWebList) { clickedItem ->
-            FirebaseEvents.firebaseUserAction(
-                "Brows_${clickedItem.title}_clicked",
-                "BrowserHomeFragment",
-                requireActivity()
-            )
-            handleMovieClick(clickedItem)
-        }
-    }
-
-    private fun dramaItems() {
-        val recyclerView = binding.recyclerViewDrama
-        recyclerView.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        recyclerView.adapter = MovieItemAdapter(dramasWebList) { clickedItem ->
-            FirebaseEvents.firebaseUserAction(
-                "Brows_${clickedItem.title}_clicked",
-                "BrowserHomeFragment",
-                requireActivity()
-            )
-//            host?.hideBottomBar()
-            handleDramaClick(clickedItem)
-        }
-    }
-
-    private fun handleMovieClick(item: IconItem) {
-        when (item.title) {
-            "123Movies" -> openNewTab("https://ww20.0123movie.net/home.html")
-            "MovieBox" -> openNewTab("https://themoviebox.xyz/")
-            "JustWatch" -> openNewTab("https://www.justwatch.com/")
-            "Plex" -> openNewTab("https://watch.plex.tv/me")
-            else -> Toast.makeText(requireContext(), "Something went wrong", Toast.LENGTH_SHORT)
-                .show()
-        }
-    }
-
-    private fun handleDramaClick(item: IconItem) {
-        when (item.title) {
-            "Stardust" -> openNewTab("https://www.stardusttv.net/")
-            "ReelShorts" -> openNewTab("https://www.reelshort.com")
-            "GoodShorts" -> openNewTab("https://www.goodshort.com/")
-            "NetShorts" -> openNewTab("https://netshort.com/")
-            else -> Toast.makeText(requireContext(), "Something went wrong", Toast.LENGTH_SHORT)
-                .show()
-        }
-    }
+//    private fun moviesItems() {
+//        val recyclerView = binding.recyclerViewMovies
+//        recyclerView.layoutManager =
+//            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+//        recyclerView.adapter = MovieItemAdapter(moviesWebList) { clickedItem ->
+//            FirebaseEvents.firebaseUserAction(
+//                "Brows_${clickedItem.title}_clicked",
+//                "BrowserHomeFragment",
+//                requireActivity()
+//            )
+//            handleMovieClick(clickedItem)
+//        }
+//    }
+//
+//    private fun dramaItems() {
+//        val recyclerView = binding.recyclerViewDrama
+//        recyclerView.layoutManager =
+//            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+//        recyclerView.adapter = MovieItemAdapter(dramasWebList) { clickedItem ->
+//            FirebaseEvents.firebaseUserAction(
+//                "Brows_${clickedItem.title}_clicked",
+//                "BrowserHomeFragment",
+//                requireActivity()
+//            )
+////            host?.hideBottomBar()
+//            handleDramaClick(clickedItem)
+//        }
+//    }
+//
+//    private fun handleMovieClick(item: IconItem) {
+//        when (item.title) {
+//            "123Movies" -> openNewTab("https://ww20.0123movie.net/home.html")
+//            "MovieBox" -> openNewTab("https://themoviebox.xyz/")
+//            "JustWatch" -> openNewTab("https://www.justwatch.com/")
+//            "Plex" -> openNewTab("https://watch.plex.tv/me")
+//            else -> Toast.makeText(requireContext(), "Something went wrong", Toast.LENGTH_SHORT)
+//                .show()
+//        }
+//    }
+//
+//    private fun handleDramaClick(item: IconItem) {
+//        when (item.title) {
+//            "Stardust" -> openNewTab("https://www.stardusttv.net/")
+//            "ReelShorts" -> openNewTab("https://www.reelshort.com")
+//            "GoodShorts" -> openNewTab("https://www.goodshort.com/")
+//            "NetShorts" -> openNewTab("https://netshort.com/")
+//            else -> Toast.makeText(requireContext(), "Something went wrong", Toast.LENGTH_SHORT)
+//                .show()
+//        }
+//    }
     private fun handleSocialClick(pageInfo: PageInfo) {
         when (pageInfo.link) {
             "https://www.Status.com" -> {
@@ -1451,7 +1451,7 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
     fun setupRecyclerView() {
         homeViewModel.lisofpages.observe(viewLifecycleOwner) { listOfPages ->
             listOfPages?.let {
-                list = it
+                list = browserShortcutPages()
                 val recyclerView = binding.recyclerViewSocial
                 recyclerView.layoutManager =
                     LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -1465,6 +1465,23 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
                 }
             }
         }
+    }
+
+    private fun browserShortcutPages(): List<PageInfo> {
+        return listOf(
+            PageInfo(name = "facebook", link = "https://www.facebook.com/").apply {
+                drawableResId = R.drawable.icon_facebook
+            },
+            PageInfo(name = "bing.com", link = "https://www.bing.com").apply {
+                drawableResId = R.drawable.ic_bing
+            },
+            PageInfo(name = "duckduckgo.com", link = "https://duckduckgo.com").apply {
+                drawableResId = R.drawable.ic_duck_duck
+            },
+            PageInfo(name = "google", link = "https://www.google.com").apply {
+                drawableResId = R.drawable.default_browser
+            }
+        )
     }
 
     override fun shareWebLink() {}

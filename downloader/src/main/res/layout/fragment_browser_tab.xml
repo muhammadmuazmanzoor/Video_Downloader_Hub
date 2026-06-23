@@ -240,6 +240,8 @@
                         tools:listitem="@layout/social_item_browser" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
+                <!-- Watch Dramas flow commented out. Hidden placeholder keeps constraints and view binding stable. -->
+                <!--
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/dramaLayout"
                     android:layout_width="match_parent"
@@ -286,6 +288,27 @@
                         tools:itemCount="4"
                         tools:listitem="@layout/browser_movie_items" />
 
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+                -->
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/dramaLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/socialLayout">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerViewDrama"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -515,6 +538,8 @@
                 </FrameLayout>
 
 
+                <!-- Watch Movies flow commented out. Hidden placeholder keeps constraints and view binding stable. -->
+                <!--
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/MovieLayout"
                     android:layout_width="match_parent"
@@ -561,6 +586,27 @@
                         app:layout_constraintTop_toBottomOf="@+id/textViewMovie"
                         tools:itemCount="4"
                         tools:listitem="@layout/browser_movie_items" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+                -->
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/MovieLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/fl_adplace">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerViewMovies"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
