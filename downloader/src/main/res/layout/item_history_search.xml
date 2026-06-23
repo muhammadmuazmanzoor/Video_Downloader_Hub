@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="historyItem"
+            type="com.avd.data.local.room.entity.HistoryItem" />
+
+        <variable
+            name="historyId"
+            type="String" />
+
+        <variable
+            name="historyListener"
+            type="com.avd.ui.component.adapter.HistoryListener" />
+
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:clickable="true"
+        android:onClick="@{(view) -> historyListener.onHistoryOpenClicked(view, historyId)}"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:focusable="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/card_bg"
+            android:backgroundTint="@color/card_bg"
+            android:layout_margin="@dimen/padding_small"
+            android:padding="@dimen/padding_normal">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/favicon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:bitmap="@{historyItem.faviconBitmap()}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/tv_title"
+                app:layout_constraintHorizontal_bias="0.027"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.457"
+                app:shapeAppearanceOverlay="@style/customImageViewRounded" />
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:maxLines="1"
+                android:layout_width="222dp"
+                android:layout_height="28dp"
+                android:text="@{historyItem.title}"
+                android:textSize="@dimen/text_large"
+                android:textColor="@color/brand_text_primary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Title" />
+
+            <TextView
+                android:maxLines="1"
+                android:id="@+id/tv_link"
+                android:layout_width="221dp"
+                android:layout_height="21dp"
+                android:text="@{historyItem.url}"
+                android:textSize="@dimen/text_medium"
+                android:textColor="@color/brand_text_primary"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/tv_title"
+                app:layout_constraintTop_toBottomOf="@+id/tv_title"
+                tools:text="https://www.imdb.com" />
+
+            <TextView
+                android:id="@+id/tv_time"
+                android:layout_width="65dp"
+                android:layout_height="33dp"
+                android:text="@string/about_an_hour_ago"
+                android:textSize="12sp"
+                android:textColor="@color/gray_text"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+            </TextView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+
+</layout>

@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_300">#9B14B1</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="unslected">#737373</color>
+    <color name="teal_200">#F78145</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="color_system_ui">#FFFFFF</color>
+    <color name="black">#FF000000</color>
+    <color name="black_dg">#E9000000</color>
+    <color name="black_01">#121212</color>
+    <color name="black_02">#0A0A0A</color>
+    <color name="black_09">#303030</color>
+    <color name="black_012">#323333</color>
+    <color name="white">#FFFFFF</color>
+    <color name="dark_gray">#E6E6E6</color>
+    <color name="yellowselect">#FFED48</color>
+    <color name="adaptive_ad_bg">#A2A2A2</color>
+    <color name="red">#EF745C</color>
+    <color name="red01">#FF0000</color>
+    <color name="next_btn">#535151</color>
+    <color name="green">#2AB079</color>
+    <color name="green01">#008000</color>
+    <color name="green02">#1DB954</color>
+    <color name="greens">#00FF00</color>
+    <color name="bluetheme">#91C4DA</color>
+    <color name="lightblue">#46B1CA</color>
+    <color name="darkred">#EF745C</color>
+    <color name="toolsbgcolor">#F0F0F0</color>
+    <color name="White_Grey">#9EA2AA</color>
+
+
+    <color name="dark_mode_green">#1DB965</color>
+  <color name="dark_mode">@color/brand_background</color>
+    <color name="blue_selected">#48E9FF</color>
+    <color name="card_color">@color/brand_card_background_alt</color>
+    <color name="msg_color">#B3B3B3</color>
+    <color name="grey">#EFEFEF</color>
+    <color name="grey01">#808080</color>
+    <color name="detail_light_color">#9EA2AA</color>
+    <color name="text_color_1">#9F9F9F</color>
+    <color name="background">#EFEFEF</color>
+    <color name="next">#B2EFEFEF</color>
+    <color name="nextdisable">#7FEFEFEF</color>
+    <color name="ui_controls_background">#98000000</color>
+    <color name="progress_color">#0075FF</color>
+    <color name="green_selector">#00F0FF</color>
+    <color name="exo_bottom_bar_background" tools:keep="@color/exo_bottom_bar_background">
+        #985F5C5C
+    </color>
+    <color name="song_speed_dialogue_color">#0D0B0B</color>
+<!--    <color name="darkgrey">#D6D6D6</color>-->
+    <color name="darkgrey">#F0F4F7</color>
+    <color name="dark_orange">#f98e02</color>
+    <color name="light_orange">#FFC327</color>
+    <color name="blue">#0063D8</color>
+    <color name="cyan">#00FFFF</color>
+    <color name="magenta">#FF00FF</color>
+    <color name="text_color">#222126</color>
+    <color name="text_light">#B8B8B8</color>
+    <color name="Black0Percent">#00000000</color>
+    <color name="orangetabcolor">#FF610A</color>
+    <color name="trackbgColor">#4B4B4B</color>
+    <color name="greenselect">#05FF00</color>
+    <color name="unselectedcolor">#8A8380</color>
+    <color name="disableColor">#8A8380</color>
+    <color name="disableColor1">#D4D4D4</color>
+    <color name="nonSelectedColor">#9EA2AA</color>
+    <color name="download_guidance_indicator_color">#A1A5A3</color>
+    <color name="nonselect">#E3D4EA</color>
+    <color name="greenSelector">#06EB01</color>
+    <color name="yellowSelector">#FFB800</color>
+    <color name="gSelectorRipple">#80F75655</color>
+    <color name="gSelector_disable">#66F9A450</color>
+    <color name="gray500">#A1A1A1</color>
+
+    <color name="pin_screen_color">#1054FE</color>
+    <color name="permissions_icon_color">#2C221A</color>
+    <color name="edittext_light_color">#FFFFFF</color>
+    <color name="light_dark">#74000000</color>
+    <color name="cofee_red">#5D15B8</color>
+    <color name="purple">#AC3EE0</color>
+    <color name="horizontal_view_color">#525252</color>
+
+    <!-- Custom theme colors-->
+    <color name="transparent">#0000000A</color>
+    <color name="transparency">#0A000000</color>
+    <color name="transparencyDark">#33000000</color>
+    <color name="transparencyW">#3CFFFFFF</color>
+    <color name="transparencywhite">#14000000</color>
+    <color name="transparencylight">#1D1D1D</color>
+
+    <color name="primaryColor">#594270</color>
+    <color name="primaryLightColor">#DA9191</color>
+    <color name="primaryDarkColor">#594270</color>
+    <color name="secondaryColor">#DA9191</color>
+    <color name="secondaryLightColor">#ffbcaf</color>
+    <color name="secondaryDarkColor">#594270</color>
+    <color name="primaryTextColor">#ffffff</color>
+    <color name="secondaryTextColor">#000000</color>
+
+    <color name="primaryColor2">#1b5e20</color>
+    <color name="primaryLightColor2">#4c8c4a</color>
+    <color name="primaryDarkColor2">#003300</color>
+    <color name="secondaryColor2">#b2ff59</color>
+    <color name="secondaryLightColor2">#e7ff8c</color>
+    <color name="secondaryDarkColor2">#7ecb20</color>
+    <color name="primaryTextColor2">#ffffff</color>
+    <color name="secondaryTextColor2">#000000</color>
+
+    <color name="primaryColor3">#ffff00</color>
+    <color name="yellow">#FFFF00</color>
+    <color name="primaryLightColor3">#ffff5a</color>
+    <color name="primaryDarkColor3">#c7cc00</color>
+    <color name="secondaryColor3">#fff176</color>
+    <color name="secondaryLightColor3">#ffffa8</color>
+    <color name="secondaryDarkColor3">#cabf45</color>
+    <color name="primaryTextColor3">#000000</color>
+    <color name="secondaryTextColor3">#000000</color>
+
+    <color name="colorWindowBackground">@color/brand_background</color>
+    <color name="transparentBlackColor">#D9121212</color>
+    <color name="transparentBlackColor50">#80121212</color>
+    <color name="custom_dialog_background">#4D000000</color>
+
+    <color name="video_cutter_video_generating_color">#A6A6A6</color>
+
+
+    //card color
+    <color name="custom_dialog">@color/brand_background</color>
+    <color name="non_selected_play">#A6A6A6</color>
+
+    <color name="theme_background_white">#C1C1C1</color>
+    <color name="theme_background_black">#3D3D3D</color>
+    <color name="jade_theme_darker_color">#15767E</color>
+    <color name="colorBlueLight">#3397E3</color>
+    <color name="redLight">#F44336</color>
+    <color name="pro_dark_color">#454444</color>
+    <color name="pro_light_color">@color/brand_background</color>
+    <color name="ad_background_color">#EDF1F5</color>
+    <color name="item_selected_background">#F75655</color> <!-- Light red background -->
+    <color name="item_default_background">@color/brand_card_background</color>
+
+    <color name="foldercolor">#535151</color>
+
+    <color name="selectedOpacityColor">#FFFAEA</color>
+    <color name="white_blur">#bf9c9c9c</color>
+
+    <color name="grey12">#F0F0F0</color>
+    <color name="stockeCard">#D3D3D3</color>
+    <color name="lightTransparent">#16000000</color>
+    <color name="colorAds">@color/brand_accent</color>
+    <color name="whiteBlur">#bf9c9c9c</color>
+    <color name="adBodyColor">#6A7282</color>
+    <color name="blue1">@color/brand_accent</color>
+    //card 2 color
+    <color name="card2_color">@color/brand_card_background</color>
+
+    <color name="colorHighlightBlueDark">#8850FF</color>
+    <color name="colorIAPHighlight">#8850FF</color>
+    <color name="litePurple">#A079FC</color>
+    <color name="colorHighlightBlueLight">#8850FF</color>
+    <!-- Brand color tokens -->
+    <color name="brand_background">#FFFFFF</color>
+    <color name="brand_card_background">#F4F4F6</color>
+    <color name="brand_card_background_alt">#F0F4F7</color>
+    <color name="brand_surface_muted">#EFEFEF</color>
+    <color name="brand_text_primary">#000000</color>
+    <color name="brand_text_secondary">#9EA2AA</color>
+    <color name="brand_accent">#F78145</color>
+    <color name="brand_selected">#F78145</color>
+    <color name="brand_gradient_start">#F32C2C</color>
+    <color name="brand_gradient_end">#F78145</color>
+
+    <color name="gSelector">@color/brand_gradient_start</color>
+    <color name="gSelector_light">@color/brand_accent</color>
+    <color name="gSelector_dis">#66F9A450</color>
+    <color name="card_bg">@color/brand_card_background</color>
+    <color name="card_stroke">#F4F4F6</color>
+    <color name="gray_text">@color/brand_text_secondary</color>
+</resources>

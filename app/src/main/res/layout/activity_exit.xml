@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="@color/primary_bg"
+    tools:context=".ui.exitadactivity.ExitActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/dramaLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_12sdp"
+        android:background="@drawable/round_corner_gray_bg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:id="@+id/tvll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_semibold"
+                android:paddingStart="@dimen/_6sdp"
+                android:paddingTop="@dimen/_6sdp"
+                android:text="Watch "
+                android:includeFontPadding="false"
+
+                android:textColor="@color/gSelector_light"
+                android:textSize="@dimen/_12ssp"
+                 />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_semibold"
+                android:paddingTop="@dimen/_6sdp"
+                android:text="Dramas"
+                android:includeFontPadding="false"
+
+                android:textColor="@color/brand_text_primary"
+                android:textSize="@dimen/_12ssp"
+                />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvDDesc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_regular"
+            android:text="Stream your favorite dramas from multiple sites."
+            android:textColor="@color/unslected"
+            android:textSize="12sp"
+            android:paddingStart="@dimen/_6sdp"
+            android:includeFontPadding="false"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvll" />
+
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewDrama"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvDDesc"
+            tools:itemCount="4"
+            tools:listitem="@layout/video_content_items" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/MovieLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_12sdp"
+        android:background="@drawable/round_corner_gray_bg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dramaLayout">
+
+        <LinearLayout
+            android:id="@+id/tvlll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_semibold"
+                android:paddingStart="@dimen/_6sdp"
+                android:paddingTop="@dimen/_6sdp"
+                android:text="Watch "
+                android:includeFontPadding="false"
+                android:textColor="@color/gSelector_light"
+                android:textSize="@dimen/_12ssp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_semibold"
+                android:paddingTop="@dimen/_6sdp"
+                android:text="Movies"
+                android:includeFontPadding="false"
+                android:textColor="@color/brand_text_primary"
+                android:textSize="@dimen/_12ssp"
+                />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvMDesc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_regular"
+            android:text="Explore trending movies from popular sites."
+            android:textColor="@color/unslected"
+            android:textSize="12sp"
+            android:paddingStart="@dimen/_6sdp"
+            android:includeFontPadding="false"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvlll" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewMovies"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvMDesc"
+            tools:itemCount="4"
+            tools:listitem="@layout/video_content_items" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <FrameLayout
+        android:id="@+id/fl_adplace"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:maxHeight="290dp"
+        android:layout_marginHorizontal="@dimen/_12sdp"
+        android:layout_marginBottom="@dimen/_12sdp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@id/btn_cancel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmer_view_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            app:shimmer_auto_start="true"
+            app:shimmer_duration="1500">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <View
+                    android:id="@+id/shimmer_media"
+                    android:layout_width="0dp"
+                    android:layout_height="150dp"
+                    android:layout_margin="@dimen/_10sdp"
+                    android:background="#DDDDDD"
+                    app:layout_constraintBottom_toTopOf="@+id/shimmer_cta"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <View
+                    android:id="@+id/shimmer_ad_label"
+                    android:layout_width="@dimen/_18sdp"
+                    android:layout_height="@dimen/_18sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:background="#DDDDDD"
+                    app:layout_constraintBottom_toTopOf="@+id/shimmer_media"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <View
+                    android:id="@+id/shimmer_title"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_15sdp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="@dimen/_50sdp"
+                    android:background="#DDDDDD"
+                    app:layout_constraintBottom_toTopOf="@+id/shimmer_media"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/shimmer_ad_label"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <View
+                    android:id="@+id/shimmer_cta"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_43sdp"
+                    android:layout_margin="@dimen/_10sdp"
+                    android:background="#DDDDDD"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
+    </FrameLayout>
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_cancel"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="@dimen/_12sdp"
+        android:layout_marginEnd="6dp"
+        android:layout_marginBottom="@dimen/_12sdp"
+        android:background="@drawable/gradient_bg"
+        android:ellipsize="none"
+        android:gravity="center"
+        android:singleLine="true"
+        android:textAllCaps="false"
+        android:text="Cancel"
+        android:textAlignment="center"
+        android:fontFamily="@font/poppins_semibold"
+        android:textSize="16sp"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_exit"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toEndOf="@+id/MovieLayout"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_exit"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="@dimen/_6sdp"
+        android:layout_marginEnd="@dimen/_12sdp"
+        android:layout_marginBottom="@dimen/_12sdp"
+        android:background="@drawable/round_corner_search"
+        android:ellipsize="none"
+        android:gravity="center"
+        android:singleLine="true"
+        android:text="Exit"
+        android:textAllCaps="false"
+        android:textAlignment="center"
+        android:textColor="@color/brand_text_primary"
+        android:fontFamily="@font/poppins_semibold"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btn_cancel" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

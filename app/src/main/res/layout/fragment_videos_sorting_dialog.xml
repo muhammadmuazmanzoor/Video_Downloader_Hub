@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+    android:background="@color/primary_bg"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".ui.dialoges.videossorting.VideosSortingDialog">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <TextView
+                android:id="@+id/tvSort"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_25sdp"
+                android:layout_marginTop="@dimen/_31sdp"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="@string/sort_by"
+                android:textColor="@color/brand_text_primary"
+                android:textSize="@dimen/_16ssp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <RadioGroup
+                android:id="@+id/radioGroupMainSorting"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:checkedButton="@id/radioName"
+                app:layout_constraintStart_toStartOf="@+id/tvSort"
+                app:layout_constraintTop_toBottomOf="@+id/tvSort">
+                <RadioButton
+                    android:id="@+id/radioName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/sort_radio_selector"
+                    android:fontFamily="@font/poppins_regular"
+                    android:gravity="center"
+                    android:paddingHorizontal="@dimen/_6sdp"
+                    android:text="@string/name"
+                    android:textAlignment="center"
+                    android:textColor="@color/sort_radio_text_selector"
+                    android:textSize="@dimen/_12ssp" />
+                <RadioButton
+                    android:id="@+id/radioDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:padding="@dimen/_10sdp"
+                    android:buttonTint="@color/sort_radio_selector"
+                    android:fontFamily="@font/poppins_regular"
+                    android:gravity="center"
+                    android:paddingHorizontal="@dimen/_6sdp"
+                    android:text="@string/date"
+                    android:textAlignment="center"
+                    android:textColor="@color/sort_radio_text_selector"
+                    android:textSize="@dimen/_12ssp" />
+                <RadioButton
+                    android:id="@+id/radioSize"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:buttonTint="@color/sort_radio_selector"
+                    android:fontFamily="@font/poppins_regular"
+                    android:gravity="center"
+                    android:paddingHorizontal="@dimen/_6sdp"
+                    android:text="@string/size"
+                    android:textAlignment="center"
+                    android:textColor="@color/sort_radio_text_selector"
+                    android:textSize="@dimen/_12ssp" />
+                <RadioButton
+                    android:id="@+id/radioLength"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:buttonTint="@color/sort_radio_selector"
+                    android:fontFamily="@font/poppins_regular"
+                    android:gravity="center"
+                    android:paddingHorizontal="@dimen/_6sdp"
+                    android:text="@string/length"
+                    android:textAlignment="center"
+                    android:textColor="@color/sort_radio_text_selector"
+                    android:textSize="@dimen/_12ssp" />
+            </RadioGroup>
+
+            <View
+                android:id="@+id/centerview"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="@dimen/_18sdp"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:layout_marginEnd="@dimen/_43sdp"
+                android:background="@color/disableColor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/radioGroupMainSorting" />
+
+            <RadioGroup
+                android:id="@+id/radioGroupSubSorting"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_25sdp"
+                android:layout_marginTop="@dimen/_18sdp"
+                android:checkedButton="@id/sub1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/centerview">
+
+
+                <RadioButton
+                    android:id="@+id/sub1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/sort_radio_selector"
+                    android:fontFamily="@font/poppins_regular"
+                    android:gravity="center"
+                    android:paddingHorizontal="@dimen/_6sdp"
+                    android:text="@string/from_a_to_z"
+                    android:textAlignment="center"
+                    android:textColor="@color/sort_radio_text_selector"
+                    android:textSize="@dimen/_12ssp" />
+
+                <RadioButton
+                    android:id="@+id/sub2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:buttonTint="@color/sort_radio_selector"
+                    android:fontFamily="@font/poppins_regular"
+                    android:gravity="center"
+                    android:paddingHorizontal="@dimen/_6sdp"
+                    android:text="@string/from_z_to_a"
+                    android:textAlignment="center"
+                    android:textColor="@color/sort_radio_text_selector"
+                    android:textSize="@dimen/_12ssp" />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/tvOk"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_22sdp"
+                android:layout_marginBottom="@dimen/_25sdp"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="@string/ok"
+                android:textColor="@color/gSelector_light"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/centerview"
+                app:layout_constraintTop_toBottomOf="@+id/radioGroupSubSorting" />
+
+            <TextView
+                android:id="@+id/tvCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_25sdp"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="@string/cancel"
+                android:textAllCaps="true"
+                android:textColor="@color/nonSelectedColor"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintBottom_toBottomOf="@+id/tvOk"
+                app:layout_constraintEnd_toStartOf="@+id/tvOk"
+                app:layout_constraintTop_toTopOf="@+id/tvOk" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>

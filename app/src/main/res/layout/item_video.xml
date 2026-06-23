@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:background="@drawable/round_corner_ad"
+        android:backgroundTint="@color/white"
+        android:layout_marginHorizontal="@dimen/_4sdp"
+        android:elevation="@dimen/_3sdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.35" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/main_image"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_64sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/guide1"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.video.avd.utils.CustomImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitXY"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/durationlayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_1sdp"
+                    android:background="@drawable/one_round_corner"
+                    app:layout_constraintBottom_toTopOf="@+id/video_progress_bar"
+                    app:layout_constraintEnd_toEndOf="@+id/imageView">
+
+                    <TextView
+                        android:id="@+id/time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_8ssp"
+                        android:drawablePadding="@dimen/_3sdp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <ProgressBar
+                    android:id="@+id/video_progress_bar"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="0dp"
+                    android:layout_height="3dp"
+                    android:max="100"
+                    android:progress="0"
+                    android:visibility="gone"
+                    android:progressDrawable="@drawable/custom_progress_bar"
+                    app:layout_constraintBottom_toBottomOf="@+id/imageView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:fontFamily="@font/poppins_light"
+            android:maxLines="1"
+            android:layout_marginEnd="1dp"
+            android:text="video title"
+            android:textColor="@color/brand_text_primary"
+            android:textSize="13sp"
+            android:ellipsize="end"
+            app:layout_constraintEnd_toStartOf="@+id/video_menu"
+            app:layout_constraintStart_toEndOf="@+id/main_image"
+            app:layout_constraintTop_toTopOf="@+id/main_image" />
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:textSize="12sp"
+            android:textColor="@color/gray_2.1"
+            android:fontFamily="@font/poppins_light"
+            app:layout_constraintStart_toStartOf="@+id/name"
+            app:layout_constraintTop_toBottomOf="@+id/name" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/newtag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@+id/date"
+            app:layout_constraintTop_toBottomOf="@+id/date"
+            app:srcCompat="@drawable/ic_new_video" />
+
+        <TextView
+            android:id="@+id/sponsoredtext"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:visibility="gone"
+            android:text="Powered by "
+            android:gravity="top"
+            android:drawablePadding="@dimen/_4sdp"
+            android:textSize="12sp"
+            android:drawableEnd="@drawable/youtube_svg"
+            android:textColor="@color/gray_2.1"
+            app:layout_constraintStart_toStartOf="@+id/date"
+            app:layout_constraintTop_toBottomOf="@+id/date" />
+        <TextView
+            android:id="@+id/sponsored"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:visibility="gone"
+            android:textSize="12sp"
+            android:text="Youtube"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:textColor="@color/gray_2.1"
+            app:layout_constraintStart_toEndOf="@+id/sponsoredtext"
+            app:layout_constraintTop_toTopOf="@+id/sponsoredtext"
+            app:layout_constraintBottom_toBottomOf="@+id/sponsoredtext"
+            />
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="1.5dp"
+            android:layout_height="10dp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:background="@color/nonSelectedColor"
+            app:layout_constraintTop_toTopOf="@+id/date"
+            app:layout_constraintBottom_toBottomOf="@+id/date"
+            app:layout_constraintStart_toEndOf="@+id/date" />
+
+
+        <TextView
+            android:id="@+id/size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:textSize="11sp"
+            android:fontFamily="@font/poppins_light"
+            android:textColor="@color/gray_2.1"
+            app:layout_constraintTop_toTopOf="@+id/view"
+            app:layout_constraintBottom_toBottomOf="@+id/view"
+            app:layout_constraintStart_toEndOf="@+id/view" />
+
+
+
+        <ImageView
+            android:id="@+id/video_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:src="@drawable/ic_menu"
+            android:layout_marginTop="@dimen/_3sdp"
+            app:tint="@color/brand_text_primary"
+            android:paddingStart="@dimen/_5sdp"
+            android:paddingBottom="@dimen/_5sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

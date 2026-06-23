@@ -1,0 +1,755 @@
+<resources>
+
+    <string name="app_name">Video Downloader Browser Hub</string>
+
+    // Real Admob
+    <string name="largeBanner" translatable="false">ca-app-pub-5972202469838280/4153178013</string>
+    <string name="App_ID" translatable="false">ca-app-pub-5972202469838280~6495662755</string>
+    <string name="App_Open_Ad" translatable="false">ca-app-pub-5972202469838280/5648500199</string>
+    <string name="Interstitial_Home_ID" translatable="false">ca-app-pub-5972202469838280/3325589186</string>
+    <string name="Interstitial_Home_ID_High" translatable="false">ca-app-pub-5972202469838280/8334373287</string>
+    <string name="Native_ID" translatable="false">ca-app-pub-5972202469838280/1209727580</string>
+    <string name="Native_static" translatable="false">ca-app-pub-5972202469838280/1209727580</string>
+    <string name="Native_Home" translatable="false">ca-app-pub-5972202469838280/1209727580</string>
+    <string name="Native_Home1" translatable="false">ca-app-pub-5972202469838280/7920629688</string>
+    <string name="Native_Home_high" translatable="false">ca-app-pub-5972202469838280/5516638259</string>
+    <string name="Native_Exit" translatable="false">ca-app-pub-5972202469838280/3367762926</string>
+
+    // Test Admob
+     <!--  <string name="largeBanner" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
+       <string name="App_ID" translatable="false">ca-app-pub-3940256099942544~3347511713</string>
+       <string name="App_Open_Ad" translatable="false">ca-app-pub-3940256099942544/9257395921</string>
+       <string name="Interstitial_Home_ID" translatable="false">ca-app-pub-3940256099942544/1033173712</string>
+       <string name="Interstitial_Home_ID_High" translatable="false">ca-app-pub-3940256099942544/1033173712</string>
+       <string name="Native_static" translatable="false">ca-app-pub-3940256099942544/2247696110</string>
+       <string name="Native_ID" translatable="false">ca-app-pub-3940256099942544/2247696110</string>
+       <string name="Native_Home" translatable="false">ca-app-pub-3940256099942544/2247696110</string>
+       <string name="Native_Home_high" translatable="false">ca-app-pub-3940256099942544/2247696110</string>
+       <string name="Native_Exit" translatable="false">ca-app-pub-3940256099942544/2247696110</string>-->
+
+
+
+    <!--
+    Real///////
+        <string name="Banner_ID_Splash" translatable="false">ca-app-pub-5972202469838280/3517160878</string>
+ <string name="Interstitial_Static_Splash_medium">ca-app-pub-5972202469838280/1701913107</string>
+     <string name="Interstitial_OB_ID" translatable="false">ca-app-pub-5972202469838280/3772518576</string>
+    <string name="Interstitial_OB_ID_High" translatable="false">ca-app-pub-5972202469838280/2367135236</string>
+    <string name="Interstitial_OB_ID1" translatable="false">ca-app-pub-5972202469838280/3772518576</string>
+    <string name="Interstitial_OB_ID_High1" translatable="false">ca-app-pub-5972202469838280/2367135236</string>
+    <string name="Interstitial_Static_Splash" translatable="false">ca-app-pub-5972202469838280/3405480232</string>
+    <string name="Interstitial_Static_Splash_high" translatable="false">ca-app-pub-5972202469838280/2714380945</string>
+
+      <string name="Language_Native_High_ID" translatable="false">ca-app-pub-5972202469838280/1109642891</string>
+    <string name="Language_Native_ID" translatable="false">ca-app-pub-5972202469838280/6598623358</string>
+    <string name="Language_Native_High_ID1" translatable="false">ca-app-pub-5972202469838280/3833252423</string>
+    <string name="Language_Native_ID1" translatable="false">ca-app-pub-5972202469838280/7884178078</string>
+
+    <string name="OB_Native_High_ID" translatable="false">ca-app-pub-5972202469838280/1018155897</string>
+    <string name="OB_Native_ID" translatable="false">ca-app-pub-5972202469838280/5483998601</string>
+    <string name="OB_Native_High_ID2" translatable="false">ca-app-pub-5972202469838280/3022336855</string>
+    <string name="OB_Native_ID2" translatable="false">ca-app-pub-5972202469838280/9171978082</string>
+    <string name="OB_Native_High_ID3" translatable="false">ca-app-pub-5972202469838280/9340333199</string>
+    <string name="OB_Native_ID3" translatable="false">ca-app-pub-5972202469838280/1437792449</string>
+    <string name="OB_Native_High_fullID4" translatable="false">ca-app-pub-5972202469838280/8695058259</string>
+    <string name="OB_Native_fullID4" translatable="false">ca-app-pub-5972202469838280/7796909555</string>
+    <string name="OB_Native_High_fullID5" translatable="false">ca-app-pub-5972202469838280/1815014622</string>
+    <string name="OB_Native_fullID5" translatable="false">ca-app-pub-5972202469838280/7590085489</string>
+    -->
+
+    ////////////
+    ////////
+    /////
+    ///
+    //
+    /
+
+    <string name="facebook_app_id" translatable="false">1505691637644414</string>
+    <string name="facebook_client_token" translatable="false">711332d1d3ea4ea1aeb1c366095588d6</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="video_orientation_video">Video orientation</string>
+    <string name="video_orientation_system">Device orientation</string>
+    <string name="rationale_permissions">App requires some permissions to function properly.</string>
+    <string name="button_crop">Resize</string>
+    <string name="video_resize_crop">Crop</string>
+    <string name="video_resize_fit">Fit</string>
+    <string name="button_rotate">Rotate</string>
+    <string name="error_details">error detail</string>
+    <string name="toast_internet_warning">Please check your network connection!</string>
+    <string name="toast_error">Something went wrong, please try again!</string>
+    <string name="thanks_for_leaving_a_nice_review">Hope you enjoy our app</string>
+    <string name="appreciate">If you like our app , please rate us 5 stars!</string>
+    <string name="rate_for_us">Please Rate for us</string>
+    <string name="your_opinion_is_important">Your opinion is important</string>
+    <string name="billing_service_not_available">Billing Service Not Available</string>
+    <string name="productId" translatable="false">remove_ads</string>
+    <string name="productIdWaterMark">remove_watermark</string>
+    <string name="purchase_is_not_supported">Purchase Is Not Supported</string>
+    <string name="https_google_com_example_mkv">https://google.com/example.mkv</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="str_request_permissions">Please allow all permissions in order to use the app.</string>
+    <string name="enter_network_url">Enter network URL</string>
+    <string name="history">History</string>
+    <string name="this_action_can_contain_ads">This action can contain ad</string>
+    <string name="hd_video_player">Video Downloader Browser Hub</string>
+    <string name="all_in_one_video_player">All in one video player</string>
+    <string name="folders">Folders</string>
+    <string name="all_videos">All Videos</string>
+    <string name="recent_played">Recent Played</string>
+    <string name="video">Video</string>
+    <string name="music">Music</string>
+    <string name="play">Play</string>
+    <string name="favourite">Favourite</string>
+    <string name="share">Share</string>
+    <string name="rename">Rename</string>
+    <string name="delete">Delete</string>
+    <string name="privatee">Private</string>
+    <string name="add_private_files">Add private videos or audios</string>
+    <string name="unknown">unknown</string>
+    <string name="private_folder">Private</string>
+    <string name="tools">Tools</string>
+    <string name="security_settings">Security Settings</string>
+    <string name="item_options">Item Options</string>
+    <string name="enter_4_digit_pin">Enter 4-Digit PIN</string>
+    <string name="todo">pin count</string>
+    <string name="_1">1</string>
+    <string name="_2">2</string>
+    <string name="_3">3</string>
+    <string name="_4">4</string>
+    <string name="_5">5</string>
+    <string name="_6">6</string>
+    <string name="_7">7</string>
+    <string name="_8">8</string>
+    <string name="_9">9</string>
+    <string name="_0">0</string>
+    <string name="remove">Remove</string>
+    <string name="wrong_pin">Wrong Pin</string>
+    <string name="forget_pin">Forget Pin?</string>
+    <string name="verify_password">Verify Password</string>
+    <string name="unlock">Unlock</string>
+    <string name="details">Details</string>
+    <string name="back_navigation">Back Navigation</string>
+    <string name="video_thumbnail">Video Thumbnail</string>
+    <string name="property">Property</string>
+    <string name="name">Name</string>
+    <string name="path">Path</string>
+    <string name="size">Size</string>
+    <string name="resolution">Resolution</string>
+    <string name="do_you_want_to_delete_this">Do you want to permanently delete this?</string>
+    <string name="files_will_be_moved_to_public">File will be moved to public.</string>
+    <string name="the_entered_pin_does_not_match_please_try_again">The entered PIN does not match. Please try again.</string>
+    <string name="enter_pin_again">Enter PIN again.</string>
+    <string name="select_video">Select Video</string>
+    <string name="unfavourite">Remove</string>
+    <string name="no_videos_found">No videos found</string>
+    <string name="create_pin">Create Pin</string>
+    <string name="permission_required">Permission Required</string>
+    <string name="please_grant_permission_to_ensure_the_normal_use_of_this_app">Please grant permission to ensure the \nnormal use of this app.</string>
+    <string name="all_videos_amp_audios"><![CDATA[All Videos & audios]]></string>
+    <string name="all_subtitles">All subtitles</string>
+    <string name="grand_permission">Grant Permission</string>
+    <string name="not_allow">Not Allow</string>
+    <string name="oops_no_video_is_available">Oops! no video is available</string>
+    <string name="get_preminum">Get Preminum</string>
+    <string name='ads_remove'><font color='#0075FF'>Ads</font><font color='#222126'> free experience.</font></string>
+    <string name="access_all_features">Access all features.</string>
+    <string name="oops_no_folder_is_available">Oops! no folder is available</string>
+    <string name="oops_no_audio_is_available">Oops! no audio is available</string>
+    <string name="oops_no_album_is_available">Oops! no album is available</string>
+    <string name="oops_no_artist_is_available">Oops! no artist is available</string>
+    <string name="oops_no_favourite_audio_is_available">Oops! no Favourite audio is available</string>
+    <string name="tv_permission">To play video, audio and subtitle we need access to all files on your device..</string>
+    <string name="allow_access">ALLOW ACCESS</string>
+    <string name="priceoff">50% Off</string>
+    <string name="duration_of_purchase">Duration of Purchase</string>
+    <string name="actual_price">Actual Price</string>
+    <string name="price_and_trial">Free Trial</string>
+    <string name="monthlydetail">You will be charged this amount every month</string>
+    <string name="yearlydetail">You will be charged this amount every year</string>
+    <string name="price_off">Price Off</string>
+    <string name="get_premium">Get Premium</string>
+    <string name="recurring">Recurring billing cancel anytime</string>
+    <string name="term">Term of Use</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="purchasecontinue">Continue</string>
+    <string name="repeat_off">repeat off</string>
+    <string name="repeat_all">repeat all songs</string>
+    <string name="repeat_current">repeat</string>
+    <string name="repeat_current_video">Repeat current</string>
+    <string name="set_as_ringtone">set as ringtone</string>
+    <string name="shuffle_enabled">shuffle enabled</string>
+    <string name="speed">Speed</string>
+    <string name="defaul_song_image">defaul song image</string>
+    <string name="back_button_player">back button</string>
+    <string name="backgroud_image">Background image</string>
+    <string name="equalizer_image">equalizer Image</string>
+    <string name="add_to_playlist">Add to Playlist</string>
+    <string name="album">Album</string>
+    <string name="artist">Artist</string>
+    <string name="edit_track_info">Edit track info</string>
+    <string name="no_music_found">No Songs found</string>
+    <string name="ad_break">Ad Break</string>
+    <string name="select_audio">Select Audio</string>
+    <string name="set_security_question">Set Security Question</string>
+    <string name="help_to_rest_your_password">Help to rest your password</string>
+    <string name="answer">Answer</string>
+    <string name="verify_security_question">Verify Security Question</string>
+    <string name="give_answer_to_reset_pin">Give answer to reset pin</string>
+    <string name="do_you_really_want_to_reset_pin">"  Do you really want to reset pin?"</string>
+    <string name="cant_find_whatsapp_dir">oops, can\'t find directory</string>
+    <string name="no_files_found">No file found</string>
+    <string name="time">Time</string>
+    <string name="date_added">Date Added</string>
+    <string name="show_details">Show Details</string>
+    <string name="done">Done</string>
+    <string name="to_end">To end</string>
+    <string name="_60_mins">60 mins</string>
+    <string name="_30_mins">30 mins</string>
+    <string name="_10_mins">10 mins</string>
+    <string name="sleep_timer">Sleep timer</string>
+    <string name="off">Off</string>
+    <string name="use">Use</string>
+    <string name="ccancel">Cancel</string>
+    <string name="do_you_want_to_delete">Do you want to delete?</string>
+    <string name="in_use">In Use</string>
+    <string name="play_speed">Play Speed</string>
+    <string name="okay">Okay</string>
+    <string name="track_info">Track info</string>
+    <string name="_0_25x">0.25x</string>
+    <string-array name="dropdown_items">
+        <item>What’s your favorite color?</item>
+        <item>What’s your pet name?</item>
+        <item>What’s your lucky number?</item>
+    </string-array>
+    <string name="eq">Equalizer</string>
+    <string name="ad">ad is shown here</string>
+    <string name="this_area_may_contain_ad">This area may contain ad</string>
+    <string name="do_you_want_to_exit">Do you want to exit?</string>
+    <string name="skip"> Skip </string>
+    <string name="next">Next</string>
+    <string name="select_audio_track">Select audio track</string>
+    <string name="disable">Disable</string>
+    <string name="title_choose_file">Choose srt file</string>
+    <string name="title_choose">Choose</string>
+    <string name="dialog_cancel">Cancel</string>
+    <string name="_2023_05_06">2023–05-06</string>
+    <string name="playlist">Playlist</string>
+    <string name="playList">PlayList</string>
+    <string name="text_trimmer_rewarded">Unlock your cutting video potential</string>
+    <string name="txt_smaller">video should be smaller than</string>
+    <string name="txt_trimming_video">Processing video…</string>
+    <string name="create_new_playlist">Create new Playlist</string>
+    <string name="more">More</string>
+    <string name="wa_status_saver">WA Status Saver</string>
+    <string name="wa_content">We want to make it clear that we have no affiliation or official connection with WhatsApp Inc. Additionally, we don\'t have any access to your WhatsApp messages. \n \nThe purpose of this feature is to offer you a more convenient method for exploring, saving, and sharing status videos that are stored on your device.</string>
+    <string name="count_selection">0  Selected</string>
+    <string name="select_all">Select All</string>
+    <string name="got_it">Got It</string>
+    <string name="how_does_it_work">How does it work?</string>
+    <string name="allow_permission_details">You want to watch status videos \n of WhatsApp for them we\n need access</string>
+    <string name="allow_permission">Allow Access</string>
+    <string name="you_haven_t_saved_any_n_video_yet">You haven’t saved any \n video yet</string>
+    <string name="sort_by">Sort by</string>
+    <string name="date">Date</string>
+    <string name="length">Length</string>
+    <string name="from_big_to_small">From big to small</string>
+    <string name="from_small_to_big">From small to big</string>
+    <string name="from_a_to_z">From A to Z</string>
+    <string name="from_z_to_a">From Z to A</string>
+    <string name="from_new_to_old">From new to old</string>
+    <string name="from_old_to_new">From old to new</string>
+    <string name="from_long_to_short">From long to short</string>
+    <string name="from_short_to_long">From short to long</string>
+    <string name="get_started">Get Started</string>
+    <string name="onboarding_paste_link_download">Paste link &amp; Download</string>
+    <string name="onboarding_save_status_reels">Save Status &amp; Trending Reels</string>
+    <string name="enjoy_a_brighter_and_vibrant_interface_with_our_light_theme">Enjoy a brighter and vibrant interface\n with our light theme.</string>
+    <string name="auto_theme">Auto Theme</string>
+    <string name="dark_theme">Dark Theme</string>
+    <string name="light_theme">Light Theme</string>
+    <string name="automatically_adjust_to_the_system_s_light_or_dark_mode_settings">Automatically adjust to the system\'s\n light or dark mode settings.</string>
+    <string name="experience_a_sleek_and_eye_friendly_interface_in_dark_mode">Experience a sleek and eye-friendly\n interface in dark mode.</string>
+    <string name="the_best_we_could_have">The best we could have</string>
+    <string name="rate_on_google_play">Rate on Google Play</string>
+    <string name="exit">Exit</string>
+    <string name="rate_us">Rate Us</string>
+    <string name="network_streaming">Video Stream</string>
+    <string name="albums">Albums</string>
+    <string name="artists">Artists</string>
+    <string name="file_info">File Info</string>
+    <string name="enter_a_new_file_name">Enter a new file name</string>
+    <string name="title">Title</string>
+    <string name="genre">Genre</string>
+    <string name="same_title_exists">same name exists</string>
+    <string name="rename_failed">rename failed\n</string>
+    <string name="video_not_found">video not found</string>
+    <string name="apply_theme">Apply theme</string>
+    <!--  cast  -->
+    <string name="cast_media_route_menu_title">Play on&#8230;</string>
+    <string name="cast_please_connect_cast_first">Please connect to Chromecast device first. Please be sure that TV and Phone connect to same Wifi.</string>
+    <string name="cast_start_casting_message">Preparing data…</string>
+    <string name="cast_start_casting_success">Start connect to Chromecast device success.</string>
+    <string name="cast_start_casting_error">Sorry. We can not connect to Chromecast. Please be sure that TV and Phone connect to same Wifi.</string>
+
+    <string name="cast_stop_casting_success">Stop connect to Chromecast device success.</string>
+    <string name="cast_start_casting_playing_fail">Sorry. We can not cast this file now.</string>
+    <string name="cast_start_casting_error_new">Sorry to same Wifi.</string>
+    <string name="system_data_issue_text">Can not complete this action. Please try again.</string>
+    <string name="can_not_connect_to_network_text">Application can not connect to network.</string>
+    <string name="toast_about_online_mode">Network reconnect. You are in online mode now.</string>
+    <string name="connect_to_network_success_text">Connect to network successful.</string>
+    <string name="function_not_support_text">This function is not supported now.</string>
+    <string name="delete_success_text">Delete success…</string>
+    <string name="delete_fail_text">Can not delete now…</string>
+    <string name="header_error_text">Oops…</string>
+    <string name="error_text">Sorry…</string>
+    <string name="confirm_text">OK</string>
+    <string name="understood_text">OK! Understood</string>
+    <string name="loading_text">Loading…</string>
+    <string name="welcome_back">Welcome back</string>
+    <string name="thank_you_text">Thank you</string>
+    <string name="confirm_message">Are you sure?</string>
+    <string name="sorry_text">Sorry</string>
+    <string name="yes_text">Yes</string>
+    <string name="no_text">No</string>
+    <string name="retry_text">Retry</string>
+    <string name="exit_text">Exit</string>
+    <string name="cancel_text">Cancel</string>
+    <string name="agree_text">Agree</string>
+    <string name="not_now_text">Not now</string>
+    <string name="please_wait_text">Please wait a moment</string>
+    <string name="guide_text">Select file guide</string>
+    <string name="prepare_connection">Preparing connection…</string>
+    <string name="default_notification_channel_id">Video Downloader Browser Hub - All Video Player</string>
+    <string name="download">Download</string>
+    <string name="autoVideoDetect">autoVideoDetect</string>
+    <string name="xClose">X</string>
+    <string name="back">Back</string>
+    <string name="bookmark_this_page">Bookmark this page</string>
+    <string name="reload">Reload</string>
+    <string name="plus">+</string>
+    <string name="get_videos">get videos</string>
+    <string name="queue">Queue</string>
+    <string name="close">Close</string>
+    <string name="enter_web">Type a url or search</string>
+    <string name="adBlockON">adBlockOn</string>
+    <string name="move">Move</string>
+    <string name="speed_0">Speed: 0KB/s</string>
+    <string name="remaining_undefine">remaining :-</string>
+    <string name="showDownloadNotice">showDownloadNotice</string>
+    <string name="never_show_download_notice">never show again</string>
+    <string name="clear_all_finished">Clear All</string>
+    <string name="go_to_folder">Go to folder</string>
+    <string name="play_video">Play</string>
+    <string name="rearrange_instructions">Click Move and drag the item to rearrange its position</string>
+    <string name="pause">Pause</string>
+    <string name="start">Start</string>
+    <string name="music_player">Music Player</string>
+    <string name="covert_to_mp3">Converting to Mp3</string>
+    <string name="converting">Converting</string>
+    <string name="convert_successfully">Converted Successfully</string>
+    <string name="play_now">Play Now</string>
+    <string name="cancelled">cancelled</string>
+    <string name="disclaimer01">Please get the PERMISSION from the owner before you repost videos or images Any unauthorized actions (re-uploading or downloading of contents) and/or violations of intellectual property right is the sole responsibility of the user.</string>
+    <string name="authorized">Any unauthorized action (re-uploading or\ndownloading of contents) and/or violation of intellectual property right is the sole\n responsibility of the user</string>
+    <string name="feature_purpose">Any unauthorized action (re-uploading or\ndownloading of contents) and/or violation of intellectual property right is the sole\n responsibility of the user</string>
+    <string name="step_1">Step 1</string>
+    <string name="step_2">Step 2</string>
+    <string name="step_3">Step 3</string>
+    <string name="go_website">Go to website</string>
+    <string name="find_videos">Find the videos you\nwant to download</string>
+    <string name="click_download_btn">Click the download button</string>
+    <string name="open_whatsapp">Open Whatsapp</string>
+    <string name="wa_content_02">This application is not affiliated with WhatsApp Inc. and is intended for personal use only. Users are responsible for respecting the privacy and intellectual property rights when saving and sharing content.</string>
+    <string name="wa_content_03">The purpose of this feature is to offer you a more convenient method for exploring, saving, and sharing\nstatus videos that are stored on your device.</string>
+    <string name="watch_whatsapp_status">Watch Whatsapp status</string>
+    <string name="watch_video">Please watch the status videos on\nWhatsapp first before accessing this app</string>
+    <string name="watch_now">Watch now</string>
+
+
+    <string name="fllow_us">Follow us on</string>
+    <string name="expYoutubeLink">https://www.youtube.com/@signatureexp</string>
+    <string name="expXLink">https://x.com/we_are_terafort?t=2ZjmasnuYSMsR6K2aSGTJg&amp;s=03</string>
+    <string name="expFBLink">https://www.facebook.com/SignatureEXP1?mibextid=ZbWKwL</string>
+    <string name="expInstaLink">https://www.instagram.com/signature.exp?igsh=czNsODI2MG51dDIn</string>
+    <string name="watch_video_theme">Watch a video to unlock premium \nthemes instantly</string>
+    <string name="unlock_all_theme">Unlock all themes</string>
+    <string name="tap_to_exit">Tap to Exit</string>
+    <string name="everything_is_now_in_order">Everything is now in order</string>
+    <string name="clean_up_watched_videos">Clean up watched videos</string>
+    <string name="view">View</string>
+    <string name="clean_up_large_videos">Clean up large files</string>
+    <string name="cleanser">Cleaner</string>
+    <string name="watched_videos">Watched videos</string>
+    <string name="clean_up_duplicate_files">Clean up duplicate files</string>
+    <string name="lager_files">Larger files</string>
+    <string name="clean_videos_and_free_up_space_on_your_phone">Clean videos and free up space\n on your phone</string>
+    <string name="files_larger_than_25_mb">Files larger than 25 MB</string>
+    <string name="duplicate_files">Duplicate files</string>
+    <string name="cleaner">Cleaner</string>
+    <string name="none">None</string>
+    <string name="permissionsecond_text">Our app won’t be able to auto-discover all videos, audios or external subtitles.\n\nTo support all types of videos, songs, subtitles and all features, we strongly suggest you to grant the permission.</string>
+    <string name="grant_all_permission" translatable="false">Grant all Permission</string>
+    <string name="only_grant_media_permissions" translatable="false">Only grant media permissions</string>
+    <string name="please_grant_access" translatable="false">Please grant access to ensure the normal use of this app</string>
+    <string name="all_videos_and_audios">All videos and Audios</string>
+    <string name="video_locker">Video locker</string>
+    <string name="don_t_allow">Don\'t Allow</string>
+    <string name="grant_permission">Grant Permission</string>
+    <string name="internal_storage">Storage</string>
+    <string name="level_up_go_pro">Level up, Go Pro!</string>
+    <string name="remove_ads">Remove Ads</string>
+    <string name="video_cutter">Video cutter</string>
+    <string name="video_cutter_pro">Video cutter Pro</string>
+    <string name="video_cutter1">Video Cutter</string>
+    <string name="mp3_converter">Mp3 converter</string>
+    <string name="ads_free_experience">Ads-free experience</string>
+    <string name="unlimited_video_cutter">Unlimited Video cutter</string>
+    <string name="premium_themes">Premium Themes</string>
+    <string name="unlimited_mp3_converter">Unlimited Mp3 converter</string>
+    <string name="be_premium">Be Like A Pro</string>
+    <string name="restore">Restore</string>
+    <string name="goqr">goQR</string>
+    <string name="cutting">Cutting…</string>
+    <string name="trimming_video">Trimming your video, please wait and don\'t leave the screen!</string>
+    <string name="downloader">Downloader</string>
+    <string name="status_saver">Status Saver</string>
+    <string name="youtube_watch">Youtube watch</string>
+    <string name="video_cutter_home">Video cutter</string>
+    <string name="video_stream">Video Stream</string>
+    <string name="themes">Themes</string>
+    <string name="songs">Songs</string>
+    <string name="albums_audio">Albums</string>
+    <string name="artists_audios">Artists</string>
+    <string name="folders_audio">Folders</string>
+    <string name="app_theme">App Theme</string>
+    <string name="video_Cutter">Video Cutter</string>
+    <string name="share_app">Share App</string>
+    <string name="clean_up_0_mb">Clean up 0 MB</string>
+    <string name="_25_mb">25 MB</string>
+    <string name="directory">Directory</string>
+    <string name="spanish">gf</string>
+    <string name="change_language">Change Language</string>
+    <string name="videos_can_be_cleaned">%1$d videos can be cleaned</string>
+    <string name="video_can_be_cleaned">%1$d video can be cleaned</string>
+    <string name="languages">Select Language</string>
+    <string name="videos">Videos</string>
+    <string name="onlineHome">Online</string>
+    <string name="folders_home">Folders</string>
+    <string name="video_s">" Video's"</string>
+    <string name="subtitle">Subtitle</string>
+    <string name="open_from">Open From</string>
+    <string name="customization">Subtitle Customization</string>
+    <string name="online_subtitles">Online Subtitles</string>
+    <string name="layout">Layout</string>
+    <string name="position">Position</string>
+    <string name="lower">Lower</string>
+    <string name="text">Text</string>
+    <string name="sizee">Size</string>
+    <string name="color">Font Color</string>
+    <string name="upper">Upper</string>
+    <string name="middle">Middle</string>
+    <string name="equalizer">Equalizer</string>
+    <string name="night_mode">Night mode</string>
+    <string name="mirror">Mirror</string>
+    <string name="audio_track">Audio Track</string>
+    <string name="order">Order</string>
+    <string name="loop_all">Loop All</string>
+    <string name="suffle_all">Shuffle All</string>
+    <string name="downloading">Downloading…</string>
+    <string name="search_subtitle_from">Search subtitle from</string>
+    <string name="opensubtitle_org">"opensubtitle.org</string>
+    <string name="language">Language</string>
+    <string name="english">English</string>
+    <string name="search">Search…</string>
+    <string name="arabic">Arabic</string>
+    <string name="bengali">Bengali</string>
+    <string name="dutch">Dutch</string>
+    <string name="french">French</string>
+    <string name="german">German</string>
+    <string name="hindi">Hindi</string>
+    <string name="hungarian">Hungarian</string>
+    <string name="indonesian">Indonesian</string>
+    <string name="italian">Italian</string>
+    <string name="japanese">Japanese</string>
+    <string name="korean">Korean</string>
+    <string name="chinese">Chinese</string>
+    <string name="marathi">Marathi</string>
+    <string name="persian">Persian</string>
+    <string name="portuguese">Portuguese</string>
+    <string name="russian">Russian</string>
+    <string name="tamil">Tamil</string>
+    <string name="thai">Thai</string>
+    <string name="turkish">Turkish</string>
+    <string name="urdu">Urdu</string>
+    <string name="vietnamese">Vietnamese</string>
+    <string name="resume">Resume</string>
+    <string name="playlist_1">Playlist 1</string>
+    <string name="create_your_playlist">Create Your Playlist</string>
+    <string name="remove_from_playlist">Remove from playlist</string>
+    <string name="all_selected">All Selected</string>
+    <string name="selected">Selected</string>
+    <string name="play_all">Play All</string>
+    <string name="remove_all">Remove all</string>
+    <string name="convert_to_mp3">Convert to mp3</string>
+    <string name="remove_from_favourites">Remove from Favourites</string>
+    <string name="add_to_favourites">Add to Favourites</string>
+    <string name="recent">Recent</string>
+    <string name="saved">Saved</string>
+    <string name="progress">Progress</string>
+    <string name="finished">Finished</string>
+    <string name="selected_watched">%1$s Selected</string>
+    <string name="_0_selected">0 Selected</string>
+    <string name="clean_up">Clean up  %1$s</string>
+    <string name="deleted">Deleted</string>
+    <string name="files_larger_than_mb">Files larger than %1$s MB</string>
+    <string name="generating_video">generating video</string>
+    <string name="generating">Generating…</string>
+    <string name="video_is_being_generated_please_do_not_leave_nthis_screen_or_exit_the_app">Video is being generated, please do not leave \nthis screen or exit the app.</string>
+    <string name="disclaimer">Disclaimer</string>
+    <string name="sleep_time">Sleep time</string>
+    <string name="turn_off">Turn off</string>
+    <string name="_15_min_later">15 min later</string>
+    <string name="_30_min_later">30 min later</string>
+    <string name="_45_min_later">45 min later</string>
+    <string name="_60_min_later">60 min later</string>
+    <string name="no_of_songs">%1$s Songs</string>
+    <string name="no_of_song">%1$s Song</string>
+    <string name="get_started_now">Get Started Now!</string>
+    <string name="watch_a_video_for_5_free_cuts_or_go_unlimited_with_our_premium_option_get_started_now">Watch a video for 5 free cuts or go unlimited with our premium option. Get started now!</string>
+    <string name="go_unlimited_ncut_without_limits">Go Unlimited \nCut Without Limits!</string>
+    <string name="watch_a_video_nenjoy_5_free_cuts">Watch a video \nenjoy 5 free cuts!</string>
+    <string name="video_ended">video ended</string>
+    <string name="state_idle">STATE_IDLE</string>
+    <string name="not_installed">Not Installed</string>
+    <string name="video_saved_successfully">video saved successfully</string>
+    <string name="failed_to_trim">Failed to trim</string>
+    <string name="play_videoo">Play Video</string>
+    <string name="e_g_youtube_https_http">e.g. Youtube, https://, http://</string>
+    <string name="watch">WATCH</string>
+    <string name="unlock_for_free">Unlock for free</string>
+    <string name="prices">prices</string>
+    <string name="monthly_plan">Monthly Plan</string>
+    <string name="annual_plan">Annual Plan</string>
+    <string name="lifetime_plan">"Lifetime Plan "</string>
+    <string name="no_video_detected">no video detected</string>
+    <string name="permissions_required">Permissions Required</string>
+    <string name="please_grant_the_required_permissions_in_the_app_settings">Please grant the required permissions in the app settings.</string>
+    <string name="open_in_new_window">Open in new window</string>
+    <string name="no">NO</string>
+    <string name="are_you_sure_you_want_to_close_this_window">Are you sure you want to close this window?</string>
+    <string name="yes">YES</string>
+    <string name="go_to_website">Go to website</string>
+    <string name="tips">Tips</string>
+    <string name="due_to_legal_restrictions_youtube_videos_cannot_be_downloaded">Due to legal restrictions, Youtube videos CANNOT be downloaded.</string>
+    <string name="fetching_details">Fetching Details</string>
+    <string name="get_premium_e">Get Premium!</string>
+    <string name="ad_free_for_a_seamless_experience">Ad-free for a seamless experience</string>
+    <string name="uninstall_disclaimer">Dear User\nWe want to inform you that before uninstalling or clearing app data, unlock all secured videos to prevent data loss. Failure to do so may result in permanently losing access to your content. Your file would be loss if you do not unlock the file before uninstalling or clearing the app data.Thanks</string>
+    <string name="continue_playing_from_where_you_stopped">Continue playing from where you stopped</string>
+    <string name="start_over">START OVER</string>
+    <string name="no_song_found">No Song found!</string>
+    <string name="you_don_t_have_any_video_in_mobile_s_storage">You don\'t have any video in mobile\'s storage</string>
+    <string name="video_Cut">Video Cut</string>
+    <string name="network">Network</string>
+    <string name="network_stream">Network Stream</string>
+    <string name="watchad">Watch ad</string>
+    <string name="best_offer">Best Offer</string>
+    <string name="player_is_currently_in_locked_mode">The player is currently in blocked mode</string>
+    <string name="search_result">Search Result</string>
+    <string name="start_for_free">Start For Free</string>
+    <string name="watch_a_video_ad_to_convert_video_to_mp3">Watch a video ad to unlock premium MP3 conversion feature instantly</string>
+    <string name="songsa">" songs"</string>
+    <string name="videos_adapter">" video"</string>
+    <string name="contine">Continue</string>
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="loading">Loading…</string>
+    <string name="day_trial_then">"%1$s-day trial then "</string>
+    <string name="internet_issue_values_are_not_fetched">Internet issue, values are not fetched</string>
+    <string name="converted">Converted Successfully</string>
+    <string name="exit_ad_head">It’s great to have you by my side</string>
+    <string name="exit_ad_desc">The page will disappear after 9s Or click the cross button to exit the application immediately</string>
+    <string name="watch_video_rewarded">Watch a rewarded video to get a ad-free premium experience for 30 min.</string>
+    <string name="get_a_24_hour_ad_free_gift">Get a 24-hour ad-free gift</string>
+    <string name="ad_free_gift">Ad-free Gift</string>
+    <string name="get_an_exclusive_ad_free_gift_for_24_hours">Get an exclusive ad-free\n gift for 24 hours</string>
+    <string name="get_an_ad_free_premium_experience_by_just_watching_3_rewarded_videos">Get an ad-free premium experience by\n just watching 3 rewarded videos.</string>
+    <string name="please_turn_your_internet_on">please turn your internet on</string>
+    <string name="your_24_hour_ad_free_reward_has_been_collected_successfully">Your 24-hour ad free reward has been collected successfully.</string>
+    <string name="your_30_minutes_ad_free_reward_has_been_collected_successfully">Your 30-Minutes ad free reward has been collected successfully</string>
+    <string name="watch_video_only">Watch video Ad</string>
+    <string name="failed_to_show_ad_please_try_again">Failed to show ad, please try again.</string>
+    <string name="ad_free_experience_activated_for_24_hours_enjoy_uninterrupted_app_usage">Ad-free experience activated for 24 hours. Enjoy uninterrupted App usage!</string>
+    <string name="ad_free_experience_activated_for_30_minutes_enjoy_uninterrupted_app_usage">Ad-free experience activated for 30 minutes. Enjoy uninterrupted App usage!</string>
+    <string name="notification_title">Your Video Player App</string>
+    <string name="notification_desc">Time to watch your favorite video!</string>
+    <string name="download_complete_dialogue">Downloaded videos are saved in</string>
+    <string name="settings">Settings</string>
+    <string name="theme">Theme</string>
+    <string name="default_">Default</string>
+    <string name="general">General</string>
+    <string name="desc">Languages, Show History, Rate Us, Share,…</string>
+    <string name="show_history">Show History</string>
+    <string name="on">On</string>
+    <string name="about">About</string>
+    <string name="desc2_setting"><![CDATA[Resume,2x speed,Forward & Rewind]]></string>
+    <string name="label_cus_setting">Customization</string>
+    <string name="playback">Playback</string>
+    <string name="resume_description">Continue playing from where you stopped.</string>
+    <string name="ask_everytime">Ask everytime</string>
+    <string name="always">Always</string>
+    <string name="never">Never</string>
+    <string name="_2x_speed">2x Speed</string>
+    <string name="long_press">Long press to play at 2x speed.</string>
+    <string name="forward_rewind"><![CDATA[Forward & Rewind]]></string>
+    <string name="forward_desc"><![CDATA[Double tap to fast forward & rewind]]></string>
+    <string name="auto_play_next">Auto play next</string>
+    <string name="auto_play_desc">Automatically play next video when current video ends. Take effect on Order mode.</string>
+    <string name="remember_orientation_for_all_videos">Remember Orientation for all videos</string>
+    <string name="remem_brght">Remember Brightness for all videos</string>
+    <string name="remember_brightness">Remember Brightness</string>
+    <string name="sound_brightness">Remember Speed</string>
+    <string name="sound_remember">Remember Speed for all videos</string>
+    <string name="zm_player">SnapDown</string>
+    <string name="desc_notifi">Let\'s Check your New Video\'s found interesting</string>
+    <string name="desc_new_notifi">"Tap to view A new video has been added. Let's watch it!"</string>
+    <string name="shorts">Shorts</string>
+    <string name="random">Random</string>
+    <string name="home">Home</string>
+    <string name="plz_allow_permission_for_loading_videos">Please Allow Permission for loading videos</string>
+    <string name="licenseKey">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA9BEKUw5WYg2a6g+20+Wj8W/xQu1e0d3K3G9yvQx1qmN6s24zC+m+btDgIWuRSEYjEw8Mkw1gucLkZfO3DXcjWwjFKD3nVwXDJ2O2eW1BLXDDGJaFLKP7C/Dk21nekPmzh0GRoKaRQvDGS/lbjNFA08f7LTVt4UnJhzN1yMFO+fQW07FJ/6wVKS9tiPkxskGQMbkbEME0P5F7muyKsr4xndvmvWF5V4hpUQfy/gUl7FPe2HdUvuOgX0qdM8yK0crudMK/my4iU81Q1HCnSxIKXQF8wrI7RQyn/qJP0ZL2ns+QgHUXLF9sDwLyA2iQhnhPodge2PavA2LjVnEP24qM0wIDAQAB</string>
+    <string name="clear_history">Clear History</string>
+    <string name="no_history_found">No History Found</string>
+    <string name="search_your_bookmarks">Search your bookmarks</string>
+    <string name="bookmark_url">Bookmark URL</string>
+    <string name="title_of_the_video">Title of the video</string>
+    <string name="select_quality">Select Quality</string>
+
+    <!--Download Queue-->
+    <string name="pref_key_browser_hide_menu_icon" translatable="false">pref_key_browser_hide_menu_icon</string>
+
+    <string name="downloads">Downloads</string>
+    <string name="download_queued_progress_template">%1$s/%2$s \u2022 %3$s \u2022 %4$s/s</string>
+    <string name="not_available">N/A</string>
+    <string name="stopped">Stopped</string>
+    <string name="pending">Pending</string>
+    <string name="waiting_for_network">Waiting for network</string>
+    <string name="waiting_for_retry">Waiting for retry</string>
+    <string name="downloading_metadata">Downloading metadata</string>
+    <string name="download_queued_template">%1$s/%2$s \u2022 %3$s</string>
+    <string name="download_finished_template">%1$s \u2022 %2$s</string>
+    <string name="error_template">Error: %1$s</string>
+    <string name="open_using">Open using</string>
+    <string name="file_not_available">file not available!</string>
+    <string name="deleting">Deleting</string>
+    <string name="delete_selected_download">Delete the selected download? This operation cannot be undone</string>
+    <string name="share_via">Share via</string>
+    <plurals name="unable_sharing">
+        <item quantity="one">The file cannot be shared.</item>
+        <item quantity="other">The files cannot be shared.</item>
+    </plurals>
+    <string name="delete_selected_downloads">Delete the selected downloads? This operation cannot be undone</string>
+    <string name="delete_with_downloaded_file">Delete with downloaded file</string>
+    <string name="tab">Tabs</string>
+    <string name="new_tab">+ New Tab</string>
+    <string name="delete_video_prompt">Delete video from device?</string>
+    <string name="delete_video_warning">Video will be deleted permanently.</string>
+    <string name="button_cancel">Cancel</string>
+    <string name="button_delete">Delete</string>
+    <string name="download_info">Download Info</string>
+    <string name="link">Link</string>
+    <string name="name_download">Name</string>
+    <string name="path_download">Path</string>
+    <string name="file_size_download">File Size</string>
+    <string name="date_added_download">Modified</string>
+    <string name="downloaded">Downloaded</string>
+    <string name="okay_download">Okay</string>
+    <string name="bookmarks">Bookmarks</string>
+    <string name="no_bookmarks">No Bookmarks</string>
+    <string name="you_have">You have nothing on your list yet. it’s never too late to change it</string>
+    <string name="recommended_websites">Recommended Websites</string>
+    <string name="decoderHW">HW decoder</string>
+    <string name="decoderSW">SW decoder</string>
+    <string name="how_to_download">How to download?</string>
+    <string name="facebook">Facebook</string>
+    <string name="tt_request_permission_descript_external_storage">This app requires access to external storage.</string>
+    <string name="tt_request_permission_descript_location">This app requires access to your location.</string>
+    <string name="tt_request_permission_descript_read_phone_state">This app requires access to phone state.</string>
+    <string name="onboarding1">All Formats Support</string>
+    <string name="onboarding2">Let the Music Move You</string>
+    <string name="onboarding3">Download and Watch, No Limits</string>
+    <string name="label2">HD video player support all kind of formats</string>
+    <string name="label3">Let the music player transform your listening journey</string>
+    <string name="label4">Download as many as you want, when you want</string>
+    <string name="title_youtubedldynamic">youtube_dl_dynamic</string>
+
+    <string name="bookmark">Bookmark</string>
+    <string name="subititle_detail">Subtitle are currently off. Turn on the Subtitle to access more features.</string>
+    <string name="mp3_convert">Mp3 Convert</string>
+    <string name="ad_free">Ad Free</string>
+    <string name="more_setting">More Settings</string>
+    <string name="yt_watch">YT Watch</string>
+    <string name="video_trim">Video Trim</string>
+    <string name="whatsapp">Whatsapp</string>
+    <string name="twitter">Twitter</string>
+    <string name="more_tool">More Tools</string>
+    <string name="play_pause_button">play_pause</string>
+
+    <string name="monthly_offer">Monthly Offer</string>
+    <string name="recurring_billing_cancel_anytime">Recurring billing cancel anytime</string>
+    <string name="start_free_trial">Start Free Trial</string>
+    <string name="download_videos_musics">Download Videos &amp; Music with 6X Speed.</string>
+    <string name="like">Like</string>
+    <string name="web">Web</string>
+    <string name="website">Website</string>
+    <string name="fast_easy_download">Fast, Easy and Unlimited Downlaoads.</string>
+    <string name="video_downloader">Video Downloader</string>
+    <string name="download_now_watch_offline">Download Now, Watch Offline!</string>
+    <string name="wa_business">WA Business Saver</string>
+    <string name="wa_saver">WA Saver</string>
+
+    <string name="select_file">Select file</string>
+    <string name="add_first_vid">Add Your First Video</string>
+    <string name="add_videos">Add Videos</string>
+    <string name="stream">Stream</string>
+    <string name="inserted_successfully">added successfully</string>
+    <string name="ur_ideas">Your Ideas Help Us Be Excellent</string>
+    <string name="unhappy_expe">Unhappy Experience</string>
+    <string name="seeking_insights">Seeking Insights</string>
+    <string name="valueble_feedback">Valuable Feedback</string>
+    <string name="elevate_performance">Elevate Performance</string>
+    <string name="thanks_for_stars">Thank you for 5 stars!</string>
+    <string name="detailed_feedback">Your detailed feedback guides our improvements</string>
+    <string name="help_enhance">Help us enhance and refine your user experience</string>
+    <string name="feedback_shapes">Your feedback shapes ongoing improvements</string>
+    <string name="help_maintain">Help us maintain and exceed your expectations</string>
+    <string name="ongoing_support">Your ongoing support is the key to our success</string>
+    <string name="submitted">submitted</string>
+
+    <string name="video_not_playable">Video is not playable</string>
+    <string name="video_link_detected">Video link detected</string>
+    <string name="enter_url">Please enter your url</string>
+    <string name="check_url_format">Please check your url format</string>
+    <string name="create">Create</string>
+    <string name="enter_playlist_name">Enter Playlist Name</string>
+    <string name="add">Add</string>
+    <string name="select_language">Select Language</string>
+    <string name="search_for_video">Search for videos...</string>
+    <string name="close_button">Close button</string>
+    <string name="one_click_downloader">Video Downloader Browser Hub</string>
+    <string name="download_videos">Download Videos</string>
+    <string name="smooth_seamless_playback"><![CDATA[Smooth & Seamless Playback]]></string>
+    <string name="whatsapp_status_saver">Whatsapp Status Saver</string>
+    <string name="what_do_you_want_to_use_first">Which platform to download from?</string>
+    <string name="one_tap_to_download">One-Tap to Download Videos</string>
+    <string name="save_wa_status_easily">Save WA Status Easily</string>
+    <string name="all_in_one_video">All-in-one video player</string>
+    <string name="player">Player</string>
+    <string name="tiktok">Tiktok</string>
+    <string name="instagram">Instagram</string>
+    <string name="please_select_a_language_first">Please select a language first</string>
+    <string name="try_again">Try again</string>
+
+
+</resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- When the row is marked selected -->
+    <item
+        android:state_selected="true"
+        android:drawable="@drawable/item_language_selected" />
+
+    <!-- Default / not-selected -->
+    <item android:drawable="@drawable/item_language_non_selected" />
+</selector>

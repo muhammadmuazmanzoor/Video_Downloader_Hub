@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.player.settings.VideoSettingFragment">
+
+    <ImageView
+        android:id="@+id/back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_back"
+        app:tint="@color/black"
+        android:padding="@dimen/_5sdp"
+        android:layout_margin="@dimen/_13sdp"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/startname"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/poppins_semibold"
+        android:maxLines="1"
+        android:text="@string/video"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_13ssp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/back"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/back"
+        app:layout_constraintTop_toTopOf="@+id/back" />
+
+    <TextView
+        android:id="@+id/label_theme"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:fontFamily="@font/poppins_semibold"
+        android:maxLines="1"
+        android:text="@string/playback"
+        android:paddingStart="@dimen/_20sdp"
+        android:textColor="@color/gSelector"
+        android:textSize="@dimen/_13ssp"
+        android:visibility="visible"
+        android:layout_marginTop="@dimen/_16sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/back" />
+
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:text="@string/resume"
+        android:textSize="@dimen/_13ssp"
+        android:textColor="@color/black"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginStart="@dimen/_20sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/label_theme" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_regular"
+        android:text="@string/resume_description"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_10ssp"
+        app:layout_constraintStart_toStartOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+
+
+    <TextView
+        android:id="@+id/speed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:text="@string/_2x_speed"
+        android:textSize="@dimen/_13ssp"
+        android:textColor="@color/black"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginStart="@dimen/_20sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/name" />
+
+    <TextView
+        android:id="@+id/speed_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_regular"
+        android:text="@string/long_press"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_10ssp"
+        app:layout_constraintStart_toStartOf="@+id/speed"
+        app:layout_constraintTop_toBottomOf="@+id/speed" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switch2xSpeed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_5sdp"
+        app:layout_constraintBottom_toBottomOf="@+id/speed_desc"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/speed"
+        app:thumbTint="@color/switch_round"
+        app:trackTint="@color/switch_track" />
+
+    <TextView
+        android:id="@+id/forward_rewind"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:text="@string/forward_rewind"
+        android:textSize="@dimen/_13ssp"
+        android:textColor="@color/black"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginStart="@dimen/_20sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/speed_desc" />
+
+    <TextView
+        android:id="@+id/forward_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_regular"
+        android:text="@string/forward_desc"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_10ssp"
+        app:layout_constraintStart_toStartOf="@+id/forward_rewind"
+        app:layout_constraintTop_toBottomOf="@+id/forward_rewind" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/forward_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_5sdp"
+        app:layout_constraintBottom_toBottomOf="@+id/forward_desc"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/forward_rewind"
+        app:thumbTint="@color/switch_round"
+        app:trackTint="@color/switch_track" />
+
+
+    <TextView
+        android:id="@+id/autoplay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:text="@string/auto_play_next"
+        android:textSize="@dimen/_13ssp"
+        android:textColor="@color/black"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginStart="@dimen/_20sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/forward_desc" />
+
+    <TextView
+        android:id="@+id/auto_desc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_regular"
+        android:text="@string/auto_play_desc"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_10ssp"
+        app:layout_constraintEnd_toStartOf="@+id/auto_switch"
+        app:layout_constraintStart_toStartOf="@+id/autoplay"
+        app:layout_constraintTop_toBottomOf="@+id/autoplay" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/auto_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_5sdp"
+        app:layout_constraintBottom_toBottomOf="@+id/auto_desc"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/autoplay"
+        app:thumbTint="@color/switch_round"
+        app:trackTint="@color/switch_track" />
+
+    <TextView
+        android:id="@+id/orientation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Remember orientation"
+        android:textSize="@dimen/_13ssp"
+        android:textColor="@color/black"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginStart="@dimen/_20sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/auto_desc" />
+
+    <TextView
+        android:id="@+id/orient_desc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_regular"
+        android:text="@string/remember_orientation_for_all_videos"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_10ssp"
+        app:layout_constraintEnd_toStartOf="@+id/orient_switch"
+        app:layout_constraintStart_toStartOf="@+id/orientation"
+        app:layout_constraintTop_toBottomOf="@+id/orientation" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/orient_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_5sdp"
+        app:layout_constraintBottom_toBottomOf="@+id/orient_desc"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/orientation"
+        app:thumbTint="@color/switch_round"
+        app:trackTint="@color/switch_track" />
+
+
+    <TextView
+        android:id="@+id/brightness"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:text="@string/remember_brightness"
+        android:textSize="@dimen/_13ssp"
+        android:textColor="@color/black"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginStart="@dimen/_20sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/orient_desc" />
+
+    <TextView
+        android:id="@+id/bright_desc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_regular"
+        android:text="@string/remem_brght"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_10ssp"
+        app:layout_constraintEnd_toStartOf="@+id/bright_switch"
+        app:layout_constraintStart_toStartOf="@+id/brightness"
+        app:layout_constraintTop_toBottomOf="@+id/brightness" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/bright_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_5sdp"
+        app:layout_constraintBottom_toBottomOf="@+id/bright_desc"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/brightness"
+        app:thumbTint="@color/switch_round"
+        app:trackTint="@color/switch_track" />
+
+    <TextView
+        android:id="@+id/playspeed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:text="@string/sound_brightness"
+        android:textSize="@dimen/_13ssp"
+        android:textColor="@color/black"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginStart="@dimen/_20sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bright_desc" />
+
+    <TextView
+        android:id="@+id/playspeed_desc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_regular"
+        android:text="@string/sound_remember"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_10ssp"
+        app:layout_constraintEnd_toStartOf="@+id/playspeed_switch"
+        app:layout_constraintStart_toStartOf="@+id/playspeed"
+        app:layout_constraintTop_toBottomOf="@+id/playspeed" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/playspeed_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_5sdp"
+        app:layout_constraintBottom_toBottomOf="@+id/playspeed_desc"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/playspeed"
+        app:thumbTint="@color/switch_round"
+        app:trackTint="@color/switch_track" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

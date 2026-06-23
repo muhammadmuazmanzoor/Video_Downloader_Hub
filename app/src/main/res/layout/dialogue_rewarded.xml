@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="400dp"
+            android:layout_height="480dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/bg_rounded_constraintlayout">
+
+            <ImageView
+                android:id="@+id/ivClose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_close_black_24dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/topLayout"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHeight_percent="0.24"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ivClose"
+                app:layout_constraintWidth_percent="0.96">
+
+                <ImageView
+                    android:id="@+id/imageBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:background="@drawable/bg_rounded_constraintlayout"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHeight_percent="0.85"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="1.0" />
+
+                <ImageView
+                    android:id="@+id/ivDefaultDoctor"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:src="@drawable/iv_rewarded_trim"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="1:1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHeight_percent="1.0"
+                    app:layout_constraintHorizontal_bias="0.9"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <TextView
+                    android:id="@+id/textAiTop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:gravity="start"
+                    android:text="@string/text_trimmer_rewarded"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHeight_percent="1.0"
+                    app:layout_constraintHorizontal_bias="0.1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/imageBackground"
+                    app:layout_constraintVertical_bias="0.28" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/text1"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:fontFamily="@font/poppins_semibold"
+                android:gravity="center"
+                android:text="@string/get_started_now"
+                android:textColor="@color/text_color"
+                android:textSize="17sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHeight_percent="0.08"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/topLayout"
+                app:layout_constraintWidth_percent="0.5" />
+
+            <TextView
+                android:id="@+id/text2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_7sdp"
+                android:fontFamily="@font/poppins_semibold"
+                android:gravity="center"
+                android:text="@string/watch_a_video_for_5_free_cuts_or_go_unlimited_with_our_premium_option_get_started_now"
+                android:textColor="@color/text_color"
+                android:textSize="11sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHeight_percent="0.1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text1"
+                app:layout_constraintWidth_percent="0.8" />
+
+            <RelativeLayout
+                android:id="@+id/btnPremium"
+                android:layout_width="0dp"
+                android:layout_height="70dp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:background="@drawable/bg_roundedview"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text2"
+                app:layout_constraintWidth_percent="0.8">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_toLeftOf="@+id/topText1"
+                    android:src="@drawable/prosvg" />
+
+                <TextView
+                    android:id="@+id/topText1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:layout_centerVertical="true"
+                    android:gravity="center"
+                    android:text="@string/go_unlimited_ncut_without_limits"
+                    android:textColor="@color/brand_text_primary"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/btnRewarded"
+                android:layout_width="0dp"
+                android:layout_height="70dp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:background="@drawable/bg_roundedview"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnPremium"
+                app:layout_constraintWidth_percent="0.8">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_toLeftOf="@+id/topText"
+                    android:src="@drawable/ic_video_reward"
+                    app:tint="@color/brand_text_primary" />
+
+                <TextView
+                    android:id="@+id/topText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:gravity="center"
+                    android:text="@string/watch_a_video_nenjoy_5_free_cuts"
+                    android:textColor="@color/brand_text_primary"
+                    android:textSize="14sp" />
+
+            </RelativeLayout>
+
+            <FrameLayout
+                android:id="@+id/btnReward"
+                android:layout_width="0dp"
+                android:layout_height="70dp"
+                android:layout_marginTop="@dimen/_15sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnPremium"
+                app:layout_constraintWidth_percent="0.8" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
+

@@ -1,0 +1,355 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+    id 'androidx.navigation.safeargs.kotlin'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-parcelize'
+    id 'com.google.devtools.ksp' // ✅ Add this for KSP support
+}
+
+android {
+    namespace 'com.video.avd'
+    compileSdk 35
+    android {
+        packagingOptions {
+            resources {
+                excludes += [
+                        "mozilla/public-suffix-list.txt",
+                        "META-INF/DEPENDENCIES",
+                        "META-INF/LICENSE",
+                        "META-INF/LICENSE.txt",
+                        "META-INF/license.txt",
+                        "META-INF/NOTICE",
+                        "META-INF/NOTICE",
+                        "META-INF/NOTICE.txt",
+                        "META-INF/notice.txt",
+                        "META-INF/ASL2.0",
+                        "META-INF/*.kotlin_module",
+                        "/META-INF/{AL2.0,LGPL2.1}"
+                ]
+            }
+            jniLibs {
+                useLegacyPackaging = true
+            }
+        }
+    }
+
+    defaultConfig {
+        applicationId "videoplayer.tfl.videodownloader.browser.hub"
+        minSdk 28
+        targetSdk 35
+        versionCode 10
+        versionName "1.1.0"
+        multiDexEnabled true
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        setProperty("archivesBaseName", "VideoDownloaderBrowserHub-" + versionName)
+        ndk {
+            // Specifies the ABIs that your app supports.
+            abiFilters 'armeabi-v7a', 'arm64-v8a'
+        }
+    }
+    buildTypes {
+
+        buildTypes {
+            debug {
+                manifestPlaceholders.put("admob_app_id", "ca-app-pub-3940256099942544~3347511713")
+
+
+                buildConfigField("String", "inter_splash", "\"ca-app-pub-3940256099942544/1033173712\"")
+                buildConfigField("String", "inter_splash_high", "\"ca-app-pub-3940256099942544/1033173712\"")
+
+
+                buildConfigField("String", "native_splash", "\"ca-app-pub-3940256099942544/2247696110\"")
+                buildConfigField("String", "native_splash_high", "\"ca-app-pub-3940256099942544/2247696110\"")
+
+
+
+                resValue("string", "native_ob1", "ca-app-pub-3940256099942544/2247696110")
+                resValue("string", "native_ob1_high", "ca-app-pub-3940256099942544/2247696110")
+                resValue("string", "native_ob3", "ca-app-pub-3940256099942544/2247696110")
+                resValue("string", "native_ob3_high", "ca-app-pub-3940256099942544/2247696110")
+                resValue("string", "native_ob4", "ca-app-pub-3940256099942544/2247696110")
+                resValue("string", "native_ob4_high", "ca-app-pub-3940256099942544/2247696110")
+                resValue("string", "native_full_ob1", "ca-app-pub-3940256099942544/2247696110")
+                resValue("string", "native_full_ob1_high", "ca-app-pub-3940256099942544/2247696110")
+                resValue("string", "native_full_ob2", "ca-app-pub-3940256099942544/2247696110")
+                resValue("string", "native_full_ob2_high", "ca-app-pub-3940256099942544/2247696110")
+
+                buildConfigField("String", "inter_survey", "\"ca-app-pub-3940256099942544/1033173712\"")
+                buildConfigField("String", "inter_survey_high", "\"ca-app-pub-3940256099942544/1033173712\"")
+
+                buildConfigField("String", "native_survey", "\"ca-app-pub-3940256099942544/2247696110\"")
+                buildConfigField("String", "native_survey_hf", "\"ca-app-pub-3940256099942544/2247696110\"")
+
+                buildConfigField("String", "inter_ob", "\"ca-app-pub-3940256099942544/1033173712\"")
+                buildConfigField("String", "inter_ob_high", "\"ca-app-pub-3940256099942544/1033173712\"")
+
+                buildConfigField("String", "native_permission", "\"ca-app-pub-3940256099942544/2247696110\"")
+                buildConfigField("String", "native_permission_hf", "\"ca-app-pub-3940256099942544/2247696110\"")
+
+                buildConfigField("String", "native_home", "\"ca-app-pub-3940256099942544/2247696110\"")
+                buildConfigField("String", "native_home_hf", "\"ca-app-pub-3940256099942544/2247696110\"")
+
+                buildConfigField("String", "inter_home", "\"ca-app-pub-3940256099942544/1033173712\"")
+                buildConfigField("String", "inter_home_high", "\"ca-app-pub-3940256099942544/1033173712\"")
+                buildConfigField("String", "rewarded_home", "\"ca-app-pub-5972202469838280/7009377071\"")
+                buildConfigField("String", "rewarded_home_high", "\"ca-app-pub-5972202469838280/3070132069\"")
+                buildConfigField("String", "banner_home", "\"ca-app-pub-3940256099942544/6300978111\"")
+                buildConfigField("String", "banner_home_high", "\"ca-app-pub-3940256099942544/6300978111\"")
+                buildConfigField("String", "banner_splash", "\"ca-app-pub-3940256099942544/6300978111\"")
+                buildConfigField("String", "banner_splash_high", "\"ca-app-pub-3940256099942544/6300978111\"")
+
+                buildConfigField("String", "native_share", "\"ca-app-pub-3940256099942544/2247696110\"")
+                buildConfigField("String", "native_share_hf", "\"ca-app-pub-3940256099942544/2247696110\"")
+
+                buildConfigField("String", "native_language", "\"ca-app-pub-3940256099942544/2247696110\"")
+                buildConfigField("String", "native_language_high", "\"ca-app-pub-3940256099942544/2247696110\"")
+
+                buildConfigField("String", "native_language_alt", "\"ca-app-pub-3940256099942544/2247696110\"")
+                buildConfigField("String", "native_language_alt_high", "\"ca-app-pub-3940256099942544/2247696110\"")
+
+                buildConfigField("String", "app_open_resume", "\"ca-app-pub-3940256099942544/9257395921\"")
+            }
+            release {
+                manifestPlaceholders.put("admob_app_id", "ca-app-pub-5972202469838280~6495662755")
+
+                buildConfigField("String", "inter_splash", "\"ca-app-pub-5972202469838280/1492191049\"")
+                buildConfigField("String", "inter_splash_high", "\"ca-app-pub-5972202469838280/7589040541\"")
+
+                buildConfigField("String", "native_splash", "\"ca-app-pub-5972202469838280/6983388548\"")
+                buildConfigField("String", "native_splash_high", "\"ca-app-pub-5972202469838280/3457204946\"")
+
+                buildConfigField("String", "banner_splash", "\"ca-app-pub-5972202469838280/2390339746\"")
+                buildConfigField("String", "banner_splash_high", "\"ca-app-pub-5972202469838280/2221375829\"")
+
+
+                resValue("string", "native_ob1", "ca-app-pub-5972202469838280/4579733827")
+                resValue("string", "native_ob1_high", "ca-app-pub-5972202469838280/1754471962")
+
+                resValue("string", "native_full_ob1", "ca-app-pub-5972202469838280/4633359702")
+                resValue("string", "native_full_ob1_high", "ca-app-pub-5972202469838280/2498150956")
+
+                resValue("string", "native_full_ob2", "ca-app-pub-5972202469838280/6245824273")
+                resValue("string", "native_full_ob2_high", "ca-app-pub-5972202469838280/8427691521")
+
+                resValue("string", "native_ob3", "ca-app-pub-5972202469838280/8870332620")
+                resValue("string", "native_ob3_high", "ca-app-pub-5972202469838280/7367334258")
+
+                resValue("string", "native_ob4", "ca-app-pub-5972202469838280/8870332620")
+                resValue("string", "native_ob4_high", "ca-app-pub-5972202469838280/7367334258")
+
+                buildConfigField("String", "inter_survey", "\"ca-app-pub-5972202469838280/7205897163\"")
+                buildConfigField("String", "inter_survey_high", "\"ca-app-pub-5972202469838280/9138137961\"")
+
+                buildConfigField("String", "inter_ob", "\"ca-app-pub-5972202469838280/7205897163\"")
+                buildConfigField("String", "inter_ob_high", "\"ca-app-pub-5972202469838280/9138137961\"")
+
+                buildConfigField("String", "native_survey", "\"ca-app-pub-5972202469838280/5933390122\"")
+                buildConfigField("String", "native_survey_hf", "\"ca-app-pub-5972202469838280/4001149320\"")
+
+
+                buildConfigField("String", "native_permission", "\"ca-app-pub-5972202469838280/3597639892\"")
+                buildConfigField("String", "native_permission_hf", "\"ca-app-pub-5972202469838280/8466823192\"")
+
+                buildConfigField("String", "native_home", "\"ca-app-pub-5972202469838280/1862283176\"")
+                buildConfigField("String", "native_home_hf", "\"ca-app-pub-5972202469838280/2142408210\"")
+
+                buildConfigField("String", "inter_home", "\"ca-app-pub-5972202469838280/1100789280\"")
+                buildConfigField("String", "inter_home_high", "\"ca-app-pub-5972202469838280/8841333491\"")
+
+                buildConfigField("String", "banner_home", "\"ca-app-pub-5972202469838280/8740652330\"")
+                buildConfigField("String", "banner_home_high", "\"ca-app-pub-5972202469838280/4660760343\"")
+
+                buildConfigField("String", "rewarded_home", "\"ca-app-pub-5972202469838280/7009377071\"")
+                buildConfigField("String", "rewarded_home_high", "\"ca-app-pub-5972202469838280/3070132069\"")
+
+                buildConfigField("String", "native_share", "\"ca-app-pub-5972202469838280/3012353943\"")
+                buildConfigField("String", "native_share_hf", "\"ca-app-pub-5972202469838280/2747592650\"")
+
+                buildConfigField("String", "native_language", "\"ca-app-pub-5972202469838280/1658057016\"")
+                buildConfigField("String", "native_language_high", "\"ca-app-pub-5972202469838280/6184671561\"")
+
+                buildConfigField("String", "native_language_alt", "\"ca-app-pub-5972202469838280/7942049321\"")
+                buildConfigField("String", "native_language_alt_high", "\"ca-app-pub-5972202469838280/6628967655\"")
+
+                buildConfigField("String", "app_open_resume", "\"ca-app-pub-5972202469838280/6275958870\"")
+
+                minifyEnabled true
+                shrinkResources true
+                // Specify the output file for the mapping.txt
+                packagingOptions {
+                    resources.excludes += "META-INF/LICENSE.txt"
+                }
+                buildConfigField "String", "BUILD_DATE", "\"${new Date()}\""
+                proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro', 'youtubedldynamic/proguard-rules.pro'
+            }
+
+        }
+
+    }
+
+    bundle {
+        language {
+            enableSplit = false
+        }
+        density {
+            enableSplit = false
+        }
+    }
+
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    lint {
+        disable 'MissingTranslation'
+        disable 'UnsafeOptInUsageError'
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildFeatures {
+        dataBinding true
+        viewBinding = true
+    }
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+    }
+    dynamicFeatures = [':youtubedldynamic']
+}
+
+def ROOM_VERSION = '2.6.1'
+
+dependencies {
+    //youtube extractor module
+    api project(path: ':downloader')
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.1'
+    implementation 'androidx.webkit:webkit:1.13.0'
+    implementation project(':indicatorseekbar')
+    implementation project(':opensubtitlesandroid')
+    implementation 'androidx.activity:activity:1.8.2'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.3.2'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
+    implementation "com.google.android.material:material:1.12.0"
+    implementation 'androidx.multidex:multidex:2.0.1'
+    //fragment ktx
+    implementation "androidx.fragment:fragment-ktx:1.8.7"
+    // Kotlin 2.5.3
+    implementation("androidx.navigation:navigation-fragment-ktx:2.5.3")
+    implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
+    "androidx.navigation:navigation-safe-args-gradle-plugin:2.5.3"
+    implementation 'androidx.work:work-runtime-ktx:2.9.0'
+    //co-routines
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1'
+    //For ViewModel
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.9.0"
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.0'
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.9.0"
+    //hilt
+    implementation("com.google.dagger:hilt-android:2.56.2")
+    ksp("com.google.dagger:hilt-android-compiler:2.56.2")
+    implementation 'androidx.core:core-ktx:1.10.1'
+    //Glide
+    implementation "com.github.bumptech.glide:glide:4.16.0"
+    ksp "com.github.bumptech.glide:compiler:4.16.0"
+    //easy permission
+    implementation "pub.devrel:easypermissions:3.0.0"
+    //sdp
+    implementation "com.intuit.sdp:sdp-android:1.1.1"
+    //ssp
+    implementation "com.intuit.ssp:ssp-android:1.1.0"
+    implementation 'com.google.code.gson:gson:2.11.0'
+
+    implementation 'com.google.android.play:review-ktx:2.0.2'
+    ///Billing 8.0
+    implementation 'com.android.billingclient:billing-ktx:8.0.0'
+    // Room components
+    implementation "androidx.room:room-ktx:$ROOM_VERSION"
+    ksp "androidx.room:room-compiler:$ROOM_VERSION"
+    androidTestImplementation "androidx.room:room-testing:$ROOM_VERSION"
+    //Material
+    implementation 'com.google.android.material:material:1.12.0'
+    //exo player
+    implementation "androidx.media3:media3-exoplayer:1.4.1"
+    implementation "androidx.media3:media3-exoplayer-dash:1.4.1"
+    implementation "androidx.media3:media3-ui:1.4.1"
+    implementation "androidx.media3:media3-session:1.4.1"
+    implementation "androidx.media3:media3-exoplayer-hls:1.4.1"
+
+
+
+    /// blurry
+    implementation 'jp.wasabeef:blurry:4.0.1'
+    //Indicator
+    implementation("com.tbuonomo:dotsindicator:4.3")
+    //Round corners image
+    implementation "com.makeramen:roundedimageview:2.3.0"
+
+    //file piker for subtitles
+    implementation 'commons-io:commons-io:2.13.0'
+    //equalizer
+    implementation 'com.diogobernardino:williamchart:2.2'
+    implementation 'com.h6ah4i.android.widget.verticalseekbar:verticalseekbar:0.7.0'
+
+    ///lottie
+    implementation 'com.airbnb.android:lottie:6.6.6'
+
+    //file picker
+    api 'com.github.hedzr:android-file-chooser:v1.2.0-final'
+
+    implementation 'com.linkedin.android.litr:litr:1.5.7'
+
+    //view_pager 2
+    implementation "androidx.viewpager2:viewpager2:1.1.0"
+
+    //for date time formatter
+    implementation 'org.threeten:threetenbp:1.4.0'
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.5'
+
+    //cast
+    implementation 'androidx.mediarouter:mediarouter:1.7.0'
+    implementation 'com.google.android.gms:play-services-cast-framework:22.1.0'
+
+    implementation "androidx.room:room-rxjava2:$ROOM_VERSION"
+    ksp "androidx.room:room-compiler:$ROOM_VERSION"
+
+    implementation 'com.github.f0ris.sweetalert:library:1.5.1'
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    api "com.squareup.okhttp3:okhttp:4.12.0"
+    ////Swipe to refresh
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+
+    //One Signal
+//    implementation 'com.onesignal:OneSignal:4.8.10'
+
+    //picasso
+    implementation 'com.squareup.picasso:picasso:2.71828'
+    //round progressbar
+    implementation 'com.akexorcist:round-corner-progress-bar:2.2.1'
+    implementation 'org.jsoup:jsoup:1.18.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3'
+    ksp("androidx.hilt:hilt-compiler:1.2.0")
+    implementation("androidx.hilt:hilt-work:1.2.0")
+
+//  import the Kotlin extensions library for Play Feature Delivery
+    implementation("com.google.android.play:feature-delivery-ktx:2.1.0")
+}
+
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'

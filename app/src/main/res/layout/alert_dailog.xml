@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/theme_background_white">
+
+    <ImageView
+        android:id="@+id/alertImage"
+        android:layout_width="@dimen/icon_size_private_detail"
+        android:layout_height="@dimen/icon_size_private_detail"
+        android:layout_marginVertical="@dimen/activity_vertical_margin_private_detail"
+        android:layout_marginBottom="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/alertMessage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/black"
+        tools:src="@drawable/ci_delete_p" />
+
+    <TextView
+        android:id="@+id/alertTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_vertical_margin_private_detail"
+        android:fontFamily="@font/montserrat_semibold"
+        android:textColor="@color/black"
+        android:textFontWeight="800"
+        android:textSize="@dimen/title_text_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/unlock" />
+
+    <TextView
+        android:id="@+id/alertMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_vertical_margin_private_detail"
+        android:fontFamily="@font/poppins_regular"
+        android:text="@string/do_you_want_to_delete_this"
+        android:textColor="@color/black"
+        android:textFontWeight="600"
+        app:layout_constraintEnd_toEndOf="@+id/alertTitle"
+        app:layout_constraintStart_toStartOf="@+id/alertTitle"
+        app:layout_constraintTop_toBottomOf="@+id/alertTitle"
+        tools:targetApi="p" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_vertical_margin_private_detail"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/activity_horizontal_margin_private_detail"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/alertMessage">
+
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_horizontal_margin_private_detail"
+            android:fontFamily="@font/poppins_regular"
+            android:layout_weight="1"
+            android:background="@drawable/button_dialog"
+            android:text="@string/cancel"
+            android:textColor="@color/gSelector"
+            app:strokeColor="@color/nonSelectedColor"
+            app:strokeWidth="2dp" />
+
+        <Button
+            android:id="@+id/btnOk"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_horizontal_margin_private_detail"
+            android:layout_weight="1"
+            android:fontFamily="@font/poppins_regular"
+
+            android:background="@drawable/button_dialog_color"
+            android:text="@string/ok"
+            android:textColor="@color/black"
+            app:cornerRadius="10dp" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

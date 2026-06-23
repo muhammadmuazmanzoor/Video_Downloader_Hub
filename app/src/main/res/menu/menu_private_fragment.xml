@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/privateIcon"
+        android:fontFamily="@font/montserrat_regular"
+        android:icon="@drawable/ic_private"
+        app:showAsAction="always"
+        android:title="@string/todo" />
+    <item
+        android:id="@+id/securitySettings"
+        android:fontFamily="@font/montserrat_regular"
+        android:title="@string/security_settings" />
+</menu>

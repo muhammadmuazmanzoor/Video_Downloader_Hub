@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_10sdp"
+        android:background="@color/white"
+        tools:context=".ui.allvideo.VideoOptionBottomSheetFragment">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:visibility="invisible"
+            android:id="@+id/cl_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.video.avd.utils.CustomImageView
+                android:id="@+id/thumbnail"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:src="@drawable/ic_video"/>
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/thumbnail"
+                app:layout_constraintTop_toTopOf="@id/thumbnail"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:text="Title of the video"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:textSize="14sp"
+                android:textColor="#121212"
+                android:fontFamily="@font/poppins_medium"/>
+
+            <TextView
+                android:id="@+id/tv_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/title"
+                app:layout_constraintTop_toBottomOf="@id/title"
+                android:text="21.15 MB"
+                android:textSize="12sp"
+                android:textColor="#A1A5A3"
+                android:fontFamily="@font/poppins_regular"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+      <ProgressBar
+          android:id="@+id/progress"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          app:layout_constraintTop_toTopOf="@id/cl_main"
+          app:layout_constraintBottom_toBottomOf="@id/cl_main"
+          app:layout_constraintStart_toStartOf="@id/cl_main"
+          app:layout_constraintEnd_toEndOf="@id/cl_main"
+          />
+
+        <TextView
+            android:id="@+id/tv_fetch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/progress"
+            app:layout_constraintStart_toStartOf="@id/progress"
+            app:layout_constraintEnd_toEndOf="@id/progress"
+            android:textSize="@dimen/_12sdp"
+            android:fontFamily="@font/poppins_regular"
+            android:textColor="#121212"
+            android:text="@string/fetching_details"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/qualities_rv"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@+id/cl_main"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:clipToPadding="false"
+            android:overScrollMode="never" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_download"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@drawable/bg_roundedview2"
+            app:layout_constraintTop_toBottomOf="@+id/qualities_rv">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_download_file"
+                app:layout_constraintEnd_toStartOf="@id/download"
+                android:layout_marginEnd="@dimen/_10sdp"
+                app:layout_constraintTop_toTopOf="@id/download"
+                app:layout_constraintBottom_toBottomOf="@id/download"
+                app:tint="#121212" />
+
+            <TextView
+                android:id="@+id/download"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="@dimen/_14sdp"
+                android:textColor="#121212"
+                android:text="@string/download"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

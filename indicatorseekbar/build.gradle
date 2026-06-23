@@ -1,0 +1,30 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.google.devtools.ksp' // ✅ Add this line
+
+android {
+    packagingOptions {
+        jniLibs {
+            useLegacyPackaging true
+        }
+    }
+    namespace 'com.github.warkiz.widget'
+    compileSdkVersion 35
+    buildToolsVersion '34.0.0'
+
+    defaultConfig {
+        minSdkVersion 28
+        targetSdkVersion 35
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation('androidx.appcompat:appcompat:1.6.1')
+}
+

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+
+        <TextView
+            android:id="@+id/tv_bookmark"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/bookmark_rename"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="Bookmark at 02:02"
+            android:textColor="@color/brand_text_primary"
+            android:textSize="@dimen/_12ssp"
+            android:fontFamily="@font/poppins_medium"/>
+
+        <TextView
+            android:id="@+id/tv_position"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_bookmark"
+            android:text="02:02"
+            android:textColor="@color/brand_text_primary"
+            android:textSize="@dimen/_11ssp"
+            android:fontFamily="@font/poppins_regular"
+            />
+
+        <ImageView
+            android:id="@+id/bookmark_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:src="@drawable/ic_bookmark_dg_delete"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:padding="@dimen/_5sdp"
+            />
+
+        <ImageView
+            android:id="@+id/bookmark_rename"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toStartOf="@id/bookmark_delete"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:src="@drawable/ic_bookmark_dg_edit"
+            android:padding="@dimen/_5sdp"
+            />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height=".2dp"
+            android:background="@color/white"
+            app:layout_constraintStart_toStartOf="@id/tv_bookmark"
+            app:layout_constraintEnd_toEndOf="@id/bookmark_delete"
+            app:layout_constraintTop_toBottomOf="@id/tv_position"
+            android:layout_marginTop="@dimen/_5sdp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

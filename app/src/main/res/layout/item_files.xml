@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:paddingVertical="@dimen/_10sdp"
+    android:background="@drawable/card_bg"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_marginHorizontal="@dimen/_4sdp"
+        >
+
+        <View
+            android:id="@+id/view_add"
+            android:layout_width="59dp"
+            android:layout_height="47dp"
+            android:layout_marginStart="@dimen/_11sdp"
+            android:background="@drawable/bg_rounded_view_transparent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="@dimen/_18sdp"
+            android:layout_height="@dimen/_18sdp"
+            android:src="@drawable/ic_videos"
+            app:tint="@color/gSelector_light"
+            app:layout_constraintStart_toStartOf="@id/view_add"
+            app:layout_constraintEnd_toEndOf="@id/view_add"
+            app:layout_constraintTop_toTopOf="@id/view_add"
+            app:layout_constraintBottom_toBottomOf="@id/view_add"
+           />
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            tools:text="InternalStorage"
+            android:textSize="12sp"
+            android:textColor="@color/brand_text_primary"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:fontFamily="@font/poppins_regular"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:maxLines="2"
+            android:ellipsize="end"
+            app:layout_constraintEnd_toStartOf="@id/menu"
+            app:layout_constraintStart_toEndOf="@id/view_add"
+            app:layout_constraintBottom_toBottomOf="@id/view_add"
+            app:layout_constraintTop_toTopOf="@id/view_add"
+           />
+
+        <ImageView
+            android:id="@+id/menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/view_add"
+            app:layout_constraintBottom_toBottomOf="@id/view_add"
+            android:src="@drawable/ic_menu"
+            app:tint="@color/brand_text_primary"
+            android:padding="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_5sdp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>

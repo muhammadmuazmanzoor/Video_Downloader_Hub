@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="productDetails"
+            type="com.video.avd.ui.inapp.new_.inapppurchases.CustomInAppModel" />
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="@dimen/_115sdp"
+        android:layout_height="@dimen/_115sdp"
+        android:onClick="@{clickListener}">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/itemLayout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintHeight_percent="0.93"
+            app:layout_constraintWidth_percent="0.9"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@drawable/background_selected_round_btn">
+
+            <TextView
+                android:id="@+id/planDurationText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{productDetails.durationPlan}"
+                tools:text="Annual"
+                android:fontFamily="@font/poppins_semibold"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.3" />
+
+            <TextView
+                android:id="@+id/discountedPriceText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="@{productDetails.getDiscountedAmount()}"
+                android:gravity="center_horizontal"
+                tools:text="Rs : 5000/week"
+                android:textSize="@dimen/_10ssp"
+                android:maxLines="2"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/planDurationText"
+                app:layout_constraintVertical_bias="0.4" />
+
+            <TextView
+                android:id="@+id/totalPriceText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_3sdp"
+                bindVisibility="@{productDetails.showDiscount}"
+                android:foreground="@drawable/striking_text"
+                android:text="@{productDetails.description}"
+                tools:text="Discounted price%"
+                android:fontFamily="@font/poppins_medium"
+                android:textColor="#FF6866"
+                android:textSize="@dimen/_9ssp"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/discountedPriceText"
+                app:layout_constraintVertical_bias="0.4" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                bindVisibility="@{productDetails.showHotOffer}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:src="@drawable/pro_hot_offer"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            bindVisibility="@{productDetails.showDiscount}"
+            android:text="@{productDetails.discountPercent}"
+            tools:text="50%"
+            android:fontFamily="@font/poppins_medium"
+            android:textColor="@color/brand_text_primary"
+            android:gravity="center"
+            android:paddingTop="@dimen/_2sdp"
+            android:paddingBottom="@dimen/_2sdp"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            android:background="@drawable/bg_gradient_custom"
+            android:textSize="@dimen/_8ssp"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

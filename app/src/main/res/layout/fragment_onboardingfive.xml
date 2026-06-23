@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.onboardingscreen.fragments.OnboardingfiveFragment">
+
+
+        <com.google.android.gms.ads.nativead.NativeAdView
+            android:id="@+id/adViewLayout5"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="@dimen/_5sdp"
+            android:background="#F5F5F5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.gms.ads.nativead.MediaView
+                    android:id="@+id/Ad_image5"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitXY"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/ad_notification_view5"
+                    android:layout_width="@dimen/_16sdp"
+                    android:layout_height="@dimen/_16sdp"
+                    android:layout_marginEnd="@dimen/_11sdp"
+                    android:background="@drawable/adsymbol_shape"
+                    android:gravity="center"
+                    android:text="Ad"
+                    android:textColor="@color/brand_text_primary"
+                    android:textSize="@dimen/_7ssp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/ad_body5"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/primary5" />
+
+
+                <TextView
+                    android:id="@+id/primary5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/poppins_regular"
+                    android:maxLines="1"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_11ssp"
+                    app:layout_constraintBottom_toTopOf="@+id/ad_body5"
+                    app:layout_constraintEnd_toStartOf="@id/ad_notification_view5"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+
+                <TextView
+                    android:id="@+id/ad_body5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/poppins_medium"
+                    android:maxLines="2"
+                    android:textColor="#A7A7A7"
+                    android:textSize="13sp"
+                    app:layout_constraintBottom_toTopOf="@+id/cta5"
+                    app:layout_constraintEnd_toEndOf="@+id/cta5"
+                    app:layout_constraintStart_toStartOf="@+id/primary5" />
+
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/cta5"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_43sdp"
+                    android:layout_margin="@dimen/_10sdp"
+                    android:background="@drawable/native_ad_button"
+                    android:fontFamily="@font/poppins_regular"
+                    android:gravity="center"
+                    android:padding="@dimen/_4sdp"
+                    android:textColor="@color/brand_text_primary"
+                    android:textSize="@dimen/_14ssp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.gms.ads.nativead.NativeAdView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ccroot"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+    android:background="@color/primary_bg"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_back"
+            app:tint="@color/brand_text_primary"
+            android:layout_margin="@dimen/_10sdp"
+            android:padding="@dimen/_5sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/startname"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="26dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="@string/internal_storage"
+            android:textColor="@color/brand_text_primary"
+            android:textSize="@dimen/_12ssp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/back"
+            app:layout_constraintStart_toEndOf="@+id/back"
+            app:layout_constraintTop_toTopOf="@+id/back" />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_dir"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@id/startname"
+            app:layout_constraintBottom_toBottomOf="parent"
+            >
+
+            <TextView
+                android:id="@+id/tv_favourite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginStart="@dimen/_15sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="Favourites"
+                android:textColor="@color/gSelector_light"
+                android:textSize="@dimen/_11ssp"
+                android:fontFamily="@font/poppins_regular"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_directories"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@id/cl_sort"
+                />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_sort"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tv_favourite"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:paddingVertical="@dimen/_3sdp"
+                android:backgroundTint="@color/card_stroke"
+                android:background="@drawable/bg_rounded_constraintlayout"
+                >
+
+                <TextView
+                    android:id="@+id/tv_sort"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sort by"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:fontFamily="@font/poppins_regular"
+                    android:textSize="12sp"
+                    android:textColor="@color/brand_text_primary"
+                    />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_down"
+                    app:layout_constraintTop_toTopOf="@id/tv_sort"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_sort"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    app:layout_constraintStart_toEndOf="@id/tv_sort"
+                    app:tint="@color/brand_text_primary"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_internal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/rv_directories"
+                android:visibility="gone"
+                >
+
+                <TextView
+                    android:id="@+id/tv_storage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text="Storages"
+                    android:textSize="@dimen/_11ssp"
+                    android:textColor="@color/gSelector"
+                    android:fontFamily="@font/poppins_regular"/>
+
+                <ImageView
+                    android:id="@+id/icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_11sdp"
+                    android:src="@drawable/ic_folders_new"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_storage"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Internal Storage"
+                    android:textSize="14sp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:textColor="@color/black"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:fontFamily="@font/poppins_medium"
+                    app:layout_constraintStart_toEndOf="@id/icon"
+                    app:layout_constraintBottom_toBottomOf="@id/icon"
+                    app:layout_constraintTop_toTopOf="@id/icon" />
+
+
+                <TextView
+                    android:id="@+id/tv_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_regular"
+                    android:textColor="@color/nonSelectedColor"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toStartOf="@+id/tv_name"
+                    app:layout_constraintTop_toBottomOf="@id/tv_name"
+                    android:text="Free 7.4 GB of 23.5 GB" />
+
+                <View
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height=".5dp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    app:layout_constraintTop_toBottomOf="@id/icon"
+                    android:background="@color/grey01"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <ProgressBar
+            android:id="@+id/loader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>

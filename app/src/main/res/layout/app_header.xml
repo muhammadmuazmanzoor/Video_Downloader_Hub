@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:background="@color/card_stroke"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ImageView
+        android:id="@+id/back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_back"
+        app:tint="@color/brand_text_primary"
+        android:layout_margin="16dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/startname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/montserrat_regular"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:text=""
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/back"
+        app:layout_constraintStart_toEndOf="@+id/back"
+        app:layout_constraintTop_toTopOf="@+id/back" />
+
+
+    <androidx.appcompat.widget.SearchView
+        android:visibility="gone"
+        android:id="@+id/searchView"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:focusable="true"
+        android:gravity="center"
+        style="@style/CustomSearchViewStyle"
+        android:focusableInTouchMode="true"
+        android:iconifiedByDefault="false"
+        app:searchIcon="@null"
+        app:searchHintIcon="@null"
+        android:textColorHint = "@color/gray_text"
+        app:closeIcon="@drawable/ic_close_searchview"
+        app:iconifiedByDefault="false"
+        app:queryHint="@string/search"
+        android:importantForAutofill="noExcludeDescendants"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/sortVideos"
+        app:layout_constraintStart_toEndOf="@+id/startname"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <ImageView
+        android:id="@+id/sortVideos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_sort"
+        app:tint="@color/brand_text_primary"
+        android:visibility="invisible"
+        app:layout_constraintTop_toTopOf="@+id/searchView"
+        app:layout_constraintBottom_toBottomOf="@+id/searchView"
+        app:layout_constraintEnd_toStartOf="@+id/gridImg"
+        android:layout_marginEnd="@dimen/_12sdp"
+        />
+
+    <ImageView
+        android:id="@+id/gridImg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_gridd"
+        android:layout_margin="16dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/brand_text_primary" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

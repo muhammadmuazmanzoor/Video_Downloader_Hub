@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:paddingVertical="@dimen/_10sdp"
+        android:layout_marginHorizontal="@dimen/_4sdp"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        >
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.55" />
+
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_11sdp"
+            android:src="@drawable/ic_folders_new"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+             />
+
+        <ImageView
+            android:visibility="gone"
+            android:id="@+id/fav_icon"
+            android:layout_width="@dimen/_16sdp"
+            android:layout_height="@dimen/_16sdp"
+            app:layout_constraintEnd_toEndOf="@id/icon"
+            app:layout_constraintBottom_toBottomOf="@id/icon"
+            tools:src="@drawable/ic_download_file"
+            android:layout_marginEnd="@dimen/_2sdp"
+            android:layout_marginBottom="@dimen/_2sdp"
+            app:tint="@color/black"/>
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            tools:text="InternalStorage"
+            android:textSize="14sp"
+            android:textColor="@color/brand_text_primary"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:fontFamily="@font/poppins_medium"
+            app:layout_constraintStart_toEndOf="@id/icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            app:layout_constraintTop_toTopOf="@id/icon"
+            app:layout_constraintBottom_toBottomOf="@id/icon"
+            android:layout_marginBottom="@dimen/_10sdp"
+           />
+
+
+        <TextView
+            android:id="@+id/tv_noOfFiles"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_regular"
+            android:textColor="@color/nonSelectedColor"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@+id/tv_name"
+            app:layout_constraintTop_toBottomOf="@id/tv_name"
+            android:layout_marginTop="@dimen/_1sdp"
+            tools:text="2" />
+
+        <ImageView
+            android:id="@+id/ic_dir"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/tv_noOfFiles"
+            app:layout_constraintTop_toBottomOf="@id/tv_name"
+            android:src="@drawable/ic_internal_storage_small"
+            android:layout_marginBottom="2dp"
+            app:tint="@color/nonSelectedColor"/>
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="@dimen/_1sdp"
+            android:layout_height="@dimen/_10sdp"
+            app:layout_constraintTop_toTopOf="@id/ic_dir"
+            app:layout_constraintBottom_toBottomOf="@id/ic_dir"
+            app:layout_constraintStart_toEndOf="@id/ic_dir"
+            android:layout_marginStart="@dimen/_3sdp"
+            android:background="@color/nonSelectedColor"/>
+
+        <TextView
+            android:id="@+id/tv_noOfVideos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_regular"
+            android:textColor="@color/nonSelectedColor"
+            android:textSize="12sp"
+            android:layout_marginStart="@dimen/_3sdp"
+            app:layout_constraintStart_toEndOf="@id/divider"
+            app:layout_constraintTop_toBottomOf="@id/tv_name"
+            android:layout_marginTop="@dimen/_1sdp"
+            tools:text="2 Videos" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>

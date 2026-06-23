@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="@dimen/_5sdp">
+
+    <LinearLayout
+        android:id="@+id/top"
+        android:layout_width="@dimen/_70sdp"
+        android:layout_height="@dimen/_98sdp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.rounded"
+            android:id="@+id/movie"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:contentDescription="Movie"
+            android:background="@drawable/goodshorts_thumb" />
+
+    </LinearLayout>
+    <com.google.android.material.imageview.ShapeableImageView
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Rounded"
+        android:id="@+id/movie_icon"
+        android:layout_width="@dimen/_18sdp"
+        android:layout_height="@dimen/_18sdp"
+        android:adjustViewBounds="true"
+        android:contentDescription="Movie"
+        app:layout_constraintTop_toTopOf="@+id/top"
+        app:layout_constraintEnd_toEndOf="@+id/top"
+        android:layout_marginTop="@dimen/_1sdp"
+        android:layout_marginEnd="@dimen/_2sdp"
+        android:src="@drawable/good_short_icon" />
+    <TextView
+        android:id="@+id/movie_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxWidth="65dp"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@+id/top"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:fontFamily="@font/poppins_regular"
+        android:textColor="@color/brand_text_primary"
+        android:paddingTop="4dp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:text="123Movies"
+        android:textSize="@dimen/_9ssp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

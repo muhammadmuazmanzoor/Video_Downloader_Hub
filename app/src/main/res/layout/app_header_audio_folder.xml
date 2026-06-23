@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/transparency">
+
+    <ImageView
+        android:id="@+id/back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_back"
+        app:tint="@color/brand_text_primary"
+        android:layout_margin="16dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/startname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/montserrat_regular"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/back"
+        app:layout_constraintStart_toEndOf="@+id/back"
+        app:layout_constraintTop_toTopOf="@+id/back" />
+
+<!--    <ImageView-->
+<!--        android:id="@+id/search"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:src="@drawable/ic_search"-->
+<!--        app:tint="@color/black"-->
+<!--        android:visibility="gone"-->
+<!--        android:layout_marginEnd="24dp" />-->
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/audioFoldersSongssearchView"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/_40sdp"
+        android:backgroundTint="@color/gSelector_light"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:iconifiedByDefault="false"
+        android:queryHint="Search..."
+        android:textColor="@color/brand_text_primary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/sortVideos"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/sortVideos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/sort_videos"
+        android:visibility="visible"
+        app:tint="@color/brand_text_primary"
+        app:layout_constraintTop_toTopOf="@+id/audioFoldersSongssearchView"
+        app:layout_constraintBottom_toBottomOf="@+id/audioFoldersSongssearchView"
+        app:layout_constraintEnd_toStartOf="@+id/gridImg"
+        android:layout_marginEnd="@dimen/_12sdp"
+        />
+
+    <ImageView
+        android:id="@+id/gridImg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_gridd"
+        android:layout_margin="16dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/black" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

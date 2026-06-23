@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/brand_background"
+        tools:context="com.video.avd.com.myAllVideoBrowser.ui.main.downloder_queue.ui.main.FragmentDownloadQueue">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/actionbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            ads:layout_constraintHeight_percent="0.08"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/wa_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginVertical="24dp"
+                android:layout_marginStart="16dp"
+                android:padding="10dp"
+                android:visibility="gone"
+                android:src="@drawable/ic_back"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/brand_text_primary" />
+
+            <TextView
+                android:id="@+id/tvName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="@string/downloads"
+                android:textColor="@color/brand_text_primary"
+                android:textSize="17sp"
+                app:layout_constraintBottom_toBottomOf="@+id/wa_back"
+                app:layout_constraintStart_toEndOf="@+id/wa_back"
+                app:layout_constraintTop_toTopOf="@+id/wa_back" />
+
+            <ImageView
+                android:id="@+id/imgDownloads"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:visibility="gone"
+                android:layout_marginEnd="10dp"
+                android:paddingHorizontal="10dp"
+                android:src="@drawable/dots_vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/brand_text_primary" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/download_list_tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/actionbar"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginVertical="8dp"
+            android:background="@drawable/tab_background"
+            app:tabBackground="@drawable/tab_selector"
+            app:tabGravity="fill"
+            app:tabIndicator="@null"
+            app:tabMode="fixed"
+            app:tabRippleColor="@null" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/download_list_viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/download_list_tabs"
+            android:layout_marginTop="0dp" />
+
+
+    </RelativeLayout>
+</layout>

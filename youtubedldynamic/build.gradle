@@ -1,0 +1,52 @@
+plugins {
+    id 'com.android.dynamic-feature'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'com.google.devtools.ksp' // ✅ Add this for KSP support
+}
+android {
+    namespace 'com.example.ammar.youtubedldynamic'
+    compileSdk 34
+    packagingOptions {
+        jniLibs {
+            useLegacyPackaging true
+        }
+    }
+    defaultConfig {
+        minSdk 28
+        compileSdk 35
+        defaultConfig {
+            minSdk 28
+            targetSdk = 35
+            testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        }
+        compileOptions {
+            sourceCompatibility = JavaVersion.VERSION_1_8
+            targetCompatibility = JavaVersion.VERSION_1_8
+        }
+        kotlinOptions {
+            jvmTarget = "1.8"
+        }
+
+        splits {
+            abi {
+                enable true
+                reset()
+                include 'armeabi-v7a', 'arm64-v8a'
+                universalApk false
+            }
+        }
+    }
+
+    dependencies {
+        implementation project(":app")
+        implementation 'androidx.core:core-ktx:1.13.1'
+        testImplementation 'junit:junit:4.13.2'
+        androidTestImplementation 'androidx.test.ext:junit:1.2.1'
+        androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
+        implementation("io.github.junkfood02.youtubedl-android:library:0.18.1")
+        implementation("io.github.junkfood02.youtubedl-android:ffmpeg:0.18.1")
+        implementation("io.github.junkfood02.youtubedl-android:aria2c:0.18.1")
+    }
+
+}

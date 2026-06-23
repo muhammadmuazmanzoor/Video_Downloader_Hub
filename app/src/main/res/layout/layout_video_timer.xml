@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/timer_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:alpha="0.9"
+        android:background="@drawable/bg_playback_bottom_view"
+        android:backgroundTint="@color/black"
+        android:paddingTop="@dimen/_20sdp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/ic_timer_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:padding="@dimen/_8sdp"
+            android:src="@drawable/ic_back_white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:fontFamily="@font/montserrat_regular"
+            android:text="@string/sleep_timer"
+            android:textColor="@color/brand_text_primary"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@id/ic_timer_back"
+            app:layout_constraintStart_toEndOf="@id/ic_timer_back"
+            app:layout_constraintTop_toTopOf="@id/ic_timer_back" />
+
+        <TextView
+            android:id="@+id/tv_timer_off"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@drawable/bg_rounded_textview_selected"
+            android:fontFamily="@font/urbanist"
+            android:gravity="center"
+            android:text="@string/off"
+            android:textColor="@color/brand_text_primary"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ic_timer_back" />
+
+        <TextView
+            android:id="@+id/tv_timer_10mnt"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@drawable/bg_rounded_textview"
+            android:fontFamily="@font/urbanist"
+            android:gravity="center"
+            android:text="@string/_10_mins"
+            android:textColor="@color/brand_text_primary"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_timer_off" />
+
+        <TextView
+            android:id="@+id/tv_timer_30mnt"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@drawable/bg_rounded_textview"
+            android:fontFamily="@font/urbanist"
+            android:gravity="center"
+            android:text="@string/_30_mins"
+            android:textColor="@color/brand_text_primary"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_timer_10mnt" />
+
+        <TextView
+            android:id="@+id/tv_timer_60mnt"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@drawable/bg_rounded_textview"
+            android:fontFamily="@font/urbanist"
+            android:gravity="center"
+            android:text="@string/_60_mins"
+            android:textColor="@color/brand_text_primary"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_timer_30mnt" />
+
+        <TextView
+            android:id="@+id/tv_timer_to_end"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@drawable/bg_rounded_textview"
+            android:fontFamily="@font/urbanist"
+            android:gravity="center"
+            android:text="@string/to_end"
+            android:textColor="@color/brand_text_primary"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_timer_60mnt" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_10sdp"
+            app:layout_constraintTop_toBottomOf="@id/tv_timer_to_end" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

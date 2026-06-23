@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/constriantlayout"
+    android:background="@drawable/card_bg"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="@dimen/_50sdp"
+        android:layout_margin="@dimen/_5sdp"
+        android:src="@drawable/roundbg_bookmark"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/icon_image"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/icon"
+        app:layout_constraintEnd_toEndOf="@+id/icon"
+        app:layout_constraintStart_toStartOf="@+id/icon"
+        app:layout_constraintTop_toTopOf="@+id/icon" />
+
+    <TextView
+        android:id="@+id/bookmark_text_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_16sdp"
+        android:layout_marginEnd="@dimen/_17sdp"
+        android:ellipsize="end"
+        android:fontFamily="@font/poppins_medium"
+        android:maxLines="1"
+        android:textColor="@color/brand_text_primary"
+        android:textSize="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_9sdp"
+        app:layout_constraintBottom_toBottomOf="@+id/icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/icon"
+        app:layout_constraintTop_toTopOf="@+id/icon" />
+
+    <TextView
+        android:id="@+id/url_text_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:fontFamily="@font/poppins_regular"
+        android:maxLines="1"
+        android:textSize="@dimen/_7sdp"
+        android:textColor="@color/gray_text"
+        app:layout_constraintEnd_toEndOf="@+id/bookmark_text_view"
+        app:layout_constraintStart_toStartOf="@+id/bookmark_text_view"
+        app:layout_constraintTop_toBottomOf="@+id/bookmark_text_view" />
+
+    <ImageView
+        android:id="@+id/imgSetting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_menu"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/bookmark_text_view"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/black" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_margin="@dimen/_5sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/icon" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

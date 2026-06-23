@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="viewModel"
+            type="com.avd.ui.main.progress.ProgressViewModel" />
+        <variable
+            name="adapter"
+            type="com.avd.ui.component.adapter.ProgressAdapter" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/brand_background">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/howToDownload"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintWidth_percent="0.9"
+                app:drawableLeftCompat="@drawable/ic_question"
+                app:drawableTint="@color/brand_text_primary"
+                app:layout_constraintTop_toTopOf="parent"
+                android:fontFamily="@font/poppins_regular"
+                android:background="@drawable/how_to_stroke"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:paddingVertical="@dimen/_10sdp"
+                android:visibility="gone"
+                android:paddingStart="@dimen/_9sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_10ssp"
+                android:drawableTint="@color/gSelector_light"
+                android:drawablePadding="@dimen/_7sdp"
+                android:text="@string/how_to_use" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/howToDownload"
+            android:layout_marginTop="@dimen/_1sdp"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:id="@+id/progress_native_ad_container"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_gravity="top|center"
+                android:background="@android:color/transparent"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_progress"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:items="@{viewModel.progressInfos}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/progress_native_ad_container" />
+
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_empty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/padding_large"
+            android:visibility="@{viewModel.progressInfos.size() == 0 ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/iv_empty_icon"
+                android:layout_width="@dimen/_80sdp"
+                android:layout_height="@dimen/_80sdp"
+                android:layout_marginBottom="@dimen/padding_normal"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/empty_downloads"
+                app:layout_constraintBottom_toTopOf="@id/tv_empty_text"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearanceOverlay="@style/customImageViewRounded" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_empty_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No active downloads"
+                android:fontFamily="@font/poppins_medium"
+                android:textColor="@color/brand_text_primary"
+                android:textSize="@dimen/text_large"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_empty_icon" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <FrameLayout
+            android:id="@+id/anchor"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

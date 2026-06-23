@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/main"
+    android:background="@color/brand_background">
+
+    <View
+        android:id="@+id/view6"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/logo"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:layout_constraintBottom_toTopOf="@+id/desc"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:srcCompat="@drawable/app_icon" />
+
+
+    <TextView
+        android:id="@+id/desc"
+        android:layout_width="0dp"
+        app:layout_constraintWidth_percent="0.6"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_7sdp"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="@string/app_name"
+        android:textColor="@color/brand_text_primary"
+        android:textSize="@dimen/_15ssp"
+        android:gravity="center"
+        app:layout_constraintBottom_toTopOf="@+id/progressBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logo" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        app:layout_constraintWidth_percent="0.45"
+        android:layout_height="20dp"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="@dimen/_30sdp"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/gSelector"
+        app:layout_constraintBottom_toTopOf="@+id/adText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/adText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_regular"
+        android:text="@string/this_action_can_contain_ads"
+        android:textColor="@color/brand_text_primary"
+        android:textSize="14sp"
+        android:textStyle="normal"
+        android:visibility="gone"
+        android:layout_marginBottom="@dimen/_15sdp"
+        app:layout_constraintBottom_toTopOf="@+id/splashAdContainer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <FrameLayout
+        android:id="@+id/splashAdContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="55dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+    </FrameLayout>
+
+
+    <FrameLayout
+        android:id="@+id/flFullScreenAd"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F0E1E1E2"
+        android:visibility="gone">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="@dimen/_10sdp">
+
+            <include
+                android:id="@+id/shimmer_container_native_full"
+                layout="@layout/layout_loading_native_fullscreen" />
+
+            <FrameLayout
+                android:id="@+id/nativeAdViewFull"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </FrameLayout>
+
+    </FrameLayout>
+
+
+    <FrameLayout
+        android:id="@+id/globalLoader"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/primary_bg"
+        android:elevation="100dp"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical"
+            tools:ignore="UseCompoundDrawables,UselessParent">
+
+            <ImageView
+                android:id="@+id/progressImage"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_gravity="center"
+                app:tint="@color/brand_text_primary"
+                android:src="@drawable/outline_progress" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="Ads Loading"
+                android:textColor="@color/brand_text_primary"
+                android:textSize="@dimen/_15ssp" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/fl_no_ad"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/primary_bg"
+        android:visibility="gone">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/iv_no_net"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/network"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/no_internet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_16sdp"
+                android:fontFamily="@font/poppins_medium"
+                android:gravity="center"
+                android:text="@string/no_internet_connection"
+                android:textColor="@color/gray_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_no_net" />
+
+            <TextView
+                android:id="@+id/check_connection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_16sdp"
+                android:fontFamily="@font/poppins_medium"
+                android:gravity="center"
+                android:text="@string/please_turn_your_internet_on"
+                android:textColor="@color/gray_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/no_internet" />
+
+
+            <TextView
+                android:id="@+id/btnTryAgain"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_16sdp"
+                android:layout_marginBottom="@dimen/_24sdp"
+                android:background="@drawable/card_bg"
+                android:backgroundTint="@color/gSelector_light"
+                android:fontFamily="@font/poppins_semibold"
+                android:gravity="center"
+                android:paddingVertical="@dimen/_12sdp"
+                android:text="@string/try_again"
+                android:textColor="@color/brand_text_primary"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

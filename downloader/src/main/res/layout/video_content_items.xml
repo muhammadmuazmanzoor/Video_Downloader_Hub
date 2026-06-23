@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="97dp"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="@dimen/_62sdp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/_10sdp"
+        android:paddingTop="@dimen/_7sdp"
+        android:paddingBottom="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:background="@drawable/card_bg"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/movie"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:contentDescription="Movie"
+            android:src="@drawable/movie_123" />
+
+        <TextView
+            android:id="@+id/movie_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxWidth="65dp"
+            android:gravity="center"
+            android:fontFamily="@font/poppins_regular"
+            android:textColor="@color/brand_text_primary"
+            android:paddingTop="4dp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:text="123Movies"
+            android:textSize="@dimen/_9ssp" />
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

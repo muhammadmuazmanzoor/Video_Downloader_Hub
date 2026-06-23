@@ -1,0 +1,19 @@
+[33mfaec150[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mdev_saleemNew[m[33m, [m[1;31morigin/dev_saleemNew[m[33m, [m[1;31morigin/dev_saleem[m[33m, [m[1;32mdev_saleem[m[33m)[m HEAD@{0}: rebase (finish): returning to refs/heads/dev_saleemNew
+[33mfaec150[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mdev_saleemNew[m[33m, [m[1;31morigin/dev_saleemNew[m[33m, [m[1;31morigin/dev_saleem[m[33m, [m[1;32mdev_saleem[m[33m)[m HEAD@{1}: rebase (start): checkout faec150cc97b2eb707287020a210cb694212ebdb
+[33m1169769[m HEAD@{2}: rebase (finish): returning to refs/heads/dev_saleemNew
+[33m1169769[m HEAD@{3}: rebase (start): checkout 116976910079b3146fedea9721ac8cc6aadf0346
+[33m61da859[m HEAD@{4}: rebase (finish): returning to refs/heads/dev_saleemNew
+[33m61da859[m HEAD@{5}: rebase (start): checkout 61da859961646ff793502b51380d138362e052c0
+[33m85a81b7[m HEAD@{6}: rebase (finish): returning to refs/heads/dev_saleemNew
+[33m85a81b7[m HEAD@{7}: rebase (start): checkout 85a81b7c2073b9e3d6927aef750cf00462c0f37f
+[33m98936fe[m HEAD@{8}: rebase (finish): returning to refs/heads/dev_saleemNew
+[33m98936fe[m HEAD@{9}: rebase (start): checkout 98936fe3693535e221235b9dc80594c66c4b693a
+[33m7026510[m HEAD@{10}: commit: Ignore build files
+[33m98936fe[m HEAD@{11}: commit: New Ads module Added
+[33m85a81b7[m HEAD@{12}: commit: New Ads module Added
+[33m61da859[m HEAD@{13}: commit: New Ads module Added
+[33m1169769[m HEAD@{14}: commit: New Ads module Added
+[33mfaec150[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mdev_saleemNew[m[33m, [m[1;31morigin/dev_saleemNew[m[33m, [m[1;31morigin/dev_saleem[m[33m, [m[1;32mdev_saleem[m[33m)[m HEAD@{15}: checkout: moving from dev_saleem to dev_saleemNew
+[33mfaec150[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mdev_saleemNew[m[33m, [m[1;31morigin/dev_saleemNew[m[33m, [m[1;31morigin/dev_saleem[m[33m, [m[1;32mdev_saleem[m[33m)[m HEAD@{16}: commit: Fix issues
+[33mb70a94e[m HEAD@{17}: checkout: moving from master to dev_saleem
+[33mfe33431[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmaster[m[33m)[m HEAD@{18}: clone: from https://github.com/Xilliapps1/All-Video-Downloader.git

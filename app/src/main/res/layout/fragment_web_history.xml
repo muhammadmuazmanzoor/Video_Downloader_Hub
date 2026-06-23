@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.08"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/wa_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginVertical="24dp"
+            android:layout_marginStart="16dp"
+            android:padding="10dp"
+            android:src="@drawable/ic_back"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/black" />
+
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="@string/history"
+            android:textColor="@color/black"
+            android:textSize="17sp"
+            app:layout_constraintBottom_toBottomOf="@+id/wa_back"
+            app:layout_constraintStart_toEndOf="@+id/wa_back"
+            app:layout_constraintTop_toTopOf="@+id/wa_back" />
+
+
+        <ImageView
+            android:id="@+id/delete_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_delete_history_web"
+            android:layout_margin="@dimen/_10sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/history_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/_16sdp"
+        android:layout_marginEnd="@dimen/_16sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/actionbar" />
+
+
+    <ImageView
+        android:id="@+id/no_bookmark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_no_bookmark"
+        android:visibility="gone"
+        android:layout_marginBottom="@dimen/_150sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/actionbar" />
+
+
+    <TextView
+        android:id="@+id/text_no_bookmark"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="@string/no_history_found"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:visibility="gone"
+        android:textSize="17sp"
+        app:layout_constraintEnd_toEndOf="@+id/no_bookmark"
+        app:layout_constraintStart_toStartOf="@+id/no_bookmark"
+        app:layout_constraintTop_toBottomOf="@+id/no_bookmark" />
+
+    <TextView
+        android:id="@+id/text2_no_bookmark"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_semibold"
+        android:gravity="center"
+        android:text="@string/you_have"
+        android:textColor="@color/black"
+        android:layout_marginStart="@dimen/_50sdp"
+        android:layout_marginEnd="@dimen/_50sdp"
+        android:visibility="gone"
+        android:textSize="17sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_no_bookmark" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

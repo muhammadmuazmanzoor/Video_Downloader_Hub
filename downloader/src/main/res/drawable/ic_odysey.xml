@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="40dp"
+    android:height="40dp"
+    android:viewportWidth="40"
+    android:viewportHeight="40">
+    <group>
+        <!-- Background Rectangle with Rounded Corners -->
+        <path
+            android:pathData="M35,0H5C2.243,0 0,2.243 0,5V35C0,37.757 2.243,40 5,40H35C37.757,40 40,37.757 40,35V5C40,2.243 37.757,0 35,0Z"
+            android:fillColor="#F70F8F" />
+
+        <!-- Odysee Icon - Abstract Wave Shape -->
+        <path
+            android:pathData="M20,15c5,0 10,5 10,10s-5,10 -10,10c-4,0 -8,-2 -9.5,-6.5c-1.5,-4.5 1.5,-9 6.5,-10c2.5,-0.5 4.5,1.5 5,3.5c0.5,2.5 -1,5 -3.5,5.5c-1.5,0.3 -3,-0.5 -3.5,-2c-0.5,-1.2 0.2,-2.8 1.5,-3c1,-0.2 2,0.5 2.5,1.5"
+            android:strokeColor="#FFFFFF"
+            android:strokeWidth="2" />
+    </group>
+</vector>

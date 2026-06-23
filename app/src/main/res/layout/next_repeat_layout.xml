@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <TextView
+            android:id="@+id/tvHeading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Up Next in 7"
+            android:fontFamily="@font/poppins_medium"
+            android:textSize="@dimen/_12ssp"
+            android:textColor="@color/video_cutter_video_generating_color"
+            android:layout_marginStart="@dimen/_12sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.video.avd.utils.CustomImageView
+            android:id="@+id/imageView"
+            android:layout_width="@dimen/_150sdp"
+            android:layout_height="@dimen/_90sdp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY"
+            app:layout_constraintStart_toStartOf="@+id/tvHeading"
+            app:layout_constraintTop_toBottomOf="@+id/tvHeading" />
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_7sdp"
+            android:ems="8"
+            android:maxLines="2"
+            android:layout_marginEnd="@dimen/_2sdp"
+            android:text="TextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageView"
+            app:layout_constraintTop_toTopOf="@+id/imageView" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/tvReplay"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_19sdp"
+            android:background="@drawable/replay_btn_bg"
+            app:layout_constraintEnd_toStartOf="@+id/tvNext"
+            android:layout_marginEnd="@dimen/_4sdp"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="@+id/imageView"
+            app:layout_constraintTop_toBottomOf="@+id/imageView">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/replay"
+                android:drawablePadding="@dimen/_8sdp"
+                android:fontFamily="@font/poppins_medium"
+                android:paddingVertical="@dimen/_10sdp"
+                android:text="Replay"
+                android:textColor="@color/brand_text_primary"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/tvNext"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_12sdp"
+            android:layout_marginStart="@dimen/_4sdp"
+            android:background="@drawable/next_btn_bg"
+            app:layout_constraintBottom_toBottomOf="@+id/tvReplay"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tvReplay"
+            app:layout_constraintTop_toTopOf="@+id/tvReplay">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/next"
+                android:drawablePadding="@dimen/_8sdp"
+                android:fontFamily="@font/poppins_medium"
+                android:paddingVertical="@dimen/_10sdp"
+                android:text="Next"
+                android:textColor="@color/brand_text_primary"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

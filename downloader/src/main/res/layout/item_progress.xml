@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="progressInfo"
+            type="com.avd.data.local.room.entity.ProgressInfo" />
+
+        <variable
+            name="downloadId"
+            type="Long" />
+
+
+        <variable
+            name="isRegular"
+            type="Boolean" />
+
+        <variable
+            name="progressListener"
+            type="com.avd.ui.component.adapter.ProgressListener" />
+
+    </data>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/itemTest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginEnd="6dp"
+            android:background="@drawable/card_bg">
+
+                <RelativeLayout
+                    android:id="@+id/relativeLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.avd.util.CustomImageView
+                        android:id="@+id/iv_thumbnail"
+                        android:layout_width="@dimen/_85sdp"
+                        android:layout_height="@dimen/_55sdp"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerInParent="true"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:background="#00000000"
+                        android:contentDescription="@string/pause"
+                        android:padding="3dp" />
+
+                    <LinearLayout
+                        android:id="@+id/info"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_margin="16dp"
+                        android:layout_toStartOf="@id/ip_more"
+                        android:layout_toEndOf="@id/iv_thumbnail"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/tv_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="26dp"
+                            android:ellipsize="end"
+                            android:textColor="@color/brand_text_primary"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            android:text="@{progressInfo.videoInfo.name}"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+                        <TextView
+                            android:id="@+id/tv_progress"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:ellipsize="end"
+                            android:gravity="center_vertical"
+                            android:textColor="@color/gray_2.1"
+                            android:maxLines="2"
+                            android:text="@{progressInfo.progressSize}" />
+                    </LinearLayout>
+                    <ProgressBar
+                        android:id="@+id/progress_bar"
+                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:layout_below="@+id/iv_thumbnail"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:layout_marginBottom="@dimen/_5sdp"
+                        android:progressBackgroundTint="@color/gray_text"
+                        android:progressTint="@color/gSelector_light"
+                        android:max="100"
+                        android:progress="@{progressInfo.progress}" />
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/ip_more"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerInParent="true"
+                        android:layout_marginEnd="12dp"
+                        app:tint="@color/brand_text_primary"
+                        android:layout_marginBottom="8dp"
+                        android:contentDescription="@string/cancel"
+                        android:onClick="@{(view) -> progressListener.onMenuClicked(view, downloadId, isRegular)}"
+                        app:srcCompat="@drawable/ic_menu" />
+
+                </RelativeLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

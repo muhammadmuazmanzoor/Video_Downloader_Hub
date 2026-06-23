@@ -1,0 +1,26 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="40dp"
+    android:height="40dp"
+    android:viewportWidth="40"
+    android:viewportHeight="40">
+
+  <!-- Background Square with Rounded Corners -->
+  <path
+      android:pathData="M4,0h32a4,4 0,0 1,4 4v32a4,4 0,0 1,-4 4h-32a4,4 0,0 1,-4 -4v-32a4,4 0,0 1,4 -4z"
+      android:fillColor="#C7E8FF" />
+
+  <!-- Top Dot -->
+  <path
+      android:pathData="M20,13m-2,0a2,2 0,1 1,4 0a2,2 0,1 1,-4 0"
+      android:fillColor="#0077B5" />
+
+  <!-- Middle Dot -->
+  <path
+      android:pathData="M20,20m-2,0a2,2 0,1 1,4 0a2,2 0,1 1,-4 0"
+      android:fillColor="#0077B5" />
+
+  <!-- Bottom Dot -->
+  <path
+      android:pathData="M20,27m-2,0a2,2 0,1 1,4 0a2,2 0,1 1,-4 0"
+      android:fillColor="#0077B5" />
+</vector>

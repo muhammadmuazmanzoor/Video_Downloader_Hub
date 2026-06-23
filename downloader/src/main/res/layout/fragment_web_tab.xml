@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View" />
+        <import type="com.avd.R" />
+        <variable
+            name="viewModel"
+            type="com.avd.ui.main.home.browser.webTab.WebTabViewModel" />
+        <variable
+            name="videoTabVModel"
+            type="com.avd.ui.main.home.browser.detectedVideos.IVideoDetector" />
+        <variable
+            name="browserMenuListener"
+            type="com.avd.ui.main.home.browser.BrowserListener" />
+        <variable
+            name="settingsViewModel"
+            type="com.avd.ui.main.settings.SettingsViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/primary_bg"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:id="@+id/customView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/containerBrowser"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/constraintLayout4"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/back"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:padding="1dp"
+                android:onClick="@{() -> browserMenuListener.onBrowserHomeClicked()}"
+                app:layout_constraintBottom_toBottomOf="@+id/topBar"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/topBar"
+                app:tint="@color/brand_text_primary"
+                app:srcCompat="@drawable/home_svg" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/topBar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="3dp"
+                android:paddingVertical="8dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/round_corner_search"
+                app:layout_constraintEnd_toStartOf="@id/tab_count"
+                android:layout_marginTop="5dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/back">
+
+                <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                    android:id="@+id/search"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:background="@null"
+                    android:fontFamily="@font/poppins_regular"
+                    android:focusable="@{viewModel.isTabInputFocused}"
+                    android:focusableInTouchMode="@{viewModel.isTabInputFocused}"
+                    android:onClick="@{() -> viewModel.changeTabFocus(true)}"
+                    android:text="@{viewModel.getTabTextInput()}"
+                    app:items="@{viewModel.listTabSuggestions}"
+                    android:importantForAutofill="noExcludeDescendants"
+                    android:scrollHorizontally="true"
+                    android:singleLine="true"
+                    android:textColor="@color/brand_text_primary"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/tab_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_tab_icon"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:padding="5dp"
+                app:tint="@color/brand_text_primary"
+                app:layout_constraintBottom_toBottomOf="@+id/topBar"
+                app:layout_constraintTop_toTopOf="@+id/topBar"
+                app:layout_constraintStart_toEndOf="@+id/topBar"
+                app:layout_constraintEnd_toStartOf="@+id/imgSetting"/>
+
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imgSetting"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_margin="5dp"
+                android:onClick="@{() -> browserMenuListener.onBrowserMenuClicked()}"
+                android:src="@drawable/ic_menu"
+                app:tint="@color/brand_text_primary"
+                app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tab_count"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="4dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/topBar">
+
+                <LinearLayout
+                    android:id="@+id/webview_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/progressBar" />
+
+                <FrameLayout
+                    android:id="@+id/fullscreen_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone" />
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/browser_progress_size"
+                    android:background="@android:color/transparent"
+                    android:progress="@{viewModel.progress}"
+                    android:progressDrawable="@drawable/progress_load_data"
+                    android:visibility="@{viewModel.isShowProgress ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.avd.ui.component.widget.MovableContainer
+                android:id="@+id/floating_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:clickable="true"
+                android:focusable="true"
+                android:focusedByDefault="false"
+                android:foregroundGravity="center"
+                android:translationZ="20dp"
+                android:visibility="@{settingsViewModel.getVideoButtonState() ? View.VISIBLE : View.GONE}"
+                app:layout_anchorGravity="center"
+                app:layout_constraintBottom_toBottomOf="@+id/containerBrowser"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/fab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/padding_large"
+                    android:backgroundTint="@color/colorGreendark"
+                    android:contentDescription="@string/open_download_dialog_or_restart"
+                    android:onClick="@{() -> videoTabVModel.showVideoInfo()}"
+                    android:src="@{videoTabVModel.getDownloadBtnIcon()}"
+                    app:borderWidth="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:ignore="ContentDescription" />
+
+                <ImageView
+                    android:id="@+id/loadingWavy"
+                    android:layout_width="57dp"
+                    android:layout_height="57dp"
+                    android:layout_margin="@dimen/padding_large"
+                    android:layout_marginEnd="6dp"
+                    android:background="@drawable/round_corner"
+                    android:contentDescription="@string/loading_image_view"
+                    android:focusable="false"
+                    android:translationZ="@dimen/padding_small"
+                    android:visibility="@{videoTabVModel.getDownloadBtnIcon() == R.drawable.invisible_24px ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintBottom_toBottomOf="@+id/fab"
+                    app:layout_constraintEnd_toEndOf="@+id/fab"
+                    app:layout_constraintStart_toStartOf="@+id/fab"
+                    app:layout_constraintTop_toTopOf="@+id/fab" />
+
+            </com.avd.ui.component.widget.MovableContainer>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout4"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:background="@color/card_bg"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/back3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="10dp"
+                android:onClick="@{() -> browserMenuListener.onBrowserBackClicked()}"
+                android:src="@drawable/ic_back_web"
+                app:tint="@color/brand_text_primary"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/forward"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/forward"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="10dp"
+                android:onClick="@{() -> browserMenuListener.onBrowserForwardClicked()}"
+                android:src="@drawable/ic_forward_web"
+                android:visibility="visible"
+                android:tint="@color/gray"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/refresh"
+                app:layout_constraintStart_toEndOf="@+id/back3"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/refresh"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="10dp"
+                android:onClick="@{() -> viewModel.isShowProgress() ? browserMenuListener.onBrowserStopClicked() : browserMenuListener.onBrowserReloadClicked()}"
+                android:src="@drawable/ic_refresh"
+                android:visibility="visible"
+                app:tint="@color/brand_text_primary"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/forward"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

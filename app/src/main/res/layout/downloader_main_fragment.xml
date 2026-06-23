@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:app1="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/actionbar"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            ads:layout_constraintHeight_percent="0.08"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/wa_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginVertical="24dp"
+                android:layout_marginStart="16dp"
+                android:padding="10dp"
+                android:src="@drawable/ic_back"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/black" />
+
+            <TextView
+                android:id="@+id/tvName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="@string/download"
+                android:textColor="@color/black"
+                android:textSize="17sp"
+                app:layout_constraintBottom_toBottomOf="@+id/wa_back"
+                app:layout_constraintStart_toEndOf="@+id/wa_back"
+                app:layout_constraintTop_toTopOf="@+id/wa_back" />
+
+
+            <ImageView
+                android:id="@+id/imgDownloads"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginEnd="10dp"
+                android:paddingHorizontal="10dp"
+                android:src="@drawable/ic_download_file_n"
+                app1:tint="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imgGuidance"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:paddingHorizontal="10dp"
+                android:src="@drawable/ic_help"
+                app1:tint="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/imgDownloads"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <EditText
+            android:id="@+id/web"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:background="@drawable/bg_rounded_edittext"
+            android:backgroundTint="@color/transparent"
+            android:drawableStart="@drawable/ic_search"
+            android:fontFamily="@font/poppins_regular"
+            ads:layout_constraintHeight_percent="0.07"
+            android:hint=" Network stream, Youtube,Video, Music"
+            android:importantForAutofill="noExcludeDescendants"
+            android:inputType="text"
+            android:paddingHorizontal="5dp"
+            android:paddingVertical="10dp"
+            android:paddingStart="@dimen/_10sdp"
+            android:textColorHint="@color/nonSelectedColor"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/actionbar"
+            tools:targetApi="lollipop" />
+
+        <ImageButton
+            android:id="@+id/go"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"
+            android:padding="5dp"
+            android:src="@drawable/ic_arrow_left"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/web"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/menuButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_menu"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/homeSites"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:fadeScrollbars="false"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:scrollbarStyle="outsideInset"
+            android:scrollbars="vertical"
+            android:verticalScrollbarPosition="left"
+            app:layout_constraintBottom_toTopOf="@+id/top_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/web" />
+
+        <RelativeLayout
+            android:id="@+id/top_layout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:paddingHorizontal="@dimen/_1sdp"
+            android:paddingVertical="@dimen/_1sdp"
+            ads:layout_constraintHeight_percent="0.4"
+            android:layout_marginTop="@dimen/_10sdp"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <FrameLayout
+                android:id="@+id/fl_adplace"
+                android:layout_centerInParent="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxHeight="280dp"
+                android:background="@color/dark_gray"
+                android:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/ourgraphic"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:scaleType="centerInside"
+                android:src="@drawable/exit_image" />
+        </RelativeLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/main"
+        android:background="@color/brand_background"
+        tools:context="com.video.avd.ui.MainActivity">
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/nav_host"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:defaultNavHost="true"
+            app:layout_constraintBottom_toTopOf="@+id/bottomPopupContainer"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navGraph="@navigation/main_navigation" />
+
+        <FrameLayout
+            android:id="@+id/bottomPopupContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            app:layout_constraintBottom_toTopOf="@id/bottom_navigation" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@drawable/bg_shadow"
+            app:layout_constraintBottom_toTopOf="@id/bottom_navigation"/>
+
+
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_navigation"
+            style="@style/NavigationView"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom"
+            android:background="@color/brand_card_background"
+            app:itemPaddingBottom="10dp"
+            app:itemPaddingTop="10dp"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:itemHorizontalTranslationEnabled="false"
+            app:itemIconTint="@color/bottomtabselectedcolor"
+            app:itemTextAppearance="@style/BottomNavigationViewStyle"
+            app:itemTextColor="@color/bottomtabselectedcolor"
+            app:labelVisibilityMode="labeled"
+            app:layout_constraintBottom_toTopOf="@id/bottomAd"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:menu="@menu/bottom_menu" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/bottomAd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent">
+            <FrameLayout
+                android:id="@+id/adContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/_2sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+                <include
+                    android:id="@+id/shimmer_container_native"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/_2sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    layout="@layout/load_fb_banner"/>
+            </FrameLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/adbreak"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:background="@color/white"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_centerInParent="true"
+                android:text="Ad Break"
+                android:textSize="@dimen/_16sdp"
+                android:textColor="@color/black"/>
+
+        </RelativeLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

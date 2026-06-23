@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:app1="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/videos_container"
+    android:background="@color/primary_bg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="@color/transparency"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingHorizontal="@dimen/_14sdp"
+            android:src="@drawable/ic_back"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/black" />
+
+        <TextView
+            android:id="@+id/appBarTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:paddingHorizontal="@dimen/_16sdp"
+            android:text="Status"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/back"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:id="@+id/batch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/appbar">
+
+        <!-- Left-aligned TextView -->
+        <TextView
+            android:id="@+id/btnClearSelection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:paddingHorizontal="@dimen/_10sdp"
+            android:paddingVertical="@dimen/_5sdp"
+            android:background="@drawable/round_black_dark"
+            android:text="Deselect All"
+            android:drawablePadding="@dimen/_4sdp"
+            android:drawableTint="@color/black"
+            android:textColor="@color/black"
+            android:visibility="visible"
+            android:backgroundTint="@color/foldercolor"
+            app:drawableStartCompat="@drawable/cross_svg" />
+
+        <!-- Right-aligned TextView -->
+        <TextView
+            android:id="@+id/btnSaveBatch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:paddingHorizontal="@dimen/_10sdp"
+            android:paddingVertical="@dimen/_5sdp"
+            android:background="@drawable/round_black_dark"
+            android:backgroundTint="@color/foldercolor"
+            android:text="Download"
+            android:drawablePadding="@dimen/_4sdp"
+            android:drawableTint="@color/black"
+            android:textColor="@color/black"
+            android:visibility="visible"
+            app:drawableStartCompat="@drawable/download_svg" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewVideo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/batch"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:layout_marginBottom="-1dp" />
+
+    <ProgressBar
+        android:id="@+id/prgressBarVideo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:progressTint="@color/gSelector_light"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/messageTextVideo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:textAppearance="?android:textAppearanceLarge"
+        android:textColor="@color/brand_text_primary"
+        android:visibility="gone" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/folder_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:src="@drawable/empty_data"
+            android:visibility="visible"
+            app:layout_constraintBottom_toTopOf="@+id/detail"
+            app:layout_constraintEnd_toEndOf="@+id/detail"
+            app:layout_constraintStart_toStartOf="@+id/detail" />
+
+        <ImageView
+            android:id="@+id/folder_image1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/tv_watch_video"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:src="@drawable/empty_data"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/tv_watch_video"
+            app:layout_constraintEnd_toEndOf="@+id/tv_watch_video"
+            app:layout_constraintStart_toStartOf="@+id/tv_watch_video" />
+
+        <TextView
+            android:id="@+id/detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:fontFamily="@font/poppins_regular"
+            android:gravity="center"
+            android:text="@string/allow_permission_details"
+            android:textColor="@color/brand_text_primary"
+            android:textSize="@dimen/_11ssp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toTopOf="@+id/permission"
+            app:layout_constraintEnd_toEndOf="@+id/permission"
+            app:layout_constraintStart_toStartOf="@+id/permission" />
+
+        <TextView
+            android:id="@+id/tv_watch_video"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/permission"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:fontFamily="@font/poppins_regular"
+            android:gravity="center"
+            android:text="@string/watch_video"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_11ssp"
+            android:visibility="gone"
+
+            app:layout_constraintBottom_toTopOf="@+id/btn_open_whatsapp"
+            app:layout_constraintEnd_toEndOf="@+id/permission"
+            app:layout_constraintStart_toStartOf="@+id/permission" />
+
+        <Button
+            android:id="@+id/permission"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_40sdp"
+            android:background="@drawable/edit_text_background"
+            android:fontFamily="@font/montserrat_medium"
+            android:gravity="center"
+            android:padding="@dimen/_15sdp"
+            android:text="@string/allow_permission"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:textSize="@dimen/_12ssp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/btn_open_whatsapp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="@dimen/_40sdp"
+            android:background="@drawable/edit_text_background"
+            android:fontFamily="@font/montserrat_medium"
+            android:gravity="center"
+            android:padding="@dimen/_15sdp"
+            android:text="@string/watch_now"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:textSize="@dimen/_12ssp"
+            android:visibility="gone"
+            app1:tint="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</RelativeLayout>

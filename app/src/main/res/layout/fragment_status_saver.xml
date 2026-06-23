@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+    android:background="@color/primary_bg"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app1="http://schemas.android.com/apk/res-auto"
+            tools:context=".ui.status_saver.statusnew.StatusHomeFragment">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/actionbar"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/wa_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:src="@drawable/ic_back_white"
+                    app1:tint="@color/brand_text_primary"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/wa_toggle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toEndOf="@id/wa_back"
+                    app:layout_constraintTop_toTopOf="@id/wa_back"
+                    app:layout_constraintBottom_toBottomOf="@id/wa_back"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    app:trackTint="@color/selector_switch_track"
+                    app:thumbTint="@color/selector_switch_thumb"/>
+
+                <TextView
+                    android:id="@+id/tvName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="@string/wa_status_saver"
+                    android:textColor="@color/brand_text_primary"
+                    android:textSize="16sp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    app:layout_constraintBottom_toBottomOf="@+id/wa_back"
+                    app:layout_constraintStart_toEndOf="@+id/wa_toggle"
+                    app:layout_constraintTop_toTopOf="@+id/wa_back" />
+
+
+                <ImageView
+                    android:id="@+id/imgInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:src="@drawable/ic_help"
+                    app1:tint="@color/brand_text_primary"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    app:layout_constraintBottom_toBottomOf="@+id/wa_back"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/wa_back" />
+
+                <ImageView
+                    android:id="@+id/imgReload"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/_10sdp"
+                    android:visibility="gone"
+                    android:src="@drawable/ic_reply_reload"
+                    app1:tint="@color/black"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvName"
+                    app:layout_constraintEnd_toStartOf="@id/imgInfo"
+                    app:layout_constraintTop_toTopOf="@+id/tvName" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/wa_tab_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/actionbar"
+                app:tabIndicator="@drawable/bg_bottom_bar"
+                app:tabIndicatorColor="@color/gSelector_light"
+                app:tabMode="fixed"
+                app:tabPaddingBottom="-20dp"
+                app:tabSelectedTextColor="@color/gSelector_light"
+                app:tabTextAppearance="@style/CustomTabText"
+                app:tabTextColor="@color/nonSelectedColor" />
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/wa_viewPager"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/wa_tab_layout" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>

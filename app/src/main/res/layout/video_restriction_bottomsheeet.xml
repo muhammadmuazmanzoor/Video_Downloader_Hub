@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+       android:paddingHorizontal="@dimen/_15sdp"
+        android:background="@color/white"
+        tools:context=".ui.allvideo.VideoOptionBottomSheetFragment">
+
+
+        <ImageView
+            android:id="@+id/close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="#A1A5A3"
+            android:src="@drawable/ic_close"
+            android:padding="@dimen/_10sdp"/>
+
+        <TextView
+            android:id="@+id/tv_quality"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/close"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:textSize="18sp"
+            android:text="@string/tips"
+            android:textColor="#1DB954"
+            android:fontFamily="@font/poppins_semibold"/>
+
+        <TextView
+            android:id="@+id/tv_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_quality"
+            android:text="@string/due_to_legal_restrictions_youtube_videos_cannot_be_downloaded"
+            android:textSize="16sp"
+            android:textColor="#121212"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:fontFamily="@font/poppins_medium"/>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

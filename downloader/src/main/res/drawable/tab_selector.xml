@@ -1,0 +1,10 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Selected -->
+    <item android:state_selected="true"
+        android:drawable="@drawable/tab_selected_background"/>
+
+    <!-- Default -->
+    <item android:drawable="@drawable/tab_trans"/>
+
+</selector>

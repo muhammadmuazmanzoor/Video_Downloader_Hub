@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.player.audioPlayer.dialoge.PopUpListDialog">
+
+
+        <ImageView
+            android:id="@+id/imgOrderType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_19sdp"
+            android:layout_marginTop="@dimen/_40sdp"
+            android:src="@drawable/ic_order"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/black" />
+
+        <TextView
+            android:id="@+id/tvOrderType"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_22sdp"
+            android:text="Order (3/20)"
+            android:textColor="@color/black"
+            android:fontFamily="@font/poppins_medium"
+            android:textSize="@dimen/_12ssp"
+            android:layout_marginStart="@dimen/_12sdp"
+            app:layout_constraintBottom_toBottomOf="@+id/imgOrderType"
+            app:layout_constraintStart_toEndOf="@+id/imgOrderType"
+            app:layout_constraintTop_toTopOf="@+id/imgOrderType" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/songsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@id/imgOrderType"
+            app:layout_constraintTop_toBottomOf="@id/imgOrderType"
+            tools:listitem="@layout/songs_dialog_recycler_items" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

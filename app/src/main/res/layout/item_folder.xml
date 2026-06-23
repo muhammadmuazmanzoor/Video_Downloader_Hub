@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_marginTop="@dimen/_14sdp"
+    android:layout_marginStart="13dp"
+    android:layout_marginEnd="13dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_folders_new"
+        android:layout_margin="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/poppins_regular"
+        android:maxLines="1"
+        android:text="name"
+        android:layout_marginEnd="@dimen/_22sdp"
+        android:textColor="@color/brand_text_primary"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="@+id/imageView"
+        app:layout_constraintVertical_bias="0.2" />
+
+    <TextView
+        android:id="@+id/count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_light"
+        android:text="2 videos"
+        android:textColor="@color/nonSelectedColor"
+        android:textSize="11sp"
+        app:layout_constraintStart_toStartOf="@+id/name"
+        app:layout_constraintTop_toBottomOf="@+id/name" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/newtag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/count"
+        app:layout_constraintStart_toEndOf="@+id/count"
+        app:layout_constraintTop_toTopOf="@+id/count"
+        app:srcCompat="@drawable/ic_new_video" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

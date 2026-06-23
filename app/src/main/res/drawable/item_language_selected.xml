@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <!-- 40 %-opaque fill (AA-RRGGBB → 66 = 0.4 × 255) -->
+    <solid android:color="#F5F5F5" />   <!-- orange with 40 % opacity -->
+
+    <!-- 1 dp border (100 %-opaque) -->
+   <!-- <stroke
+        android:width="2dp"
+        android:color="@color/gSelector" />     -->    <!-- same orange, fully opaque -->
+
+    <!-- 8 dp rounded corners -->
+    <corners android:radius="8dp" />
+</shape>

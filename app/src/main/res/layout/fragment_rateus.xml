@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/card_bg"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <View
+                android:id="@+id/view"
+                android:layout_width="@dimen/_38sdp"
+                android:layout_height="4dp"
+                android:background="#E1E1E1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <ImageView
+
+                android:id="@+id/emoji"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:src="@drawable/excited"
+                app:layout_constraintBottom_toTopOf="@+id/title"
+                app:layout_constraintEnd_toEndOf="@+id/view"
+                app:layout_constraintStart_toStartOf="@+id/view"
+                app:layout_constraintTop_toBottomOf="@+id/view" />
+            <TextView
+
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_7sdp"
+                android:fontFamily="@font/poppins_semibold"
+                android:padding="2dp"
+                android:text="@string/thanks_for_leaving_a_nice_review"
+                android:textAlignment="center"
+                android:textColor="@color/brand_text_primary"
+                android:textSize="17sp"
+                app:layout_constraintBottom_toTopOf="@id/textlayout"
+                app:layout_constraintEnd_toEndOf="@+id/emoji"
+                app:layout_constraintStart_toStartOf="@+id/emoji"
+                app:layout_constraintTop_toBottomOf="@+id/emoji" />
+            <TextView
+
+                android:id="@+id/textlayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:fontFamily="@font/poppins_medium"
+                android:padding="5dp"
+                android:text="@string/appreciate"
+                android:textAlignment="center"
+                android:textColor="@color/nonSelectedColor"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toTopOf="@id/ratingBar"
+                app:layout_constraintEnd_toEndOf="@+id/title"
+                app:layout_constraintStart_toStartOf="@+id/title"
+                app:layout_constraintTop_toBottomOf="@+id/title" />
+            <RatingBar
+                android:id="@+id/ratingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:numStars="5"
+                android:progressBackgroundTint="@color/nonSelectedColor"
+                android:progressTint="@color/gSelector_light"
+                android:rating="0"
+                android:secondaryProgressTint="@color/text_color_1"
+                android:stepSize="1.0"
+                app:layout_constraintBottom_toTopOf="@id/hintext"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHeight_percent="0.14"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textlayout"
+                app:layout_constraintWidth_percent="0.8" />
+            <TextView
+
+                android:id="@+id/pointingimage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_1sdp"
+                android:gravity="top"
+                app:drawableEndCompat="@drawable/pointingstars"
+                app:layout_constraintEnd_toEndOf="@+id/ratingBar"
+                app:layout_constraintTop_toBottomOf="@id/textlayout" />
+            <TextView
+
+                android:id="@+id/hintext"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:fontFamily="@font/poppins_medium"
+                android:gravity="center"
+                android:text="@string/the_best_we_could_have"
+                android:textAlignment="center"
+                android:textColor="@color/nonSelectedColor"
+                android:textSize="14sp"
+                app:drawableRightCompat="@drawable/pointingarrow"
+                app:layout_constraintBottom_toTopOf="@id/submitButton"
+                app:layout_constraintEnd_toEndOf="@+id/ratingBar"
+                app:layout_constraintStart_toStartOf="@+id/ratingBar"
+                app:layout_constraintTop_toBottomOf="@+id/ratingBar"
+                app:layout_constraintWidth_percent="0.5" />
+            <Button
+
+                android:id="@+id/submitButton"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_37sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginBottom="@dimen/_15sdp"
+                android:background="@drawable/rateusbtn"
+                android:backgroundTint="@color/gSelector_light"
+                android:fontFamily="@font/poppins_medium"
+                android:gravity="center"
+                android:text="@string/rate_on_google_play"
+                android:textAllCaps="false"
+                android:textColor="@color/brand_text_primary"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/hintext"
+                app:layout_constraintWidth_percent="0.8" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>

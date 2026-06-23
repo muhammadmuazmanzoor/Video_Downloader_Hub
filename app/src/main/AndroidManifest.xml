@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <queries>
+        <package android:name="com.whatsapp" />
+    </queries>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+    <uses-permission
+        android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="BIND_GET_INSTALL_REFERRER_SERVICE" />
+    <uses-permission android:name="com.android.vending.CHECK_LICENSE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+<!--    <uses-permission-->
+<!--        android:name="android.permission.REQUEST_INSTALL_PACKAGES"-->
+<!--        tools:node="remove" />-->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+
+    <application
+        android:name="com.video.avd.MyApplication"
+        android:allowBackup="false"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:fullBackupOnly="false"
+        android:hardwareAccelerated="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:requestLegacyExternalStorage="true"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.BaseProject_2023"
+        android:usesCleartextTraffic="true"
+        tools:replace="android:icon,android:allowBackup,android:name,android:theme"
+        tools:targetApi="31">
+        <activity
+            android:name="com.video.avd.ui.exitadactivity.ExitActivity"
+            android:exported="false" />
+
+        <activity
+            android:name="com.avd.ui.main.widgetactivity.FloatingBallActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:taskAffinity=""
+            android:theme="@style/Theme.Transparent"/>
+
+        <activity
+            android:name="com.video.avd.whatsapprefrerence.WhatsappRefActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity" />
+        <activity
+            android:name="com.video.avd.ui.exitadactivity.ExitAdActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.onbooard.SurveyActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.video.avd.ui.IAPDialogHolderActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.video.avd.ui.inapp.new_.inapppurchases.IAPActivityNew"
+            android:exported="false" />
+        <activity
+            android:name="com.video.avd.ui.splash_flow.activities.InAppActivity"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop"
+            android:exported="false" />
+
+        <activity
+            android:name="com.google.android.gms.ads.AdActivity"
+            android:theme="@style/Theme.App.FullscreenAd"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"
+            tools:replace="android:theme"/>
+
+        <activity
+            android:name="com.video.avd.ui.splash_flow.activities.LanguageActivity"
+            android:screenOrientation="portrait"
+            android:exported="false" />
+        <activity
+            android:name=".ui.onbooard.OnboardingActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity" />
+
+        <receiver
+            android:name="com.video.avd.net.NetworkChangeReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name="com.video.avd.ui.splash.SplashActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashScreenTheme"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name="com.video.avd.ui.status_saver.StatusActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity" />
+        <activity
+            android:name="com.video.avd.ui.player.PlayerVideoActivity"
+            android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenSize|screenLayout|smallestScreenSize|uiMode|touchscreen"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:parentActivityName="com.video.avd.ui.MainActivity"
+            android:screenOrientation="user"
+            android:supportsPictureInPicture="true"
+            android:theme="@style/ViewPlayerTheme"
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:scheme="content" />
+                <data android:scheme="file" />
+                <data android:mimeType="video/*" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.video.avd.ui.MainActivity"
+            android:configChanges="orientation|screenSize"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:resizeableActivity="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustNothing|stateHidden|adjustPan"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="file" />
+                <data android:mimeType="text/html" />
+                <data android:mimeType="text/plain" />
+                <data android:mimeType="application/xhtml+xml" />
+                <data android:mimeType="application/vnd.wap.xhtml+xml" />
+            </intent-filter>
+            <intent-filter>
+                <data android:scheme="singular" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
+
+            <!-- Keep existing intent filters -->
+            <intent-filter>
+                <action android:name="ACTION_MEDIA_NOTIFICATION" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.video.avd.ui.player.subtitle.MediaStoreChooserActivity"
+            android:exported="false"
+            android:theme="@style/MediaChooserDialogTheme"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name="com.video.avd.utils.chromecast.ExpandedCControls"
+            android:exported="true"
+            android:hardwareAccelerated="true"
+            android:label="@string/app_name"
+            android:largeHeap="true"
+            android:launchMode="singleTop"
+            android:screenOrientation="locked"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.video.avd.ui.MainActivity" />
+        </activity>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true"
+            tools:replace="android:authorities">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"
+                tools:replace="android:resource" />
+        </provider>
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="@string/App_ID" />
+        <meta-data
+            android:name="applovin.sdk.key"
+            android:value="77uiPT4cq5bp3ZKOKVdtWG0WBRWoJ1tQBAmhr-3mp-h_HvUgXfe1v1Qc6oirIklUr1fxfPbru1ps1nzErdTfy0" />
+        <meta-data
+            android:name="applovin.sdk.verbose_logging"
+            android:value="true" />
+        <meta-data
+            android:name="com.google.android.gms.ads.flag.OPTIMIZE_INITIALIZATION"
+            android:value="true" />
+        <meta-data
+            android:name="com.google.android.gms.ads.flag.OPTIMIZE_AD_LOADING"
+            android:value="true" />
+        <meta-data
+            android:name="com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME"
+            android:value="com.video.avd.utils.chromecast.CastOptionsProvider" />
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+        <meta-data
+            android:name="com.facebook.sdk.ClientToken"
+            android:value="@string/facebook_client_token" />
+
+        <service android:name="com.video.avd.utils.chromecast.MediaWebService" />
+
+        <receiver
+            android:name="androidx.media.session.MediaButtonReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name="com.video.avd.utils.VideoMonitoringService" />
+        <service
+            android:name="com.video.avd.utils.firebasepushnotification.MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false"
+            tools:node="merge">
+            <meta-data
+                android:name="androidx.work.WorkManagerInitializer"
+                android:value="androidx.startup"
+                tools:node="remove" />
+        </provider>
+
+        <!-- Disable PicassoProvider ContentProvider to prevent ANR from blocking initialization -->
+        <!-- Picasso will be initialized manually and lazily in MyApplication -->
+        <provider
+            android:name="com.squareup.picasso.PicassoProvider"
+            android:authorities="${applicationId}.picasso"
+            tools:node="remove" />
+
+        <receiver
+            android:name="com.google.android.gms.cast.framework.media.MediaIntentReceiver"
+            android:exported="false" />
+    </application>
+
+</manifest>

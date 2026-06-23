@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_controller"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_110sdp"
+    android:paddingBottom="@dimen/_10sdp"
+    android:layout_gravity="bottom">
+
+    <ImageView
+        android:id="@+id/ytLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:src="@drawable/yt__logo"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/videoProgressLayout"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/videoProgressLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        app:layout_constraintBottom_toTopOf="@+id/videoControllerIconsLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/thumbnailImageView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="8dp"
+            android:visibility="gone"
+            android:scaleType="centerCrop"/>
+
+        <TextView
+            android:id="@id/exo_position"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <com.video.avd.utils.CustomTimeBar
+            android:id="@id/exo_progress"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            app:played_color="@color/gSelector_light"
+            app:scrubber_drawable="@drawable/player_thumb_drawable"
+            app:unplayed_color="@color/gray" />
+
+        <TextView
+            android:id="@id/exo_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/videoControllerIconsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_55sdp"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/viewlock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_unlock"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/exo_play_pause"
+            app:layout_constraintHorizontal_bias="0.1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/back_seconds"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/back_seconds"
+            android:visibility="gone"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintBottom_toBottomOf="@+id/viewlock"
+            app:layout_constraintEnd_toStartOf="@+id/prevplay"
+            app:layout_constraintStart_toEndOf="@+id/viewlock"
+            app:layout_constraintTop_toTopOf="@+id/viewlock" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/prevplay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:backgroundTint="@color/white"
+            android:src="@drawable/ic_prev"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintBottom_toBottomOf="@+id/exo_play_pause"
+            app:layout_constraintEnd_toStartOf="@+id/exo_play_pause"
+            app:layout_constraintHorizontal_bias="0.7"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/exo_play_pause" />
+
+        <ImageButton
+            android:id="@id/exo_play_pause"
+            style="@style/ExoMediaButton.Pause"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_play"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/white"
+            android:contentDescription="@string/play_pause_button"
+            />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/nextplay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
+            android:src="@drawable/ic_next"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintBottom_toBottomOf="@+id/exo_play_pause"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.3"
+            app:layout_constraintStart_toEndOf="@+id/exo_play_pause"
+            app:layout_constraintTop_toTopOf="@+id/exo_play_pause" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/forward_seconds"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/forward_seconds"
+            android:visibility="gone"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintBottom_toBottomOf="@+id/stretchButton"
+            app:layout_constraintEnd_toStartOf="@+id/pip_button"
+            app:layout_constraintStart_toEndOf="@+id/nextplay"
+            app:layout_constraintTop_toTopOf="@+id/stretchButton" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/pip_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_picture_in_picture"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/stretchButton"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/stretchButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_mode_fill"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.9"
+            app:layout_constraintStart_toEndOf="@+id/exo_play_pause"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    <androidx.media3.ui.SubtitleView
+        android:id="@+id/custom_subtitle_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

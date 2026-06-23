@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+        <LinearLayout
+            android:id="@+id/linearLayout3"
+            android:layout_width="0dp"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_marginTop="@dimen/activity_vertical_margin_private"
+            android:orientation="horizontal"
+            android:background="@color/transparent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                android:id="@+id/backNavigation"
+                android:layout_width="@dimen/navigation_icon_size"
+                android:layout_height="@dimen/navigation_icon_size"
+                android:layout_gravity="center_vertical"
+                android:layout_marginVertical="@dimen/navigation_icon_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin_private"
+                android:contentDescription="@string/back_navigation"
+                android:src="@drawable/arrow_left"
+                app:tint="@color/black" />
+
+            <TextView
+                android:id="@+id/tvNameVideoPicker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/activity_horizontal_margin_private"
+                android:fontFamily="@font/montserrat_semibold"
+                android:text="@string/select_video"
+                android:textColor="@color/black"
+                android:textSize="17sp" />
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/video_rv"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="@dimen/_15sdp"
+            android:layout_marginBottom="@dimen/_3sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
+
+
+        <TextView
+            android:id="@+id/no_videos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/oops_no_video_is_available"
+            android:textColor="@color/nonSelectedColor"
+            android:textSize="@dimen/_15sdp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/permission"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/folder_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_70sdp"
+                android:src="@drawable/ic_folder_new"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_40sdp"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:layout_marginEnd="@dimen/_40sdp"
+                android:gravity="center"
+                android:text="@string/tv_permission"
+                android:textSize="@dimen/_16ssp"
+                app:layout_constraintEnd_toEndOf="@+id/folder_icon"
+                app:layout_constraintStart_toStartOf="@+id/folder_icon"
+                app:layout_constraintTop_toBottomOf="@+id/folder_icon" />
+
+
+            <Button
+                android:id="@+id/allow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_30sdp"
+                android:background="@drawable/cancle_btn_rate"
+                android:fontFamily="@font/montserrat_semibold"
+                android:text="@string/allow_access"
+                android:textColor="@color/brand_text_primary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_name" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>

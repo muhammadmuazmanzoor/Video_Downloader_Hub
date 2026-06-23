@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Outer rectangle stroke -->
+    <item>
+        <shape>
+            <solid android:color="#00000000" /> <!-- Outer background color -->
+            <stroke
+                android:width="2dp"
+                android:color="@color/grey" />
+            <corners android:radius="30dp" /> <!-- No rounded corners for the outer shape -->
+        </shape>
+    </item>
+
+</layer-list>
+
+

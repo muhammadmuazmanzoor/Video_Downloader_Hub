@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="isAdLoaded"
+            type="Boolean" />
+
+        <variable
+            name="nativeAd"
+            type="com.google.android.gms.ads.nativead.NativeAd" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:layout_margin="4dp"
+        app:cardCornerRadius="@dimen/_5sdp">
+
+        <TextView
+            bindVisibility="@{isAdLoaded? false : true}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="This area may contain ad"
+            android:textColor="@color/text_light" />
+
+        <com.google.android.gms.ads.nativead.NativeAdView
+            android:id="@+id/nativeAdView"
+            bindVisibility="@{isAdLoaded? true : false}"
+            mediaContent="@{nativeAd.mediaContent}"
+            nativeAd="@{nativeAd}"
+            android:background="@color/darkgrey"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/textAd"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="#FFCC66"
+                    android:gravity="center"
+                    android:text="Ad"
+                    android:textColor="@color/brand_text_primary"
+                    android:textSize="11sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHeight_percent="0.09"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0"
+                    app:layout_constraintWidth_percent="0.12" />
+
+                <ImageView
+                    android:id="@+id/ad_app_icon"
+                    invisibleView="@{nativeAd.icon == null? false : true}"
+                    loadNativeIconView="@{nativeAd.icon.drawable}"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:adjustViewBounds="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHeight_percent="0.2"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textAd"
+                    app:layout_constraintVertical_bias="0.03"
+                    app:layout_constraintWidth_percent="0.15" />
+
+                <TextView
+                    android:id="@+id/ad_headline"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:text="@{nativeAd.headline}"
+                    android:textColor="@color/blue"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintLeft_toRightOf="@id/textAd"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/textAd"
+                    app:layout_constraintVertical_bias="0.0"
+                    app:layout_constraintWidth_percent="0.80" />
+
+                <TextView
+                    android:id="@+id/ad_body"
+                    invisibleView="@{nativeAd.body == null? false : true}"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:maxLines="2"
+                    android:text="@{nativeAd.body}"
+                    android:textColor="@color/black"
+                    android:textSize="11sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintLeft_toRightOf="@id/textAd"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ad_headline"
+                    app:layout_constraintVertical_bias="0.01"
+                    app:layout_constraintWidth_percent="0.80" />
+
+                <com.google.android.gms.ads.nativead.MediaView
+                    android:id="@+id/ad_media"
+                    invisibleView="@{nativeAd.mediaContent == null? false : true}"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:layout_constraintBottom_toTopOf="@id/ad_call_to_action"
+                    app:layout_constraintHeight_percent="0.45"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintTop_toBottomOf="@id/ad_body"
+                    app:layout_constraintVertical_bias="0.5" />
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/ad_call_to_action"
+                    invisibleView="@{nativeAd.callToAction == null? false : true}"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:backgroundTint="@color/gSelector_light"
+                    android:background="@drawable/round_corner_native_ad"
+                    android:gravity="center"
+                    android:text="@{nativeAd.callToAction}"
+                    android:textColor="@color/brand_text_primary"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHeight_percent="0.12"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ad_media"
+                    app:layout_constraintVertical_bias="0.98"
+                    app:layout_constraintWidth_percent="0.6" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.gms.ads.nativead.NativeAdView>
+    </androidx.cardview.widget.CardView>
+</layout>

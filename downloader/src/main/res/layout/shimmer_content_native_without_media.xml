@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/card_stroke"
+    android:paddingBottom="@dimen/_10sdp">
+
+    <View
+        android:id="@+id/shimmer_icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:background="@drawable/round_corner_ad"
+        android:backgroundTint="@color/shimmer_placeholder"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/shimmer_ad_label"
+        android:layout_width="@dimen/_28sdp"
+        android:layout_height="@dimen/_12sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:background="@drawable/round_corner_ad"
+        android:backgroundTint="@color/shimmer_placeholder_accent"
+        app:layout_constraintStart_toEndOf="@id/shimmer_icon"
+        app:layout_constraintTop_toTopOf="@id/shimmer_icon" />
+
+    <View
+        android:id="@+id/shimmer_title"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_12sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:background="@drawable/round_corner_ad"
+        android:backgroundTint="@color/shimmer_placeholder"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/shimmer_ad_label"
+        app:layout_constraintTop_toTopOf="@id/shimmer_ad_label" />
+
+    <View
+        android:id="@+id/shimmer_body"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:background="@drawable/round_corner_ad"
+        android:backgroundTint="@color/shimmer_placeholder"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/shimmer_ad_label"
+        app:layout_constraintTop_toBottomOf="@id/shimmer_title" />
+
+    <View
+        android:id="@+id/shimmer_body_line2"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_30sdp"
+        android:background="@drawable/round_corner_ad"
+        android:backgroundTint="@color/shimmer_placeholder"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/shimmer_body"
+        app:layout_constraintTop_toBottomOf="@id/shimmer_body" />
+
+    <View
+        android:id="@+id/shimmer_cta"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_36sdp"
+        android:layout_marginHorizontal="@dimen/_18sdp"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:background="@drawable/gradient_bg"
+        android:backgroundTint="@color/shimmer_placeholder"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/shimmer_body_line2" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,92 @@
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/_10sdp"
+    android:background="@color/white">
+
+    <!-- Close Button -->
+    <ImageView
+        android:id="@+id/btn_close_permission"
+        android:layout_width="@dimen/_30sdp"
+        android:layout_height="@dimen/_30sdp"
+        android:src="@drawable/ic_cross_new_dialogue"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:padding="@dimen/_5sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Title TextView -->
+    <TextView
+        android:id="@+id/tv_permission_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:fontFamily="@font/poppins_bold"
+        android:gravity="center"
+        android:text="@string/allow_appear_on_top_permission"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_14ssp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_close_permission" />
+
+    <!-- Subtitle TextView -->
+    <TextView
+        android:id="@+id/tv_permission_subtitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:fontFamily="@font/poppins_regular"
+        android:gravity="center"
+        android:text="@string/instant_download_tiktok_widget"
+        android:textColor="@color/gray_2.1"
+        android:textSize="@dimen/_10ssp"
+        android:lineSpacingExtra="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_permission_title" />
+
+    <!-- Illustration ImageView -->
+    <ImageView
+        android:id="@+id/iv_permission_illustration"
+        android:layout_width="0dp"
+        android:layout_height="180dp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/permission_image"
+        android:contentDescription="@string/instant_download_tiktok_widget"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_permission_subtitle" />
+
+    <!-- Grant Permission Button -->
+    <TextView
+        android:id="@+id/btn_grant_permission"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:background="@drawable/bg_circled_button"
+        android:fontFamily="@font/poppins_semibold"
+        android:gravity="center"
+        android:text="@string/grant_permission"
+        android:textColor="@color/brand_text_primary"
+        android:textSize="@dimen/_16ssp"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_permission_illustration"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

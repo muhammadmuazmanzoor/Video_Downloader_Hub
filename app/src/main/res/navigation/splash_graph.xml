@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/splash_graph"
+    app:startDestination="@id/splashFragment">
+
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.video.avd.ui.splash.SplashFragment"
+        android:label="SplashFragment">
+        <action
+            android:id="@+id/action_splashFragment_to_proPanel"
+            app:destination="@id/propanel" />
+        <action
+            android:id="@+id/action_splashFragment_to_languagesSelectionFragment2"
+            app:destination="@id/languagesSelectionFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/propanel"
+        android:name="com.video.avd.ui.inapp.DialogFragments" >
+        <argument
+            android:name="isShowAd"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <action
+            android:id="@+id/action_propanel_to_languagesSelectionFragment2"
+            app:destination="@id/languagesSelectionFragment2" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/languagesSelectionFragment2"
+        android:name="com.video.avd.ui.languages.LanguagesSelectionFragment"
+        android:label="LanguagesSelectionFragment" >
+
+    </fragment>
+
+    <action android:id="@+id/action_global_propanel2"
+        app:destination="@id/propanel"/>
+
+
+
+    <action android:id="@+id/action_global_languagesSelectionFragment2"
+        app:destination="@id/languagesSelectionFragment2"/>
+
+</navigation>

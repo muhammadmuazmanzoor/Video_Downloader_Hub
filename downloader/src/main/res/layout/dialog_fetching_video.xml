@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="250dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="@drawable/bg_dialog_rounded"
+    android:backgroundTint="@color/primary_bg"
+    android:gravity="center"
+    android:layout_gravity="center">
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:indeterminateTint="@color/gSelector_light"
+        android:indeterminate="true" />
+
+    <TextView
+        android:id="@+id/tvMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Fetching video..."
+        android:textColor="@color/brand_text_primary"
+        android:textSize="16sp"
+        android:fontFamily="sans-serif-medium" />
+
+</LinearLayout>

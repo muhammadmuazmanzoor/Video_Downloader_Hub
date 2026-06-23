@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+    android:background="@color/primary_bg"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".ui.allvideo.VideoInfoBottomSheetFragment">
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_12ssp"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="@string/edit_track_info"
+            android:textColor="@color/brand_text_primary"
+            android:textSize="@dimen/_16ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/titlelayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/_10sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView9"
+            app:layout_constraintWidth_percent="0.87">
+
+            <TextView
+                android:id="@+id/title_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="@string/title"
+                android:textColor="@color/brand_text_primary"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/titleview4"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="@dimen/_20ssp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHeight_percent="0.4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/title_header"
+                app:layout_constraintWidth_percent="0.001" />
+
+            <TextView
+                android:id="@+id/title_detail"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_regular"
+                android:text="@string/title"
+                android:textColor="@color/brand_text_primary"
+                android:textSize="@dimen/_10ssp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/titleview4"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--            android:id="@+id/Albub_layout"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:paddingVertical="@dimen/_10sdp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:layout_constraintEnd_toEndOf="@+id/titlelayout"-->
+<!--            app:layout_constraintHeight_percent="0.5"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/titlelayout"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/titlelayout"-->
+<!--            app:layout_constraintWidth_percent="0.87">-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/Albub_header"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:fontFamily="@font/poppins_semibold"-->
+<!--                android:text="@string/album"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:textSize="@dimen/_12ssp"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent" />-->
+<!--            <View-->
+<!--                android:id="@+id/Albubview4"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="0dp"-->
+<!--                android:layout_marginEnd="@dimen/_20ssp"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintHeight_percent="0.4"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="@+id/Albub_header"-->
+<!--                app:layout_constraintWidth_percent="0.001" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/Albub_detail"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:fontFamily="@font/poppins_regular"-->
+<!--                android:text="@string/title"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:textSize="@dimen/_10ssp"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toEndOf="@+id/Albubview4"-->
+<!--                app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/Artist_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/_10sdp"
+            app:layout_constraintEnd_toEndOf="@+id/titlelayout"
+            app:layout_constraintHeight_percent="0.5"
+            app:layout_constraintStart_toStartOf="@+id/titlelayout"
+            app:layout_constraintTop_toBottomOf="@+id/titlelayout"
+            app:layout_constraintWidth_percent="0.87">
+
+            <TextView
+                android:id="@+id/Artist_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="@string/artist"
+                android:textColor="@color/brand_text_primary"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/Artistview4"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="@dimen/_20ssp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHeight_percent="0.4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/Artist_header"
+                app:layout_constraintWidth_percent="0.001" />
+
+            <TextView
+                android:id="@+id/Artist_detail"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_regular"
+                android:text="@string/title"
+                android:textColor="@color/brand_text_primary"
+                android:textSize="@dimen/_10ssp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/Artistview4"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/Size_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/_10sdp"
+            app:layout_constraintEnd_toEndOf="@+id/titlelayout"
+            app:layout_constraintHeight_percent="0.5"
+            app:layout_constraintStart_toStartOf="@+id/titlelayout"
+            app:layout_constraintTop_toBottomOf="@+id/Artist_layout"
+            app:layout_constraintWidth_percent="0.87">
+
+            <TextView
+                android:id="@+id/Size_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="@string/size"
+                android:textColor="@color/brand_text_primary"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/Sizetview4"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="@dimen/_20ssp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHeight_percent="0.4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/Size_header"
+                app:layout_constraintWidth_percent="0.001" />
+
+            <TextView
+                android:id="@+id/Size_detail"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_regular"
+                android:text="@string/title"
+                android:textColor="@color/brand_text_primary"
+                android:textSize="@dimen/_10ssp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/Sizetview4"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/Time_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/_10sdp"
+            app:layout_constraintEnd_toEndOf="@+id/titlelayout"
+            app:layout_constraintHeight_percent="0.5"
+            app:layout_constraintStart_toStartOf="@+id/titlelayout"
+            app:layout_constraintTop_toBottomOf="@+id/Size_layout"
+            app:layout_constraintWidth_percent="0.87">
+
+            <TextView
+                android:id="@+id/Time_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="@string/time"
+                android:textColor="@color/brand_text_primary"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/Timetview4"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="@dimen/_20ssp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHeight_percent="0.4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/Time_header"
+                app:layout_constraintWidth_percent="0.001" />
+
+            <TextView
+                android:id="@+id/Time_detail"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_regular"
+                android:text="@string/title"
+                android:textColor="@color/brand_text_primary"
+                android:textSize="@dimen/_10ssp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/Timetview4"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/Date_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/_10sdp"
+            app:layout_constraintEnd_toEndOf="@+id/titlelayout"
+            app:layout_constraintHeight_percent="0.5"
+            app:layout_constraintStart_toStartOf="@+id/titlelayout"
+            app:layout_constraintTop_toBottomOf="@+id/Time_layout"
+            app:layout_constraintWidth_percent="0.87">
+
+            <TextView
+                android:id="@+id/Date_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="@string/date_added"
+                android:textColor="@color/brand_text_primary"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/Datetview4"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="@dimen/_20ssp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHeight_percent="0.4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/Date_header"
+                app:layout_constraintWidth_percent="0.001" />
+
+            <TextView
+                android:id="@+id/Date_detail"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_regular"
+                android:text="@string/title"
+                android:textColor="@color/brand_text_primary"
+                android:textSize="@dimen/_10ssp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/Datetview4"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/Path_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/_10sdp"
+            app:layout_constraintEnd_toEndOf="@+id/titlelayout"
+            app:layout_constraintHeight_percent="0.5"
+            app:layout_constraintStart_toStartOf="@+id/titlelayout"
+            app:layout_constraintTop_toBottomOf="@+id/Date_layout"
+            app:layout_constraintWidth_percent="0.87">
+
+            <TextView
+                android:id="@+id/Path_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="@string/path"
+                android:textColor="@color/brand_text_primary"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/Pathtview4"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="@dimen/_20ssp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHeight_percent="0.4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/Path_header"
+                app:layout_constraintWidth_percent="0.001" />
+
+            <TextView
+                android:id="@+id/Path_detail"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_regular"
+                android:text="@string/title"
+                android:textColor="@color/brand_text_primary"
+                android:textSize="@dimen/_10ssp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/Pathtview4"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/edit_track_okay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/okay"
+            android:fontFamily="@font/poppins_semibold"
+            android:textColor="@color/gSelector_light"
+            android:padding="@dimen/_10ssp"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintEnd_toEndOf="@+id/Path_layout"
+            app:layout_constraintStart_toStartOf="@+id/Path_layout"
+            app:layout_constraintTop_toBottomOf="@+id/Path_layout" />
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>

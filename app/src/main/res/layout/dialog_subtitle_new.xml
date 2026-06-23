@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardview"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_roundedview"
+    android:backgroundTint="@color/black_dg"
+    android:paddingVertical="@dimen/_10sdp">
+
+    <ImageView
+        android:id="@+id/iv_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:padding="5dp"
+        android:visibility="gone"
+        android:src="@drawable/ic_back_white"
+        app:layout_constraintBottom_toBottomOf="@id/tv_unit"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_unit" />
+
+
+    <TextView
+        android:id="@+id/tv_unit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:fontFamily="@font/urbanist_regular"
+        android:text="@string/subtitle"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_14sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_current"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/urbanist_light"
+        android:text="@string/none"
+        android:textColor="#8A8380"
+        android:textSize="@dimen/_11sdp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@id/tv_unit"
+        app:layout_constraintTop_toBottomOf="@id/tv_unit" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/toggle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:theme="@style/CustomSwitch"
+        app:layout_constraintBottom_toBottomOf="@id/tv_unit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_unit" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:background="#525252"
+        app:layout_constraintTop_toBottomOf="@id/tv_current" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutSubtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/view"
+        android:visibility="invisible">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_open"
+            android:layout_width="0dp"
+            app:layout_constraintWidth_percent="0.99"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/btn_open"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:fontFamily="@font/urbanist_light"
+                android:paddingVertical="@dimen/_5sdp"
+                android:text="@string/open_from"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_11sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:src="@drawable/ic_forward"
+                app:layout_constraintBottom_toBottomOf="@id/btn_open"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/btn_open"
+                app:tint="@color/white" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <View
+            android:id="@+id/view1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:background="#525252"
+            app:layout_constraintTop_toBottomOf="@id/cl_open" />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_customization"
+            android:layout_width="0dp"
+            app:layout_constraintWidth_percent="0.99"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:layout_constraintTop_toBottomOf="@id/view1">
+
+            <TextView
+                android:id="@+id/btn_customization"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:fontFamily="@font/urbanist_light"
+                android:paddingVertical="@dimen/_5sdp"
+                android:text="@string/customization"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_11sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:src="@drawable/ic_forward"
+                app:layout_constraintBottom_toBottomOf="@id/btn_customization"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/btn_customization"
+                app:tint="@color/white" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:id="@+id/view2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:background="#525252"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/cl_customization" />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_download"
+            android:layout_width="0dp"
+            app:layout_constraintWidth_percent="0.99"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/view2">
+
+            <TextView
+                android:id="@+id/btn_download"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:fontFamily="@font/urbanist_light"
+                android:paddingVertical="@dimen/_5sdp"
+                android:text="@string/download"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_11sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:src="@drawable/ic_forward"
+                app:layout_constraintBottom_toBottomOf="@id/btn_download"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/btn_download"
+                app:tint="@color/white" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/detailSubtitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintWidth_percent="0.8"
+        app:layout_constraintTop_toTopOf="@+id/layoutSubtitle"
+        app:layout_constraintBottom_toBottomOf="@+id/layoutSubtitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/subititle_detail"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:visibility="visible"
+        android:textSize="14sp"
+        android:fontFamily="@font/poppins_regular"/>
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

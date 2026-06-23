@@ -1,0 +1,63 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.devtools.ksp' // ✅ Add this line
+
+
+android {
+    namespace 'com.zmplayer.opensubstitle'
+    compileSdkVersion 35
+    packagingOptions {
+        jniLibs {
+            useLegacyPackaging true
+        }
+    }
+    defaultConfig {
+        minSdkVersion 28
+        targetSdkVersion 35
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+
+        // Set Java compatibility to 1.8
+        compileOptions {
+            sourceCompatibility JavaVersion.VERSION_17
+            targetCompatibility JavaVersion.VERSION_17
+        }
+
+        // Set Kotlin JVM target to 1.8 to match Java
+        kotlinOptions {
+            jvmTarget = '17'
+        }
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+
+
+}
+
+
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    // Fuel
+    implementation 'com.github.kittinunf.fuel:fuel:2.3.1'
+    // Gson
+    implementation "com.google.code.gson:gson:2.8.5"
+
+    androidTestImplementation 'org.mockito:mockito-core:2.21.0'
+    androidTestImplementation 'org.mockito:mockito-android:2.21.0'
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test:runner:1.5.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+}
+

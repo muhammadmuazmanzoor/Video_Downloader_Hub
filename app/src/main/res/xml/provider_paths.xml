@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <external-path
+        name="external"
+        path="." />
+    <external-files-path
+        name="external_files"
+        path="." />
+    <cache-path
+        name="cache"
+        path="." />
+    <external-cache-path
+        name="external_cache"
+        path="." />
+    <files-path
+        name="files"
+        path="." />
+    <external-files-path
+        name="videos"
+        path="videos/" />
+    <external-path
+        name="camera_files"
+        path="DCIM/Camera/Camera/" />
+
+    <root-path name="root" path="/" />
+
+    <files-path name="files" path="." />
+
+    <external-path name="external_files" path="." />
+
+    <external-files-path name="external_files" path="." />
+
+    <external-path
+        name="downloads"
+        path="Download/" />
+    <files-path
+        name="files"
+        path="." />
+    <files-path
+        name="YoutubeDL"
+        path="./files"/>
+    <files-path
+        name="YoutubeDL"
+        path="."/>
+
+</paths>

@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/main"
+    android:background="@color/primary_bg"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/clbottom">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <TextView
+                android:id="@+id/tv_create"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Personalize Your Experience"
+                android:textColor="@color/brand_text_primary"
+                android:layout_marginTop="@dimen/_25sdp"
+                android:textSize="@dimen/_14ssp"
+                android:fontFamily="@font/inter_semibold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <TextView
+                android:id="@+id/tv_customize"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Choose your favorite features to get \n the most out of the app."
+                android:textColor="@color/gray_text"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:gravity="center"
+                android:textSize="@dimen/_10ssp"
+                android:fontFamily="@font/poppins_regular"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_create"/>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".50"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clCollage"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/guide"
+                app:layout_constraintTop_toBottomOf="@id/tv_customize"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:paddingVertical="@dimen/_10sdp"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:background="@drawable/card_bg"
+                android:backgroundTint="@color/card_bg"
+                >
+
+                <ImageView
+                    android:id="@+id/ivCollage"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:background="@drawable/card_bg"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="@dimen/_5sdp"
+                    android:backgroundTint="@color/card_stroke"
+                    android:src="@drawable/downloader_survey"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ivCollage"
+                    android:text="Video Downloader"
+                    android:fontFamily="@font/inter_medium"
+                    android:textSize="@dimen/_11ssp"
+                    android:textColor="@color/brand_text_primary"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    />
+
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clEditPhoto"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/guide"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_customize"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:paddingVertical="@dimen/_10sdp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:background="@drawable/card_bg"
+                android:backgroundTint="@color/card_bg"
+                >
+
+                <ImageView
+                    android:id="@+id/ivEditPhoto"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="@dimen/_5sdp"
+                    android:background="@drawable/card_bg"
+                    android:backgroundTint="#15B920"
+                    android:src="@drawable/status_survey"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ivEditPhoto"
+                    android:text="Status Saver"
+                    android:fontFamily="@font/inter_medium"
+                    android:textSize="@dimen/_11ssp"
+                    android:textColor="@color/brand_text_primary"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    />
+
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clBodyMaker"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/guide"
+                app:layout_constraintTop_toBottomOf="@id/clCollage"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:paddingVertical="@dimen/_10sdp"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:background="@drawable/card_bg"
+                android:backgroundTint="@color/card_bg"
+                >
+
+                <ImageView
+                    android:id="@+id/ivBody"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:background="@drawable/card_bg"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="@dimen/_5sdp"
+                    android:backgroundTint="@color/card_stroke"
+                    android:src="@drawable/player_survey"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ivBody"
+                    android:text="Video Player"
+                    android:fontFamily="@font/inter_medium"
+                    android:textSize="@dimen/_11ssp"
+                    android:textColor="@color/brand_text_primary"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    />
+
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clGallery"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/guide"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/clCollage"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:paddingVertical="@dimen/_10sdp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:background="@drawable/card_bg"
+                android:backgroundTint="@color/card_bg"
+                >
+
+                <ImageView
+                    android:id="@+id/ivGallery"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:background="@drawable/card_bg"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="@dimen/_5sdp"
+                    android:backgroundTint="@color/card_stroke"
+                    android:src="@drawable/browser_survey"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ivGallery"
+                    android:text="Browser"
+                    android:fontFamily="@font/inter_medium"
+                    android:textSize="@dimen/_11ssp"
+                    android:textColor="@color/brand_text_primary"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    />
+
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/btnNext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/_12sdp"
+            android:text="@string/next"
+            android:textColor="@color/white"
+            android:gravity="center_horizontal"
+            android:fontFamily="@font/inter_semibold"
+            android:textSize="@dimen/_14ssp"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            app:layout_constraintTop_toBottomOf="@id/clGallery"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:background="@drawable/round_corner_search"
+           />
+            <ProgressBar
+                android:id="@+id/progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="@dimen/_10sdp"
+                app:layout_constraintStart_toStartOf="@+id/btnNext"
+                app:layout_constraintEnd_toEndOf="@+id/btnNext"
+                android:background="@color/brand_card_background"
+                android:visibility="invisible"
+                app:layout_constraintTop_toTopOf="@+id/btnNext"
+                app:layout_constraintBottom_toBottomOf="@+id/btnNext"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clbottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/card_stroke"
+        android:padding="@dimen/_5sdp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <FrameLayout
+            android:id="@+id/shimmer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <include
+                android:id="@+id/shimmer_container_native"
+                layout="@layout/layout_loading_ads_native_large" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/nativeAdView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <FrameLayout
+        android:id="@+id/globalLoader"
+        android:visibility="gone"
+        android:elevation="100dp"
+        android:clickable="true"
+        android:background="@color/primary_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/progressImage"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_gravity="center"
+                android:src="@drawable/outline_progress"
+                android:indeterminateTint="@color/gSelector_light"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Ad loading..."
+                android:fontFamily="@font/poppins_regular"
+                android:textColor="@color/brand_text_primary"
+                android:textSize="@dimen/_12ssp"
+                />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

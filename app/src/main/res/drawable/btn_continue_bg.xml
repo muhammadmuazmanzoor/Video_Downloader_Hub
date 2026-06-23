@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <!-- Gradient background (right → left) -->
+    <gradient
+        android:startColor="#F98F43"
+        android:endColor="#FF3636"
+        android:angle="180" />
+
+    <!-- Rounded corners -->
+    <corners android:radius="@dimen/_30sdp" />
+
+    <!-- Optional: padding for shadow-like spacing -->
+    <padding
+        android:left="12dp"
+        android:top="12dp"
+        android:right="12dp"
+        android:bottom="12dp" />
+
+</shape>

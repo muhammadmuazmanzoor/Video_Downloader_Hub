@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/homeFragment"
+    app:startDestination="@id/mainDownloaderFragment">
+    <fragment
+        android:id="@+id/homeFragment1"
+        android:name="com.video.avd.ui.homeVideo.HomeFragment"
+        android:label="HomeFragment"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_searchVideoFragment"
+            app:destination="@id/searchVideoFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_exitFragment"
+            app:destination="@id/exitFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_rateUs"
+            app:destination="@id/rateUs" />
+        <action
+            android:id="@+id/action_homeFragment_to_propanel"
+            app:destination="@id/propanel" />
+        <action
+            android:id="@+id/action_homeFragment_to_statusFragment"
+            app:destination="@id/statusFragment" />
+        <action
+            android:id="@+id/action_homeFragment1_to_statusSaverFragment"
+            app:destination="@id/statusSaverFragment" />
+        <action
+            android:id="@+id/action_homeFragment1_to_videosSortingDialog"
+            app:destination="@id/videosSortingDialog" />
+        <action
+            android:id="@+id/action_homeFragment1_to_download_guidance_fragment"
+            app:destination="@id/download_guidance_fragment" />
+        <action
+            android:id="@+id/action_homeFragment1_to_whatsapp_guidance_fragment"
+            app:destination="@id/whatsapp_guidance" />
+        <action
+            android:id="@+id/action_homeFragment1_to_historyFragment"
+            app:destination="@id/historyFragment" />
+        <action
+            android:id="@+id/action_homeFragment1_to_equalizerFragmentVideo"
+            app:destination="@id/equalizerFragmentVideo" />
+        <action
+            android:id="@+id/action_homeFragment1_to_settingFragment2"
+            app:destination="@id/settingFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchVideoFragment"
+        android:name="com.video.avd.ui.searchvideo.SearchVideoFragment"
+        android:label="SearchVideoFragment">
+        <argument
+            android:name="isFolder"
+            android:defaultValue="false"
+            app:argType="boolean" />
+        <action
+            android:id="@+id/action_searchVideoFragment_to_videosFragment"
+            app:destination="@id/videosFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.video.avd.ui.fragments.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings_downloads">
+    </fragment>
+    <dialog
+        android:id="@+id/rateUs"
+        android:name="com.video.avd.ui.fragments.RateUsFragment"
+        android:label="RateUsFragment" />
+    <fragment
+        android:id="@+id/propanel"
+        android:name="com.video.avd.ui.inapp.DialogFragments"
+        android:label="ProPanel" >
+        <action
+            android:id="@+id/action_propanel_to_languagesSelectionFragment3"
+            app:destination="@id/languagesSelectionFragment3" />
+    </fragment>
+    <fragment
+        android:id="@+id/statusFragment"
+        android:name="com.video.avd.ui.status_saver.RecentFragment"
+        android:label="fragment_status"
+        tools:layout="@layout/fragment_status_videos" >
+        <argument
+            android:name="fromToolsFragment"
+            app:argType="boolean"
+            android:defaultValue="false"/>
+    </fragment>
+    <fragment
+        android:id="@+id/videosFragment"
+        android:name="com.video.avd.ui.videos.VideosFragment"
+        android:label="VideosFragment">
+        <argument
+            android:name="id"
+            app:argType="string" />
+        <argument
+            android:name="name"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_videosFragment_to_rateUs"
+            app:destination="@id/rateUs" />
+        <action
+            android:id="@+id/action_videosFragment_to_videosSortingDialog"
+            app:destination="@id/videosSortingDialog" />
+        <action
+            android:id="@+id/action_videosFragment_to_searchVideoFragment"
+            app:destination="@id/searchVideoFragment" />
+    </fragment>
+    <dialog
+        android:id="@+id/exitFragment"
+        android:name="com.video.avd.ui.fragments.ExitFragment"
+        android:label="fragment_exit"
+        tools:layout="@layout/fragment_exit" />
+    <fragment
+        android:id="@+id/statusSaverFragment"
+        android:name="com.video.avd.ui.status_saver.statusnew.StatusHomeFragment"
+        android:label="StatusSaverFragment"
+        tools:layout="@layout/fragment_status_saver">
+        <action
+            android:id="@+id/action_status_saver_to_whatswapp_guide"
+            app:destination="@id/whatsapp_guidance" />
+    </fragment>
+    <dialog
+        android:id="@+id/videosSortingDialog"
+        android:name="com.video.avd.ui.dialoges.videossorting.VideosSortingDialog"
+        android:label="fragment_videos_sorting_dialog"
+        tools:layout="@layout/fragment_videos_sorting_dialog" >
+        <action
+            android:id="@+id/action_videosSortingDialog_to_homeFragment1"
+            app:destination="@id/homeFragment1" />
+        <argument
+            android:name="listener"
+            app:argType="com.video.avd.ui.dialoges.videossorting.listners.OnSortChangedListner"
+            />
+        <argument
+            android:name="sortingType"
+            app:argType="integer"
+            app:nullable="false"
+            android:defaultValue="0"/>
+        <action
+            android:id="@+id/action_videosSortingDialog_to_videosFragment"
+            app:destination="@id/videosFragment" />
+    </dialog>
+    <fragment
+        android:id="@+id/download_guidance_fragment"
+        android:name="com.video.avd.ui.download_guidance.DownloadGuidanceHolderFragment"
+        tools:layout="@layout/fragment_download_guidance_holder">
+    </fragment>
+    <fragment
+        android:id="@+id/whatsapp_guidance"
+        android:name="com.video.avd.ui.status_saver.statusnew.guidance.WhatsappGuidanceHolderFragment"
+        tools:layout="@layout/fragment_whatsapp_guidance_holder">
+        <action
+            android:id="@+id/action_whatsapp_guide_to_status_saver"
+            app:destination="@id/statusSaverFragment"
+            app:popUpTo="@id/homeFragment1"/>
+    </fragment>
+    <action android:id="@+id/action_global_propanel"
+    app:destination="@id/propanel"/>
+    <fragment
+        android:id="@+id/historyFragment"
+        android:name="com.video.avd.ui.fragments.HistoryFragment"
+        android:label="HistoryFragment" >
+    </fragment>
+    <fragment
+        android:id="@+id/equalizerFragmentVideo"
+        android:name="com.video.avd.ui.equalizer.video.EqualizerFragmentVideo"
+        android:label="EqualizerFragmentVideo" />
+    <fragment
+        android:id="@+id/settingFragment2"
+        android:name="com.video.avd.ui.player.settings.SettingFragment"
+        android:label="fragment_setting"
+        tools:layout="@layout/fragment_setting" >
+        <action
+            android:id="@+id/action_settingFragment2_to_generalFragment"
+            app:destination="@id/generalFragment" />
+        <action
+            android:id="@+id/action_settingFragment2_to_videoSettingFragment"
+            app:destination="@id/videoSettingFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/generalFragment"
+        android:name="com.video.avd.ui.player.settings.GeneralFragment"
+        android:label="fragment_general"
+        tools:layout="@layout/fragment_general" >
+        <action
+            android:id="@+id/action_generalFragment_to_languagesSelectionFragment3"
+            app:destination="@id/languagesSelectionFragment3" />
+    </fragment>
+    <fragment
+        android:id="@+id/languagesSelectionFragment3"
+        android:name="com.video.avd.ui.languages.LanguagesSelectionFragment"
+        android:label="LanguagesSelectionFragment" />
+    <fragment
+        android:id="@+id/videoSettingFragment"
+        android:name="com.video.avd.ui.player.settings.VideoSettingFragment"
+        android:label="fragment_video_setting"
+        tools:layout="@layout/fragment_video_setting" />
+
+    <action android:id="@+id/action_global_statusSaverFragment"
+        app:destination="@id/statusSaverFragment" />
+
+    <fragment
+        android:id="@+id/fragmentDownloadQueue"
+        android:name="com.video.avd.ui.downloadermain.MainDownloaderFragment"
+        android:label="FragmentDownloadQueue" >
+        <argument
+            android:name="fromBrowser"
+            android:defaultValue="true"
+            app:argType="boolean"/>
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentDownloadHistory"
+        android:name="com.avd.ui.main.downloder_queue.ui.main.FragmentDownloadQueue"
+        android:label="FragmentDownloadHistory" >
+    </fragment>
+    <fragment
+        android:id="@+id/mainDownloaderFragment"
+        android:name="com.video.avd.ui.downloadermain.MainDownloaderFragment"
+        android:label="MainDownloaderFragment">
+        <argument
+            android:name="fromBrowser"
+            android:defaultValue="false"
+            app:argType="boolean"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/file_manager_fragment"
+        android:name="com.video.avd.ui.file_manager.FileManagerFragment"
+        tools:layout="@layout/fragment_file_manager">
+        <action
+            android:id="@+id/action_file_manager_to_directories_fragment"
+            app:destination="@id/file_manager_fragment_directories"
+            />
+<!--        <action-->
+<!--            android:id="@+id/action_file_manager_fragment_to_permission_fragment"-->
+<!--            app:destination="@id/permission_fragment" />-->
+    </fragment>
+
+    <fragment
+        android:id="@+id/file_manager_fragment_directories"
+        android:name="com.video.avd.ui.file_manager.FileManagerDirectoriesFragment"
+        tools:layout="@layout/fragment_file_manager_directories">
+        <argument
+            android:name="directoryPath"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue=""/>
+
+        <argument
+            android:name="directorySource"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue=""/>
+
+        <argument
+            android:name="hasFile"
+            app:argType="boolean"
+            android:defaultValue="true"/>
+
+        <action
+            android:id="@+id/action_directories_fragment_to_itself"
+            app:destination="@id/file_manager_fragment_directories"
+            />
+
+    </fragment>
+
+    <action android:id="@+id/action_global_file_manager_fragment_directories"
+        app:destination="@id/file_manager_fragment_directories"/>
+
+</navigation>

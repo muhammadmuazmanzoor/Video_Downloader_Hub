@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+
+        android:layout_marginTop="@dimen/_14sdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imageView"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_audio_new"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/RoundedSquare" />
+
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:fontFamily="@font/poppins_regular"
+            android:maxLines="2"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginEnd="25dp"
+            android:text="Name of song"
+            android:textColor="@color/brand_text_primary"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toStartOf="@+id/checkbox"
+            app:layout_constraintStart_toEndOf="@+id/imageView"
+            app:layout_constraintTop_toTopOf="@+id/imageView" />
+
+        <TextView
+            android:id="@+id/album"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="11sp"
+            android:text="benish"
+            android:textColor="@color/nonSelectedColor"
+            android:fontFamily="@font/poppins_light"
+            app:layout_constraintStart_toStartOf="@+id/name"
+            app:layout_constraintTop_toBottomOf="@+id/name" />
+
+
+        <LinearLayout
+            android:id="@+id/checkbox"
+            android:layout_height="wrap_content"
+            android:layout_width="0dip"
+            android:layout_weight=".20"
+            android:gravity="center"
+            android:layout_margin="@dimen/_5sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <CheckBox
+                android:id="@+id/bus_route_list_item_reminder"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:clickable="false"
+                android:buttonTint="@color/nonSelectedColor" />
+
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>

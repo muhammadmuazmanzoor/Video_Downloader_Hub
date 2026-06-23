@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:id="@+id/mainlayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bottom_sheet_background_black"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingVertical="@dimen/_6sdp">
+
+    <FrameLayout
+        android:id="@+id/bottomsheet_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/bottomsheet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/ic_playlist_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:padding="@dimen/_8sdp"
+                android:src="@drawable/ic_back_white"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_playlist_foldername"
+                android:layout_width="0dp"
+                app:layout_constraintWidth_percent="0.4"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:fontFamily="@font/montserrat_regular"
+                android:text="Folder name"
+                android:textColor="@color/white"
+                android:maxLines="1"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@id/ic_playlist_back"
+                app:layout_constraintStart_toEndOf="@id/ic_playlist_back"
+                app:layout_constraintTop_toTopOf="@id/ic_playlist_back" />
+
+            <ImageView
+                android:id="@+id/orderImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:layout_marginEnd="@dimen/_16sdp"
+                android:padding="@dimen/_8sdp"
+                android:foregroundGravity="center"
+                android:src="@drawable/ic_repeat_single"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvOrder"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toStartOf="@id/orderImage"
+                app:layout_constraintStart_toEndOf="@id/tv_playlist_foldername"
+                app:layout_constraintTop_toTopOf="@id/orderImage"
+                app:layout_constraintBottom_toBottomOf="@id/orderImage"
+                android:layout_marginEnd="-5dp"
+                android:gravity="end"
+                android:text="@string/repeat_current"
+                android:maxLines="2"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:textColor="@color/white" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_playlist"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:paddingBottom="@dimen/_45sdp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:layout_marginTop="@dimen/_6sdp"
+                app:layout_constraintTop_toBottomOf="@id/ic_playlist_back" />
+
+            <View
+                android:id="@+id/view2"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

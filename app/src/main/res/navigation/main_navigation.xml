@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_navigation"
+    app:startDestination="@+id/homeFragment">
+
+    <include app:graph="@navigation/video_nav_graph"/>
+
+
+    <argument
+        android:name="isFromPlayerToAlbum"
+        app:argType="boolean" />
+    <argument
+        android:name="isFromPlayerToArtist"
+        app:argType="boolean" />
+    <action
+        android:id="@+id/action_global_videosFragment"
+        app:destination="@id/videosFragment" />
+    <dialog
+        android:id="@+id/halfHourAdFreeFragment"
+        android:name="com.video.avd.ui.apppurchase.HalfHourAdFreeFragment"
+        android:label="HalfHourAdFreeFragment" />
+    <action android:id="@+id/action_global_halfHourAdFreeFragment"
+        app:destination="@id/halfHourAdFreeFragment"/>
+
+</navigation>

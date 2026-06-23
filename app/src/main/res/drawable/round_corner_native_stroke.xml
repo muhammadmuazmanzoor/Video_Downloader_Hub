@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Outer rectangle stroke -->
+    <item>
+        <shape>
+            <solid android:color="#00000000" /> <!-- Outer background color -->
+            <stroke
+                android:width="4dp"
+                android:color="#00000000" />
+            <corners android:radius="0dp" /> <!-- No rounded corners for the outer shape -->
+        </shape>
+    </item>
+
+    <!-- Inner rounded shape -->
+    <item
+        android:left="0dp"
+        android:right="0dp"
+        android:top="0dp"
+        android:bottom="0dp">
+        <shape>
+            <stroke
+                android:width="4dp"
+                android:color="#00000000" />
+            <solid android:color="#00000000" /> <!-- Transparent inner background -->
+            <corners android:radius="12dp" /> <!-- Inner rounded corners -->
+        </shape>
+    </item>
+
+</layer-list>
+
+

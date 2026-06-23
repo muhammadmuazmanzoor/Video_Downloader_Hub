@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_gravity="center"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <VideoView
+        android:id="@+id/video_full"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:layout_gravity="center"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp" />
+
+    <FrameLayout
+        android:id="@+id/videoViewWrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginBottom="@dimen/_15sdp">
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnRedit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_10sdp"
+            android:background="@drawable/roundedbgcolor"
+            android:textAllCaps="false"
+            android:text="Re-edit"
+            android:visibility="gone"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/ic_share_new_setting"/>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnShare"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_10sdp"
+            android:visibility="visible"
+            android:background="@drawable/roundedbgcolor"
+            android:textAllCaps="false"
+            android:text="Share"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/ic_share_new_setting"/>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnHome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_10sdp"
+            android:visibility="visible"
+            android:background="@drawable/roundedbgcolor"
+            android:textAllCaps="false"
+            android:text="Home"
+            android:layout_gravity="center_horizontal"/>
+    </LinearLayout>
+
+</LinearLayout>

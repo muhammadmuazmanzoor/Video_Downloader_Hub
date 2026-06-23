@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary_20">#204016A1</color>
+    <color name="colorPrimary">#8E5400</color>
+    <color name="colorPrimaryDark">#552800</color>
+    <color name="colorAccent">@color/gSelector_light</color>
+    <color name="colorAccentDark">@color/gSelector_light</color>
+    <color name="lightgreen">#1DB954</color>
+
+    <color name="colorPrimaryProxy">#64B5F6</color>
+    <color name="colorPrimaryDarkProxy">#2196F3</color>
+    <color name="colorAccentProxy">#355DC3</color>
+    <color name="colorAccentDarkProxy">#233E9F</color>
+
+    <color name="colorGreen">#D938BC1A</color>
+    <color name="colorGreendark">#D9176705</color>
+
+
+    <color name="color_gray">@color/brand_text_secondary</color>
+    <color name="gray">@color/brand_text_secondary</color>
+    <color name="gray_2.1">#9EA2AA</color>
+    <color name="color_gray_1">#F1F3F7</color>
+    <color name="color_gray_2">#7a7a7a</color>
+    <color name="color_gray_3">#71c4c9</color>
+    <color name="gray_dark">#616161</color>
+    <color name="gray_light">@color/brand_card_background_alt</color>
+    <color name="dark_transparent">#7a7a7a</color>
+
+    <color name="black_15">#26000000</color>
+    <color name="black_55">#8C000000</color>
+    <color name="black_85">#D9000000</color>
+    <color name="black">#0A0D13</color>
+
+    <color name="white_15">#26ffffff</color>
+    <color name="white_55">#8Cffffff</color>
+    <color name="white_85">#D9ffffff</color>
+    <color name="white">@color/brand_background</color>
+    <color name="transparentBlackColor">#D9121212</color>
+
+    <!-- Brand color tokens -->
+    <color name="brand_background">#FFFFFF</color>
+    <color name="brand_card_background">#E9E9E9</color>
+    <color name="brand_card_background_alt">#C7CAD1</color>
+    <color name="search">#F4F4F6</color>
+    <color name="search_stroke">#E7EAEF</color>
+    <color name="brand_surface_muted">#EFEFEF</color>
+    <color name="brand_text_primary">#0A0D13</color>
+    <color name="brand_text_secondary">#9EA2AA</color>
+    <color name="brand_accent">#F78145</color>
+    <color name="brand_selected">#F78145</color>
+    <color name="brand_gradient_start">#F32C2C</color>
+    <color name="brand_gradient_end">#F78145</color>
+
+    <color name="gSelector">@color/brand_gradient_start</color>
+    <color name="gSelector_light">@color/brand_accent</color>
+    <color name="card_bg">#E9E9E9</color>
+    <color name="card_stroke">#F4F4F6</color>
+    <color name="shimmer_placeholder">#E8E8EC</color>
+    <color name="shimmer_placeholder_accent">#D8DCE8</color>
+    <color name="gray_text">@color/brand_text_secondary</color>
+    <color name="primary_bg">@color/brand_background</color>
+
+
+</resources>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/backgroundnew"
+    android:background="@drawable/bg_item_preset"
+    android:layout_marginRight="10dp">
+
+    <TextView
+        android:id="@+id/textPreset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingBottom="3dp"
+        android:text="Custom"
+        android:textColor="@color/black"
+        android:textSize="15sp" />
+</RelativeLayout>

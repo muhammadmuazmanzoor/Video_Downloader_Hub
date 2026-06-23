@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cardview"
+            android:background="@drawable/bg_roundedview"
+            android:paddingVertical="10dp"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:paddingHorizontal="15dp">
+
+            <TextView
+                android:id="@+id/tv_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/language"
+                android:textColor="#ffff"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+<!--            <ImageView
+                android:id="@+id/close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_close"
+                android:padding="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tv_unit"
+                app:layout_constraintBottom_toBottomOf="@id/tv_unit"/>-->
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_dose_unit"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintHeight_default="wrap"
+                app:layout_constraintTop_toBottomOf="@id/tv_unit"
+                app:layout_constraintBottom_toTopOf="@id/btn_ok"
+                android:layout_marginTop="10dp"
+                tools:listitem="@layout/item_language"
+                />
+
+            <TextView
+                android:id="@+id/btn_ok"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:text="@string/ok"
+                android:textSize="@dimen/_12sdp"
+                android:fontFamily="@font/urbanist_semi_bold"
+                android:textColor="@color/gSelector_light"
+                android:padding="8dp"/>
+
+            <TextView
+                android:id="@+id/btn_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_ok"
+                android:text="@string/cancel"
+                android:textSize="@dimen/_12sdp"
+                android:fontFamily="@font/urbanist_semi_bold"
+                android:textColor="@color/brand_text_primary"
+                android:layout_marginEnd="30dp"
+                android:padding="8dp"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>

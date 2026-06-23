@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="historyItem"
+            type="com.avd.data.local.room.entity.HistoryItem" />
+        <variable
+            name="historyId"
+            type="String" />
+        <variable
+            name="historyListener"
+            type="com.avd.ui.component.adapter.HistoryListener" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constriantlayout"
+        android:onClick="@{(view) -> historyListener.onHistoryOpenClicked(view, historyId)}"
+        android:layout_width="match_parent"
+        android:background="@drawable/card_bg"
+        android:layout_margin="@dimen/_5sdp"
+        android:layout_height="wrap_content">
+
+<!--        <ImageView-->
+<!--            android:id="@+id/icon_bg"-->
+<!--            android:layout_width="@dimen/_43sdp"-->
+<!--            android:layout_height="@dimen/_43sdp"-->
+<!--            android:src="@drawable/ic_background_history"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintBottom_toTopOf="@+id/view"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
+
+
+        <View
+            android:id="@+id/view1"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:background="@drawable/round_bg_download"
+            android:backgroundTint="@color/card_stroke"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/bookmark_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="@font/poppins_regular"
+            android:maxLines="1"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:text="@{historyItem.title}"
+            tools:text="Facebook logn"
+            android:textColor="@color/brand_text_primary"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintEnd_toStartOf="@+id/imgSetting"
+            app:layout_constraintStart_toEndOf="@id/view1"
+            app:layout_constraintTop_toTopOf="@id/view1" />
+
+        <ImageView
+            android:id="@+id/icon_image"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            app:bitmap="@{historyItem.faviconBitmap()}"
+            android:src="@drawable/icon_facebook"
+            app:layout_constraintStart_toStartOf="@+id/view1"
+            app:layout_constraintTop_toTopOf="@id/view1"
+            app:layout_constraintEnd_toEndOf="@id/view1"
+            app:layout_constraintBottom_toBottomOf="@id/view1"/>
+
+        <TextView
+            android:id="@+id/url_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="@font/poppins_regular"
+            android:maxLines="1"
+            android:text="@{historyItem.url}"
+            tools:text="https://www.facebook.com"
+            android:textSize="@dimen/_10ssp"
+            android:textColor="#8A8380"
+            app:layout_constraintEnd_toEndOf="@+id/bookmark_text_view"
+            app:layout_constraintStart_toStartOf="@id/bookmark_text_view"
+            app:layout_constraintTop_toBottomOf="@id/bookmark_text_view"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgSetting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:tint="@color/brand_text_primary"
+            android:onClick="@{(view) -> historyListener.onMenuClicked(view, historyItem.id)}"
+            android:src="@drawable/ic_menu"
+            android:padding="@dimen/_5sdp"
+            app:layout_constraintBottom_toTopOf="@+id/view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+           android:layout_marginTop="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/url_text_view" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

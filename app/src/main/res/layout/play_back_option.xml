@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/_8sdp"
+    android:id="@+id/playbackmain"
+    android:visibility="gone"
+    android:background="@drawable/round_black_dark"
+    >
+
+
+    <ImageView
+        android:id="@+id/cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_close"
+        android:layout_margin="@dimen/_5sdp"
+        app:layout_constraintEnd_toStartOf="@+id/labeltext"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/brand_text_primary" />
+
+
+    <TextView
+        android:id="@+id/labeltext"
+        android:layout_width="@dimen/_150sdp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/continue_playing_from_where_you_stopped"
+        android:textSize="11sp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:textColor="@color/brand_text_primary"
+        app:layout_constraintEnd_toStartOf="@+id/divider"
+        app:layout_constraintBottom_toBottomOf="@+id/cancel"
+        app:layout_constraintStart_toEndOf="@+id/cancel"
+        app:layout_constraintTop_toTopOf="@+id/cancel" />
+
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="1dp"
+        android:layout_height="@dimen/_20sdp"
+        android:background="#535151"
+        app:layout_constraintEnd_toEndOf="@id/guide"
+        app:layout_constraintStart_toStartOf="@id/guide"
+        app:layout_constraintBottom_toBottomOf="@+id/labeltext"
+        app:layout_constraintTop_toTopOf="@+id/labeltext" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.70" />
+
+    <TextView
+        android:id="@+id/starttext"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/start_over"
+        android:gravity="center"
+        android:textColor="@color/gSelector"
+        android:textSize="12sp"
+        android:maxLines="1"
+        app:layout_constraintBottom_toBottomOf="@+id/divider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/divider"
+        app:layout_constraintTop_toTopOf="@+id/divider" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

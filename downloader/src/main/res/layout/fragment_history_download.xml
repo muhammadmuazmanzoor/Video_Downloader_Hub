@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.avd.ui.main.history.HistoryViewModel" />
+
+        <variable
+            name="adapter"
+            type="com.avd.ui.component.adapter.HistoryAdapter" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/history_container"
+        android:layout_width="match_parent"
+        android:background="@color/primary_bg"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/actionbar"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.08"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/wa_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginVertical="24dp"
+                android:layout_marginStart="16dp"
+                android:padding="10dp"
+                android:src="@drawable/ic_back"
+                android:tint="@color/brand_text_primary"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/brand_text_primary" />
+
+            <TextView
+                android:id="@+id/tvName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="@string/history"
+                android:textColor="@color/brand_text_primary"
+                android:textSize="17sp"
+                app:layout_constraintBottom_toBottomOf="@+id/wa_back"
+                app:layout_constraintStart_toEndOf="@+id/wa_back"
+                app:layout_constraintTop_toTopOf="@+id/wa_back" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/clear_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:tint="@color/brand_text_primary"
+                android:visibility="@{viewModel.historyItems.size > 0 ? View.VISIBLE : View.GONE}"
+                android:src="@drawable/ic_delete_history_web"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:padding="@dimen/_5sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/history_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:visibility="@{viewModel.isLoadingHistory() ? View.GONE : View.VISIBLE}"
+            app:items="@{viewModel.historyItems}"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/actionbar" />
+
+        <ProgressBar
+            android:layout_width="@dimen/browser_loading_size"
+            android:layout_height="@dimen/browser_loading_size"
+            android:visibility="@{viewModel.isLoadingHistory() ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/img"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_80sdp"
+            android:src="@drawable/empty_downloads"
+            android:visibility="@{viewModel.historyItems.size > 0 ? View.GONE : View.VISIBLE}"
+            android:layout_marginBottom="@dimen/_80sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/actionbar"/>
+
+
+        <TextView
+            android:id="@+id/nohistory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:text="@string/no_history"
+            android:textColor="@color/brand_text_primary"
+            android:textSize="@dimen/_14ssp"
+            android:visibility="@{viewModel.historyItems.size > 0 ? View.GONE : View.VISIBLE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="@dimen/_10sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/img" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

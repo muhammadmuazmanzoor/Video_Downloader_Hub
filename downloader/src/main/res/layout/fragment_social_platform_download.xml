@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:background="@color/brand_background">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            android:contentDescription="@string/cancel"
+            android:padding="8dp"
+            android:src="@drawable/ic_back"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/brand_text_primary" />
+
+        <TextView
+            android:id="@+id/tvToolbarTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_bold"
+            android:gravity="center"
+            android:textColor="@color/brand_text_primary"
+            android:textSize="17sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/ivToolbarPlatform"
+            app:layout_constraintStart_toEndOf="@id/btnBack"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Facebook" />
+
+        <ImageView
+            android:id="@+id/ivToolbarPlatform"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginEnd="16dp"
+            android:contentDescription="@null"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/icon_facebook" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:fillViewport="true"
+        android:paddingBottom="@dimen/_60sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/_12sdp"
+            android:paddingTop="@dimen/_8sdp">
+
+            <View
+                android:id="@+id/inputBackground"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_40sdp"
+                android:background="@drawable/round_corner_search"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/ivLinkIcon"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_link"
+                app:layout_constraintBottom_toBottomOf="@id/inputBackground"
+                app:layout_constraintStart_toStartOf="@id/inputBackground"
+                app:layout_constraintTop_toTopOf="@id/inputBackground"
+                app:tint="@color/brand_text_secondary" />
+
+            <EditText
+                android:id="@+id/etVideoLink"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="@dimen/_8sdp"
+                android:layout_marginEnd="@dimen/_12sdp"
+                android:background="@android:color/transparent"
+                android:fontFamily="@font/poppins_regular"
+                android:hint="@string/social_link_hint"
+                android:imeOptions="actionDone"
+                android:inputType="textUri"
+                android:singleLine="true"
+                android:textColor="@color/brand_text_primary"
+                android:textColorHint="@color/brand_text_secondary"
+                android:textSize="@dimen/text_small"
+                app:layout_constraintBottom_toBottomOf="@id/inputBackground"
+                app:layout_constraintEnd_toEndOf="@id/inputBackground"
+                app:layout_constraintStart_toEndOf="@id/ivLinkIcon"
+                app:layout_constraintTop_toTopOf="@id/inputBackground" />
+
+            <LinearLayout
+                android:id="@+id/actionButtonsRow"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/inputBackground">
+
+                <LinearLayout
+                    android:id="@+id/btnPaste"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginEnd="@dimen/_6sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_social_paste_button"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_clipboard"
+                        app:tint="@color/brand_text_primary" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_6sdp"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="@string/social_paste_here"
+                        android:textColor="@color/brand_text_primary"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/btnDownload"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginStart="@dimen/_6sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/gradient_bg"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_download"
+                        app:tint="@color/white" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_6sdp"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="@string/social_download_cta"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:textSize="13sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/videoProgressBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_6sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:indeterminate="true"
+                android:indeterminateTint="@color/brand_accent"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/actionButtonsRow" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/appCard"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_14sdp"
+                android:background="@drawable/bg_social_app_card"
+                android:padding="@dimen/_12sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/videoProgressBar">
+
+                <ImageView
+                    android:id="@+id/ivAppIcon"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:contentDescription="@null"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:src="@drawable/icon_facebook" />
+
+                <TextView
+                    android:id="@+id/tvAppName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:textColor="@color/brand_text_primary"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toStartOf="@id/btnOpenApp"
+                    app:layout_constraintStart_toEndOf="@id/ivAppIcon"
+                    app:layout_constraintTop_toTopOf="@id/ivAppIcon"
+                    tools:text="Facebook" />
+
+                <TextView
+                    android:id="@+id/tvAppSubtitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_regular"
+                    android:textColor="@color/brand_text_secondary"
+                    android:textSize="11sp"
+                    app:layout_constraintEnd_toStartOf="@id/btnOpenApp"
+                    app:layout_constraintStart_toStartOf="@id/tvAppName"
+                    app:layout_constraintTop_toBottomOf="@id/tvAppName"
+                    tools:text="Find the video from Facebook app." />
+
+                <TextView
+                    android:id="@+id/btnOpenApp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_social_open_chip"
+                    android:fontFamily="@font/poppins_medium"
+                    android:paddingHorizontal="@dimen/_12sdp"
+                    android:paddingVertical="@dimen/_6sdp"
+                    android:text="@string/social_open_app"
+                    android:textColor="@color/brand_text_primary"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <FrameLayout
+                android:id="@+id/flAdplace"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_14sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/appCard" />
+
+            <TextView
+                android:id="@+id/tvHowToTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:fontFamily="@font/poppins_bold"
+                android:text="@string/social_how_to_download_video"
+                android:textColor="@color/brand_text_primary"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/flAdplace" />
+
+            <include
+                android:id="@+id/step1"
+                layout="@layout/item_social_download_step"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_12sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvHowToTitle" />
+
+            <include
+                android:id="@+id/step2"
+                layout="@layout/item_social_download_step"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/step1" />
+
+            <include
+                android:id="@+id/step3"
+                layout="@layout/item_social_download_step"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/step2" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <View
+        android:id="@+id/progressloading"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#80000000"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/drawable/default_background_transparent.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <stroke android:color="#3E3E3E" android:width="2dp"/>
+    <solid android:color="@android:color/transparent" />
+    <corners android:radius="10dp" />
+</shape>

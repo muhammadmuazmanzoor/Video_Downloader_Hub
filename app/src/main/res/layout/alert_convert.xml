@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:background="@color/dark_mode"
+    android:paddingTop="@dimen/_10sdp"
+    android:paddingStart="@dimen/_20sdp"
+    android:paddingEnd="@dimen/_20sdp"
+    android:paddingBottom="@dimen/_40sdp">
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/video_cutter1"
+        android:fontFamily="@font/poppins_medium"
+        android:textColor="@color/brand_text_primary"
+        android:textSize="@dimen/_16sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_cancel" />
+
+    <ProgressBar
+        android:id="@+id/ProgressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/_6sdp"
+        android:layout_marginTop="@dimen/_30sdp"
+        android:indeterminate="false"
+        android:progress="0"
+        android:progressDrawable="@drawable/greenprogress"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
+    <TextView
+        android:id="@+id/generating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cutting"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:textColor="@color/brand_text_primary"
+        android:textSize="@dimen/_12sdp"
+        app:layout_constraintStart_toStartOf="@id/ProgressBar"
+        app:layout_constraintTop_toBottomOf="@+id/ProgressBar" />
+
+    <TextView
+        android:id="@+id/progressText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:text="%"
+        android:textColor="@color/brand_text_primary"
+        android:textSize="@dimen/_12sdp"
+        app:layout_constraintEnd_toEndOf="@+id/ProgressBar"
+        app:layout_constraintTop_toBottomOf="@+id/ProgressBar" />
+
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/trimming_video"
+        android:textColor="@color/video_cutter_video_generating_color"
+        android:textSize="@dimen/_12sdp"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/_30sdp"
+        app:layout_constraintTop_toBottomOf="@id/generating"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/txt_cancel"
+        android:layout_width="@dimen/_24sdp"
+        android:layout_height="@dimen/_24sdp"
+        android:layout_gravity="end"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="6dp"
+        android:src="@drawable/ic_close_pin"
+        android:textColor="@color/brand_text_primary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/_5sdp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_downloader_banner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:background="@drawable/bg_downloader_youtube"
+            android:paddingHorizontal="@dimen/_10sdp"
+            android:paddingVertical="@dimen/_9sdp"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <ImageView
+                android:id="@+id/ic_downloader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_downloader_banner"
+                app:layout_constraintBottom_toBottomOf="@id/desc"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tv_downloader"
+                app:tint="#EBF0FF" />
+
+
+            <TextView
+                android:id="@+id/tv_downloader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="@string/video_downloader"
+                android:textColor="@color/dark_mode"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintStart_toEndOf="@id/ic_downloader"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_regular"
+                android:text="@string/download_now_watch_offline"
+                android:textColor="@color/dark_mode"
+                android:textSize="10sp"
+                app:layout_constraintStart_toStartOf="@id/tv_downloader"
+                app:layout_constraintTop_toBottomOf="@id/tv_downloader" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>

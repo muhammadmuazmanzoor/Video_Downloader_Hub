@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/card_bg"
+    android:layout_margin="@dimen/_3sdp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="15dp"
+    >
+
+    <ImageView
+        android:id="@+id/radio_unit"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/ic_radio_unchecked"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv_unit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/radio_unit"
+        app:layout_constraintTop_toTopOf="@id/radio_unit"
+        app:layout_constraintBottom_toBottomOf="@id/radio_unit"
+        android:text="English"
+        android:layout_marginStart="5dp"
+        android:textSize="12sp"
+        android:textColor="#ffff"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

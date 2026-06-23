@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+        <string name="title_video">ビデオ</string>
+        <string name="title_progress">進行状況</string>
+        <string name="title_settings">設定</string>
+        <string name="browser_search_hint">「URLを検索または入力」</string>
+        <string name="dialog_video_title">ビデオが見つかりました:</string>
+        <string name="dialog_preview_video">ビデオをプレビュー</string>
+        <string name="dialog_download_video">ビデオをダウンロード</string>
+        <string name="dialog_download_cancel">キャンセル</string>
+        <string name="video_empty_message">まだビデオをダウンロードしていません。</string>
+        <string name="video_menu_rename">名前を変更</string>
+        <string name="video_menu_delete">削除</string>
+        <string name="video_menu_share">共有</string>
+        <string name="video_rename_title">ビデオの名前を変更</string>
+        <string name="video_rename_invalid">無効な名前です。もう一度試してください！</string>
+        <string name="video_rename_exist">この名前のビデオは既に存在します！</string>
+        <string name="video_share_message">デバイスにインストールされているビデオプレイヤーアプリがありません</string>
+        <string name="progress_empty_message">現在ダウンロード中のビデオはありません。</string>
+        <string name="settings_general" translatable="false">GENERAL</string>
+        <string name="settings_videos_folder">ビデオフォルダー</string>
+        <string name="settings_folder_path" translatable="false">folder path</string>
+        <string name="settings_clear_browser_cookies">ブラウザのクッキーをクリア</string>
+        <string name="settings_message_open_folder">デバイスにファイルエクスプローラーアプリがインストールされていません</string>
+        <string name="progress_menu_cancel">キャンセル</string>
+        <string name="app_download_channel_id" translatable="false">download_channel_id</string>
+        <string name="all_text_cancel">キャンセル</string>
+        <string name="progress_menu_pause">一時停止</string>
+        <string name="progress_menu_resume">再開</string>
+        <string name="download_link_label">ビデオURL</string>
+        <string name="view" translatable="false">View</string>
+        <string name="paste">貼り付け</string>
+        <string name="history">履歴</string>
+        <string name="share_link">リンクを共有</string>
+        <string name="desktop_mode">デスクトップモード</string>
+        <string name="searchbar_hint">検索</string>
+        <string name="settings">設定</string>
+        <string name="about_an_hour_ago">約1時間前</string>
+        <string name="remove">削除</string>
+        <string name="insert_your_regular_video">通常のビデオURLまたはM3U8リンクをここに貼り付けてください</string>
+        <string name="title_media_link">URLでダウンロード</string>
+        <string name="clear_history">履歴をクリア</string>
+        <string name="proxy">プロキシ</string>
+        <string name="proxies">プロキシ</string>
+        <string name="proxies_unavailable">プロキシが利用できません</string>
+        <string name="loading_image_view">画像ビューを読み込み中</string>
+        <string name="video_menu_open_in_folder">フォルダで開く</string>
+        <string name="help">ヘルプ</string>
+        <string name="ok">OK</string>
+        <string name="new_tab">新しいタブ</string>
+        <string name="cookies_cleared">クッキーがクリアされました</string>
+        <string name="download_started">ビデオのダウンロードが正常に開始されました!!!</string>
+        <string name="more_tabs_in_next_updates">次のアップデートでより多くのタブが許可されます</string>
+        <string name="download_open_in_app">アプリで開く</string>
+        <string name="download_watch_in_app">ビデオを見る</string>
+        <string name="ad_blocker">広告ブロッカー</string>
+        <string name="desktop_mode_on">デスクトップモードON</string>
+        <string name="desktop_mode_off">デスクトップモードOFF</string>
+        <string name="player_resolution">デフォルト</string>
+        <string name="video_menu_open_with">…で開く</string>
+        <string name="video_found">ビデオが見つかりました</string>
+        <string name="show_video_found_alert">ビデオダウンロードダイアログを表示</string>
+        <string name="dontshow">再び表示しない</string>
+        <string name="whatshould">どうしますか？</string>
+        <string name="show_action_button">ビデオダウンロードボタンを表示</string>
+        <string name="dialog_preview_video_force">プレビュー動画を強制</string>
+        <string name="browser_s_icon">ブラウザのアイコン</string>
+        <string name="open_download_dialog_or_restart">ダウンロードダイアログを開くか、ビデオチェックを再起動</string>
+        <string name="stop_and_save">停止して保存</string>
+        <string name="video_title_edit">ビデオタイトル編集</string>
+        <string name="menu">メニュー</string>
+        <string name="home">ホーム</string>
+        <string name="powerSave">省電力モードが検出されました！\nビデオ検出が機能しません、省電力モードをオフにしてください！</string>
+        <string name="warning">警告！省電力モード。</string>
+        <string name="download_text">ダウンロード</string>
+        <string name="check_every_request_on_video">すべてのリクエストをビデオで確認</string>
+        <string name="find_videos_by_url">URLでビデオを検索</string>
+        <string name="dark_mode">ダークモード</string>
+        <string name="found_videos_from">%1$s からビデオを見つけました</string>
+        <string name="title">タイトル</string>
+        <string name="ads_detection_treshold">広告検出しきい値: %1$s</string>
+        <string name="thread_count_for_regular_files">通常ファイルのスレッド数: %1$s</string>
+        <string name="thread_count_for_hls_and_mpd">HLSおよびMPDのスレッド数: %1$s</string>
+        <string name="error_template">エラー: %1$s</string>
+        <string name="not_available">N/A</string>
+        <string name="download_finished_template">%1$s • %2$s</string>
+        <string name="download_queued_template">%1$s/%2$s • %3$s</string>
+        <string name="downloading_metadata">メタデータをダウンロード中</string>
+        <string name="downloads">ダウンロード</string>
+        <string name="stopped">停止</string>
+        <string name="pending">保留中</string>
+        <string name="waiting_for_network">ネットワーク待機中</string>
+
+        <string name="download_location">ダウンロード場所</string>
+        <string name="all_video_downloader">ダウンローダー</string>
+        <string name="upgrade_to_premium">プレミアムにアップグレード</string>
+        <string name="remove_all_ads">すべての広告を削除</string>
+        <string name="download_with_wi_fi_only">Wi-Fiのみでダウンロード</string>
+        <string name="change_language">言語を変更</string>
+        <string name="share_app">アプリを共有</string>
+        <string name="rate_us">評価する</string>
+        <string name="privacy_policy">プライバシーポリシー</string>
+        <string name="social">ソーシャル</string>
+        <string name="select_download_quality">ダウンロード品質を選択</string>
+        <string name="my_downloads">マイダウンロード</string>
+</resources>

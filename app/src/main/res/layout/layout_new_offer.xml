@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/dialogue_round_offer"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/cross"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/ic_cross_offer"
+        android:padding="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_8sdp"
+      />
+
+    <TextView
+        android:id="@+id/tv_grab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/cross"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="Grab this Deal!"
+        android:fontFamily="@font/poppins_bold"
+        android:textColor="@color/dark_mode"
+        android:textSize="@dimen/_16ssp"/>
+
+    <TextView
+        android:id="@+id/tv_get"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/tv_grab"
+        android:text="   Get"
+        android:layout_marginTop="@dimen/_12sdp"
+        app:layout_constraintTop_toBottomOf="@id/tv_grab"
+        android:textColor="@color/dark_mode"
+        android:fontFamily="@font/poppins_medium"
+        android:textSize="@dimen/_16ssp"/>
+
+    <TextView
+        android:id="@+id/tv_off"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/tv_get"
+        android:text=" 60% OFF"
+        android:textColor="#EA4335"
+        app:layout_constraintTop_toTopOf="@id/tv_get"
+        android:fontFamily="@font/poppins_medium"
+        android:textSize="@dimen/_16ssp"/>
+
+    <TextView
+        android:id="@+id/tv_upgrade"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Upgrade Your Experience"
+        app:layout_constraintTop_toBottomOf="@id/tv_get"
+        android:textColor="@color/dark_mode"
+        android:fontFamily="@font/poppins_medium"
+        android:textSize="@dimen/_13ssp"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/tv_upgrade"
+        app:layout_constraintEnd_toStartOf="@id/tv_upgrade"
+        android:src="@drawable/wheat_left"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_5sdp"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/tv_upgrade"
+        app:layout_constraintStart_toEndOf="@id/tv_upgrade"
+        android:src="@drawable/wheat_right"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_5sdp"/>
+
+    <TextView
+        android:id="@+id/tv_ad_free"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/tv_upgrade"
+        app:layout_constraintTop_toBottomOf="@id/tv_upgrade"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:text="Ad-Free Experience"
+        android:textColor="@color/dark_mode"
+        android:fontFamily="@font/poppins_medium"
+        android:textSize="@dimen/_10ssp"/>
+
+    <ImageView
+        android:layout_width="@dimen/_10sdp"
+        android:layout_height="@dimen/_10sdp"
+        android:src="@drawable/ic_tick_playlist"
+        app:layout_constraintEnd_toStartOf="@id/tv_ad_free"
+        android:layout_marginEnd="@dimen/_10sdp"
+        app:layout_constraintTop_toTopOf="@id/tv_ad_free"
+        app:layout_constraintBottom_toBottomOf="@id/tv_ad_free"
+        app:tint="#EA4335" />
+
+    <TextView
+        android:id="@+id/tv_unlock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/tv_ad_free"
+        app:layout_constraintTop_toBottomOf="@id/tv_ad_free"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:text="Unlock all features"
+        android:textColor="@color/dark_mode"
+        android:fontFamily="@font/poppins_medium"
+        android:textSize="@dimen/_10ssp"/>
+
+    <ImageView
+        android:layout_width="@dimen/_10sdp"
+        android:layout_height="@dimen/_10sdp"
+        android:src="@drawable/ic_tick_playlist"
+        android:layout_marginEnd="@dimen/_10sdp"
+        app:layout_constraintEnd_toStartOf="@id/tv_unlock"
+        app:layout_constraintTop_toTopOf="@id/tv_unlock"
+        app:layout_constraintBottom_toBottomOf="@id/tv_unlock"
+        app:tint="#EA4335" />
+
+    <TextView
+        android:id="@+id/tv_unlimited"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/tv_unlock"
+        app:layout_constraintTop_toBottomOf="@id/tv_unlock"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:text="Unlimited Downloads"
+        android:textColor="@color/dark_mode"
+        android:fontFamily="@font/poppins_medium"
+        android:textSize="@dimen/_10ssp"/>
+
+    <ImageView
+        android:layout_width="@dimen/_10sdp"
+        android:layout_height="@dimen/_10sdp"
+        android:src="@drawable/ic_tick_playlist"
+        android:layout_marginEnd="@dimen/_10sdp"
+        app:layout_constraintEnd_toStartOf="@id/tv_unlimited"
+        app:layout_constraintTop_toTopOf="@id/tv_unlimited"
+        app:layout_constraintBottom_toBottomOf="@id/tv_unlimited"
+        app:tint="#EA4335" />
+
+    <TextView
+        android:id="@+id/tv_offer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_unlimited"
+        android:layout_marginTop="@dimen/_14sdp"
+        android:text="First Month RS 100(RS 3.6/Day)"
+        android:textColor="@color/dark_mode"
+        android:fontFamily="@font/poppins_bold"
+        android:textSize="@dimen/_11ssp"/>
+
+
+
+    <TextView
+        android:id="@+id/btn_get"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:background="@drawable/bg_roundedview"
+        android:backgroundTint="#EA4335"
+        android:fontFamily="@font/poppins_semibold"
+        android:gravity="center"
+        android:text="Get it Now"
+        android:textColor="@color/brand_text_primary"
+        android:textSize="@dimen/_14ssp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginHorizontal="@dimen/_15sdp"
+        app:layout_constraintTop_toBottomOf="@id/tv_offer"/>
+
+    <TextView
+        android:id="@+id/tv_discount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_get"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:text="Then Rs 200/month, auto renew, cancel anytime."
+        android:textColor="#7E7E7E"
+        android:fontFamily="@font/poppins_regular"
+        android:textSize="@dimen/_9ssp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_17sdp"
+        app:layout_constraintTop_toBottomOf="@id/tv_discount"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

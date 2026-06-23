@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/share_url"
+        android:icon="@drawable/ic_share_web"
+        android:title="Share"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/history"
+        android:icon="@drawable/ic_history"
+        android:title="History"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/copy_url"
+        android:icon="@drawable/ic_copy_link"
+        android:title="Copy link"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/bookmark"
+        android:icon="@drawable/ic_bookmark"
+        android:title="Bookmarks"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/add_bookmark"
+        android:icon="@drawable/ic_addbookmark"
+        android:title="Add Bookmark"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/tutorial"
+        android:icon="@drawable/ic_how_use"
+        android:title="How to use"
+        app:showAsAction="always"/>
+</menu>

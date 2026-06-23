@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/_8sdp"
+    android:background="@color/primary_bg"
+    tools:context=".ui.languages.LanguagesSelectionFragment">
+
+    <ImageView
+        android:id="@+id/imageView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:padding="@dimen/_5sdp"
+        android:visibility="gone"
+        android:src="@drawable/ic_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/black" />
+
+    <TextView
+        android:id="@+id/textView19"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:paddingVertical="@dimen/_5sdp"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="@string/languages"
+        android:textColor="@color/brand_text_primary"
+        android:textSize="@dimen/_14ssp"
+        app:layout_constraintStart_toEndOf="@+id/imageView9"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/textView20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/round_onboarding_button"
+        android:backgroundTint="@color/gSelector"
+        android:clickable="true"
+        android:focusable="true"
+        android:fontFamily="@font/poppins_semibold"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="@dimen/_10sdp"
+        android:paddingTop="@dimen/_3sdp"
+        android:paddingBottom="@dimen/_2sdp"
+        android:text="Next"
+        android:textColor="@color/brand_text_primary"
+        android:textSize="@dimen/_13ssp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/textView19"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textView19"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/anim"
+        android:layout_width="@dimen/_70sdp"
+        android:layout_height="@dimen/_70sdp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView20"
+        app:layout_constraintEnd_toEndOf="@+id/textView20"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="@+id/textView20"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        android:scaleType="centerCrop"
+        app:lottie_rawRes="@raw/tap_lighter_blue" />
+    <TextView
+        android:id="@+id/textView21"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/round_onboarding_button"
+        android:backgroundTint="@color/unslected"
+        android:clickable="true"
+        android:focusable="true"
+        android:fontFamily="@font/poppins_semibold"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="@dimen/_10sdp"
+        android:paddingTop="@dimen/_3sdp"
+        android:paddingBottom="@dimen/_2sdp"
+        android:text="@string/next"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_13ssp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView19"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textView19"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <View
+        android:id="@+id/view5"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView9" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_language"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginBottom="@dimen/_7sdp"
+        app:layout_constraintBottom_toTopOf="@+id/bottomad"
+        app:layout_constraintTop_toBottomOf="@id/textView19"
+        app:layout_constraintVertical_bias="1.0"
+        tools:layout_editor_absoluteX="0dp"
+        tools:listitem="@layout/item_language_selection" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/bottomad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmer_view_container"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_5sdp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shimmer_auto_start="true"
+            app:shimmer_duration="1500">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_250sdp">
+
+                <View
+                    android:id="@+id/shimmer_media"
+                    android:layout_width="0dp"
+                    android:layout_height="190dp"
+                    android:layout_margin="@dimen/_10sdp"
+                    android:background="#DDDDDD"
+                    app:layout_constraintBottom_toTopOf="@+id/shimmer_cta"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <View
+                    android:id="@+id/shimmer_ad_label"
+                    android:layout_width="@dimen/_18sdp"
+                    android:layout_height="@dimen/_18sdp"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:background="#DDDDDD"
+                    app:layout_constraintBottom_toTopOf="@+id/shimmer_media"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <View
+                    android:id="@+id/shimmer_title"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_15sdp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="@dimen/_50sdp"
+                    android:background="#DDDDDD"
+                    app:layout_constraintBottom_toTopOf="@+id/shimmer_media"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/shimmer_ad_label"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <View
+                    android:id="@+id/shimmer_cta"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_43sdp"
+                    android:layout_margin="@dimen/_10sdp"
+                    android:background="#DDDDDD"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
+        <com.google.android.gms.ads.nativead.NativeAdView
+            android:id="@+id/adViewLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_5sdp"
+            android:background="@color/card_stroke"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_250sdp">
+
+                <com.google.android.gms.ads.nativead.MediaView
+                    android:id="@+id/Ad_image"
+                    android:layout_width="0dp"
+                    android:layout_height="190dp"
+                    android:layout_margin="@dimen/_10sdp"
+                    android:padding="@dimen/_5sdp"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitXY"
+                    app:layout_constraintBottom_toTopOf="@+id/cta"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <TextView
+                    android:id="@+id/ad_notification_view"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_18sdp"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:background="@drawable/adsymbol_shape"
+                    android:backgroundTint="@color/gSelector_light"
+                    android:gravity="center"
+                    android:text="AD"
+                    android:textColor="@color/brand_text_primary"
+                    android:layout_marginVertical="@dimen/_3sdp"
+                    android:textSize="@dimen/_9ssp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/Ad_image"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <TextView
+                    android:id="@+id/primary"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_50sdp"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/poppins_regular"
+                    android:maxLines="1"
+                    android:textColor="@color/brand_text_primary"
+                    android:textSize="@dimen/_11ssp"
+                    app:layout_constraintBottom_toTopOf="@+id/Ad_image"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/ad_notification_view"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/ad_body"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/poppins_medium"
+                    android:maxLines="2"
+                    android:textColor="#A7A7A7"
+                    android:textSize="13sp"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toTopOf="@+id/cta"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/primary"
+                    app:layout_constraintTop_toBottomOf="@+id/primary" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/cta"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_43sdp"
+                    android:layout_margin="@dimen/_10sdp"
+                    android:background="@drawable/native_ad_button"
+                    android:backgroundTint="@color/gSelector_light"
+                    android:fontFamily="@font/poppins_regular"
+                    android:gravity="center"
+                    android:padding="@dimen/_4sdp"
+                    android:textColor="@color/brand_text_primary"
+                    android:textSize="@dimen/_14ssp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.gms.ads.nativead.NativeAdView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/langLoading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#66000000"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="parent">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#66000000"
+            android:clickable="true"
+            android:focusable="true" />
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottieAnimationView"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_marginBottom="@dimen/_50sdp"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/load_lang" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:text="@string/loading"
+            android:textColor="@color/brand_text_primary"
+            android:textSize="@dimen/_14ssp"
+            app:layout_constraintEnd_toEndOf="@+id/lottieAnimationView"
+            app:layout_constraintStart_toStartOf="@+id/lottieAnimationView"
+            app:layout_constraintTop_toBottomOf="@+id/lottieAnimationView" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

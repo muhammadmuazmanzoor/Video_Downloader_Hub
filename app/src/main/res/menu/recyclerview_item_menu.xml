@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/share_item"
+        android:title="Share"
+        android:fontFamily="@font/montserrat_regular"
+        />
+    <item
+        android:id="@+id/delete_item"
+        android:title="Delete"
+        android:fontFamily="@font/montserrat_regular"
+        />
+
+    <item
+        android:id="@+id/addtoplaylist"
+        android:title="@string/add_to_playlist"
+        android:fontFamily="@font/montserrat_regular"
+        />
+
+</menu>

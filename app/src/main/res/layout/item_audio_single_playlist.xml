@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout"
+    android:layout_marginHorizontal="@dimen/_15sdp"
+    android:layout_marginTop="@dimen/_16sdp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/songData"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toStartOf="@+id/songOptions"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imageView"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_artist_new"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/RoundedSquare" />
+
+
+        <TextView
+            android:id="@+id/songTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:ellipsize="end"
+            android:ems="11"
+            android:fontFamily="@font/poppins_regular"
+            android:maxLines="1"
+            android:text="Lorem ipsum"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            app:layout_constraintStart_toEndOf="@id/imageView"
+            app:layout_constraintTop_toTopOf="@id/imageView" />
+
+        <TextView
+            android:id="@+id/songArtistName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:ems="8"
+            android:fontFamily="@font/poppins_light"
+            android:maxLines="1"
+            android:text="Lorem ipsum"
+            android:textColor="@color/nonSelectedColor"
+            android:textSize="11sp"
+            app:layout_constraintStart_toStartOf="@id/songTitle"
+            app:layout_constraintTop_toBottomOf="@id/songTitle" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/anchorView"
+        android:layout_width="1dp"
+        android:layout_height="1dp"
+        android:layout_marginEnd="@dimen/_8sdp"
+        app:layout_constraintBottom_toBottomOf="@id/songOptions"
+        app:layout_constraintEnd_toStartOf="@id/songOptions"
+        app:layout_constraintTop_toTopOf="@id/songOptions" />
+
+    <ImageView
+        android:id="@+id/songOptions"
+        android:layout_width="@dimen/_20sdp"
+        android:layout_height="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:src="@drawable/ic_menu"
+        app:tint="@color/nonSelectedColor"
+        app:layout_constraintBottom_toBottomOf="@id/songData"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/songData" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

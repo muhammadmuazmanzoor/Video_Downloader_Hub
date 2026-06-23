@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin">
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_14sdp"
+        android:text="Enter network URL"
+        android:textColor="@color/black"
+        android:textSize="14dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/et_url"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:hint="@string/https_google_com_example_mkv"
+        app:layout_constraintStart_toStartOf="@+id/textView2"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <TextView
+        android:id="@+id/tvInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="e.g. Youtube, https://, http://"
+        android:textColor="@color/blue"
+        app:layout_constraintStart_toStartOf="@+id/et_url"
+        app:layout_constraintTop_toBottomOf="@+id/et_url" />
+
+<!--    <TextView-->
+<!--        android:id="@+id/cancel"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="@string/cancel"-->
+<!--        android:textColor="@color/blue"-->
+<!--        android:layout_margin="@dimen/_20sdp"-->
+<!--        android:textStyle="bold"-->
+<!--        app:layout_constraintEnd_toStartOf="@+id/ok"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/textView4" />-->
+
+
+<!--    <TextView-->
+<!--        android:id="@+id/ok"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="@string/ok"-->
+<!--        android:textColor="@color/blue"-->
+<!--        android:layout_margin="@dimen/_20sdp"-->
+<!--        android:textStyle="bold"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/textView4" />-->
+
+</androidx.constraintlayout.widget.ConstraintLayout>

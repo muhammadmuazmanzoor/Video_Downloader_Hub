@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:paddingHorizontal="16dp"
+    android:paddingVertical="8dp">
+
+    <ImageView
+        android:id="@+id/tab_icon"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_marginEnd="6dp"
+        android:src="@drawable/circular_progress" />
+
+    <TextView
+        android:id="@+id/tab_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:text="In Progress"
+        android:textColor="@color/gray_text"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+</LinearLayout>

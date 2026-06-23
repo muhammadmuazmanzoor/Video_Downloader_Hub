@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/videoFoundSize"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="@color/primaryColor"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/videoFoundCheck"
+            app:layout_constraintBottom_toBottomOf="@id/videoFoundCheck"
+            android:gravity="center_vertical"
+            android:layout_marginStart="2dp" />
+
+        <TextView
+            android:id="@+id/videoFoundName"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:ellipsize="end"
+            android:singleLine="true"
+            app:layout_constraintStart_toEndOf="@id/videoFoundSize"
+            app:layout_constraintTop_toTopOf="@id/videoFoundCheck"
+            app:layout_constraintBottom_toBottomOf="@id/videoFoundCheck"
+            android:layout_marginStart="10dp"
+            android:gravity="center_vertical" />
+
+        <TextView
+            android:id="@+id/videoFoundExt"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:layout_constraintStart_toEndOf="@id/videoFoundName"
+            app:layout_constraintTop_toTopOf="@id/videoFoundCheck"
+            app:layout_constraintBottom_toBottomOf="@id/videoFoundCheck"
+            android:gravity="center_vertical" />
+
+        <CheckBox
+            android:id="@+id/videoFoundCheck"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/videoFoundExpand" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/videoFoundExpand"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/videoFoundCheck"
+            android:paddingBottom="8dp">
+
+            <ProgressBar
+                android:id="@+id/videoFoundExtractDetailsProgress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/videoFoundDetailsBarrier"
+                android:visibility="gone" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/videoFoundDetailsText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/videoFoundDetailsBarrier"
+                android:visibility="gone"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp" />
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/videoFoundDetailsBarrier"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="videoFoundDetailsText,videoFoundExtractDetailsProgress" />
+
+            <com.video.avd.utils.CustomButton
+                android:id="@+id/videoFoundDetailsBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/details"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textSize="12sp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/videoFoundRename"
+                app:layout_constraintTop_toBottomOf="@id/videoFoundDetailsBarrier"
+                app:layout_constraintHorizontal_chainStyle="packed" />
+
+            <com.video.avd.utils.CustomButton
+                android:id="@+id/videoFoundRename"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/rename"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@id/videoFoundDetailsBtn"
+                app:layout_constraintEnd_toStartOf="@id/videoFoundDownload"
+                app:layout_constraintTop_toBottomOf="@id/videoFoundDetailsBarrier"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="8dp" />
+
+            <com.video.avd.utils.CustomButton
+                android:id="@+id/videoFoundDownload"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/download"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@id/videoFoundRename"
+                app:layout_constraintEnd_toStartOf="@id/videoFoundDelete"
+                app:layout_constraintTop_toBottomOf="@id/videoFoundDetailsBarrier"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="8dp" />
+
+            <com.video.avd.utils.CustomButton
+                android:id="@+id/videoFoundDelete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/delete"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@id/videoFoundDownload"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/videoFoundDetailsBarrier"
+                android:layout_marginTop="5dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

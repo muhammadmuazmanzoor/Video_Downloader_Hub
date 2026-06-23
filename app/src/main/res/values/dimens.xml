@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="exo_styled_bottom_bar_time_padding">10dp</dimen>
+    <dimen name="activity_vertical_margin">5dp</dimen>
+    <dimen name="activity_horizontal_margin">5dp</dimen>
+
+
+    <dimen name="banner_height">55dp</dimen>
+    <dimen name="video_item_margin">13dp</dimen>
+    <dimen name="video_item_image_width">100dp</dimen>
+    <dimen name="video_item_image_height">72dp</dimen>
+    <dimen name="video_item_image_margin">8dp</dimen>
+    <dimen name="video_item_card_corner_radius">8dp</dimen>
+    <dimen name="video_item_time_margin">3dp</dimen>
+    <dimen name="video_item_time_text_size">11sp</dimen>
+    <dimen name="video_item_title_width">0dp</dimen>
+    <dimen name="video_item_title_margin_start">15dp</dimen>
+    <dimen name="video_item_title_margin_end">25dp</dimen>
+    <dimen name="video_item_title_text_size">16sp</dimen>
+    <dimen name="video_item_menu_height">0dp</dimen>
+    <dimen name="video_item_menu_margin">10dp</dimen>
+    <dimen name="video_item_menu_padding">15dp</dimen>
+
+
+    <dimen name="activity_horizontal_margin_private">16dp</dimen>
+    <dimen name="activity_vertical_margin_private">8dp</dimen>
+    <dimen name="navigation_icon_size">24dp</dimen>
+    <dimen name="navigation_icon_margin">24dp</dimen>
+    <dimen name="title_text_size">16sp</dimen>
+    <dimen name="play_icon_size">72dp</dimen>
+    <dimen name="icon_size">24dp</dimen>
+    <dimen name="button_text_margin_top">8dp</dimen>
+    <dimen name="detail_bottom_bar">64dp</dimen>
+
+
+    <dimen name="activity_horizontal_margin_private_detail">16dp</dimen>
+    <dimen name="activity_vertical_margin_private_detail">32dp</dimen>
+    <dimen name="icon_size_private_detail">48dp</dimen>
+    <dimen name="title_text_size_private_detail">16sp</dimen>
+
+    <dimen name="videoThumbWidth">111dp</dimen>
+    <dimen name="title_text_size_detail">24sp</dimen>
+    <dimen name="viewpager_next_item_visible">26dp</dimen>
+    <dimen name="viewpager_current_item_horizontal_margin">42dp</dimen>
+    <dimen name="dots_margin_top">@dimen/_7sdp</dimen>
+    <dimen name="view_pager_padding_bottom">@dimen/_1sdp</dimen>
+    <dimen name="list_item_spacing">16dp</dimen>
+    <dimen name="list_item_spacing_half">8dp</dimen>
+    <dimen name="_12sdp">12dp</dimen>
+
+
+</resources>

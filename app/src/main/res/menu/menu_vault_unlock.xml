@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/forgetPin"
+        android:fontFamily="@font/montserrat_regular"
+        android:title="@string/forget_pin"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/disclaimer"
+        android:fontFamily="@font/montserrat_regular"
+        android:title="@string/disclaimer"
+        app:showAsAction="never" />
+</menu>

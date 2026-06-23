@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_rounded_cardview_white"
+    android:layout_marginTop="@dimen/_5sdp">
+    <ImageView
+        android:id="@+id/bg"
+        android:layout_width="0dp"
+        app:layout_constraintWidth_percent="0.7"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="268:293"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/default_bg"/>
+    <ImageView
+        android:id="@+id/appicon"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="@dimen/_50sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/app_icon"/>
+    <ImageView
+        android:id="@+id/img"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="583:342"
+        app:layout_constraintTop_toBottomOf="@+id/editText"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="@dimen/_25sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/default_browser"/>
+
+    <TextView
+        android:id="@+id/editText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/_11ssp"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:text="@string/browser_detail"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_margin="@dimen/_15sdp"
+        android:paddingHorizontal="@dimen/_15sdp"
+        android:fontFamily="@font/poppins_regular"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appicon" />
+
+    <TextView
+        android:id="@+id/btnNext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/next"
+        android:fontFamily="@font/poppins_semibold"
+        android:textColor="@color/brand_text_primary"
+        android:gravity="center"
+        android:layout_margin="@dimen/_20sdp"
+        android:textSize="@dimen/_13ssp"
+        android:background="@drawable/round_corner_native"
+        android:backgroundTint="@color/lightgreen"
+        android:paddingVertical="@dimen/_8sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img" />
+
+    <TextView
+        android:id="@+id/btnLater"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Later"
+        android:fontFamily="@font/poppins_regular"
+        android:textColor="#979797"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:layout_marginHorizontal="@dimen/_20sdp"
+        android:textSize="@dimen/_10ssp"
+        android:paddingVertical="@dimen/_8sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnNext" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

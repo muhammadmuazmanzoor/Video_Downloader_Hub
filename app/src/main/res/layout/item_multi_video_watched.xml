@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <androidx.constraintlayout.widget.ConstraintLayout
+
+        android:layout_marginTop="@dimen/_14sdp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.45" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/main_image"
+            android:layout_width="0dp"
+            android:layout_height="90dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/guide1"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+
+            <com.video.avd.utils.CustomImageView
+                android:id="@+id/imageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:scaleType="fitXY"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:visibility="invisible"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/one_round_corner"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/imageView">
+
+                <TextView
+                    android:id="@+id/time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="3dp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:textColor="@color/brand_text_primary"
+                    android:textSize="11sp"
+                    android:text="93%"
+                    android:drawablePadding="@dimen/_3sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:fontFamily="@font/poppins_regular"
+            android:maxLines="2"
+            android:layout_marginEnd="25dp"
+            android:text="Title of the video kdk kdkdk kdkd"
+            android:textColor="@color/brand_text_primary"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toStartOf="@+id/checkbox"
+            app:layout_constraintStart_toEndOf="@+id/main_image"
+            app:layout_constraintTop_toTopOf="@+id/main_image" />
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:textSize="11sp"
+            android:textColor="@color/nonSelectedColor"
+            android:fontFamily="@font/poppins_light"
+            app:layout_constraintStart_toStartOf="@+id/name"
+            app:layout_constraintTop_toBottomOf="@+id/name" />
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="1.5dp"
+            android:layout_height="10dp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:background="@color/nonSelectedColor"
+            app:layout_constraintTop_toTopOf="@+id/date"
+            app:layout_constraintBottom_toBottomOf="@+id/date"
+            app:layout_constraintStart_toEndOf="@+id/date" />
+
+
+        <TextView
+            android:id="@+id/size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:textSize="11sp"
+            android:fontFamily="@font/poppins_light"
+            android:textColor="@color/nonSelectedColor"
+            app:layout_constraintTop_toTopOf="@+id/view"
+            app:layout_constraintBottom_toBottomOf="@+id/view"
+            app:layout_constraintStart_toEndOf="@+id/view" />
+        <LinearLayout
+            android:id="@+id/checkbox"
+            android:layout_height="wrap_content"
+            android:layout_width="0dip"
+            android:layout_weight=".20"
+            android:gravity="center"
+            android:layout_margin="@dimen/_5sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <CheckBox
+                android:id="@+id/bus_route_list_item_reminder"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:clickable="false"
+                android:buttonTint="@color/nonSelectedColor" />
+
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>

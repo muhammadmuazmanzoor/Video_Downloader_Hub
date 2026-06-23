@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/_10sdp"
+        android:paddingBottom="@dimen/_10sdp"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".ui.fragments.ExitFragment">
+
+
+        <RelativeLayout
+            android:id="@+id/top_layout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:paddingStart="@dimen/_13sdp"
+            android:paddingEnd="@dimen/_13sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:paddingVertical="@dimen/_1sdp"
+            ads:layout_constraintEnd_toEndOf="parent"
+            ads:layout_constraintHeight_percent="0.83"
+            ads:layout_constraintStart_toStartOf="parent"
+            ads:layout_constraintTop_toTopOf="parent">
+
+            <FrameLayout
+                android:id="@+id/fl_adplace"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:maxHeight="280dp"
+                android:background="@drawable/bg_ad_exit_dialog"
+                android:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/ourgraaphic"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:scaleType="centerInside"
+                android:src="@drawable/exit_image" />
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/divider1"
+            android:layout_width="0dp"
+            android:layout_height="0.99dp"
+            android:background="#1A000000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/top_layout" />
+
+        <TextView
+            android:id="@+id/exit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="@string/tap_to_exit"
+            android:textSize="@dimen/_14ssp"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider1" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>

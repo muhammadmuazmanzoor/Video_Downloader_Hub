@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+        <variable
+            name="dialogListener"
+            type="com.avd.ui.component.dialog.DownloadTabListener" />
+        <variable
+            name="viewModel"
+            type="com.avd.ui.main.home.browser.detectedVideos.DetectedVideosTabViewModel" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/detected_videos_tab_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="60dp"
+        android:orientation="vertical"
+        android:background="@color/brand_background"
+        tools:context=".ui.main.home.browser.detectedVideos.DetectedVideosTabFragment">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/tv_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginBottom="16dp"
+            android:padding="@dimen/padding_small"
+            android:visibility="gone"
+            android:src="@drawable/ic_cancel_24dp"
+            android:textSize="@dimen/text_medium" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:text="@string/title"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+            android:visibility="gone" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/video_info_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:items="@{viewModel.detectedVideosList}" />
+
+    </LinearLayout>
+</layout>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/drawable/selected_background_border.xml -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Border layer -->
+    <item>
+        <shape>
+            <solid android:color="@android:color/transparent" />
+            <stroke
+                android:width="2dp"
+                android:color="@color/gSelector_light" />
+            <corners android:radius="10dp" />
+        </shape>
+    </item>
+    <!-- Transparent center layer to prevent full fill -->
+    <item android:left="3dp" android:right="3dp" android:top="3dp" android:bottom="3dp">
+        <shape>
+            <solid android:color="@android:color/transparent" />
+            <corners android:radius="7dp" />
+        </shape>
+    </item>
+</layer-list>

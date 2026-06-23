@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/_5sdp">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/imageView18"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_90sdp"
+        android:layout_margin="@dimen/_3sdp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        app:shapeAppearanceOverlay="@style/customImageViewRounded"
+        android:src="@drawable/bg_round_download_home"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_5sdp"
+        android:layout_marginHorizontal="@dimen/_4sdp"
+        android:layout_marginVertical="@dimen/_8sdp"
+        android:backgroundTint="@android:color/transparent"
+        android:max="100"
+        android:progress="40"
+        android:progressDrawable="@drawable/bg_progress_bar"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView18"
+        app:layout_constraintEnd_toEndOf="@+id/imageView18"
+        app:layout_constraintStart_toStartOf="@+id/imageView18"
+        />
+
+    <TextView
+        android:id="@+id/downloadProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0%"
+        android:textSize="@dimen/_12sdp"
+        android:fontFamily="@font/poppins_semibold"
+        android:textColor="@color/black"
+        android:layout_marginBottom="@dimen/_8sdp"
+        app:layout_constraintBottom_toTopOf="@+id/progressBar"
+        app:layout_constraintEnd_toEndOf="@+id/imageView18"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

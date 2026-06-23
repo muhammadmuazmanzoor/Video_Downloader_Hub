@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/stream"
+        android:icon="@drawable/ic_network_streamhome"
+        android:title="@string/network_stream"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/cutter"
+        android:icon="@drawable/ic_video_cut_menu"
+        android:title="@string/video_Cutter"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/mp3_convert"
+        android:icon="@drawable/ic_headphone"
+        android:title="@string/mp3_converter"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/theme"
+        android:icon="@drawable/ic_theme_menu"
+        android:title="@string/themes"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/equalizer"
+        android:icon="@drawable/ic_eq_menu"
+        android:title="@string/equalizer"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/remove_ad"
+        android:icon="@drawable/ic_remove_ad"
+        android:title="@string/remove_ads"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/Settings"
+        android:icon="@drawable/ic_setting_menu"
+        android:title="@string/settings"
+        app:showAsAction="always"/>
+
+</menu>

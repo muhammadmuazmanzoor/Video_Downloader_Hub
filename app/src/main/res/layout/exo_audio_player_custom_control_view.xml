@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:layoutDirection="ltr"
+
+    android:orientation="vertical"
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp">
+
+    <androidx.media3.ui.DefaultTimeBar
+        android:id="@id/exo_progress_placeholder"
+        android:layout_width="match_parent"
+        android:layout_height="40dp" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginBottom="@dimen/_10sdp">
+
+        <TextView
+            android:id="@id/exo_position"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:textColor="@color/brand_text_primary"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@id/exo_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:includeFontPadding="false"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:textColor="@color/brand_text_primary"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp">
+
+        <ImageView
+            android:id="@+id/exo_shuffle"
+            style="@style/ExoStyledControls.Button.Bottom.Shuffle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="-3dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@id/exo_prev"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/ExoStyledControls.Button.Center.Previous"
+            android:src="@drawable/ic_prev_audio"
+            app:layout_constraintEnd_toStartOf="@id/exo_play_pause"
+            app:layout_constraintStart_toEndOf="@id/exo_shuffle"
+            app:layout_constraintBottom_toBottomOf="@id/exo_play_pause"
+            app:layout_constraintTop_toTopOf="@id/exo_play_pause" />
+
+        <ImageButton
+            android:id="@id/exo_play_pause"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/ExoStyledControls.Button.Center.PlayPause"
+            android:src="@drawable/ic_play_audio"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <ImageButton
+            android:id="@id/exo_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/ExoStyledControls.Button.Center.Next"
+            android:src="@drawable/ic_next_audio"
+            app:layout_constraintEnd_toStartOf="@id/exo_repeat_toggle"
+            app:layout_constraintStart_toEndOf="@id/exo_play_pause"
+            app:layout_constraintTop_toTopOf="@id/exo_play_pause"
+            app:layout_constraintBottom_toBottomOf="@id/exo_play_pause"/>
+
+
+        <ImageView
+            android:id="@+id/exo_repeat_toggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            app:layout_constraintBottom_toBottomOf="@id/exo_play_pause"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/exo_play_pause"
+            app:tint="@color/brand_text_primary" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

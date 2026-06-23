@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:background="@drawable/bg_roundedview"
+        android:paddingTop="5dp"
+        >
+
+        <ImageView
+            android:visibility="gone"
+            android:id="@+id/ic_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_back_white"
+            android:padding="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/download"
+           android:layout_margin="20dp"
+            android:textColor="@color/brand_text_primary"
+            android:textSize="@dimen/_17sdp"
+            android:fontFamily="@font/urbanist_semi_bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_select_file"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/search_subtitle_from"
+            android:textColor="@color/brand_text_primary"
+            android:textSize="@dimen/_12sdp"
+            android:fontFamily="@font/urbanist_regular"
+            android:layout_marginTop="25dp"
+            app:layout_constraintStart_toStartOf="@id/tv_subtitle"
+            app:layout_constraintTop_toBottomOf="@id/tv_subtitle" />
+
+        <TextView
+            android:id="@+id/tv_link"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/_5sdp"
+            android:text="@string/opensubtitle_org"
+            android:textColor="@color/gSelector_light"
+            android:fontFamily="@font/urbanist_regular"
+            android:textSize="@dimen/_12sdp"
+            app:layout_constraintStart_toEndOf="@id/tv_select_file"
+            app:layout_constraintTop_toTopOf="@id/tv_select_file" />
+
+
+        <TextView
+            android:id="@+id/tv_online_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/language"
+            android:textColor="@color/brand_text_primary"
+            android:fontFamily="@font/urbanist_regular"
+            android:textSize="@dimen/_12sdp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintStart_toStartOf="@id/tv_subtitle"
+            app:layout_constraintTop_toBottomOf="@id/tv_link" />
+
+        <TextView
+            android:id="@+id/tv_language"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/english"
+            android:paddingHorizontal="@dimen/_5sdp"
+            android:textColor="@color/gSelector_light"
+            android:textSize="@dimen/_12sdp"
+            app:layout_constraintStart_toEndOf="@id/tv_online_subtitle"
+            app:layout_constraintTop_toTopOf="@id/tv_online_subtitle" />
+
+
+        <ImageView
+            android:id="@+id/clear_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_language"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:src="@drawable/ic_cross"
+            android:padding="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="10dp" />
+
+        <EditText
+            android:id="@+id/edsearch"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/search"
+            android:textColor="#ffff"
+            android:textColorHint="@color/gray_text"
+            android:background="@drawable/bg_edittext"
+            android:layout_marginEnd="5dp"
+            android:maxLines="3"
+            app:layout_constraintStart_toStartOf="@id/tv_subtitle"
+            app:layout_constraintEnd_toStartOf="@id/clear_text"
+            app:layout_constraintTop_toTopOf="@id/clear_text"
+            app:layout_constraintBottom_toBottomOf="@id/clear_text" />
+
+        <TextView
+            android:id="@+id/btn_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:layout_constraintTop_toBottomOf="@id/clear_text"
+            app:layout_constraintEnd_toEndOf="@id/clear_text"
+            android:text="@string/ok"
+            android:textSize="@dimen/_12sdp"
+            android:textColor="@color/gSelector_light"
+            android:fontFamily="@font/urbanist_semi_bold"
+            android:padding="12dp"/>
+
+        <TextView
+            android:id="@+id/btn_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/btn_search"
+            app:layout_constraintEnd_toStartOf="@id/btn_search"
+            android:text="@string/cancel"
+            android:textSize="@dimen/_12sdp"
+            android:textColor="@color/brand_text_primary"
+            android:fontFamily="@font/urbanist_semi_bold"
+            android:layout_marginEnd="30dp"
+            android:padding="12dp"/>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            app:layout_constraintTop_toBottomOf="@id/tv_online_subtitle" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>

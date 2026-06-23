@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:nestedScrollingEnabled="false">
+
+    <!--        <com.xilliapps.hdvideoplayer.ui.imageslider.ImageSlider-->
+    <!--            android:id="@+id/image_slider"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="0dp"-->
+    <!--            app:iss_auto_cycle="true"-->
+    <!--            app:iss_delay="1000"-->
+    <!--            app:iss_period="1000"-->
+    <!--            app:dotsBelowViewPager="false"-->
+    <!--            app:iss_selected_dot="@drawable/selected_dot"-->
+    <!--            app:iss_text_align="CENTER"-->
+    <!--            app:iss_unselected_dot="@drawable/unselected_dot"-->
+    <!--            app:layout_constraintHeight_percent="0.32"-->
+    <!--            app:layout_constraintTop_toTopOf="parent" />-->
+
+    <ImageView
+        android:id="@+id/topimg"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:background="@drawable/gradient_bg"
+        app:layout_constraintHeight_percent="0.32"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/blurryView"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_30sdp"
+        android:layout_marginTop="-32dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/pro_blurr"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topimg" />
+
+
+    <ImageView
+        android:id="@+id/ivClose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_35sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/pro1_close"
+        app:layout_constraintHeight_percent="0.25"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textPro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_regular"
+        android:gravity="center"
+        android:maxLines="2"
+        android:text="SnapDown"
+        android:textAlignment="center"
+        android:textSize="@dimen/_17ssp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.4"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topimg"
+        app:layout_constraintVertical_bias="0.02" />
+
+    <TextView
+        android:id="@+id/textPro2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_bold"
+        android:gravity="center"
+        android:maxLines="2"
+        android:text=" Pro"
+        android:textAlignment="center"
+        android:textSize="@dimen/_19ssp"
+        app:layout_constraintBottom_toBottomOf="@id/textPro"
+        app:layout_constraintStart_toEndOf="@id/textPro"
+        app:layout_constraintTop_toTopOf="@id/textPro" />
+
+    <LinearLayout
+        android:id="@+id/featuresLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:weightSum="4"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHeight_percent="0.17"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textPro"
+        app:layout_constraintVertical_bias="0.029999971"
+        app:layout_constraintWidth_percent="0.65">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_tick" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/_30sdp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="Get Ads free experience"
+                android:textSize="@dimen/_12ssp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_tick" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/_30sdp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="Unlimited Downloads"
+                android:textSize="@dimen/_12ssp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_tick" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/_30sdp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="Fast Downloads"
+                android:textSize="@dimen/_12ssp" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_tick" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/_30sdp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="Premium Features"
+                android:textSize="@dimen/_12ssp" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/recyclerLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHeight_percent="0.275"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/featuresLayout"
+        app:layout_constraintVertical_bias="0.03"
+        app:layout_constraintWidth_percent="0.95">
+
+        <TextView
+            android:id="@+id/textFetchingPrices"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/poppins_medium"
+            android:text="Fetching prices..."
+            android:textColor="@color/black"
+            android:textSize="@dimen/_11ssp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvPlans"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="horizontal"
+            android:visibility="invisible"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="3"
+            tools:listitem="@layout/item_subscription_plan" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/btnContinue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_20sdp"
+        android:background="@drawable/bg_circled_button"
+        android:fontFamily="@font/poppins_medium"
+        android:gravity="center"
+        android:paddingVertical="@dimen/_10sdp"
+        android:text="Continue"
+        android:textAllCaps="false"
+        android:textColor="@color/brand_text_primary"
+        android:textSize="@dimen/_13ssp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/recyclerLayout"
+        app:layout_constraintStart_toStartOf="@id/recyclerLayout"
+        app:layout_constraintTop_toBottomOf="@id/recyclerLayout"
+        app:layout_constraintVertical_bias="0.07" />
+
+    <TextView
+        android:id="@+id/textCancelAnytime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:padding="@dimen/_3sdp"
+        android:text="Recurring billing-cancel anytime"
+        android:textColor="#A6A6A6"
+        android:textSize="@dimen/_10ssp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnContinue"
+        app:layout_constraintVertical_bias="0.2" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textCancelAnytime"
+        app:layout_constraintVertical_bias="0.5">
+
+        <TextView
+            android:id="@+id/privacy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/poppins_medium"
+            android:padding="@dimen/_3sdp"
+            android:text=" Privacy Policy"
+            android:textColor="#A6A6A6"
+            android:textSize="@dimen/_9ssp" />
+
+        <View
+            android:layout_width="@dimen/_1sdp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:background="#A6A6A6" />
+
+        <TextView
+            android:id="@+id/terms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/poppins_medium"
+            android:padding="@dimen/_3sdp"
+            android:text="Terms &amp; Conditions "
+            android:textColor="#A6A6A6"
+            android:textSize="@dimen/_9ssp" />
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

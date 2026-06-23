@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+
+    <application
+        android:allowBackup="true"
+        android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
+        android:largeHeap="true"
+        tools:ignore="UnusedAttribute">
+
+        <activity
+            android:name="com.google.android.gms.ads.AdActivity"
+            android:theme="@style/Theme.App.FullscreenAd"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"
+            tools:replace="android:theme"/>
+
+<!--        <activity-->
+<!--            android:name="com.myAllVideoBrowser.ui.main.home.MainActivityDownloader"-->
+<!--            android:configChanges="orientation|screenSize"-->
+<!--            android:exported="true"-->
+<!--            android:hardwareAccelerated="true"-->
+<!--            android:screenOrientation="unspecified"-->
+<!--            android:windowSoftInputMode="adjustPan">-->
+<!--            <intent-filter>-->
+<!--                <category android:name="android.intent.category.DEFAULT" />-->
+<!--                <category android:name="android.intent.category.BROWSABLE" />-->
+<!--                <category android:name="android.intent.category.APP_BROWSER" />-->
+<!--            </intent-filter>-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.VIEW" />-->
+<!--                <category android:name="android.intent.category.DEFAULT" />-->
+<!--                <category android:name="android.intent.category.BROWSABLE" />-->
+<!--                <data android:scheme="file" />-->
+<!--                <data android:mimeType="text/html" />-->
+<!--                <data android:mimeType="text/plain" />-->
+<!--                <data android:mimeType="application/xhtml+xml" />-->
+<!--                <data android:mimeType="application/vnd.wap.xhtml+xml" />-->
+<!--            </intent-filter>-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.VIEW" />-->
+<!--                <category android:name="android.intent.category.DEFAULT" />-->
+<!--                <category android:name="android.intent.category.BROWSABLE" />-->
+<!--                <data android:scheme="http" />-->
+<!--                <data android:scheme="https" />-->
+<!--                <data android:scheme="about" />-->
+<!--                <data android:scheme="javascript" />-->
+<!--            </intent-filter>-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.VIEW" />-->
+<!--                <category android:name="android.intent.category.BROWSABLE" />-->
+<!--                <category android:name="android.intent.category.DEFAULT" />-->
+<!--                <data android:scheme="http" />-->
+<!--                <data android:scheme="https" />-->
+<!--                <data android:scheme="inline" />-->
+<!--                <data android:mimeType="text/html" />-->
+<!--                <data android:mimeType="text/plain" />-->
+<!--                <data android:mimeType="application/xhtml+xml" />-->
+<!--                <data android:mimeType="application/vnd.wap.xhtml+xml" />-->
+<!--            </intent-filter>-->
+<!--            &lt;!&ndash; For viewing saved web archives. &ndash;&gt;-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.VIEW" />-->
+
+<!--                <category android:name="android.intent.category.BROWSABLE" />-->
+<!--                <category android:name="android.intent.category.DEFAULT" />-->
+
+<!--                <data android:scheme="http" />-->
+<!--                <data android:scheme="https" />-->
+<!--                <data android:scheme="file" />-->
+<!--                <data android:mimeType="application/x-webarchive-xml" />-->
+<!--            </intent-filter>-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.WEB_SEARCH" />-->
+
+<!--                <category android:name="android.intent.category.DEFAULT" />-->
+<!--                <category android:name="android.intent.category.BROWSABLE" />-->
+
+<!--                <data android:scheme="http" />-->
+<!--                <data android:scheme="https" />-->
+<!--            </intent-filter>-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.WEB_SEARCH" />-->
+
+<!--                <category android:name="android.intent.category.DEFAULT" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
+
+
+        <service
+            android:name="androidx.work.impl.foreground.SystemForegroundService"
+            android:foregroundServiceType="dataSync"
+            tools:node="merge" />
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+                <meta-data
+                    android:name="androidx.work.WorkManagerInitializer"
+                    android:value="false" />
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false"
+            tools:node="merge">
+            <meta-data
+                android:name="androidx.work.WorkManagerInitializer"
+                android:value="androidx.startup"
+                tools:node="remove" />
+        </provider>
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.video.avd.provider"
+            android:exported="false"
+            android:grantUriPermissions="true"
+            tools:replace="android:authorities">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"
+                tools:replace="android:resource" />
+        </provider>
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="@string/App_ID" />
+        <meta-data
+            android:name="applovin.sdk.key"
+            android:value="77uiPT4cq5bp3ZKOKVdtWG0WBRWoJ1tQBAmhr-3mp-h_HvUgXfe1v1Qc6oirIklUr1fxfPbru1ps1nzErdTfy0"/>
+        <meta-data
+            android:name="applovin.sdk.verbose_logging"
+            android:value="true" />
+        <meta-data
+            android:name="com.google.android.gms.ads.flag.OPTIMIZE_INITIALIZATION"
+            android:value="true" />
+        <meta-data
+            android:name="com.google.android.gms.ads.flag.OPTIMIZE_AD_LOADING"
+            android:value="true" />
+    </application>
+
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="http" />
+        </intent>
+    </queries>
+
+
+
+</manifest>

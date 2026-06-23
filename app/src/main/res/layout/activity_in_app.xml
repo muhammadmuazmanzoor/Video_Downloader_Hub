@@ -1,0 +1,442 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/brand_background">
+
+        <!-- Top Image Banner -->
+        <ImageView
+            android:id="@+id/imgBanner"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/img_pro"
+            app:layout_constraintDimensionRatio="H,12:11"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="170dp"
+            android:background="@drawable/pro_blur"
+            android:backgroundTint="@color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/imgBanner" />
+
+        <ImageView
+            android:id="@+id/closeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_15sdp"
+            android:src="@drawable/pro1_close"
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <!-- Title -->
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter"
+            android:text="Be like a Pro"
+            android:textColor="@color/brand_text_primary"
+            android:textSize="@dimen/_19ssp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/textFetchingPrices"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_14sdp"
+            android:layout_marginEnd="@dimen/_23sdp"
+            android:fontFamily="@font/inter"
+            android:text="Basic"
+            android:textColor="@color/brand_text_primary"
+            android:textSize="@dimen/_10ssp"
+            app:layout_constraintEnd_toStartOf="@+id/textView2"
+            app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:fontFamily="@font/inter"
+            android:text="Pro     "
+            android:textColor="@color/gSelector_light"
+            android:textSize="@dimen/_10ssp"
+            app:layout_constraintBottom_toBottomOf="@+id/textView3"
+            app:layout_constraintEnd_toEndOf="@+id/llFeatures"
+            app:layout_constraintTop_toTopOf="@+id/textView3" />
+
+        <!-- Features List -->
+
+        <ScrollView
+            android:id="@+id/llFeatures"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_6sdp"
+            android:paddingStart="@dimen/_20sdp"
+            android:paddingEnd="@dimen/_20sdp"
+            android:scrollbars="none"
+            app:layout_constraintBottom_toTopOf="@+id/tvPriceInfo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView3">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingVertical="8dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        app:tint="@color/brand_text_primary"
+                        android:src="@drawable/watermark" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="14dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/inter"
+                        android:text="Download without Watermark"
+                        android:textColor="@color/brand_text_primary"
+                        android:textSize="@dimen/_10ssp" />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginEnd="@dimen/_10sdp"
+
+                        android:src="@drawable/ic_tick_24" />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="@dimen/_20sdp"
+                        android:src="@drawable/ic_tick_24" />
+                </LinearLayout>
+                <!-- One Row Item -->
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingVertical="8dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        app:tint="@color/brand_text_primary"
+                        android:src="@drawable/loop" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="14dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/inter"
+                        android:text="Unlimited Downloads"
+                        android:textColor="@color/brand_text_primary"
+                        android:textSize="@dimen/_10ssp" />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:src="@drawable/ic_tick_24" />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="@dimen/_20sdp"
+                        android:src="@drawable/ic_tick_24" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingVertical="8dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        app:tint="@color/brand_text_primary"
+                        android:src="@drawable/speed" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="14dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/inter"
+                        android:text="2x Fast Downloads"
+                        android:textColor="@color/brand_text_primary"
+                        android:textSize="@dimen/_10ssp" />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:src="@drawable/ic_dash_24" />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="@dimen/_20sdp"
+                        android:src="@drawable/ic_tick_24" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingVertical="8dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:padding="4dp"
+                        app:tint="@color/brand_text_primary"
+                        android:src="@drawable/ic_auto_link" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="14dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/inter"
+                        android:text="Auto Link Detection"
+                        android:textColor="@color/brand_text_primary"
+                        android:textSize="@dimen/_10ssp" />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:src="@drawable/ic_dash_24" />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="@dimen/_20sdp"
+                        android:src="@drawable/ic_tick_24" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingVertical="8dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        app:tint="@color/brand_text_primary"
+                        android:src="@drawable/ic_no_ad" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="14dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/inter"
+                        android:text="Remove Ads"
+                        android:textColor="@color/brand_text_primary"
+                        android:textSize="@dimen/_10ssp" />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:src="@drawable/ic_dash_24" />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="@dimen/_20sdp"
+                        android:src="@drawable/ic_tick_24" />
+                </LinearLayout>
+
+
+
+
+            </LinearLayout>
+
+        </ScrollView>
+
+        <ImageView
+            android:id="@+id/no_payments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/no_payments"
+            android:layout_marginBottom="@dimen/_8sdp"
+            app:layout_constraintBottom_toTopOf="@+id/tvPriceInfo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+        <!-- Price Info -->
+        <TextView
+            android:id="@+id/tvPriceInfo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_8sdp"
+            android:fontFamily="@font/inter"
+            android:gravity="center"
+            android:text="Rs ----/Weekly after FREE trail of -- days"
+            android:textColor="@color/White_Grey"
+            android:textSize="@dimen/_10ssp"
+            app:layout_constraintBottom_toTopOf="@+id/ctaContainer"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+        <FrameLayout
+            android:id="@+id/ctaContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_6sdp"
+            android:layout_marginBottom="@dimen/_8sdp"
+            android:clipChildren="true"
+            app:layout_constraintBottom_toTopOf="@+id/tvSubInfo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+        <!-- CTA Button -->
+        <TextView
+            android:id="@+id/btnContinue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="@dimen/_14sdp"
+            android:background="@drawable/btn_continue_bg"
+            android:fontFamily="@font/inter_semibold"
+            android:gravity="center"
+            android:paddingVertical="@dimen/_12sdp"
+            android:text="Start Free Trial"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_15ssp"
+            app:layout_constraintBottom_toTopOf="@+id/tvSubInfo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+        </FrameLayout>
+        <ImageView
+            android:id="@+id/iv_right_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:src="@drawable/ic_right_arrow_"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/ctaContainer"
+            app:layout_constraintEnd_toEndOf="@id/ctaContainer"
+            app:layout_constraintTop_toTopOf="@id/ctaContainer" />
+
+        <!-- Sub Info -->
+        <TextView
+            android:id="@+id/tvSubInfo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_16sdp"
+            android:fontFamily="@font/inter"
+            android:gravity="center"
+            android:text="Recurring billing, cancel any time"
+            android:textColor="@color/White_Grey"
+            android:textSize="@dimen/_10ssp"
+            app:layout_constraintBottom_toTopOf="@+id/llFooterLinks"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <!-- Footer Links -->
+        <LinearLayout
+            android:id="@+id/llFooterLinks"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_50sdp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:id="@+id/term"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter"
+                android:text="Terms of Use"
+                android:textColor="@color/White_Grey"
+                android:textSize="@dimen/_10ssp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="12dp"
+                android:text="|"
+                android:textColor="@color/White_Grey"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/privacy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter"
+                android:text="Privacy Policy"
+                android:textColor="@color/White_Grey"
+                android:textSize="@dimen/_10ssp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="12dp"
+                android:text="|"
+                android:textColor="@color/White_Grey"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter"
+                android:text="Restore"
+                android:textColor="@color/White_Grey"
+                android:textSize="@dimen/_10ssp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textFetchingPrices"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_medium"
+            android:text="Fetching prices..."
+            android:textColor="@color/gray_2.1"
+            android:textSize="@dimen/_11ssp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/imgBanner"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/adLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/primary_bg"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>

@@ -1,0 +1,98 @@
+<com.facebook.shimmer.ShimmerFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/shimmerContainerNative"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:shimmer_auto_start="true"
+    app:shimmer_base_color="#ccc">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/card_stroke">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ad_unit_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/_12sdp"
+            android:paddingTop="@dimen/_14sdp"
+            android:paddingBottom="@dimen/_12sdp"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <ImageView
+                android:id="@+id/ad_app_icon"
+                android:layout_width="@dimen/_48sdp"
+                android:layout_height="@dimen/_48sdp"
+                android:adjustViewBounds="true"
+                android:background="@color/white_blur"
+                app:layout_constraintBottom_toBottomOf="@id/ad_body"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/ad_headline" />
+
+            <TextView
+                android:id="@+id/tvAd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/white_blur"
+                android:backgroundTint="@color/white_blur"
+                android:paddingHorizontal="@dimen/_6sdp"
+                android:paddingVertical="@dimen/_3sdp"
+                android:text="Ad"
+                android:textColor="@color/white_blur"
+                android:textSize="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:id="@+id/ad_headline"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_8sdp"
+                android:layout_marginEnd="@dimen/_4sdp"
+                android:background="@color/white_blur"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textColor="@color/white_blur"
+                android:textSize="@dimen/_14sdp"
+                app:layout_constraintEnd_toStartOf="@id/tvAd"
+                app:layout_constraintStart_toEndOf="@id/ad_app_icon"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/ad_body"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:background="@color/white_blur"
+                android:ellipsize="end"
+                android:lines="2"
+                android:maxLines="2"
+                android:textSize="@dimen/_12sdp"
+                app:layout_constraintEnd_toEndOf="@id/ad_headline"
+                app:layout_constraintStart_toStartOf="@id/ad_headline"
+                app:layout_constraintTop_toBottomOf="@id/ad_headline" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/ad_call_to_action"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:background="@color/white_blur"
+                android:backgroundTint="@color/white_blur"
+                android:gravity="center"
+                android:paddingHorizontal="@dimen/_16sdp"
+                android:paddingVertical="@dimen/_12sdp"
+                android:textAllCaps="false"
+                android:textColor="@color/brand_text_primary"
+                android:textSize="@dimen/_16sdp"
+                app:layout_constraintTop_toBottomOf="@id/ad_body"
+                tools:ignore="HardcodedText" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.facebook.shimmer.ShimmerFrameLayout>

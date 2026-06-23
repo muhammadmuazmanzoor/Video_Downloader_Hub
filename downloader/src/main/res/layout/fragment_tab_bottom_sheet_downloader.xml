@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="viewModel"
+            type="com.avd.ui.main.home.browser.BrowserViewModel" />
+    </data>
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primary_bg">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_back"
+        android:layout_marginTop="20dp"
+        app:tint="@color/brand_text_primary"
+        android:padding="@dimen/_3sdp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+      />
+    <TextView
+        android:id="@+id/lael"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_regular"
+        android:text="@string/tab"
+        android:textSize="15sp"
+        android:textColor="@color/brand_text_primary"
+        android:textStyle="bold"
+        android:layout_marginStart="10dp"
+        app:layout_constraintStart_toEndOf="@+id/back"
+        app:layout_constraintBottom_toBottomOf="@+id/back"
+        app:layout_constraintTop_toTopOf="@+id/back"
+      />
+
+    <TextView
+        android:id="@+id/newtab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_regular"
+        android:drawableStart="@drawable/ic_tab_icon"
+        android:textColor="@color/brand_text_primary"
+        android:drawableTint="@color/brand_text_primary"
+        android:textSize="12sp"
+        android:padding="3dp"
+        android:backgroundTint="@color/black_55"
+        android:layout_marginTop="18dp"
+        android:layout_marginEnd="12dp"
+        app:layout_constraintEnd_toStartOf="@+id/home"
+        app:layout_constraintTop_toTopOf="parent" />
+    <ImageView
+        android:id="@+id/home"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="16dp"
+        android:padding="@dimen/_3sdp"
+        app:layout_constraintTop_toTopOf="@+id/newtab"
+        app:layout_constraintBottom_toBottomOf="@+id/newtab"
+        android:src="@drawable/home_svg"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/delete"
+        app:tint="@color/brand_text_primary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_delete_history_web"
+        android:visibility="@{viewModel.tabs.size > 1 ? View.VISIBLE : View.GONE}"
+        android:layout_marginEnd="10dp"
+        android:padding="@dimen/_3sdp"
+        app:layout_constraintBottom_toBottomOf="@+id/newtab"
+        app:layout_constraintEnd_toStartOf="@+id/newtab"
+        app:layout_constraintTop_toTopOf="@+id/newtab" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/_5sdp"
+        app:layout_constraintTop_toBottomOf="@+id/delete"
+        app:layout_constraintBottom_toBottomOf="parent">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/tab_rec"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="12dp"
+            app:items="@{viewModel.tabs}"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="2"
+            tools:itemCount="6"
+            tools:listitem="@layout/item_web_tab_button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lael" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

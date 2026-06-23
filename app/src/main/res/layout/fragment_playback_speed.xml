@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/bgh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingVertical="@dimen/_10sdp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+        android:background="@drawable/bottom_sheet_background_black">
+
+        <ImageButton
+            android:id="@+id/playBackArrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:src="@drawable/ic_arrow_left"
+            android:padding="@dimen/_8sdp"
+            app:layout_constraintHorizontal_bias="0.05"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textPlayBackTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/urbanist_medium"
+            android:text="Play Speed"
+            android:textColor="@color/brand_text_primary"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@id/playBackArrow"
+            app:layout_constraintHorizontal_bias="0.12"
+            app:layout_constraintLeft_toRightOf="@id/playBackArrow"
+            app:layout_constraintRight_toLeftOf="@+id/resetPlayBackSpeed"
+            app:layout_constraintTop_toTopOf="@id/playBackArrow" />
+
+        <ImageButton
+            android:id="@+id/resetPlayBackSpeed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:src="@drawable/ic_reset_play_back"
+            app:layout_constraintBottom_toBottomOf="@id/playBackArrow"
+            app:layout_constraintHorizontal_bias="0.9"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/playBackArrow" />
+
+        <ImageButton
+            android:id="@+id/minusPlayBackSpeed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:src="@drawable/ic_minus_playback"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="@id/playBackArrow"
+            app:layout_constraintTop_toBottomOf="@id/playBackArrow"
+            app:layout_constraintVertical_bias="0.15" />
+
+        <TextView
+            android:id="@+id/textPlayBackSpeed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/urbanist_medium"
+            android:textColor="@color/brand_text_primary"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@id/minusPlayBackSpeed"
+            app:layout_constraintLeft_toRightOf="@id/minusPlayBackSpeed"
+            app:layout_constraintRight_toLeftOf="@+id/plusPlayBackSpeed"
+            app:layout_constraintTop_toTopOf="@id/minusPlayBackSpeed" />
+
+        <ImageButton
+            android:id="@+id/plusPlayBackSpeed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:src="@drawable/ic_plus_playback"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="@id/resetPlayBackSpeed"
+            app:layout_constraintTop_toTopOf="@id/minusPlayBackSpeed"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <FrameLayout
+            android:id="@+id/seekbarLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
+            app:layout_constraintEnd_toEndOf="@id/plusPlayBackSpeed"
+            app:layout_constraintStart_toStartOf="@id/minusPlayBackSpeed"
+            app:layout_constraintTop_toBottomOf="@id/minusPlayBackSpeed" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvPlaybackSpeed"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_50sdp"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintEnd_toEndOf="@id/seekbarLayout"
+            app:layout_constraintStart_toStartOf="@id/seekbarLayout"
+            app:layout_constraintTop_toBottomOf="@id/seekbarLayout"
+            app:spanCount="4"
+            tools:listitem="@layout/item_playbackspeed" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
