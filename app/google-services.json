@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:673005432009:android:d5a05fdd38b38624147118",
         "android_client_info": {
-          "package_name": "videoplayer.tfl.videodownloader.browser.hub"
+          "package_name": "videoplayer.tfl.downloader.videodownloader.app"
         }
       },
       "oauth_client": [],

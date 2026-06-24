@@ -18,46 +18,46 @@ class SocialAdapter(
 
     inner class IconViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val icon: ImageView = itemView.findViewById(R.id.movie)
-        val title: TextView = itemView.findViewById(R.id.movie_text)
+        val title: TextView? = itemView.findViewById(R.id.movie_text)
 
         fun bind(item: PageInfo) {
             icon.setImageResource(item.drawableResId)
 
             if(item.link.contains("dailymotion")){
-                title.text = "DailyMotion"
+                title?.text = "DailyMotion"
             }
             else if(item.link.contains("imdb")){
-                title.text = "IMDB"
+                title?.text = "IMDB"
             }
             else if(item.link.contains("vimeo")){
-                title.text = "Vimeo"
+                title?.text = "Vimeo"
             }
             else if(item.link.contains("Status")){
-                title.text = "Status"
+                title?.text = "Status"
             }
             else if(item.link.contains("x")){
-                title.text = "X"
+                title?.text = "X"
             }
             else if(item.link.contains("facebook")){
-                title.text = "Facebook"
+                title?.text = "Facebook"
             }
             else if(item.link.contains("bing")){
-                title.text = "Bing"
+                title?.text = "Bing"
             }
             else if(item.link.contains("duckduckgo")){
-                title.text = "DuckDuckGo"
+                title?.text = "DuckDuckGo"
             }
             else if(item.link.contains("google")){
-                title.text = "Google"
+                title?.text = "Google"
             }
             else if(item.link.contains("tiktok")){
-                title.text = "TikTok"
+                title?.text = "TikTok"
             }
             else if(item.link.contains("instagram")){
-                title.text = "Instagram"
+                title?.text = "Instagram"
             }
             else{
-                title.text = "Social"
+                title?.text = "Social"
             }
             itemView.setOnClickListener {
                 onItemClick(item)

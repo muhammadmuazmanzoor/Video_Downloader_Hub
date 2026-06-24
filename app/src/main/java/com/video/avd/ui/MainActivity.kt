@@ -12,12 +12,19 @@ import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
 import android.util.Log
+import android.view.Gravity
 import android.view.View
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.FragmentActivity
@@ -26,8 +33,6 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.NavigationUI
-import androidx.navigation.ui.setupWithNavController
 import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.NetworkType
@@ -102,6 +107,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import android.graphics.Typeface
 import java.net.URI
 import java.net.URISyntaxException
 import java.util.concurrent.TimeUnit
@@ -126,6 +132,10 @@ class MainActivity : AppCompatActivity(), NetworkStateListener, CommunicateWithA
     private lateinit var dynamicModuleDownloader: DynamicModuleDownloader
     var isPipMode = false
     private var showThemesFragment = false
+    private val bottomNavItemViews = mutableMapOf<Int, LinearLayout>()
+    private val bottomNavIconViews = mutableMapOf<Int, ImageView>()
+    private val bottomNavLabelViews = mutableMapOf<Int, TextView>()
+    private var selectedBottomNavItemId = R.id.fragmentDownloadQueue
     var navController: NavController? = null
     private var navHostFragment: NavHostFragment? = null
     private val networkChangeReceiver: NetworkChangeReceiver by lazy {
@@ -197,15 +207,8 @@ class MainActivity : AppCompatActivity(), NetworkStateListener, CommunicateWithA
         AppPreference.isFromSplash = false
         navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host) as NavHostFragment
         navController = navHostFragment?.navController
+        setupBottomNavigationBar()
         navController?.let { controller ->
-            binding?.bottomNavigation?.setupWithNavController(controller)
-            binding?.bottomNavigation?.setOnItemSelectedListener { item->
-                showInterstitialHome(activity = this@MainActivity, forFragment = true) {
-                    NavigationUI.onNavDestinationSelected(item, controller)
-                }
-                Log.d("checkNewRemoteConfig","Feature Screen: $remotemaxAdImpressions")
-                false
-            }
           /*  controller.addOnDestinationChangedListener { _, destination, _ ->
                 when (destination.id) {
                     R.id.homeFragment1 -> {
@@ -319,59 +322,9 @@ class MainActivity : AppCompatActivity(), NetworkStateListener, CommunicateWithA
                         isNavDownload = false
                     }
                 }
+                updateBottomNavigationSelection(destination.id)
             }
-            binding?.bottomNavigation?.setOnItemSelectedListener { item ->
-                if (!isSafeClick()) {
-                    Log.d("safeClick", "blocked")
-                    return@setOnItemSelectedListener false  // returning false prevents navigation
-                }
-                when (item.itemId) {
-                    R.id.homeFragment1 -> {
-                        if(interHome!=null){
-                            showInterstitial(false, interHome!!, this, {
-                                hideLoading()
-                                navController?.navigate(R.id.homeFragment1)
-                            }, inter_home)
-                        }
-                        else{
-                            navController?.navigate(R.id.homeFragment1)
-                        } }
-                    R.id.fragmentDownloadHistory -> {
-                        if(interHome!=null){
-                            showInterstitial(false, interHome!!, this, {
-                                hideLoading()
-                                navController?.navigate(R.id.fragmentDownloadHistory)
-                            }, inter_home)
-                        }
-                        else{
-                            navController?.navigate(R.id.fragmentDownloadHistory)
-                        }
-                        }
-                    R.id.mainDownloaderFragment -> {
-                        if(interHome!=null){
-                            showInterstitial(false, interHome!!, this, {
-                                hideLoading()
-                                navController?.navigate(R.id.mainDownloaderFragment)
-                            }, inter_home)
-                        }
-                        else{
-                            navController?.navigate(R.id.mainDownloaderFragment)
-                        }
-                        }
-                    R.id.fragmentDownloadQueue -> {
-                        if(interHome!=null){
-                            showInterstitial(false, interHome!!, this, {
-                                hideLoading()
-                                navController?.navigate(R.id.fragmentDownloadQueue)
-                            }, inter_home)
-                        }
-                        else{
-                            navController?.navigate(R.id.fragmentDownloadQueue)
-                        }
-                        }
-                }
-                true
-            }
+            updateBottomNavigationSelection(controller.currentDestination?.id ?: R.id.fragmentDownloadQueue)
         }
 
         downloadOrLaunchDynamicModule(this)
@@ -759,6 +712,166 @@ class MainActivity : AppCompatActivity(), NetworkStateListener, CommunicateWithA
         var lastplayed = 0
     }
 
+    private data class BottomNavItem(
+        val id: Int,
+        val iconRes: Int,
+        val titleRes: Int
+    )
+
+    private val bottomNavItems = listOf(
+        BottomNavItem(R.id.fragmentDownloadQueue, R.drawable.bottom_web, R.string.web),
+        BottomNavItem(R.id.mainDownloaderFragment, R.drawable.bottom_home, R.string.home),
+        BottomNavItem(R.id.fragmentDownloadHistory, R.drawable.bottom_progress, R.string.progress),
+        BottomNavItem(R.id.homeFragment1, R.drawable.bottom_video, R.string.player)
+    )
+
+    private fun setupBottomNavigationBar() {
+        val bottomNavigation = binding?.bottomNavigation ?: return
+        bottomNavItemViews.clear()
+        bottomNavIconViews.clear()
+        bottomNavLabelViews.clear()
+
+        bindBottomNavItem(
+            R.id.fragmentDownloadQueue,
+            bottomNavigation.findViewById(R.id.fragmentDownloadQueue),
+            bottomNavigation.findViewById(R.id.ivBottomWeb),
+            bottomNavigation.findViewById(R.id.tvBottomWeb)
+        )
+        bindBottomNavItem(
+            R.id.mainDownloaderFragment,
+            bottomNavigation.findViewById(R.id.mainDownloaderFragment),
+            bottomNavigation.findViewById(R.id.ivBottomHome),
+            bottomNavigation.findViewById(R.id.tvBottomHome)
+        )
+        bindBottomNavItem(
+            R.id.fragmentDownloadHistory,
+            bottomNavigation.findViewById(R.id.fragmentDownloadHistory),
+            bottomNavigation.findViewById(R.id.ivBottomProgress),
+            bottomNavigation.findViewById(R.id.tvBottomProgress)
+        )
+        bindBottomNavItem(
+            R.id.homeFragment1,
+            bottomNavigation.findViewById(R.id.homeFragment1),
+            bottomNavigation.findViewById(R.id.ivBottomPlayer),
+            bottomNavigation.findViewById(R.id.tvBottomPlayer)
+        )
+        updateBottomNavigationSelection(selectedBottomNavItemId)
+    }
+
+    private fun bindBottomNavItem(
+        itemId: Int,
+        itemView: LinearLayout?,
+        icon: ImageView?,
+        label: TextView?
+    ) {
+        if (itemView == null || icon == null || label == null) return
+        val item = bottomNavItems.firstOrNull { it.id == itemId } ?: return
+        itemView.gravity = Gravity.CENTER
+        itemView.setBaselineAligned(false)
+        itemView.contentDescription = getString(item.titleRes)
+        itemView.setOnClickListener { handleBottomNavigationItemClick(itemId) }
+        icon.setImageDrawable(tintedBottomNavIcon(item.iconRes, false))
+        label.typeface = ResourcesCompat.getFont(this, R.font.poppins_light) ?: Typeface.DEFAULT
+        label.visibility = View.VISIBLE
+        label.alpha = 0f
+        bottomNavItemViews[itemId] = itemView
+        bottomNavIconViews[itemId] = icon
+        bottomNavLabelViews[itemId] = label
+    }
+
+    private fun handleBottomNavigationItemClick(itemId: Int): Boolean {
+        if (!isSafeClick()) {
+            Log.d("safeClick", "blocked")
+            return false
+        }
+        updateBottomNavigationSelection(itemId)
+        when (itemId) {
+            R.id.homeFragment1 -> {
+                if (interHome != null) {
+                    showInterstitial(false, interHome!!, this, {
+                        hideLoading()
+                        navController?.navigate(R.id.homeFragment1)
+                    }, inter_home)
+                } else {
+                    navController?.navigate(R.id.homeFragment1)
+                }
+            }
+            R.id.fragmentDownloadHistory -> {
+                if (interHome != null) {
+                    showInterstitial(false, interHome!!, this, {
+                        hideLoading()
+                        navController?.navigate(R.id.fragmentDownloadHistory)
+                    }, inter_home)
+                } else {
+                    navController?.navigate(R.id.fragmentDownloadHistory)
+                }
+            }
+            R.id.mainDownloaderFragment -> {
+                if (interHome != null) {
+                    showInterstitial(false, interHome!!, this, {
+                        hideLoading()
+                        navController?.navigate(R.id.mainDownloaderFragment)
+                    }, inter_home)
+                } else {
+                    navController?.navigate(R.id.mainDownloaderFragment)
+                }
+            }
+            R.id.fragmentDownloadQueue -> {
+                if (interHome != null) {
+                    showInterstitial(false, interHome!!, this, {
+                        hideLoading()
+                        navController?.navigate(R.id.fragmentDownloadQueue)
+                    }, inter_home)
+                } else {
+                    navController?.navigate(R.id.fragmentDownloadQueue)
+                }
+            }
+        }
+        return true
+    }
+
+    private fun updateBottomNavigationSelection(itemId: Int) {
+        if (bottomNavItems.none { it.id == itemId }) return
+        selectedBottomNavItemId = itemId
+        bottomNavItems.forEach { item ->
+            val isSelected = item.id == itemId
+            val itemView = bottomNavItemViews[item.id] ?: return@forEach
+            val icon = bottomNavIconViews[item.id] ?: return@forEach
+            val label = bottomNavLabelViews[item.id] ?: return@forEach
+            itemView.isSelected = isSelected
+            itemView.background = if (isSelected) {
+                ContextCompat.getDrawable(this, R.drawable.bg_selected_bottom_item)
+            } else {
+                null
+            }
+            icon.setImageDrawable(tintedBottomNavIcon(item.iconRes, isSelected))
+            label.setTextColor(bottomNavColor(isSelected))
+            label.visibility = View.VISIBLE
+            label.animate().cancel()
+            label.animate()
+                .alpha(if (isSelected) 1f else 0f)
+                .setDuration(120L)
+                .start()
+            label.isEnabled = isSelected
+        }
+    }
+
+    private fun selectBottomNavigationItem(itemId: Int) {
+        handleBottomNavigationItemClick(itemId)
+    }
+
+    private fun tintedBottomNavIcon(iconRes: Int, isSelected: Boolean) =
+        AppCompatResources.getDrawable(this, iconRes)?.mutate()?.let { drawable ->
+            DrawableCompat.wrap(drawable).also {
+                DrawableCompat.setTint(it, bottomNavColor(isSelected))
+            }
+        }
+
+    private fun bottomNavColor(isSelected: Boolean): Int {
+        val colorRes = if (isSelected) R.color.gSelector_light else R.color.nonSelectedColor
+        return ContextCompat.getColor(this, colorRes)
+    }
+
     fun hidebottombar() {
         binding?.bottomNavigation?.visibility = View.GONE
     }
@@ -896,7 +1009,7 @@ class MainActivity : AppCompatActivity(), NetworkStateListener, CommunicateWithA
                                         maxPopupAdImpressions++
                                         DownloadDialogManager.defaultTabPos =
                                             DownloadListPagerAdapter.COMPLETED_FRAG_POS
-                                        binding?.bottomNavigation?.setSelectedItemId(R.id.fragmentDownloadHistory)
+                                        selectBottomNavigationItem(R.id.fragmentDownloadHistory)
                                         Log.d(
                                             "FragmentDownloadQueue",
                                             "Resumed → switched to tab: ${DownloadDialogManager.defaultTabPos}"
@@ -905,7 +1018,7 @@ class MainActivity : AppCompatActivity(), NetworkStateListener, CommunicateWithA
                                 } else {
                                     DownloadDialogManager.defaultTabPos =
                                         DownloadListPagerAdapter.COMPLETED_FRAG_POS
-                                    binding?.bottomNavigation?.setSelectedItemId(R.id.fragmentDownloadHistory)
+                                    selectBottomNavigationItem(R.id.fragmentDownloadHistory)
                                 }
                             }
 
@@ -1036,15 +1149,15 @@ class MainActivity : AppCompatActivity(), NetworkStateListener, CommunicateWithA
     }
 
     override fun setbottomseelection() {
-        binding?.bottomNavigation?.setSelectedItemId(R.id.fragmentDownloadHistory)
+        selectBottomNavigationItem(R.id.fragmentDownloadHistory)
     }
 
     override fun showBrowser() {
-        binding?.bottomNavigation?.setSelectedItemId(R.id.fragmentDownloadQueue)
+        selectBottomNavigationItem(R.id.fragmentDownloadQueue)
     }
 
     override fun showHome() {
-        binding?.bottomNavigation?.setSelectedItemId(R.id.mainDownloaderFragment)
+        selectBottomNavigationItem(R.id.mainDownloaderFragment)
     }
 
     private fun handleSharedContent(intent: Intent) {
@@ -1076,7 +1189,7 @@ class MainActivity : AppCompatActivity(), NetworkStateListener, CommunicateWithA
                         }*/
                         fromBrowser = false
                         navController?.navigate(R.id.mainDownloaderFragment)
-                        binding?.bottomNavigation?.setSelectedItemId(R.id.mainDownloaderFragment)
+                        selectBottomNavigationItem(R.id.mainDownloaderFragment)
                         viewModel.lastdetctedlink = url
                         apiviewModel.texturl.value = url.toString()
                         setIntent(Intent())

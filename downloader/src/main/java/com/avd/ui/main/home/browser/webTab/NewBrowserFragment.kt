@@ -127,7 +127,7 @@ class NewBrowserFragment : BaseFragment(), BrowserServicesProvider {
     }
     override fun onResume() {
         super.onResume()
-        host?.hideBottomBar()
+        host?.showBottomBar()
     }
     override fun onAttach(context: Context) {
         super.onAttach(context)

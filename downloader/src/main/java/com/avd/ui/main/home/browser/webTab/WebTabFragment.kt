@@ -294,7 +294,7 @@ class WebTabFragment : BaseWebTabFragment(), ButtonVisibilityYoutube {
     override fun onResume() {
         super.onResume()
         onWebViewResume()
-        host?.hideBottomBar()
+        host?.showBottomBar()
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, backPressedCallback)
     }
     override fun onDestroy() {

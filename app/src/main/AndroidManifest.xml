@@ -117,7 +117,7 @@
         </receiver>
 
         <activity
-            android:name="com.video.avd.ui.splash.SplashActivity"
+            android:name=".ui.splash.SplashActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/SplashScreenTheme"
@@ -133,16 +133,16 @@
                 android:value="" />
         </activity>
         <activity
-            android:name="com.video.avd.ui.status_saver.StatusActivity"
+            android:name=".ui.status_saver.StatusActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             tools:ignore="DiscouragedApi,LockedOrientationActivity" />
         <activity
-            android:name="com.video.avd.ui.player.PlayerVideoActivity"
+            android:name=".ui.player.PlayerVideoActivity"
             android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenSize|screenLayout|smallestScreenSize|uiMode|touchscreen"
             android:exported="true"
             android:launchMode="singleTop"
-            android:parentActivityName="com.video.avd.ui.MainActivity"
+            android:parentActivityName=".ui.MainActivity"
             android:screenOrientation="user"
             android:supportsPictureInPicture="true"
             android:theme="@style/ViewPlayerTheme"
@@ -159,7 +159,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.video.avd.ui.MainActivity"
+            android:name=".ui.MainActivity"
             android:configChanges="orientation|screenSize"
             android:exported="true"
             android:launchMode="singleTask"

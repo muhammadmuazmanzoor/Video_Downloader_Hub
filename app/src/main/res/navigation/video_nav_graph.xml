@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/homeFragment"
-    app:startDestination="@id/mainDownloaderFragment">
+    app:startDestination="@id/fragmentDownloadQueue">
     <fragment
         android:id="@+id/homeFragment1"
         android:name="com.video.avd.ui.homeVideo.HomeFragment"

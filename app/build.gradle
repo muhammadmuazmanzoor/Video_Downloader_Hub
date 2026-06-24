@@ -37,7 +37,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "videoplayer.tfl.videodownloader.browser.hub"
+        applicationId "videoplayer.tfl.downloader.videodownloader.app"
         minSdk 28
         targetSdk 35
         versionCode 10

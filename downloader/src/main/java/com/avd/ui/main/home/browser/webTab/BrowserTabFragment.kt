@@ -1479,7 +1479,7 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
                 drawableResId = R.drawable.ic_duck_duck
             },
             PageInfo(name = "google", link = "https://www.google.com").apply {
-                drawableResId = R.drawable.default_browser
+                drawableResId = R.drawable.ic_google
             }
         )
     }
