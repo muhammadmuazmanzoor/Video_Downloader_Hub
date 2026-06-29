@@ -210,6 +210,9 @@ class WebTabFragment : BaseWebTabFragment(), ButtonVisibilityYoutube {
             forward.clipToOutline = true
             back3.clipToOutline = true
             refresh.clipToOutline = true
+            constraintLayout4.bringToFront()
+            back3.setOnClickListener { tabListener.onBrowserBackClicked() }
+            forward.setOnClickListener { tabListener.onBrowserForwardClicked() }
             Glide.with(this@WebTabFragment).asGif().load(R.drawable.loading_float).into(loadingWavy)
             loadingWavy.clipToOutline = true
             configureWebView(this)
@@ -283,6 +286,7 @@ class WebTabFragment : BaseWebTabFragment(), ButtonVisibilityYoutube {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+        host?.hideBottomBar()
     }
 
     override fun onPause() {
@@ -294,7 +298,7 @@ class WebTabFragment : BaseWebTabFragment(), ButtonVisibilityYoutube {
     override fun onResume() {
         super.onResume()
         onWebViewResume()
-        host?.showBottomBar()
+        host?.hideBottomBar()
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, backPressedCallback)
     }
     override fun onDestroy() {
@@ -315,6 +319,7 @@ class WebTabFragment : BaseWebTabFragment(), ButtonVisibilityYoutube {
                 .getTabsListChangeEvent()
                 .removeOnPropertyChangedCallback(tabsListChangeListener)
         }
+        host?.hideBottomBar()
     }
 
     private fun handleOpenDetectedVideos() {
@@ -657,14 +662,13 @@ class WebTabFragment : BaseWebTabFragment(), ButtonVisibilityYoutube {
         }
 
         override fun onBrowserBackClicked() {
-            val webView = webTab?.getWebView()
+            val webView = getActiveWebView()
             val canGoBack = webView?.canGoBack()
-            updateNextAndForward()
             if (canGoBack == true) {
-                webView.goBack()
                 tabViewModel.onGoBack(webView)
                 videoDetectionTabViewModel.cancelAllCheckJobs()
             }
+            updateNextAndForward()
           /*  else {
                 webTab?.let { tabViewModel.closeTab(it) }
                 videoDetectionTabViewModel.cancelAllCheckJobs()
@@ -682,28 +686,49 @@ class WebTabFragment : BaseWebTabFragment(), ButtonVisibilityYoutube {
         }
 
         override fun onBrowserForwardClicked() {
-            val webView = webTab?.getWebView()
+            val webView = getActiveWebView()
             val canGoForward = webView?.canGoForward()
-            updateNextAndForward()
             if (canGoForward == true) {
-                webView.goForward()
                 tabViewModel.onGoForward(webView)
                 videoDetectionTabViewModel.cancelAllCheckJobs()
             }
+            updateNextAndForward()
         }
     }
+
+    private fun getActiveWebView(): WebView? {
+        return try {
+            val currentIndex = tabViewModel.thisTabIndex.get()
+            if (::pageTabProvider.isInitialized && currentIndex >= 0) {
+                pageTabProvider.getPageTab(currentIndex).getWebView() ?: webTab?.getWebView()
+            } else {
+                webTab?.getWebView()
+            }
+        } catch (e: Exception) {
+            webTab?.getWebView()
+        }
+    }
+
+    // Replace your existing updateNextAndForward() function with this improved version
 
     fun updateNextAndForward() {
-        val webView = webTab?.getWebView()
-        val canGoForward = webView?.canGoForward()
-        val canGoBack = webView?.canGoBack()
-        if (canGoForward == true) {
+        val webView = getActiveWebView()
+        val canGoForward = webView?.canGoForward() ?: false
+        val canGoBack = webView?.canGoBack() ?: false
+
+        Log.d("NavigationButtons", "canGoBack=$canGoBack, canGoForward=$canGoForward")
+
+        // Update Forward Button
+        if (canGoForward) {
             dataBinding.forward.setColorFilter(
                 ContextCompat.getColor(
                     requireContext(),
                     R.color.gray_light
                 ), android.graphics.PorterDuff.Mode.SRC_IN
             )
+            dataBinding.forward.alpha = 1f
+            dataBinding.forward.isClickable = true
+            dataBinding.forward.isFocusable = true
         } else {
             dataBinding.forward.setColorFilter(
                 ContextCompat.getColor(
@@ -711,14 +736,22 @@ class WebTabFragment : BaseWebTabFragment(), ButtonVisibilityYoutube {
                     R.color.black
                 ), android.graphics.PorterDuff.Mode.SRC_IN
             )
+            dataBinding.forward.alpha = 0.5f
+            dataBinding.forward.isClickable = false
+            dataBinding.forward.isFocusable = false
         }
-        if (canGoBack == true) {
+
+        // Update Back Button
+        if (canGoBack) {
             dataBinding.back3.setColorFilter(
                 ContextCompat.getColor(
                     requireContext(),
                     R.color.gray_light
                 ), android.graphics.PorterDuff.Mode.SRC_IN
             )
+            dataBinding.back3.alpha = 1f
+            dataBinding.back3.isClickable = true
+            dataBinding.back3.isFocusable = true
         } else {
             dataBinding.back3.setColorFilter(
                 ContextCompat.getColor(
@@ -726,9 +759,11 @@ class WebTabFragment : BaseWebTabFragment(), ButtonVisibilityYoutube {
                     R.color.black
                 ), android.graphics.PorterDuff.Mode.SRC_IN
             )
+            dataBinding.back3.alpha = 0.5f
+            dataBinding.back3.isClickable = false
+            dataBinding.back3.isFocusable = false
         }
     }
-
     @SuppressLint("WebViewApiAvailability")
     private fun showAlertVideoFound() {
         if (!tabViewModel.isDownloadDialogShown.get()) {

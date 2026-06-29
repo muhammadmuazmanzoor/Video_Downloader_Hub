@@ -22,6 +22,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.net.URI
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -82,14 +83,12 @@ class WebTabViewModel @Inject constructor(
         setTabTextInput(url)
         isShowProgress.set(true)
         currentTitle.set(title)
-        tabUrl.set(url)
     }
 
     fun onUpdateVisitedHistory(url: String, title: String?, userAgent: String?) {
         if (url.startsWith("http")) {
             setTabTextInput(url)
             isShowProgress.set(true)
-            tabUrl.set(url)
         }
     }
 
@@ -159,7 +158,20 @@ class WebTabViewModel @Inject constructor(
         }
 
         if (!isTabInputFocused.get() || isForce) {
-            tabUrl.set(input)
+            tabUrl.set(input.toDisplayHost())
+        }
+    }
+
+    private fun String.toDisplayHost(): String {
+        return try {
+            val uri = URI(this)
+            val host = uri.host ?: return this
+            host.removePrefix("www.")
+        } catch (e: Exception) {
+            this.removePrefix("https://")
+                .removePrefix("http://")
+                .substringBefore("/")
+                .removePrefix("www.")
         }
     }
 

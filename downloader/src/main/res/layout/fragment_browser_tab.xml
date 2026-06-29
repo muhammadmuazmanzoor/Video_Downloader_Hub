@@ -181,7 +181,6 @@
                         android:onClick="@{() -> viewModel.logClick()}"
                         android:paddingStart="@dimen/_10sdp"
                         android:singleLine="true"
-                        android:text="@{viewModel.searchTextInput}"
                         android:textColor="@color/brand_text_primary"
                         android:textColorHint="@android:color/darker_gray"
                         android:textSize="@dimen/text_small"
