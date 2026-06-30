@@ -50,6 +50,10 @@
     <color name="brand_selected">#F78145</color>
     <color name="brand_gradient_start">#F32C2C</color>
     <color name="brand_gradient_end">#F78145</color>
+    <color name="browser_nav_surface">#FFFFFF</color>
+    <color name="browser_nav_divider">#D8DCE8</color>
+    <color name="browser_nav_icon_enabled">#0A0D13</color>
+    <color name="browser_nav_icon_disabled">#656B76</color>
 
     <color name="gSelector">@color/brand_gradient_start</color>
     <color name="gSelector_light">@color/brand_accent</color>

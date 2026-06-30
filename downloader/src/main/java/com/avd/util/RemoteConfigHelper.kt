@@ -16,11 +16,13 @@ object RemoteConfigHelper {
     }
 
     fun getSocialDownloaderBaseUrl(): String {
+        Log.d("RemoteConfig", "getSocialDownloaderBaseUrl: ${remoteConfig.getString("social_downloader_base_url")}")
         return remoteConfig.getString("social_downloader_base_url")
             .ifEmpty { "https://ai-livewallpaper-backend.aspire.pics/" }
     }
 
     fun getSocialDownloaderEndpoint(): String {
+        Log.d("RemoteConfig", "getSocialDownloaderEndpoint: ${remoteConfig.getString("social_downloader_endpoint")}")
         return remoteConfig.getString("social_downloader_endpoint")
             .ifEmpty { "api/v1/video/download" }
     }

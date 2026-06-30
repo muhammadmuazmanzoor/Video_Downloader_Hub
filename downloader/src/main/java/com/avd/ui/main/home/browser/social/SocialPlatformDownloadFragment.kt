@@ -645,7 +645,7 @@ class SocialPlatformDownloadFragment : BaseWebTabFragment() {
     }
 
     private fun setupNativeAd() {
-        AdBlockerHelper.isProVersion.observe(viewLifecycleOwner) { isPro ->
+ isProVersion.observe(viewLifecycleOwner) { isPro ->
             if (isPro == true) {
                 binding.flAdplace.visibility = View.GONE
             } else {

@@ -1,1 +1,1 @@
-{"sessions":[{"name":"会话 1","messages":[{"role":"user","content":"hello how aare you?"}],"totalTokens":0,"lastActiveTime":1782730055455},{"name":"会话 2","messages":[],"totalTokens":0,"lastActiveTime":1782730082968}],"sessionCounter":2}
+{"sessions":[{"name":"会话 1","messages":[],"totalTokens":0,"lastActiveTime":1782824129562}],"sessionCounter":1}

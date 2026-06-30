@@ -25,6 +25,7 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
 import androidx.databinding.Observable
 import androidx.fragment.app.FragmentActivity
@@ -718,51 +719,25 @@ class WebTabFragment : BaseWebTabFragment(), ButtonVisibilityYoutube {
 
         Log.d("NavigationButtons", "canGoBack=$canGoBack, canGoForward=$canGoForward")
 
-        // Update Forward Button
-        if (canGoForward) {
-            dataBinding.forward.setColorFilter(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.gray_light
-                ), android.graphics.PorterDuff.Mode.SRC_IN
-            )
-            dataBinding.forward.alpha = 1f
-            dataBinding.forward.isClickable = true
-            dataBinding.forward.isFocusable = true
+        updateBrowserNavigationButton(dataBinding.forward, canGoForward)
+        updateBrowserNavigationButton(dataBinding.back3, canGoBack)
+    }
+
+    private fun updateBrowserNavigationButton(button: AppCompatImageView, isAvailable: Boolean) {
+        val iconColor = if (isAvailable) {
+            R.color.browser_nav_icon_enabled
         } else {
-            dataBinding.forward.setColorFilter(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.black
-                ), android.graphics.PorterDuff.Mode.SRC_IN
-            )
-            dataBinding.forward.alpha = 0.5f
-            dataBinding.forward.isClickable = false
-            dataBinding.forward.isFocusable = false
+            R.color.browser_nav_icon_disabled
         }
 
-        // Update Back Button
-        if (canGoBack) {
-            dataBinding.back3.setColorFilter(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.gray_light
-                ), android.graphics.PorterDuff.Mode.SRC_IN
-            )
-            dataBinding.back3.alpha = 1f
-            dataBinding.back3.isClickable = true
-            dataBinding.back3.isFocusable = true
-        } else {
-            dataBinding.back3.setColorFilter(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.black
-                ), android.graphics.PorterDuff.Mode.SRC_IN
-            )
-            dataBinding.back3.alpha = 0.5f
-            dataBinding.back3.isClickable = false
-            dataBinding.back3.isFocusable = false
-        }
+        button.setColorFilter(
+            ContextCompat.getColor(requireContext(), iconColor),
+            android.graphics.PorterDuff.Mode.SRC_IN
+        )
+        button.alpha = 1f
+        button.isEnabled = isAvailable
+        button.isClickable = isAvailable
+        button.isFocusable = isAvailable
     }
     @SuppressLint("WebViewApiAvailability")
     private fun showAlertVideoFound() {

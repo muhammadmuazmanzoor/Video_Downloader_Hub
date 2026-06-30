@@ -87,6 +87,9 @@
     <string name="dialog_preview_video_force">Preview Video Force</string>
     <string name="browser_s_icon">browser\'s icon</string>
     <string name="open_download_dialog_or_restart">Open download dialog or restart video check</string>
+    <string name="browser_back">Go back</string>
+    <string name="browser_forward">Go forward</string>
+    <string name="browser_refresh">Refresh page</string>
     <string name="stop_and_save">Stop and Save</string>
     <string name="video_title_edit">Video title edit</string>
     <string name="menu">menu</string>
