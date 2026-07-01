@@ -35,6 +35,7 @@ class VideoViewModel @Inject constructor(
     }
 
     var localVideos: ObservableField<MutableList<LocalVideo>> = ObservableField(mutableListOf())
+    val isLoadingVideos = ObservableField(true)
 
     val renameErrorEvent = SingleLiveEvent<Int>()
     val shareEvent = SingleLiveEvent<Uri>()
@@ -85,6 +86,7 @@ class VideoViewModel @Inject constructor(
 
     override fun start() {
         if (refreshJob?.isActive == true) return
+        isLoadingVideos.set(true)
 
         refreshJob = viewModelScope.launch(Dispatchers.IO) {
             while (isActive) {
@@ -95,6 +97,9 @@ class VideoViewModel @Inject constructor(
                     cachedFilesList?.let { cachedList ->
                         if (localVideos.get().isNullOrEmpty()) {
                             localVideos.set(cachedList.toMutableList())
+                            if (cachedList.isNotEmpty()) {
+                                isLoadingVideos.set(false)
+                            }
                         }
                     }
 
@@ -125,9 +130,11 @@ class VideoViewModel @Inject constructor(
                         // No new data, only update cache time
                         lastCacheTime = System.currentTimeMillis()
                     }
+                    isLoadingVideos.set(false)
 
                 } catch (e: Exception) {
                     Log.e("VideoViewModel", "Error refreshing file list", e)
+                    isLoadingVideos.set(false)
                     delay(5000L)
                 }
             }

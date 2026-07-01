@@ -1687,7 +1687,7 @@ object AppUtils {
                 shareIntent.type = "video/mp4"
                 val videoUri: Uri = FileProvider.getUriForFile(
                     it,
-                    "com.video.avd.provider", // ✅ matches manifest
+                    "${it.packageName}.provider",
                     videoFile
                 )
                 shareIntent.putExtra(Intent.EXTRA_STREAM, videoUri)

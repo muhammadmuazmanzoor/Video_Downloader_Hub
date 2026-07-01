@@ -67,6 +67,7 @@ class FragmentDownloadQueue : Fragment() {
                 getActivity()?.onBackPressed()
             }
         }
+
     }
 
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {
@@ -141,7 +142,7 @@ class FragmentDownloadQueue : Fragment() {
 
             override fun onTabReselected(tab: TabLayout.Tab) {}
         })
-    }
+    }      
 
     private fun createTabView(
         title: String,
@@ -207,6 +208,8 @@ class FragmentDownloadQueue : Fragment() {
     }
     override fun onResume() {
         super.onResume()
+        (activity as? com.avd.util.CommunicateWithActivity)?.showBottomBar()
+
         if (!permissionManager?.areAllPermissionsGranted()!!) {
             permissionManager?.requestAllPermissions(this)
         }

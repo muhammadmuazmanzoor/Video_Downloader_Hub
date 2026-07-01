@@ -35,10 +35,12 @@ class ProgressViewModel @Inject constructor(
     internal val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     var progressInfos: ObservableField<List<ProgressInfo>> = ObservableField(emptyList())
+    val isLoadingProgress = ObservableField(true)
     private val executor = Executors.newFixedThreadPool(3).asCoroutineDispatcher()
     private val executor2 = Executors.newFixedThreadPool(1).asCoroutineDispatcher()
 
     override fun start() {
+        isLoadingProgress.set(true)
         downloadProgressStartListen()
     }
 
@@ -184,6 +186,7 @@ class ProgressViewModel @Inject constructor(
                 it.printStackTrace()
             }.blockingForEach { progressInfoList ->
                 progressInfos.set(progressInfoList.sortedBy { it.id })
+                isLoadingProgress.set(false)
             }
         }
     }
