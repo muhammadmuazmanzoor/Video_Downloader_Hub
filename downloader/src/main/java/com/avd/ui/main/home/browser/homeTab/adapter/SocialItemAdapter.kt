@@ -16,19 +16,19 @@ class SocialItemAdapter(
 
     inner class IconViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val icon: ImageView = itemView.findViewById(R.id.movie)
-        val title: TextView = itemView.findViewById(R.id.movie_text)
+        val title: TextView? = itemView.findViewById(R.id.movie_text)
 
         fun bind(item: PageInfo) {
             itemView.visibility = View.VISIBLE
             icon.setImageResource(item.drawableResId)
 
-            when {
-                item.link.contains("Status", ignoreCase = true) -> title.text = "Status"
-                item.link.contains("x.com", ignoreCase = true) -> title.text = "X"
-                item.link.contains("facebook", ignoreCase = true) -> title.text = "Facebook"
-                item.link.contains("tiktok", ignoreCase = true) -> title.text = "TikTok"
-                item.link.contains("instagram", ignoreCase = true) -> title.text = "Instagram"
-                else -> title.text = "Social"
+            title?.text = when {
+                item.link.contains("Status", ignoreCase = true) -> "Status"
+                item.link.contains("x.com", ignoreCase = true) -> "X"
+                item.link.contains("facebook", ignoreCase = true) -> "Facebook"
+                item.link.contains("tiktok", ignoreCase = true) -> "TikTok"
+                item.link.contains("instagram", ignoreCase = true) -> "Instagram"
+                else -> "Social"
             }
             itemView.setOnClickListener {
                 onItemClick(item)

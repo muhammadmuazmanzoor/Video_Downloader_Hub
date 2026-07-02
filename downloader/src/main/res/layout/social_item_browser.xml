@@ -16,16 +16,16 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.imageview.ShapeableImageView
-            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Rounded"
             android:id="@+id/movie"
             android:layout_width="@dimen/_41sdp"
             android:layout_height="@dimen/_41sdp"
             android:scaleType="centerCrop"
             android:contentDescription="Movie"
-            android:src="@drawable/movie_123" />
+            android:src="@drawable/movie_123"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Circle" />
 
     </LinearLayout>
-<!--    <TextView
+    <TextView
         android:id="@+id/movie_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -40,6 +40,6 @@
         android:maxLines="1"
         android:ellipsize="end"
         android:text="Social"
-        android:textSize="@dimen/_9ssp" />-->
+        android:textSize="@dimen/_9ssp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

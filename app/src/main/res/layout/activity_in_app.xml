@@ -336,6 +336,13 @@
             app:layout_constraintBottom_toTopOf="@+id/tvSubInfo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+            <View
+                android:id="@+id/shineView"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_50sdp"
+                android:layout_marginHorizontal="12dp"
+                android:background="@drawable/shine_gradient"
+                />
         </FrameLayout>
         <ImageView
             android:id="@+id/iv_right_arrow"

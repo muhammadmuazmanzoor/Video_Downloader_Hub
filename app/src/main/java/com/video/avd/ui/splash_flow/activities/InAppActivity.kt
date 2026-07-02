@@ -72,6 +72,7 @@ class InAppActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceC
         binding = ActivityInAppBinding.inflate(layoutInflater)
         setContentView(binding?.root)
         hideNavigationBar()
+        startShineSweep(binding?.shineView!!)
         AppUtils.changeStatusBarColor(R.color.black, this@InAppActivity, true)
         AppUtils.fbEvents("pro_pannel_view", "ProPanel",this)
         try {
@@ -431,6 +432,13 @@ class InAppActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceC
     private fun animatRightArrow(){
         val pulseAnim = AnimationUtils.loadAnimation(this, R.anim.button_pulse)
         binding?.ivRightArrow?.startAnimation(pulseAnim)
+    }
+    private fun startShineSweep(shineView: View) {
+        val shineAnim = AnimationUtils.loadAnimation(
+            shineView.context,
+            R.anim.shine_sweep
+        )
+        shineView.startAnimation(shineAnim)
     }
 
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {

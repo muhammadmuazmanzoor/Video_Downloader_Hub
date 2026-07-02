@@ -1,9 +1,12 @@
 package com.avd.ui.main.home.browser.social
 
+import android.app.AlertDialog
 import android.app.Dialog
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -95,6 +98,7 @@ class SocialPlatformDownloadFragment : BaseWebTabFragment() {
     private var activeBottomSheet: BottomSheetDialog? = null
     private var lastHandledClipboardUrl: String? = null
     private var expectingDownloadResult = false
+    private var copiedLinkDialog: AlertDialog? = null
 
     override fun shareWebLink() {}
 
@@ -199,6 +203,8 @@ class SocialPlatformDownloadFragment : BaseWebTabFragment() {
 
     override fun onDestroyView() {
         activeBottomSheet?.dismiss()
+        copiedLinkDialog?.dismiss()
+        copiedLinkDialog = null
         fetchingDialog?.dismiss()
         progressViewModel.stop()
         _binding = null
@@ -298,11 +304,43 @@ class SocialPlatformDownloadFragment : BaseWebTabFragment() {
             lastHandledClipboardUrl = trimmed
             applyUrlToUi(trimmed)
 
-            if (SocialPlatform.isSupportedSocialMediaUrl(trimmed) && NetworkUtils.isOnline(requireContext())) {
-                expectingDownloadResult = true
-                viewModel.socialDownloader(trimmed)
+            if (SocialPlatform.isSupportedSocialMediaUrl(trimmed)) {
+                showCopiedLinkDetectedDialog(trimmed)
             }
         }
+    }
+
+    private fun showCopiedLinkDetectedDialog(url: String) {
+        if (copiedLinkDialog?.isShowing == true) return
+
+        val dialogView = layoutInflater.inflate(R.layout.dialog_copied_link_detected, null)
+        val copiedLink = dialogView.findViewById<TextView>(R.id.tvCopiedLink)
+        val cancel = dialogView.findViewById<TextView>(R.id.btnCancel)
+        val download = dialogView.findViewById<TextView>(R.id.btnDownload)
+
+        copiedLink.text = url
+
+        copiedLinkDialog = AlertDialog.Builder(requireContext())
+            .setView(dialogView)
+            .setCancelable(true)
+            .create()
+
+        copiedLinkDialog?.setOnDismissListener {
+            copiedLinkDialog = null
+        }
+
+        cancel.setOnClickListener {
+            copiedLinkDialog?.dismiss()
+        }
+
+        download.setOnClickListener {
+            copiedLinkDialog?.dismiss()
+            applyUrlToUi(url)
+            startDownloadFlow()
+        }
+
+        copiedLinkDialog?.show()
+        copiedLinkDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
     private fun observeDownloadState() {
@@ -526,9 +564,9 @@ class SocialPlatformDownloadFragment : BaseWebTabFragment() {
                     progressViewModel.downloadVideo(it, false, pos)
                 }
             } else {
-                val info = videosResponse.toVideoInfo(title)
+                val info = videosResponse.toVideoInfo(title, url)
                 downloadCompletionListener.prepareForDownload(info.id)
-                progressViewModel.downloadVideo(info, true, pos)
+                progressViewModel.downloadVideo(info, true, 0)
             }
         }
     }
@@ -594,14 +632,13 @@ class SocialPlatformDownloadFragment : BaseWebTabFragment() {
         )
     }
 
-    private fun SocialDownloaderResponse.toVideoInfo(title: String): VideoInfo {
-        val video = videos.firstOrNull() ?: throw IllegalStateException("No videos available")
+    private fun SocialDownloaderResponse.toVideoInfo(title: String, selectedUrl: String): VideoInfo {
         val refererPlatform = platform?.lowercase() ?: this@SocialPlatformDownloadFragment.platform.displayName.lowercase()
         return VideoInfo(
             id = UUID.randomUUID().toString(),
             downloadUrls = listOf(
                 Request.Builder()
-                    .url(video.url.toString())
+                    .url(selectedUrl)
                     .addHeader("User-Agent", "Mozilla/5.0")
                     .addHeader("Referer", "https://www.$refererPlatform.com/")
                     .build()
@@ -615,7 +652,7 @@ class SocialPlatformDownloadFragment : BaseWebTabFragment() {
                 formats = listOf(
                     VideoFormatEntity(
                         formatId = "unified",
-                        url = video.url,
+                        url = selectedUrl,
                         ext = "mp4",
                         vcodec = "",
                         acodec = "",

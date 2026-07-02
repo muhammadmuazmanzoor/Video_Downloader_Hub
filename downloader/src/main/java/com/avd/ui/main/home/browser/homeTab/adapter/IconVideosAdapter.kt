@@ -17,11 +17,11 @@ class IconVideosAdapter(
 
     inner class IconViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val icon: ImageView = itemView.findViewById(R.id.movie)
-        val title: TextView = itemView.findViewById(R.id.movie_text)
+        val title: TextView? = itemView.findViewById(R.id.movie_text)
 
         fun bind(item: IconItem) {
             icon.setImageResource(item.iconResId)
-            title.text = item.title
+            title?.text = item.title
             itemView.setOnClickListener {
                 onItemClick(item)
             }

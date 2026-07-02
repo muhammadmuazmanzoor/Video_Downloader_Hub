@@ -8,6 +8,7 @@ import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.app.Activity
 import android.app.Activity.RESULT_OK
+import android.app.AlertDialog
 import android.app.Dialog
 import android.app.role.RoleManager
 import android.content.Context
@@ -16,6 +17,7 @@ import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.PixelFormat
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -240,6 +242,7 @@ class BrowserHomeFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListen
     private var clipboardAutoFetchConsumed = false
     private var clipboardUrlObserver: Observer<String>? = null
     private var downloadStateJob: Job? = null
+    private var copiedLinkDialog: AlertDialog? = null
 
     private val moviesWebList = listOf(
         IconItem(R.drawable.movie_123, "123Movies"),
@@ -357,10 +360,8 @@ class BrowserHomeFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListen
             lastHandledClipboardUrl = trimmed
             applyClipboardUrlToSearch(trimmed)
 
-            if (isSupportedSocialMediaUrl(trimmed) && NetworkUtils.isOnline(requireContext())) {
-                stopClipboardObservation()
-                clipboardAutoFetchConsumed = true
-                beginSocialDownload(trimmed)
+            if (isSupportedSocialMediaUrl(trimmed)) {
+                showCopiedLinkDetectedDialog(trimmed)
             }
         }
         viewModel.texturl.observe(viewLifecycleOwner, clipboardUrlObserver!!)
@@ -455,6 +456,48 @@ class BrowserHomeFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListen
         stopDownloadStateObservation()
         viewModel.clearDownloadState()
         beginSocialDownload(url)
+    }
+
+    private fun showCopiedLinkDetectedDialog(url: String) {
+        if (copiedLinkDialog?.isShowing == true) return
+
+        val dialogView = layoutInflater.inflate(R.layout.dialog_copied_link_detected, null)
+        val copiedLink = dialogView.findViewById<TextView>(R.id.tvCopiedLink)
+        val cancel = dialogView.findViewById<TextView>(R.id.btnCancel)
+        val download = dialogView.findViewById<TextView>(R.id.btnDownload)
+
+        copiedLink.text = url
+
+        copiedLinkDialog = AlertDialog.Builder(requireContext())
+            .setView(dialogView)
+            .setCancelable(true)
+            .create()
+
+        copiedLinkDialog?.setOnDismissListener {
+            copiedLinkDialog = null
+        }
+
+        cancel.setOnClickListener {
+            copiedLinkDialog?.dismiss()
+        }
+
+        download.setOnClickListener {
+            copiedLinkDialog?.dismiss()
+            if (!NetworkUtils.isOnline(requireContext())) {
+                requireContext().showDownloadDialog(
+                    type = DownloadDialogType.INTERNET_ERROR,
+                    onRetryConnection = {
+                        Toast.makeText(requireContext(), "Connect internet first", Toast.LENGTH_SHORT).show()
+                    }
+                )
+                return@setOnClickListener
+            }
+            clipboardAutoFetchConsumed = true
+            triggerSocialDownload(url)
+        }
+
+        copiedLinkDialog?.show()
+        copiedLinkDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
     private var activeBottomSheet1: BottomSheetDialog? = null
@@ -1435,6 +1478,8 @@ class BrowserHomeFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListen
         activeBottomSheet1 = null
         activeBottomSheet2?.dismiss()
         activeBottomSheet2 = null
+        copiedLinkDialog?.dismiss()
+        copiedLinkDialog = null
         fetchingDialog?.dismiss()
         fetchingDialog = null
         super.onDestroyView()

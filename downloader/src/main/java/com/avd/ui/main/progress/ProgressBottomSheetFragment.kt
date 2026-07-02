@@ -13,6 +13,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.avd.R
 import com.avd.databinding.ProgressBottomSheetBinding
+import com.avd.util.downloaders.generic_downloader.models.VideoTaskState
 
 
 class ProgressBottomSheetFragment : BottomSheetDialogFragment() {
@@ -20,6 +21,7 @@ class ProgressBottomSheetFragment : BottomSheetDialogFragment() {
     private var binding : ProgressBottomSheetBinding?=null
 
     private var mActivity: FragmentActivity? = null
+    private var downloadStatus: Int? = null
 
 
     override fun onAttach(context: Context) {
@@ -46,6 +48,7 @@ class ProgressBottomSheetFragment : BottomSheetDialogFragment() {
         // Inflate the layout for this fragment
         binding=ProgressBottomSheetBinding.inflate(inflater,container,false)
         dialog?.let { binding?.root?.let { it1 -> makeBottomSheetRounded(it1, it) } }
+        updateMenuState()
         return binding?.root
     }
 
@@ -73,6 +76,20 @@ class ProgressBottomSheetFragment : BottomSheetDialogFragment() {
 
     fun  setMenuListeners(listener: ProgressBottomListner){
         this.listener = listener
+    }
+
+    fun setDownloadStatus(status: Int) {
+        downloadStatus = status
+        updateMenuState()
+    }
+
+    private fun updateMenuState() {
+        val shouldShowResume = downloadStatus == VideoTaskState.PAUSE ||
+            downloadStatus == VideoTaskState.ERROR
+        binding?.clPause?.visibility = if (shouldShowResume) View.GONE else View.VISIBLE
+        binding?.view1?.visibility = if (shouldShowResume) View.GONE else View.VISIBLE
+        binding?.clResume?.visibility = if (shouldShowResume) View.VISIBLE else View.GONE
+        binding?.view2?.visibility = if (shouldShowResume) View.VISIBLE else View.GONE
     }
 
 

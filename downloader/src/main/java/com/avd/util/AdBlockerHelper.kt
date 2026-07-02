@@ -830,6 +830,19 @@ object AdBlockerHelper {
         }
     }
 
+    private fun getNativeAdInflater(
+        fragment: Fragment,
+        context: Context,
+        nativeAFrameLayout: FrameLayout?
+    ): LayoutInflater? {
+        if (!fragment.isAdded) {
+            nativeAFrameLayout?.visibility = View.GONE
+            hideNativeShimmer(nativeAFrameLayout)
+            return null
+        }
+        return LayoutInflater.from(fragment.context ?: context)
+    }
+
     private fun displayNativeAdInContainer(
         adView: NativeAdView,
         nativeAFrameLayout: FrameLayout?
@@ -852,7 +865,7 @@ object AdBlockerHelper {
         adUnitId: String,
         isHighFloor: Boolean
     ) {
-        val inflater = fragment.layoutInflater
+        val inflater = getNativeAdInflater(fragment, context, nativeAFrameLayout) ?: return
         val variation = getNativeHomeVariation()
         val adView = inflateNativeAdView(inflater, variation)
 
@@ -900,7 +913,12 @@ object AdBlockerHelper {
                             if (isHighFloor) "nativeAdNow: high failed" else "nativeAdNow: normal failed"
                         )
                         if (isHighFloor) {
-                            refreshAdNorm(fragment, context, false, nativeAFrameLayout)
+                            if (fragment.isAdded) {
+                                refreshAdNorm(fragment, context, false, nativeAFrameLayout)
+                            } else {
+                                nativeAFrameLayout?.visibility = View.GONE
+                                hideNativeShimmer(nativeAFrameLayout)
+                            }
                         } else {
                             nativeAFrameLayout?.visibility = View.GONE
                             hideNativeShimmer(nativeAFrameLayout)
@@ -933,7 +951,8 @@ object AdBlockerHelper {
         Log.d("NativeHome", "isPro: ${isProVersion.value}, variation: ${getNativeHomeVariation()}")
         if (isProVersion.value == true) return
 
-        setupNativeShimmer(nativeAFrameLayout, fragment.layoutInflater)
+        val inflater = getNativeAdInflater(fragment, context, nativeAFrameLayout) ?: return
+        setupNativeShimmer(nativeAFrameLayout, inflater)
         nativeAFrameLayout?.visibility = View.VISIBLE
 
         if (nativeAdNow == null) {
@@ -948,7 +967,9 @@ object AdBlockerHelper {
             Log.d("NativeHome", "nativeAdNow: cached $nativeAdNow")
             CoroutineScope(Dispatchers.Main).launch {
                 try {
-                    val adView = inflateNativeAdView(fragment.layoutInflater)
+                    val cachedInflater = getNativeAdInflater(fragment, context, nativeAFrameLayout)
+                        ?: return@launch
+                    val adView = inflateNativeAdView(cachedInflater)
                     nativeAdNow?.let { populateNativeAdViewInBackground(it, adView) }
                     displayNativeAdInContainer(adView, nativeAFrameLayout)
                 } catch (e: Exception) {
@@ -973,7 +994,8 @@ object AdBlockerHelper {
             nativeAdNow = null
         }
 
-        setupNativeShimmer(nativeAFrameLayout, fragment.layoutInflater)
+        val inflater = getNativeAdInflater(fragment, context, nativeAFrameLayout) ?: return
+        setupNativeShimmer(nativeAFrameLayout, inflater)
         nativeAFrameLayout?.visibility = View.VISIBLE
 
         if (nativeAdNow == null) {
@@ -986,7 +1008,9 @@ object AdBlockerHelper {
         } else {
             CoroutineScope(Dispatchers.Main).launch {
                 try {
-                    val adView = inflateNativeAdView(fragment.layoutInflater)
+                    val cachedInflater = getNativeAdInflater(fragment, context, nativeAFrameLayout)
+                        ?: return@launch
+                    val adView = inflateNativeAdView(cachedInflater)
                     nativeAdNow?.let { populateNativeAdViewInBackground(it, adView) }
                     displayNativeAdInContainer(adView, nativeAFrameLayout)
                 } catch (e: Exception) {

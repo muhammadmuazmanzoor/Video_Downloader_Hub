@@ -347,6 +347,8 @@ dependencies {
 
 //  import the Kotlin extensions library for Play Feature Delivery
     implementation("com.google.android.play:feature-delivery-ktx:2.1.0")
+    // circle image view
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
 }
 
 apply plugin: 'com.android.application'

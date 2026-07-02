@@ -77,6 +77,8 @@ class ProgressFragment : BaseFragment() {
     private val progressListener = object : ProgressListener {
         override fun onMenuClicked(view: View, downloadId: Long, isRegular: Boolean) {
             val dg = ProgressBottomSheetFragment()
+            val menuCandidate = progressViewModel.progressInfos.get()?.find { it.downloadId == downloadId }
+            menuCandidate?.let { dg.setDownloadStatus(it.downloadStatus) }
             dg.show(parentFragmentManager, "")
             dg.setMenuListeners(object:ProgressBottomListner{
                 override fun onProgressMenuClick(which: String) {
