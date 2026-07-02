@@ -500,6 +500,47 @@ class BrowserHomeFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListen
         copiedLinkDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
+    private fun showCopiedLinkOpenDialog(url: String) {
+        val trimmed = url.trim()
+        if (trimmed.isEmpty()) return
+        if (!isValidUrl(trimmed)) {
+            openNewTab(trimmed)
+            return
+        }
+        if (!isAdded || copiedLinkDialog?.isShowing == true) return
+
+        val dialogView = layoutInflater.inflate(R.layout.dialog_copied_link_detected, null)
+        val title = dialogView.findViewById<TextView>(R.id.tvTitle)
+        val copiedLink = dialogView.findViewById<TextView>(R.id.tvCopiedLink)
+        val cancel = dialogView.findViewById<TextView>(R.id.btnCancel)
+        val open = dialogView.findViewById<TextView>(R.id.btnDownload)
+
+        title.text = "Copied link detected"
+        copiedLink.text = trimmed
+        open.text = "OPEN"
+
+        copiedLinkDialog = AlertDialog.Builder(requireContext())
+            .setView(dialogView)
+            .setCancelable(true)
+            .create()
+
+        copiedLinkDialog?.setOnDismissListener {
+            copiedLinkDialog = null
+        }
+
+        cancel.setOnClickListener {
+            copiedLinkDialog?.dismiss()
+        }
+
+        open.setOnClickListener {
+            copiedLinkDialog?.dismiss()
+            openNewTab(trimmed)
+        }
+
+        copiedLinkDialog?.show()
+        copiedLinkDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+    }
+
     private var activeBottomSheet1: BottomSheetDialog? = null
     private var activeBottomSheet2: BottomSheetDialog? = null
 
@@ -927,12 +968,12 @@ class BrowserHomeFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListen
         val openingText = mainViewModel.openedText.get()
 
         if (openingUrl != null) {
-            openNewTab(openingUrl)
+            showCopiedLinkOpenDialog(openingUrl)
             mainViewModel.openedUrl.set(null)
         }
 
         if (openingText != null) {
-            openNewTab(openingText)
+            showCopiedLinkOpenDialog(openingText)
             mainViewModel.openedText.set(null)
         }
 
