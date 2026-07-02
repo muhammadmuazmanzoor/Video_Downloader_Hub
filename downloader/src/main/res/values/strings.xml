@@ -1,30 +1,4 @@
 <resources>
-//Real Id's
-<!--
-     <string name="App_ID" translatable="false">ca-app-pub-5972202469838280~6495662755</string>
--->
-<!--
-      <string name="Interstitial_Down_Popup_ID" translatable="false">ca-app-pub-5972202469838280/1100789280</string>
--->
-<!--
-     <string name="Interstitial_Down_ID" translatable="false">ca-app-pub-5972202469838280/1100789280</string>
--->
-<!--
-     <string name="Interstitial_Down_ID_high" translatable="false">ca-app-pub-5972202469838280/8841333491</string>
--->
-<!--
-     <string name="Native_Home" translatable="false">ca-app-pub-5972202469838280/1862283176</string>
--->
-<!--
-     <string name="Native_Home_High" translatable="false">ca-app-pub-5972202469838280/2142408210</string>
--->
-<!--
-     <string name="Interstitial_Home_ID" translatable="false">ca-app-pub-5972202469838280/1100789280</string>
--->
-<!--
-    <string name="Interstitial_Home_ID_High" translatable="false">ca-app-pub-5972202469838280/8841333491</string>
--->
-
     //// test ids
     <string name="Interstitial_Down_ID" translatable="false">ca-app-pub-3940256099942544/4411468910</string>
     <string name="Interstitial_Down_ID_high" translatable="false">ca-app-pub-3940256099942544/4411468910</string>

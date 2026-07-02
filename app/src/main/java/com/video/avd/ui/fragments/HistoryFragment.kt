@@ -171,6 +171,7 @@ class HistoryFragment : Fragment(), ChromeCastDelegate by ChromeCastDelegateImp(
                         binding?.noVideos?.visibility = View.VISIBLE
                         binding?.noVideosImg?.visibility = View.VISIBLE
                         listPrepared(emptyList())
+                        Log.d("historyfragment","ïf empty part is executed ")
                     } else {
                         binding?.noVideos?.visibility = View.GONE
                         binding?.noVideosImg?.visibility = View.GONE
@@ -182,9 +183,11 @@ class HistoryFragment : Fragment(), ChromeCastDelegate by ChromeCastDelegateImp(
                                 isAdAvailable = adsAvailable
                                 if (videosList.isNotEmpty()) {
                                     listPrepared(videosList)
+                                    Log.d("historyfragment","listPrepared is executed ${videosList.size} ")
                                 }
                             }
                         }
+                        Log.d("historyfragment","ïf else part is executed ")
                     }
                 }
             }

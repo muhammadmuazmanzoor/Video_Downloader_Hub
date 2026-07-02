@@ -361,7 +361,7 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
         activeBottomSheet1 = BottomSheetDialog(requireContext(), R.style.BottomSheetDialogTheme)
         val sheetView = layoutInflater.inflate(R.layout.bottom_sheet_download, null)
         val recyclerView = sheetView.findViewById<RecyclerView>(R.id.rvFormats)
-        val thumbnail = sheetView.findViewById<com.avd.ui.main.home.CustomImageView>(R.id.thumbnail)
+        val thumbnail = sheetView.findViewById<CustomImageView>(R.id.thumbnail)
         val title = sheetView.findViewById<TextView>(R.id.title)
         val download = sheetView.findViewById<ConstraintLayout>(R.id.cl_download)
         val watch = sheetView.findViewById<ConstraintLayout>(R.id.cl_watch)
@@ -566,7 +566,7 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
                         ext = "mp4",
                         vcodec = "",
                         acodec = "",
-                        width = 0,
+                         width = 0,
                         height = 0,
                         tbr = 0,
                         fileSize = 0L,
@@ -1013,7 +1013,7 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
                     WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
                 else
-                    WindowManager.LayoutParams.TYPE_PHONE,
+                     WindowManager.LayoutParams.TYPE_PHONE,
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                 PixelFormat.TRANSLUCENT
             ).apply {

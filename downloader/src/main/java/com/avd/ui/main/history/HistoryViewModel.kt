@@ -1,5 +1,6 @@
 package com.avd.ui.main.history
 
+import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -51,6 +52,7 @@ class HistoryViewModel @Inject constructor(
             historyRepository.getAllHistory().subscribeOn(baseSchedulers.computation)
                 .observeOn(baseSchedulers.computation).subscribe {
                     historyItems.set(it)
+                    Log.d("historyviewmodel", "Fetched all history items ${it.size}")
                     isLoadingHistory.set(false)
                 })
     }
