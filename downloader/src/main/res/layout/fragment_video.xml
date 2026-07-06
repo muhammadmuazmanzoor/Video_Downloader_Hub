@@ -78,7 +78,7 @@
             android:layout_width="@dimen/browser_loading_size"
             android:layout_height="@dimen/browser_loading_size"
             android:indeterminate="true"
-            android:visibility="@{viewModel.isLoadingVideos ? View.VISIBLE : View.GONE}"
+            android:visibility="@{viewModel.isLoadingVideos &amp;&amp; viewModel.localVideos.size() == 0 ? View.VISIBLE : View.INVISIBLE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

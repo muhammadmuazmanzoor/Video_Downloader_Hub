@@ -2,21 +2,10 @@
 
     <string name="app_name">Video Downloader Browser Hub</string>
 
-    // Real Admob
-    <string name="largeBanner" translatable="false">ca-app-pub-5972202469838280/4153178013</string>
-    <string name="App_ID" translatable="false">ca-app-pub-5972202469838280~6495662755</string>
-    <string name="App_Open_Ad" translatable="false">ca-app-pub-5972202469838280/5648500199</string>
-    <string name="Interstitial_Home_ID" translatable="false">ca-app-pub-5972202469838280/3325589186</string>
-    <string name="Interstitial_Home_ID_High" translatable="false">ca-app-pub-5972202469838280/8334373287</string>
-    <string name="Native_ID" translatable="false">ca-app-pub-5972202469838280/1209727580</string>
-    <string name="Native_static" translatable="false">ca-app-pub-5972202469838280/1209727580</string>
-    <string name="Native_Home" translatable="false">ca-app-pub-5972202469838280/1209727580</string>
-    <string name="Native_Home1" translatable="false">ca-app-pub-5972202469838280/7920629688</string>
-    <string name="Native_Home_high" translatable="false">ca-app-pub-5972202469838280/5516638259</string>
-    <string name="Native_Exit" translatable="false">ca-app-pub-5972202469838280/3367762926</string>
+
 
     // Test Admob
-     <!--  <string name="largeBanner" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
+       <string name="largeBanner" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
        <string name="App_ID" translatable="false">ca-app-pub-3940256099942544~3347511713</string>
        <string name="App_Open_Ad" translatable="false">ca-app-pub-3940256099942544/9257395921</string>
        <string name="Interstitial_Home_ID" translatable="false">ca-app-pub-3940256099942544/1033173712</string>
@@ -25,7 +14,7 @@
        <string name="Native_ID" translatable="false">ca-app-pub-3940256099942544/2247696110</string>
        <string name="Native_Home" translatable="false">ca-app-pub-3940256099942544/2247696110</string>
        <string name="Native_Home_high" translatable="false">ca-app-pub-3940256099942544/2247696110</string>
-       <string name="Native_Exit" translatable="false">ca-app-pub-3940256099942544/2247696110</string>-->
+       <string name="Native_Exit" translatable="false">ca-app-pub-3940256099942544/2247696110</string>
 
 
 

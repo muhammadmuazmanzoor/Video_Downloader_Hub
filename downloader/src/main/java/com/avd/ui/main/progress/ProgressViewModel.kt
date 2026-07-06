@@ -21,6 +21,7 @@ import io.reactivex.rxjava3.core.BackpressureStrategy
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import kotlinx.coroutines.asCoroutineDispatcher
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
@@ -38,13 +39,17 @@ class ProgressViewModel @Inject constructor(
     val isLoadingProgress = ObservableField(true)
     private val executor = Executors.newFixedThreadPool(3).asCoroutineDispatcher()
     private val executor2 = Executors.newFixedThreadPool(1).asCoroutineDispatcher()
+    private var progressListenJob: Job? = null
 
     override fun start() {
-        isLoadingProgress.set(true)
-        downloadProgressStartListen()
+        if (progressListenJob?.isActive == true) return
+        isLoadingProgress.set(progressInfos.get().isNullOrEmpty())
+        progressListenJob = downloadProgressStartListen()
     }
 
     override fun stop() {
+        progressListenJob?.cancel()
+        progressListenJob = null
         compositeDisposable.clear()
     }
 
@@ -128,6 +133,7 @@ class ProgressViewModel @Inject constructor(
                 }
                 val downloadId = videoInfo.id.hashCode().toLong()
                 val progressInfo = ProgressInfo(id = videoInfo.id, downloadId = downloadId, videoInfo = videoInfo, isM3u8 = videoInfo.isM3u8)
+                addProgressInfoToList(progressInfo)
                 saveProgressInfo(progressInfo) { info ->
                     if (info.videoInfo.isRegularDownload) {
                         CustomRegularDownloader.addDownload(context, info.videoInfo)
@@ -153,6 +159,7 @@ class ProgressViewModel @Inject constructor(
             }
             val downloadId = videoInfo.id.hashCode().toLong()
             val progressInfo = ProgressInfo(id = videoInfo.id, downloadId = downloadId, videoInfo = videoInfo, isM3u8 = videoInfo.isM3u8)
+            addProgressInfoToList(progressInfo)
             saveProgressInfo(progressInfo) { info ->
                 if (info.videoInfo.isRegularDownload || isRegularDownload==true) {
                     CustomRegularDownloader.addDownload(context, info.videoInfo,true,pos)
@@ -163,6 +170,17 @@ class ProgressViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    private fun addProgressInfoToList(progressInfo: ProgressInfo) {
+        val updatedList = progressInfos.get()
+            .orEmpty()
+            .filterNot { it.id == progressInfo.id }
+            .plus(progressInfo)
+            .sortedBy { it.id }
+
+        progressInfos.set(updatedList)
+        isLoadingProgress.set(false)
     }
 
     private fun saveProgressInfo(progressInfo: ProgressInfo, onSuccess: (ProgressInfo) -> Unit = {}) {
@@ -180,8 +198,8 @@ class ProgressViewModel @Inject constructor(
     }
 
     @VisibleForTesting
-    internal fun downloadProgressStartListen() {
-        viewModelScope.launch(executor) {
+    internal fun downloadProgressStartListen(): Job {
+        return viewModelScope.launch(executor) {
             progressObservable().doOnError {
                 it.printStackTrace()
             }.blockingForEach { progressInfoList ->
@@ -192,7 +210,7 @@ class ProgressViewModel @Inject constructor(
     }
 
     private fun progressObservable(): Observable<List<ProgressInfo>> {
-        val youtubeDlDownloads = Observable.interval(1000, TimeUnit.MILLISECONDS).flatMap {
+        val youtubeDlDownloads = Observable.interval(0, 1000, TimeUnit.MILLISECONDS).flatMap {
             progressRepository.getProgressInfos().take(1).flatMap {
                 val filtered = it.filter { info -> info.downloadStatus != VideoTaskState.SUCCESS }
                 // Don't TOUCH(если убрать это возникнет конфликт ID-ков и не будет показываться прогресс для обычных загрузок)

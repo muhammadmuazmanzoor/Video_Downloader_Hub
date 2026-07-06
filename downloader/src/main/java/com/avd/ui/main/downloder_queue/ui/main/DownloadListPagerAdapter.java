@@ -22,7 +22,6 @@ package com.avd.ui.main.downloder_queue.ui.main;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -35,8 +34,8 @@ public class DownloadListPagerAdapter extends FragmentStateAdapter {
     public static final int QUEUED_FRAG_POS = 0;
     public static final int COMPLETED_FRAG_POS = 1;
 
-    public DownloadListPagerAdapter(FragmentActivity fa) {
-        super(fa);
+    public DownloadListPagerAdapter(@NonNull Fragment fragment) {
+        super(fragment);
     }
 
     @NonNull

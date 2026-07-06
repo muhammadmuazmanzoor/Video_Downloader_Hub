@@ -85,9 +85,9 @@
                         android:src="@drawable/ic_setting_new"
                         android:tint="@color/black"
                         app:tint="@color/black"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/tab_count"
                         app:layout_constraintTop_toTopOf="parent" />
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/img_menu"

@@ -20,7 +20,7 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.color.MaterialColors
@@ -80,7 +80,7 @@ class VideoFragment : BaseFragment() {
 
     private lateinit var dataBinding: FragmentVideoBinding
 
-    private  val videoViewModel: VideoViewModel by viewModels()
+    private val videoViewModel: VideoViewModel by activityViewModels()
 
     private lateinit var videoAdapter: VideoAdapter
 

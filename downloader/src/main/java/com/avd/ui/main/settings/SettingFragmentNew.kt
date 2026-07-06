@@ -20,6 +20,7 @@ import com.facebook.shimmer.ShimmerFrameLayout
 import com.avd.R
 import com.avd.databinding.FragmentSettingNewBinding
 import com.avd.ui.main.home.browser.homeTab.BrowserHomeFragment
+import com.avd.ui.main.home.browser.webTab.BrowserTabFragment
 import com.avd.util.AdBlockerHelper
 import com.avd.util.AdBlockerHelper.browser_native
 import com.avd.util.AdBlockerHelper.exit_native
@@ -204,7 +205,7 @@ class SettingFragmentNew : Fragment() {
                         val activityFragmentContainer = currentFragment.activity?.findViewById<FragmentContainerView>(R.id.fragment_container_view)
                         activityFragmentContainer?.let {
                             val transaction = currentFragment.requireActivity().supportFragmentManager.beginTransaction()
-                            transaction.replace(it.id, BrowserHomeFragment.newInstance())
+                            transaction.replace(it.id, BrowserTabFragment.newInstance())
                             transaction.addToBackStack("home")
                             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                             transaction.commit()
@@ -222,7 +223,7 @@ class SettingFragmentNew : Fragment() {
                 val activityFragmentContainer = currentFragment.activity?.findViewById<FragmentContainerView>(R.id.fragment_container_view)
                 activityFragmentContainer?.let {
                     val transaction = currentFragment.requireActivity().supportFragmentManager.beginTransaction()
-                    transaction.replace(it.id, BrowserHomeFragment.newInstance())
+                    transaction.replace(it.id, BrowserTabFragment.newInstance())
                     transaction.addToBackStack("home")
                     transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     transaction.commit()

@@ -61,7 +61,7 @@ class FragmentDownloadQueue : Fragment() {
             )
 
 
-            initLayout(activity)
+            initLayout()
 
             binding.waBack.setOnClickListener {
                 getActivity()?.onBackPressed()
@@ -95,8 +95,8 @@ class FragmentDownloadQueue : Fragment() {
         }
     }
 
-    private fun initLayout(activity: FragmentActivity) {
-        pagerAdapter = DownloadListPagerAdapter(activity)
+    private fun initLayout() {
+        pagerAdapter = DownloadListPagerAdapter(this)
 
         binding.downloadListViewpager.apply {
             adapter = pagerAdapter
