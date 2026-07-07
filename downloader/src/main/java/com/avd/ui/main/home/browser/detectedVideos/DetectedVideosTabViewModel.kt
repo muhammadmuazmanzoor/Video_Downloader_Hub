@@ -60,10 +60,10 @@ class DetectedVideosTabViewModel @Inject constructor(
     val selectedFormatUrl = ObservableField<String>()
 
     @Volatile
-    var m3u8LoadingList = ObservableField<MutableSet<String>>()
+    var m3u8LoadingList = ObservableField<MutableSet<String>>(mutableSetOf())
 
     @Volatile
-    var regularLoadingList = ObservableField<MutableSet<String>>()
+    var regularLoadingList = ObservableField<MutableSet<String>>(mutableSetOf())
 
     val showDetectedVideosEvent = SingleLiveEvent<Void?>()
 
@@ -88,6 +88,13 @@ class DetectedVideosTabViewModel @Inject constructor(
     private val hasCheckLoadingsRegular = ObservableBoolean(false)
 
     override fun start() {
+        if (regularLoadingList.get() == null) {
+            regularLoadingList.set(mutableSetOf())
+        }
+        if (m3u8LoadingList.get() == null) {
+            m3u8LoadingList.set(mutableSetOf())
+        }
+
         regularLoadingList.addOnPropertyChangedCallback(object :
             OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
@@ -197,7 +204,8 @@ class DetectedVideosTabViewModel @Inject constructor(
 
     private fun startVerifyProcess(resourceRequest: Request, isM3u8: Boolean, hlsTitle: String? = null) {
 
-        val taskUrlCleaned = resourceRequest.url.toString().split("?").firstOrNull()?.trim() ?: ""
+        val originalUrl = resourceRequest.url.toString()
+        val taskUrlCleaned = normalizedUrl(originalUrl)
 
         val job = verifyVideoLinkJobStorage[taskUrlCleaned]
         if (job != null && !job.isDisposed || taskUrlCleaned.isEmpty()) {
@@ -227,15 +235,17 @@ class DetectedVideosTabViewModel @Inject constructor(
                 .doFinally  {
                     // cleanup on complete *or* error
                     val url = resourceRequest.url.toString()
-                        .substringBefore("?")
-                        .trim()
 
                     m3u8LoadingList.get()
                         ?.toMutableSet()
-                        ?.apply { remove(url) }
+                        ?.apply {
+                            remove(url)
+                            remove(normalizedUrl(url))
+                        }
                         ?.let { m3u8LoadingList.set(it) }
 
-                    verifyVideoLinkJobStorage.remove(url)
+                    verifyVideoLinkJobStorage.remove(normalizedUrl(url))
+                    resetButtonIfNoActiveDetection()
             }.subscribe(
                     { info ->
                         if (info.id.isNotEmpty()) {
@@ -405,8 +415,11 @@ class DetectedVideosTabViewModel @Inject constructor(
             .subscribeOn(baseSchedulers.io)
             .doOnComplete {
                 val loadings = regularLoadingList.get()
-                loadings?.remove(request.url.toString())
+                val url = request.url.toString()
+                loadings?.remove(url)
+                loadings?.remove(normalizedUrl(url))
                 regularLoadingList.set(loadings?.toMutableSet())
+                resetButtonIfNoActiveDetection()
                 //Log.d("InstaGramDetection", "Removed URL from loading list after completion: ${request.url}")
             }
             .onErrorComplete()
@@ -417,6 +430,29 @@ class DetectedVideosTabViewModel @Inject constructor(
 
         Log.d("InstaGramDetection", "Disposable created and returned for URL: $uriString")
         return disposable
+    }
+
+    fun clearStaleLoadingIfNoVideos() {
+        if (detectedVideosList.get()?.isNotEmpty() == true) {
+            return
+        }
+
+        regularLoadingList.set(mutableSetOf())
+        m3u8LoadingList.set(mutableSetOf())
+        setButtonState(DownloadButtonStateCanNotDownload())
+    }
+
+    private fun resetButtonIfNoActiveDetection() {
+        val hasDetectedVideos = detectedVideosList.get()?.isNotEmpty() == true
+        val hasRegularLoading = regularLoadingList.get()?.isNotEmpty() == true
+        val hasM3u8Loading = m3u8LoadingList.get()?.isNotEmpty() == true
+        if (!hasDetectedVideos && !hasRegularLoading && !hasM3u8Loading) {
+            setButtonState(DownloadButtonStateCanNotDownload())
+        }
+    }
+
+    private fun normalizedUrl(url: String): String {
+        return url.substringBefore("?").trim()
     }
 
     private val jobStorageLock = Any()

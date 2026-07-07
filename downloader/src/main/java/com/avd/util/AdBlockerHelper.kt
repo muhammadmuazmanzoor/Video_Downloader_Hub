@@ -72,7 +72,7 @@ object AdBlockerHelper {
     var showExitScreen: (() -> Unit)? = null
     var adChoice: String? = ""
     var isPro: Boolean = false
-    var isProVersion = MutableLiveData(false)
+    var isProVersion = MutableLiveData(true)
     var interstitalShown: Boolean = false
     var maxAdImpressions: Int = 0
     var remotePopupAdImpressions: Int = 3

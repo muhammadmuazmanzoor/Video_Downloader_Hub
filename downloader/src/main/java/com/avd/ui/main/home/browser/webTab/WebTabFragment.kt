@@ -84,6 +84,7 @@ import com.avd.util.proxy_utils.CustomProxyController
 import com.avd.util.proxy_utils.OkHttpProxyClient
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -131,6 +132,8 @@ class WebTabFragment : BaseWebTabFragment(), ButtonVisibilityYoutube {
 
     private var webTab: WebTab? = null
     private var videoToast: Toast? = null
+
+    private var floatingLoadingResetJob: Job? = null
 
     private var canGoCounter = 0
 
@@ -304,6 +307,7 @@ class WebTabFragment : BaseWebTabFragment(), ButtonVisibilityYoutube {
     }
     override fun onDestroy() {
         super.onDestroy()
+        floatingLoadingResetJob?.cancel()
         webTab?.let { tab ->
             AppLogger.d("onDestroy Webview::::::::: ${tab.getUrl()}")
             tab.getWebView()?.let { destroyWebView(it) }
@@ -430,9 +434,9 @@ class WebTabFragment : BaseWebTabFragment(), ButtonVisibilityYoutube {
                     tabManagerProvider.getUpdateTabEvent(),
                     pageTabProvider,
                     this,
-                ) {
-                    updateNextAndForward()
-                }
+                    { updateNextAndForward() },
+                    { scheduleFloatingLoadingReset() }
+                )
             }
 
             val chromeClient = DownloaderModuleNavigator.settingsViewModel?.let {
@@ -586,6 +590,16 @@ class WebTabFragment : BaseWebTabFragment(), ButtonVisibilityYoutube {
             }
         } catch (e: Exception) {
            e.printStackTrace()
+        }
+    }
+
+    private fun scheduleFloatingLoadingReset() {
+        floatingLoadingResetJob?.cancel()
+        floatingLoadingResetJob = viewLifecycleOwner.lifecycleScope.launch {
+            delay(1200L)
+            if (viewLifecycleOwner.lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
+                videoDetectionTabViewModel.clearStaleLoadingIfNoVideos()
+            }
         }
     }
 

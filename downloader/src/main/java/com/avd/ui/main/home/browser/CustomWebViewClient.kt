@@ -36,7 +36,8 @@ class CustomWebViewClient(
     private val updateTabEvent: SingleLiveEvent<WebTab>,
     private val pageTabProvider: PageTabProvider,
     private val buttonVisibilityYoutube: ButtonVisibilityYoutube,
-    val updatevisitedhistry : (()-> Unit)
+    val updatevisitedhistry : (()-> Unit),
+    private val onPageFinishedCallback: (() -> Unit)? = null
 ) : WebViewClient() {
     var videoAlert: AlertDialog? = null
     private var searchEventCounter = 0
@@ -314,6 +315,7 @@ class CustomWebViewClient(
         // Notify ViewModel that page loading has finished
         tabViewModel.finishPage(url)
         updatevisitedhistry.invoke()
+        onPageFinishedCallback?.invoke()
     }
 
     override fun onRenderProcessGone(view: WebView?, detail: RenderProcessGoneDetail?): Boolean {
