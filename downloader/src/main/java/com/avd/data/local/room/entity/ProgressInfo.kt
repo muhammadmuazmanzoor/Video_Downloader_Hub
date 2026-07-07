@@ -48,13 +48,14 @@ data class ProgressInfo(
     // НЕ ТРОГАТЬ VAR!!!! иначе пиздец с миграцией
     var progress: Int = 0
         get() {
-            return (progressDownloaded * 100f / progressTotal).toInt()
+            if (progressTotal <= 0L) return 0
+            return ((progressDownloaded * 100f / progressTotal).toInt()).coerceIn(0, 100)
         }
 
     // НЕ ТРОГАТЬ VAR!!!! иначе пиздец с миграцией
     var progressSize: String = ""
         get() {
-            return getFileSizeReadable(progressDownloaded.toDouble()) + "/" + getFileSizeReadable(progressTotal.toDouble()) + " - $downloadStatusFormatted"
+            return "${progress}% - " + getFileSizeReadable(progressDownloaded.toDouble()) + "/" + getFileSizeReadable(progressTotal.toDouble()) + " - $downloadStatusFormatted"
         }
 
     // НЕ ТРОГАТЬ VAR!!!! иначе пиздец с миграцией
@@ -82,7 +83,7 @@ data class ProgressInfo(
         if (bytesDownloaded != other.bytesDownloaded) return false
         if (bytesTotal != other.bytesTotal) return false
         if (progressDownloaded != other.progressDownloaded) return false
-        if (progressTotal != other.progressDownloaded) return false
+        if (progressTotal != other.progressTotal) return false
         if (downloadStatus != other.downloadStatus) return false
         if (isM3u8 != other.isM3u8) return false
         if (fragmentsDownloaded != other.fragmentsDownloaded) return false

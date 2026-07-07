@@ -38,7 +38,7 @@ class CustomRegularDownloaderWorker @AssistedInject constructor(@Assisted appCon
     companion object {
         var isCanceled: Boolean = false
         private const val INTERVAL = 1000
-        private const val THREAD_COUNT = 1
+        private const val MAX_THREAD_COUNT = 8
     }
 
     override fun handleAction(
@@ -308,13 +308,13 @@ class CustomRegularDownloaderWorker @AssistedInject constructor(@Assisted appCon
         val inf = changeProgressInfoDownloadId(taskId, taskId.hashCode()).blockingFirst()
         saveProgress(inf.id, Progress(0, 0), VideoTaskState.PENDING)
         AppLogger.d(
-            "Regular downloader prepared url=$url file=$outputFileName headers=${fixedHeaders.keys} threadCount=$THREAD_COUNT"
+            "Regular downloader prepared url=$url file=$outputFileName headers=${fixedHeaders.keys} threadCount=${getRegularThreadCount()}"
         )
         proxyController.getClient()?.let { okHttpClient ->
             CustomFileDownloader(
                 URL(url),
                 File(outputFileName!!),
-                THREAD_COUNT,
+                getRegularThreadCount(),
                 fixedHeaders,
                 okHttpClient,
                 object : DownloadListener {
@@ -359,6 +359,11 @@ class CustomRegularDownloaderWorker @AssistedInject constructor(@Assisted appCon
                     }
                 }).download()
         }
+    }
+
+    private fun getRegularThreadCount(): Int {
+        return sharedPrefHelper.getRegularDownloaderThreadCount()
+            .coerceIn(1, MAX_THREAD_COUNT)
     }
 
     override fun fixFileName(fileName: String): String {

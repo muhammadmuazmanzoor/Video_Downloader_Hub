@@ -27,7 +27,7 @@ class SettingsViewModel @Inject constructor(
 ) :
     BaseViewModel() {
 
-    val regularThreadsCount = ObservableInt(1)
+    val regularThreadsCount = ObservableInt(4)
     val m3u8ThreadsCount = ObservableInt(4)
     val videoDetectionTreshold = ObservableInt(4 * 1024 * 1024)
     val storageType = ObservableField(StorageType.SD)

@@ -417,10 +417,6 @@ class YoutubeDlDownloaderWorker @AssistedInject constructor(
             // Add various options using reflection
             addOptionMethod.invoke(request, "--progress", "")
             addOptionMethod.invoke(request, "-N", threadsCount.toString())
-            if (!YoutubeDlDownloader.isFaceBook){
-                addOptionMethod.invoke(request, "--recode-video", "mp4")
-                Log.d("CommandAdded", "--recode-video")
-            }
             addOptionMethod.invoke(request, "--merge-output-format", "mp4")
             addOptionMethod.invoke(request, "--hls-prefer-native", "")
             addOptionMethod.invoke(request, "--hls-use-mpegts", "")

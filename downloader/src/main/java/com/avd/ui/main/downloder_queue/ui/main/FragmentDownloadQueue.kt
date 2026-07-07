@@ -30,6 +30,7 @@ class FragmentDownloadQueue : Fragment() {
 
     private var pagerAdapter: DownloadListPagerAdapter? = null
     private var permissionManager: PermissionManagerNew? = null
+    private var hasRequestedPermissionsForView = false
 
 
     override fun onCreateView(
@@ -43,30 +44,32 @@ class FragmentDownloadQueue : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mActivity?.let { activity ->
-            permissionManager = PermissionManagerNew(requireContext(), requireActivity(),
-                object : PermissionManagerNew.Callback {
-                    override fun onStorageResult(isGranted: Boolean) {
-                        Log.d("Permissions", "Storage granted=$isGranted")
-                    }
-
-                    override fun onNotificationResult(isGranted: Boolean) {
-                        Log.d("Permissions", "Notification granted=$isGranted")
-                    }
-
-                    override fun onForegroundServiceResult(isGranted: Boolean) {
-                        Log.d("Permissions", "Foreground Service granted=$isGranted")
-                    }
+        permissionManager = PermissionManagerNew(requireContext(), requireActivity(),
+            object : PermissionManagerNew.Callback {
+                override fun onStorageResult(isGranted: Boolean) {
+                    Log.d("Permissions", "Storage granted=$isGranted")
                 }
-            )
 
+                override fun onNotificationResult(isGranted: Boolean) {
+                    Log.d("Permissions", "Notification granted=$isGranted")
+                }
 
-            initLayout()
-
-            binding.waBack.setOnClickListener {
-                getActivity()?.onBackPressed()
+                override fun onForegroundServiceResult(isGranted: Boolean) {
+                    Log.d("Permissions", "Foreground Service granted=$isGranted")
+                }
             }
+        )
+
+        initLayout()
+
+        binding.waBack.setOnClickListener {
+            getActivity()?.onBackPressed()
         }
+
+        activity?.onBackPressedDispatcher?.addCallback(
+            viewLifecycleOwner,
+            onBackPressedCallback
+        )
 
     }
 
@@ -210,16 +213,9 @@ class FragmentDownloadQueue : Fragment() {
         super.onResume()
         (activity as? com.avd.util.CommunicateWithActivity)?.showBottomBar()
 
-        if (!permissionManager?.areAllPermissionsGranted()!!) {
+        if (!hasRequestedPermissionsForView && permissionManager?.areAllPermissionsGranted() == false) {
+            hasRequestedPermissionsForView = true
             permissionManager?.requestAllPermissions(this)
-        }
-        try {
-            activity?.onBackPressedDispatcher?.addCallback(
-                viewLifecycleOwner,
-                onBackPressedCallback
-            )
-        } catch (e: Exception) {
-            e.printStackTrace()
         }
         try {
             Log.d("FragmentDownloadQueue", "Resumed → switched to tab: $lastTab")
@@ -261,6 +257,9 @@ class FragmentDownloadQueue : Fragment() {
         super.onDestroyView()
         Log.d("FragmentDownloadQueue", "onDestroyView")
         lastTab=0
+        pagerAdapter = null
+        permissionManager = null
+        hasRequestedPermissionsForView = false
         //DownloadDialogManager.defaultTabPos = DownloadListPagerAdapter.QUEUED_FRAG_POS
     }
 

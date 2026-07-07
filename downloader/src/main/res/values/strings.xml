@@ -211,6 +211,7 @@
     <string name="try_now">Try Now</string>
     <string name="allow_appear_on_top_permission">Allow Appear-on-top Permission</string>
     <string name="grant_permission">Grant Permission</string>
+    <string name="delete">Delete\n</string>
 
 
 </resources>

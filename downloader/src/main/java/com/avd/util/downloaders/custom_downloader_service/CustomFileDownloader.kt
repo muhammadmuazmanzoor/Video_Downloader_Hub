@@ -53,7 +53,9 @@ class CustomFileDownloader(
         const val STOPPED = "STOPPED"
         const val CANCELED = "CANCELED"
         private const val STOP_FILE_NAME = "stop"
-        private const val DOWNLOAD_BUFFER_SIZE = 1024
+        private const val DOWNLOAD_BUFFER_SIZE = 256 * 1024
+        private const val CHECKPOINT_BYTES_INTERVAL = 512 * 1024
+        private const val CHECKPOINT_TIME_INTERVAL_MS = 1000L
 
         fun stop(fileToStop: File) {
             File(fileToStop.parentFile, STOP_FILE_NAME).createNewFile()
@@ -119,16 +121,26 @@ class CustomFileDownloader(
         }
         totalBytesAll.set(contentSize)
 
-        val chunkSize = contentSize / threadCount
-        val ranges = (0 until threadCount).map {
+        if (contentSize <= 0L) {
+            singleThreadDownload(fileChannel)
+            return
+        }
+
+        val effectiveThreadCount = if (contentSize < threadCount) {
+            contentSize.toInt().coerceAtLeast(1)
+        } else {
+            threadCount
+        }
+        val chunkSize = contentSize / effectiveThreadCount
+        val ranges = (0 until effectiveThreadCount).map {
             val start = it * chunkSize
-            val end = if (it == threadCount - 1) contentSize - 1 else (it + 1) * chunkSize - 1
+            val end = if (it == effectiveThreadCount - 1) contentSize - 1 else (it + 1) * chunkSize - 1
             start..end
         }
 
         val chunkFutureMap = mutableMapOf<Chunk, Future<*>>()
         AppLogger.d(
-            "Start Downloading: file: $file threadCount: $threadCount ranges: $ranges"
+            "Start Downloading: file: $file threadCount: $effectiveThreadCount ranges: $ranges"
         )
         ranges.forEachIndexed { index, range ->
             chunkFutureMap[Chunk(index, range, chunkSize)] = executorService.submit {
@@ -250,20 +262,39 @@ class CustomFileDownloader(
         totalBytesChunks[chunkIndex] = res.body?.contentLength() ?: throw Error("content length is  null")
 
         var bytesRead = 0
+        var lastCheckpointBytes = bytesCopied
+        var lastCheckpointTime = System.currentTimeMillis()
 
         RandomAccessFile(chunkFile, "rw").channel.use { chunkChannel ->
+            fun saveChunkCheckpoint(force: Boolean = false) {
+                val now = System.currentTimeMillis()
+                if (
+                    force ||
+                    bytesCopied - lastCheckpointBytes >= CHECKPOINT_BYTES_INTERVAL ||
+                    now - lastCheckpointTime >= CHECKPOINT_TIME_INTERVAL_MS
+                ) {
+                    val checkpoint = bytesCopied.toString().toByteArray()
+                    chunkChannel.truncate(0)
+                    chunkChannel.position(0)
+                    chunkChannel.write(ByteBuffer.wrap(checkpoint))
+                    lastCheckpointBytes = bytesCopied
+                    lastCheckpointTime = now
+                }
+            }
+
             inputStream.use { urlStream ->
                 while (!isPaused.get() && !isCanceled.get() && (urlStream.read( // && bytesCopied < range.last
                         buffer
                     ).also { bytesRead = it }) >= 0
                 ) {
-                    fileChannel.write(ByteBuffer.wrap(buffer), offset + bytesCopied)
+                    fileChannel.write(ByteBuffer.wrap(buffer, 0, bytesRead), offset + bytesCopied)
                     bytesCopied += bytesRead
-                    chunkChannel.write(ByteBuffer.wrap("$bytesCopied".toByteArray()), 0)
+                    saveChunkCheckpoint()
                     this.onChunkProgressUpdate(
                         bytesCopied, totalBytesChunks[chunkIndex], chunkIndex
                     )
                 }
+                saveChunkCheckpoint(force = true)
                 if (isStopped(file)) {
                     throw Exception(STOPPED)
                 }

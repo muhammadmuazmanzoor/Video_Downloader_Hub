@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
@@ -197,40 +198,39 @@ class SettingFragmentNew : Fragment() {
         }
     }
     fun navigateToHome() {
-        if(interHome!=null) {
-            interHome?.let {
-                showInterstitial(true, it, requireActivity(), {
-                    try {
-                        val currentFragment = this
-                        val activityFragmentContainer = currentFragment.activity?.findViewById<FragmentContainerView>(R.id.fragment_container_view)
-                        activityFragmentContainer?.let {
-                            val transaction = currentFragment.requireActivity().supportFragmentManager.beginTransaction()
-                            transaction.replace(it.id, BrowserTabFragment.newInstance())
-                            transaction.addToBackStack("home")
-                            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                            transaction.commit()
-                        }
-                    } catch (e: ClassCastException) {
-                        AppLogger.d("Can't get the fragment manager with this")
-                    }
-                },inter_browser)
+        fun returnToPreviousBrowser() {
+            val popped = requireActivity().supportFragmentManager.popBackStackImmediate(
+                "settings",
+                FragmentManager.POP_BACK_STACK_INCLUSIVE
+            )
+            if (popped) {
+                return
             }
 
-        }
-        else{
             try {
                 val currentFragment = this
                 val activityFragmentContainer = currentFragment.activity?.findViewById<FragmentContainerView>(R.id.fragment_container_view)
                 activityFragmentContainer?.let {
                     val transaction = currentFragment.requireActivity().supportFragmentManager.beginTransaction()
                     transaction.replace(it.id, BrowserTabFragment.newInstance())
-                    transaction.addToBackStack("home")
                     transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     transaction.commit()
                 }
             } catch (e: ClassCastException) {
                 AppLogger.d("Can't get the fragment manager with this")
             }
+        }
+
+        if(interHome!=null) {
+            interHome?.let {
+                showInterstitial(true, it, requireActivity(), {
+                    returnToPreviousBrowser()
+                },inter_browser)
+            }
+
+        }
+        else{
+            returnToPreviousBrowser()
         }
 
     }

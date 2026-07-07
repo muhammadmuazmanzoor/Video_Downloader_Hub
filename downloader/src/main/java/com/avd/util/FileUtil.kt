@@ -11,6 +11,8 @@ import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
+import android.os.Handler
+import android.os.Looper
 import android.os.StatFs
 import android.provider.DocumentsContract
 import android.provider.MediaStore
@@ -364,36 +366,63 @@ class FileUtil @Inject constructor() {
         }
     }
 
-    fun deleteMedia(context: Context, uri: Uri) {
-        try {
+    fun deleteMedia(context: Context, uri: Uri): Boolean {
+        return try {
             if (!isUriExists(context, uri)) {
                 throw FileNotFoundException("File not found: $uri")
             }
 
-            // Check if the URI is supported for file operations
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-                // API < 29: Delete using file methods
-                val file = File(uri.path ?: throw FileNotFoundException("Invalid URI: $uri"))
-                if (file.exists()) {
-                    file.delete()
-                } else {
-                    throw FileNotFoundException("File not found: $file")
-                }
+            val deleted = if (isFileUri(uri)) {
+                deleteFileUri(uri)
             } else {
-//                 API 29 and above: Use ContentResolver to delete the file
                 deleteDownloadedVideoContent(context, uri)
             }
+
+            if (!deleted) {
+                throw FileNotFoundException("Unable to delete: $uri")
+            }
+
             // Invalidate cache after deletion completes to ensure fresh data
             invalidateListFilesCache()
+            true
         } catch (e: Throwable) {
             e.printStackTrace()
-            Toast.makeText(context, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+            showToast(context, "Error: ${e.message}")
+            false
+        }
+    }
+
+    private fun isFileUri(uri: Uri): Boolean {
+        return uri.scheme == ContentResolver.SCHEME_FILE || uri.scheme.isNullOrBlank()
+    }
+
+    private fun deleteFileUri(uri: Uri): Boolean {
+        val filePath = uri.path ?: uri.toString()
+        val file = File(filePath)
+        if (!file.exists()) {
+            throw FileNotFoundException("File not found: $file")
+        }
+        return file.delete() || !file.exists()
+    }
+
+    private fun showToast(context: Context, message: String) {
+        val appContext = context.applicationContext
+        if (Looper.myLooper() == Looper.getMainLooper()) {
+            Toast.makeText(appContext, message, Toast.LENGTH_SHORT).show()
+        } else {
+            Handler(Looper.getMainLooper()).post {
+                Toast.makeText(appContext, message, Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
     fun isUriExists(context: Context, uri: Uri): Boolean {
+        if (isFileUri(uri)) {
+            return File(uri.path ?: uri.toString()).exists()
+        }
+
         if (isFileApiSupportedByUri(context, uri)) {
-            return uri.toFile().exists()
+            return runCatching { uri.toFile().exists() }.getOrDefault(false)
         }
 
         try {
@@ -589,11 +618,11 @@ class FileUtil @Inject constructor() {
         return filesMap
     }
 
-    private fun deleteDownloadedVideoContent(context: Context, uri: Uri) {
-        if (DocumentsContract.isDocumentUri(context, uri)) {
+    private fun deleteDownloadedVideoContent(context: Context, uri: Uri): Boolean {
+        return if (DocumentsContract.isDocumentUri(context, uri)) {
             DocumentsContract.deleteDocument(context.contentResolver, uri)
         } else {
-            context.contentResolver.delete(uri, null, null)
+            context.contentResolver.delete(uri, null, null) > 0
         }
     }
 

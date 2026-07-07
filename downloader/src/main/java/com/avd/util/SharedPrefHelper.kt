@@ -216,7 +216,7 @@ class SharedPrefHelper @Inject constructor(context: Context) {
     }
 
     fun getRegularDownloaderThreadCount(): Int {
-        return sharedPreferences.getInt(REGULAR_THREAD_COUNT, 1)
+        return sharedPreferences.getInt(REGULAR_THREAD_COUNT, 4)
     }
 
     fun setRegularDownloaderThreadCount(count: Int) {

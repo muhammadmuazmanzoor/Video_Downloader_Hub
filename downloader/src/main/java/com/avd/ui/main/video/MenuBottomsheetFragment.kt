@@ -53,6 +53,9 @@ class MenuBottomsheetFragment : BottomSheetDialogFragment() {
         binding?.clShare?.setOnClickListener {
             listener?.onMenuCLick("share")
         }
+        binding?.clDelete?.setOnClickListener {
+            listener?.onMenuCLick("delete")
+        }
     }
 
 

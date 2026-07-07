@@ -21,6 +21,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import javax.inject.Inject
 
@@ -201,11 +202,26 @@ class VideoViewModel @Inject constructor(
 
 
     fun deleteVideo(context: Context, video: LocalVideo) {
-        localVideos.get()?.find { it.uri.path == video.uri.path }?.let {
-            fileUtil.deleteMedia(context, video.uri)
-            val list = localVideos.get()?.toMutableList()
-            list?.remove(it)
-            localVideos.set(list ?: mutableListOf())
+        val currentList = localVideos.get().orEmpty()
+        val updatedList = currentList.filterNot { it.uri.toString() == video.uri.toString() }
+
+        localVideos.set(updatedList.toMutableList())
+        cachedFilesList = updatedList
+        cachedVideosList?.set(updatedList.toMutableList())
+        lastCacheTime = System.currentTimeMillis()
+
+        viewModelScope.launch(Dispatchers.IO) {
+            val deleted = fileUtil.deleteMedia(context.applicationContext, video.uri)
+
+            if (!deleted || fileUtil.isUriExists(context.applicationContext, video.uri)) {
+                val freshList = getFilesList().sortedByDescending { it.time }.reversed()
+                withContext(Dispatchers.Main.immediate) {
+                    cachedFilesList = freshList
+                    cachedVideosList?.set(freshList.toMutableList())
+                    localVideos.set(freshList.toMutableList())
+                    lastCacheTime = System.currentTimeMillis()
+                }
+            }
         }
     }
 

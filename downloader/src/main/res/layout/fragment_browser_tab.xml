@@ -28,15 +28,16 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/brand_background"
                 android:paddingBottom="@dimen/_45sdp"
-                android:background="@color/brand_background">
+                android:rotationX="2">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/actionbar"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    app:layout_constraintHeight_percent="0.06"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHeight_percent="0.06"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
@@ -57,9 +58,9 @@
                         android:id="@+id/iv_pro_new"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
                         android:padding="5dp"
                         android:src="@drawable/premium_svg"
-                        android:layout_marginEnd="10dp"
                         android:visibility="gone"
                         app:layout_constraintBottom_toBottomOf="@+id/tab_count"
                         app:layout_constraintEnd_toStartOf="@+id/tab_count"
@@ -69,14 +70,15 @@
                         android:id="@+id/tab_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="5dp"
-                        android:visibility="visible"
-                        android:src="@drawable/ic_tab_icon"
-                        app:tint="@color/brand_text_primary"
                         android:layout_marginEnd="7dp"
+                        android:padding="5dp"
+                        android:src="@drawable/ic_tab_icon"
+                        android:visibility="visible"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/img_menu"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="@color/brand_text_primary" />
+
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/cl_setting"
                         android:layout_width="wrap_content"
@@ -84,24 +86,25 @@
                         android:layout_marginEnd="16dp"
                         android:src="@drawable/ic_setting_new"
                         android:tint="@color/black"
-                        app:tint="@color/black"
                         android:visibility="visible"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/tab_count"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="@color/black" />
+
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/img_menu"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_marginEnd="5dp"
+                        android:onClick="@{() -> browserMenuListener.onBrowserMenuClicked()}"
                         android:paddingHorizontal="5dp"
                         android:src="@drawable/ic_download_menu"
                         android:visibility="visible"
-                        app:tint="@color/black"
-                        android:onClick="@{() -> browserMenuListener.onBrowserMenuClicked()}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="@color/black" />
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -110,8 +113,8 @@
                     android:id="@+id/constraintLayout3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_5sdp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -123,14 +126,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/_5sdp"
-                        android:drawableStart="@drawable/arrow_forward24px"
-                        app:drawableTint="@color/white"
-                        android:elevation="@dimen/_2sdp"
-                        android:textSize="@dimen/_12ssp"
-                        android:textColor="@color/brand_text_primary"
                         android:background="@drawable/gradient_bg"
+                        android:drawableStart="@drawable/arrow_forward24px"
+                        android:elevation="@dimen/_2sdp"
                         android:paddingHorizontal="@dimen/_12sdp"
                         android:paddingVertical="@dimen/_4sdp"
+                        android:textColor="@color/brand_text_primary"
+                        android:textSize="@dimen/_12ssp"
+                        app:drawableTint="@color/white"
                         app:layout_constraintBottom_toBottomOf="@+id/view2"
                         app:layout_constraintEnd_toEndOf="@+id/view2"
                         app:layout_constraintTop_toTopOf="@+id/view2" />
@@ -140,15 +143,15 @@
                         android:id="@+id/view2"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_40sdp"
-                        android:layout_marginTop="@dimen/_10sdp"
                         android:layout_marginStart="@dimen/_5sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
                         android:layout_marginEnd="@dimen/_5sdp"
                         android:background="@drawable/round_corner_search"
                         android:clickable="false"
                         android:focusable="false"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"/>
+                        app:layout_constraintTop_toTopOf="parent" />
 
 
                     <ProgressBar
@@ -157,10 +160,10 @@
                         android:layout_width="0dp"
                         android:layout_height="@dimen/_10sdp"
                         android:indeterminate="true"
-                        android:paddingStart="@dimen/_17sdp"
-                        android:visibility="gone"
-                        android:paddingEnd="@dimen/_15sdp"
                         android:indeterminateTint="@color/gSelector_light"
+                        android:paddingStart="@dimen/_17sdp"
+                        android:paddingEnd="@dimen/_15sdp"
+                        android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="@+id/ic_search"
                         app:layout_constraintStart_toStartOf="@+id/view2"
                         app:layout_constraintTop_toBottomOf="@+id/view2" />
@@ -172,11 +175,11 @@
                         android:layout_marginStart="5dp"
                         android:layout_marginEnd="@dimen/_10sdp"
                         android:background="@android:color/transparent"
+                        android:drawableStart="@drawable/ic_search_download"
+                        android:drawablePadding="@dimen/_5sdp"
+                        android:drawableTint="@android:color/darker_gray"
                         android:elevation="@dimen/_30sdp"
                         android:hint="@string/browser_type_hint"
-                        android:drawablePadding="@dimen/_5sdp"
-                        android:drawableStart="@drawable/ic_search_download"
-                        android:drawableTint="@android:color/darker_gray"
                         android:maxWidth="220dp"
                         android:onClick="@{() -> viewModel.logClick()}"
                         android:paddingStart="@dimen/_10sdp"
@@ -216,22 +219,23 @@
                         android:id="@+id/textViewSocial"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Social"
-                        android:textSize="@dimen/_12ssp"
-                        android:visibility="gone"
-                        android:textColor="@color/brand_text_primary"
                         android:fontFamily="@font/poppins_medium"
                         android:paddingHorizontal="@dimen/_6sdp"
                         android:paddingTop="@dimen/_6sdp"
+                        android:text="Social"
+                        android:textColor="@color/brand_text_primary"
+                        android:textSize="@dimen/_12ssp"
+                        android:visibility="gone"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerViewSocial"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         android:padding="8dp"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textViewSocial"
@@ -316,13 +320,13 @@
                     android:id="@+id/cl_how_download"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginBottom="@dimen/_15sdp"
                     android:layout_marginStart="10dp"
+                    android:layout_marginTop="12dp"
                     android:layout_marginEnd="10dp"
-                    android:visibility="gone"
+                    android:layout_marginBottom="@dimen/_15sdp"
                     android:background="@drawable/round_corner"
                     android:paddingVertical="@dimen/_10sdp"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/MovieLayout">
@@ -343,19 +347,20 @@
                         android:layout_marginStart="10dp"
                         android:fontFamily="@font/poppins_medium"
                         android:text="@string/how_to_use"
-                        android:textSize="@dimen/_12ssp"
                         android:textColor="@color/brand_text_primary"
+                        android:textSize="@dimen/_12ssp"
                         app:layout_constraintBottom_toBottomOf="@+id/imgque"
                         app:layout_constraintStart_toEndOf="@+id/imgque"
                         app:layout_constraintTop_toTopOf="@+id/imgque" />
+
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintBottom_toBottomOf="@+id/imgque"
-                        app:layout_constraintTop_toTopOf="@+id/imgque"
+                        android:layout_marginEnd="@dimen/_10sdp"
                         android:background="@drawable/how_to_arrow"
-                        android:layout_marginEnd="@dimen/_10sdp"/>
+                        app:layout_constraintBottom_toBottomOf="@+id/imgque"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/imgque" />
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -364,13 +369,13 @@
                     android:id="@+id/cl_settings"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/_47sdp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginBottom="@dimen/_15sdp"
                     android:layout_marginStart="10dp"
+                    android:layout_marginTop="12dp"
                     android:layout_marginEnd="10dp"
-                    android:visibility="gone"
+                    android:layout_marginBottom="@dimen/_15sdp"
                     android:background="@drawable/round_corner"
                     android:padding="10dp"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -383,10 +388,10 @@
                         android:layout_marginStart="16dp"
                         android:src="@drawable/ic_setting_new"
                         android:tint="@color/brand_text_primary"
-                        app:tint="@color/brand_text_primary"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="@color/brand_text_primary" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -408,11 +413,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_10sdp"
-                    android:layout_marginEnd="@dimen/_10sdp"
-                    android:visibility="gone"
                     android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
                     android:background="@drawable/bg_tiktok_download_row"
                     android:padding="@dimen/_10sdp"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
@@ -457,13 +462,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
+                    android:layout_margin="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/round_corner"
                     android:maxHeight="290dp"
                     android:paddingStart="6dp"
                     android:paddingEnd="6dp"
-                    android:layout_margin="@dimen/_12sdp"
                     android:visibility="gone"
-                    android:background="@drawable/round_corner"
-                    android:layout_marginTop="@dimen/_10sdp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/dramaLayout">
@@ -472,8 +477,8 @@
                         android:id="@+id/shimmer_view_container"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:visibility="gone"
                         android:paddingVertical="@dimen/_5sdp"
+                        android:visibility="gone"
                         app:shimmer_auto_start="true"
                         app:shimmer_duration="1500">
 
@@ -485,15 +490,15 @@
                                 android:id="@+id/shimmer_media"
                                 android:layout_width="0dp"
                                 android:layout_height="180dp"
+                                android:layout_marginHorizontal="@dimen/_5sdp"
+                                android:layout_marginTop="@dimen/_5sdp"
                                 android:layout_marginBottom="12dp"
                                 android:background="@drawable/round_corner_ad"
                                 android:backgroundTint="#DDDDDD"
-                                android:layout_marginTop="@dimen/_5sdp"
-                                android:layout_marginHorizontal="@dimen/_5sdp"
-                                app:layout_constraintTop_toBottomOf="@+id/shimmer_ad_label"
                                 app:layout_constraintBottom_toTopOf="@+id/shimmer_cta"
                                 app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent" />
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/shimmer_ad_label" />
 
                             <View
                                 android:id="@+id/shimmer_ad_label"
@@ -615,8 +620,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_7sdp"
-                    android:visibility="gone"
                     android:orientation="vertical"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/dramaLayout">
@@ -671,7 +676,6 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
-
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

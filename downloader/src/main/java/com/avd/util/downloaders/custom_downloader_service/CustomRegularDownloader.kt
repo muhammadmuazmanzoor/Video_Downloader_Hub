@@ -162,8 +162,10 @@ class CustomRegularDownloader : GenericDownloader() {
             skipCookie: Boolean = false,
             position: Int
         ): Data.Builder {
-            val videoUrl = if(position!=null)videoInfo.downloadUrls[position]?.url?.toString()else videoInfo.firstUrlToString
-            val headers = videoInfo.downloadUrls.firstOrNull()?.headers
+            val selectedRequest = videoInfo.downloadUrls.getOrNull(position)
+                ?: videoInfo.downloadUrls.firstOrNull()
+            val videoUrl = selectedRequest?.url?.toString() ?: videoInfo.firstUrlToString
+            val headers = selectedRequest?.headers
             val headersMap = mutableMapOf<String, String>()
             for (name in headers?.names() ?: emptySet()) {
                 headersMap[name] = headers?.get(name) ?: ""

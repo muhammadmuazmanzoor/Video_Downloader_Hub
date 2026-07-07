@@ -735,9 +735,9 @@ class BrowserHomeFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListen
                     progressViewModel.downloadVideo(it, false, pos)
                 }
             } else {
-                val videoInfo = videosResponse.toVideoInfo(title)
+                val videoInfo = videosResponse.toVideoInfo(title, url)
                 downloadCompletionListener.prepareForDownload(videoInfo.id)
-                progressViewModel.downloadVideo(videoInfo, true, pos)
+                progressViewModel.downloadVideo(videoInfo, true, 0)
             }
         }
     }
@@ -808,11 +808,10 @@ class BrowserHomeFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListen
         )
     }
 
-    fun SocialDownloaderResponse.toVideoInfo(title: String): VideoInfo {
-        val video = videos.firstOrNull() ?: throw IllegalStateException("No videos available")
+    fun SocialDownloaderResponse.toVideoInfo(title: String, selectedUrl: String): VideoInfo {
         val socialHeaders = RemoteConfigHelper.getSocialDownloaderHeaders()
         val requestBuilder = Request.Builder()
-            .url(video.url.toString())
+            .url(selectedUrl)
             .addHeader("User-Agent", "Mozilla/5.0")
             .addHeader("Referer", "https://www.${platform}.com/")
         socialHeaders.forEach { (name, value) -> requestBuilder.addHeader(name, value) }
@@ -823,7 +822,7 @@ class BrowserHomeFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListen
         downloadHeaders.putAll(socialHeaders)
         Log.d(
             "SocialDownloaderDownload",
-            "Prepared home regular download url=${video.url} platform=$platform headers=${downloadHeaders.keys}"
+            "Prepared home regular download url=$selectedUrl platform=$platform headers=${downloadHeaders.keys}"
         )
 
         return VideoInfo(
@@ -840,7 +839,7 @@ class BrowserHomeFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListen
                 formats = listOf(
                     VideoFormatEntity(
                         formatId = "unified",
-                        url = video.url,
+                        url = selectedUrl,
                         ext = "mp4",
                         vcodec = "",
                         acodec = "",

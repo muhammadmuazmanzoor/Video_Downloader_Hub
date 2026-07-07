@@ -47,7 +47,8 @@ class ProgressFragment : BaseFragment() {
             this.rvProgress.adapter = progressAdapter
             // Optimize RecyclerView to reduce GC pressure during layout
             this.rvProgress.setItemViewCacheSize(10) // Cache more views to reduce view creation
-            this.rvProgress.setHasFixedSize(false) // Allow dynamic sizing
+            this.rvProgress.setHasFixedSize(true)
+            this.rvProgress.itemAnimator = null
             this.rvProgress.setRecycledViewPool(RecyclerView.RecycledViewPool().apply {
                 setMaxRecycledViews(0, 15) // Increase pool size for view type 0
             })

@@ -260,6 +260,11 @@ class VideoFragment : BaseFragment() {
             }
         }
 
+        popupView.findViewById<ConstraintLayout>(R.id.cl_delete).setOnClickListener {
+            popupWindow.dismiss()
+            videoViewModel.deleteVideo(context, localVideo)
+        }
+
         popupView.measure(
             View.MeasureSpec.UNSPECIFIED,
             View.MeasureSpec.UNSPECIFIED

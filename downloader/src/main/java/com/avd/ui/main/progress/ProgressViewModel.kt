@@ -8,6 +8,7 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.viewModelScope
 import com.avd.data.local.room.entity.ProgressInfo
 import com.avd.data.local.room.entity.VideoInfo
+import com.avd.data.local.room.entity.VideFormatEntityList
 import com.avd.data.repository.ProgressRepository
 import com.avd.ui.main.base.BaseViewModel
 import com.avd.util.ContextUtils
@@ -21,6 +22,7 @@ import io.reactivex.rxjava3.core.BackpressureStrategy
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import kotlinx.coroutines.asCoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.util.concurrent.Executors
@@ -165,11 +167,22 @@ class ProgressViewModel @Inject constructor(
                     CustomRegularDownloader.addDownload(context, info.videoInfo,true,pos)
                     Log.d("startDownload","CustomRegularDownloader1 ${info.videoInfo.originalUrl}")
                 } else {
-                    YoutubeDlDownloader.startDownload(context, info.videoInfo)
-                    Log.d("startDownload","YoutubeDlDownloader1 ${info.videoInfo.originalUrl}")
+                    val selectedVideoInfo = info.videoInfo.withSelectedFormatFirst(pos)
+                    YoutubeDlDownloader.startDownload(context, selectedVideoInfo)
+                    Log.d("startDownload","YoutubeDlDownloader1 ${selectedVideoInfo.originalUrl}")
                 }
             }
         }
+    }
+
+    private fun VideoInfo.withSelectedFormatFirst(position: Int): VideoInfo {
+        val formatsList = formats.formats
+        val selectedFormat = formatsList.getOrNull(position) ?: return this
+        return copy(
+            formats = VideFormatEntityList(listOf(selectedFormat) + formatsList.filterIndexed { index, _ ->
+                index != position
+            })
+        )
     }
 
     private fun addProgressInfoToList(progressInfo: ProgressInfo) {
@@ -203,14 +216,16 @@ class ProgressViewModel @Inject constructor(
             progressObservable().doOnError {
                 it.printStackTrace()
             }.blockingForEach { progressInfoList ->
-                progressInfos.set(progressInfoList.sortedBy { it.id })
-                isLoadingProgress.set(false)
+                viewModelScope.launch(Dispatchers.Main.immediate) {
+                    progressInfos.set(progressInfoList.sortedBy { it.id })
+                    isLoadingProgress.set(false)
+                }
             }
         }
     }
 
     private fun progressObservable(): Observable<List<ProgressInfo>> {
-        val youtubeDlDownloads = Observable.interval(0, 1000, TimeUnit.MILLISECONDS).flatMap {
+        val youtubeDlDownloads = Observable.interval(0, 300, TimeUnit.MILLISECONDS).flatMap {
             progressRepository.getProgressInfos().take(1).flatMap {
                 val filtered = it.filter { info -> info.downloadStatus != VideoTaskState.SUCCESS }
                 // Don't TOUCH(если убрать это возникнет конфликт ID-ков и не будет показываться прогресс для обычных загрузок)

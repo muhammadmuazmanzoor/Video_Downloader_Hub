@@ -214,6 +214,8 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
     private val videoViewModel: VideoViewModel by viewModels()
 
     var isUrlReceived = false
+    private var isRestoringTiktokSwitchState = false
+    private var hasRequestedPermissionsForView = false
 
 //    private val moviesWebList = listOf(
 //        IconItem(R.drawable.plex_movie_icon, "Plex",R.drawable.plex_thumb),
@@ -485,7 +487,7 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
                 fetchingDialog?.dismiss()
                 progressViewModel.downloadVideo(videoInfo, false, pos)
             } else {
-                progressViewModel.downloadVideo(videosResponse.toVideoInfo(title), true, pos)
+                progressViewModel.downloadVideo(videosResponse.toVideoInfo(title, url), true, 0)
             }
         }
     }
@@ -551,11 +553,10 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
         )
     }
 
-    fun SocialDownloaderResponse.toVideoInfo(title: String): VideoInfo {
-        val video = videos.firstOrNull() ?: throw IllegalStateException("No videos available")
+    fun SocialDownloaderResponse.toVideoInfo(title: String, selectedUrl: String): VideoInfo {
         val socialHeaders = RemoteConfigHelper.getSocialDownloaderHeaders()
         val requestBuilder = Request.Builder()
-            .url(video.url.toString())
+            .url(selectedUrl)
             .addHeader("User-Agent", "Mozilla/5.0")
             .addHeader("Referer", "https://www.${platform}.com/")
         socialHeaders.forEach { (name, value) -> requestBuilder.addHeader(name, value) }
@@ -566,7 +567,7 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
         downloadHeaders.putAll(socialHeaders)
         Log.d(
             "SocialDownloaderDownload",
-            "Prepared web regular download url=${video.url} platform=$platform headers=${downloadHeaders.keys}"
+            "Prepared web regular download url=$selectedUrl platform=$platform headers=${downloadHeaders.keys}"
         )
 
         return VideoInfo(
@@ -583,7 +584,7 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
                 formats = listOf(
                     VideoFormatEntity(
                         formatId = "unified",
-                        url = video.url,
+                        url = selectedUrl,
                         ext = "mp4",
                         vcodec = "",
                         acodec = "",
@@ -604,10 +605,6 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
         // Load switch state from preferences when returning to screen
         // This respects user's preference and checks permission status
         loadSwitchStateFromPreferences()
-        activity?.onBackPressedDispatcher?.addCallback(
-            viewLifecycleOwner,
-            onBackPressedCallback
-        )
         try {
             if (host != null) {
                 host?.showBottomBar()
@@ -615,7 +612,8 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
             } else {
                 Log.d("HostCheck", "null")
             }
-            if (permissionManager?.areAllPermissionsGranted() == false) {
+            if (!hasRequestedPermissionsForView && permissionManager?.areAllPermissionsGranted() == false) {
+                hasRequestedPermissionsForView = true
                 if (activity?.let { isPermissionGranted(it) } == false) {
                     permissionManager?.requestAllPermissions(this)
                 }
@@ -730,6 +728,10 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
         binding.tabCount.setOnClickListener {
             mainViewModel.openNavDrawerEvent.call()
         }
+        activity?.onBackPressedDispatcher?.addCallback(
+            viewLifecycleOwner,
+            onBackPressedCallback
+        )
 
         setupRecyclerView()
         observer()
@@ -835,6 +837,9 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
         
         // Set up listener
         binding.switchTiktokDownload?.setOnCheckedChangeListener { _, isChecked ->
+            if (isRestoringTiktokSwitchState) {
+                return@setOnCheckedChangeListener
+            }
             Log.d(TAG, "setupTiktokDownloadSwitch: switch changed, isChecked=$isChecked")
             if (isChecked) {
                 // User is trying to turn the switch ON
@@ -1240,9 +1245,13 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
     override fun onDestroyView() {
         copiedLinkDialog?.dismiss()
         copiedLinkDialog = null
-        super.onDestroyView()
+        fetchingDialog?.dismiss()
+        fetchingDialog = null
         showShimmer(false) // Stop shimmer when fragment is destroyed
         progressViewModel.stop()
+        videoViewModel.stop()
+        homeViewModel.stop()
+        super.onDestroyView()
     }
 
     private fun showCopiedLinkOpenDialog(url: String) {
@@ -1321,12 +1330,12 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
                 if (overlayPending) {
                     Log.d(TAG, "loadSwitchStateFromPreferences: user returned from overlay settings, enabling switch and showing widget")
                     sharedPrefHelper.setOverlayPermissionPending(false)
-                    binding.switchTiktokDownload?.isChecked = true
+                    setTiktokSwitchCheckedSilently(true)
                     sharedPrefHelper.setTiktokDownloadEnabled(true)
                     showFloatingWidget()
                 } else {
                     // Respect saved preference
-                    binding.switchTiktokDownload?.isChecked = savedState
+                    setTiktokSwitchCheckedSilently(savedState)
                     if (savedState && !showWidget) {
                         Log.d(TAG, "loadSwitchStateFromPreferences: savedState ON, showing widget")
                         showFloatingWidget()
@@ -1335,16 +1344,22 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
                     }
                 }
             } else {
-                binding.switchTiktokDownload?.isChecked = false
+                setTiktokSwitchCheckedSilently(false)
                 if (savedState) {
                     sharedPrefHelper.setTiktokDownloadEnabled(false)
                 }
                 removeFloatingWidget()
             }
         } else {
-            binding.switchTiktokDownload?.isChecked = savedState
+            setTiktokSwitchCheckedSilently(savedState)
             if (!savedState) removeFloatingWidget()
         }
+    }
+
+    private fun setTiktokSwitchCheckedSilently(isChecked: Boolean) {
+        isRestoringTiktokSwitchState = true
+        binding.switchTiktokDownload?.isChecked = isChecked
+        isRestoringTiktokSwitchState = false
     }
 
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {

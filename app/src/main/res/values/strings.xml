@@ -3,19 +3,17 @@
     <string name="app_name">Video Downloader Hub</string>
 
 
-
     // Test Admob
-       <string name="largeBanner" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
-       <string name="App_ID" translatable="false">ca-app-pub-3940256099942544~3347511713</string>
-       <string name="App_Open_Ad" translatable="false">ca-app-pub-3940256099942544/9257395921</string>
-       <string name="Interstitial_Home_ID" translatable="false">ca-app-pub-3940256099942544/1033173712</string>
-       <string name="Interstitial_Home_ID_High" translatable="false">ca-app-pub-3940256099942544/1033173712</string>
-       <string name="Native_static" translatable="false">ca-app-pub-3940256099942544/2247696110</string>
-       <string name="Native_ID" translatable="false">ca-app-pub-3940256099942544/2247696110</string>
-       <string name="Native_Home" translatable="false">ca-app-pub-3940256099942544/2247696110</string>
-       <string name="Native_Home_high" translatable="false">ca-app-pub-3940256099942544/2247696110</string>
-       <string name="Native_Exit" translatable="false">ca-app-pub-3940256099942544/2247696110</string>
-
+    <string name="largeBanner" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="App_ID" translatable="false">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="App_Open_Ad" translatable="false">ca-app-pub-3940256099942544/9257395921</string>
+    <string name="Interstitial_Home_ID" translatable="false">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="Interstitial_Home_ID_High" translatable="false">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="Native_static" translatable="false">ca-app-pub-3940256099942544/2247696110</string>
+    <string name="Native_ID" translatable="false">ca-app-pub-3940256099942544/2247696110</string>
+    <string name="Native_Home" translatable="false">ca-app-pub-3940256099942544/2247696110</string>
+    <string name="Native_Home_high" translatable="false">ca-app-pub-3940256099942544/2247696110</string>
+    <string name="Native_Exit" translatable="false">ca-app-pub-3940256099942544/2247696110</string>
 
 
     <!--
@@ -739,6 +737,10 @@
     <string name="instagram">Instagram</string>
     <string name="please_select_a_language_first">Please select a language first</string>
     <string name="try_again">Try again</string>
+    <string name="platform_facebook">Facebok</string>
+    <string name="platform_instagram">Instagrm</string>
+    <string name="platform_tiktok">TikTok</string>
+    <string name="platform_twitter">Twitter</string>
 
 
 </resources>
