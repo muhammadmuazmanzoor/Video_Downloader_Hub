@@ -108,6 +108,7 @@ import com.avd.util.DownloaderModuleNavigator
 import com.avd.util.FirebaseEvents
 import com.avd.util.FloatingBallView.floatingView
 import com.avd.util.Prefs
+import com.avd.util.RemoteConfigHelper
 import com.avd.util.ScreenName
 import com.avd.util.SharedPrefHelper
 import com.avd.util.YoutubeDlUtils
@@ -546,15 +547,26 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
 
     fun SocialDownloaderResponse.toVideoInfo(title: String): VideoInfo {
         val video = videos.firstOrNull() ?: throw IllegalStateException("No videos available")
+        val socialHeaders = RemoteConfigHelper.getSocialDownloaderHeaders()
+        val requestBuilder = Request.Builder()
+            .url(video.url.toString())
+            .addHeader("User-Agent", "Mozilla/5.0")
+            .addHeader("Referer", "https://www.${platform}.com/")
+        socialHeaders.forEach { (name, value) -> requestBuilder.addHeader(name, value) }
+        val downloadHeaders = mutableMapOf(
+            "User-Agent" to "Mozilla/5.0",
+            "Referer" to "https://www.${platform}.com/"
+        )
+        downloadHeaders.putAll(socialHeaders)
+        Log.d(
+            "SocialDownloaderDownload",
+            "Prepared web regular download url=${video.url} platform=$platform headers=${downloadHeaders.keys}"
+        )
 
         return VideoInfo(
             id = UUID.randomUUID().toString(),
             downloadUrls = listOf(
-                Request.Builder()
-                    .url(video.url.toString())
-                    .addHeader("User-Agent", "Mozilla/5.0")
-                    .addHeader("Referer", "https://www.${platform}.com/")
-                    .build()
+                requestBuilder.build()
             ),
             title = title,
             ext = "mp4",
@@ -573,10 +585,7 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
                         height = 0,
                         tbr = 0,
                         fileSize = 0L,
-                        httpHeaders = mapOf(
-                            "User-Agent" to "Mozilla/5.0",
-                            "Referer" to "https://www.${platform}.com/"
-                        )
+                        httpHeaders = downloadHeaders
                     )
                 )
             ),

@@ -40,9 +40,11 @@ class ApiViewModel @Inject constructor(
                 _socialDownloadState.value = ApiState.Loading
                 texturl.value = url
 
-//                Log.d("checkBaseUrl","end point: ${RemoteConfigHelper.getSocialDownloaderEndpoint()}")
-                val response = socialDownloaderService.downloadVideo(RemoteConfigHelper.getSocialDownloaderEndpoint(),url)
+                val endpoint = RemoteConfigHelper.getSocialDownloaderEndpoint()
+                Log.d(logTag, "Endpoint: $endpoint")
+                val response = socialDownloaderService.downloadVideo(endpoint,url)
                 Log.d(logTag, "Response received: ${response.isSuccessful}")
+                Log.d(logTag, "Response code: ${response.code()}")
                 Log.d(logTag, "Response message: ${response.message()}")
 
                 if (response.isSuccessful) {
@@ -71,11 +73,13 @@ class ApiViewModel @Inject constructor(
                         _socialDownloadState.value = ApiState.Error("Empty response body.")
                     }
                 } else {
+                    val errorBody = response.errorBody()?.string().orEmpty()
                     Log.e(logTag, "API call failed: ${response.code()} - ${response.message()}")
+                    Log.e(logTag, "Error body: ${errorBody.ifBlank { "<empty>" }}")
                     _socialDownloadState.value = ApiState.Error(response.message())
                 }
             } catch (e: Exception) {
-                Log.e(logTag, "Exception during API call: ${e.localizedMessage}")
+                Log.e(logTag, "Exception during API call: ${e.localizedMessage}", e)
                 _socialDownloadState.value = ApiState.Error(e.localizedMessage ?: "Unknown error")
             }
         }

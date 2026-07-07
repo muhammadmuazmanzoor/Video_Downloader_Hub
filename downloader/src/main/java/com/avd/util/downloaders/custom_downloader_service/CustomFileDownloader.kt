@@ -92,14 +92,6 @@ class CustomFileDownloader(
         }
 
     fun download() {
-        val contentSize = try {
-            getContentLength()
-        } catch (e: Throwable) {
-            this.onFailure(e)
-
-            return
-        }
-
         val randomAccessFile = try {
             RandomAccessFile(file, "rw")
         } catch (e: Throwable) {
@@ -108,25 +100,24 @@ class CustomFileDownloader(
         }
         val fileChannel = randomAccessFile.channel
 
-        totalBytesAll.set(contentSize)
-
         unStop(file)
 
         val isUrlSupportBytesRangeHeader = isUrlSupportingBytesRangeHeader()
 
         if (!isUrlSupportBytesRangeHeader) {
-            val result = executorService.submit {
-                this.onFailure(Exception("Connection Error or download type not supported, try again"))
-            }
-            try {
-                result.get()
-            } catch (e: Throwable) {
-                this.onFailure(e)
-            }
-            this.onSuccess()
+            AppLogger.d("Range download unsupported for $url. Falling back to single-thread download.")
+            singleThreadDownload(fileChannel)
+            return
+        }
+
+        val contentSize = try {
+            getContentLength()
+        } catch (e: Throwable) {
+            this.onFailure(e)
 
             return
         }
+        totalBytesAll.set(contentSize)
 
         val chunkSize = contentSize / threadCount
         val ranges = (0 until threadCount).map {
@@ -283,51 +274,49 @@ class CustomFileDownloader(
         }
     }
 
-//    private fun singleThreadDownload() {
-//        val chunkFile = File(file.parentFile, "chunk_s")
-//
-//        var bytesCopied = 0L
-//        AppLogger.d(
-//            "SINGLE THREAD DOWNLOAD START AT $bytesCopied"
-//        )
-//
-//        val req = getOkRequest()
-//        val res = client.newCall(req).execute()
-//
-//        val inputStream = res.body.byteStream()
-//        val buffer = ByteArray(DOWNLOAD_BUFFER_SIZE)
-//
-//        copiedBytesSingle.set(bytesCopied)
-//        totalBytesAll.set(res.body.contentLength())
-//
-//        var bytesRead = 0
-//
-//        chunkFile.outputStream().channel.use { chunkChannel ->
-//            RandomAccessFile(file, "rw").channel.use { fileChannel ->
-//                inputStream.use { urlStream ->
-//                    while (!isPaused.get() && !isCanceled.get() && (urlStream.read(buffer)
-//                            .also { bytesRead = it }) >= 0
-//                    ) {
-//                        fileChannel.write(ByteBuffer.wrap(buffer), bytesCopied)
-//                        bytesCopied += bytesRead
-//                        chunkChannel.write(ByteBuffer.wrap("$bytesCopied".toByteArray()), 0)
-//                        this.onProgressUpdate(bytesCopied, totalBytesAll.get())
-//                    }
-//
-//                    executorService.shutdown()
-//
-//                    if (isStopped(file)) {
-//                        AppLogger.d("SINGLE THREAD DOWNLOAD STOPPED")
-//                        throw Exception(STOPPED)
-//                    }
-//                    if (isCanceled(file)) {
-//                        AppLogger.d("SINGLE THREAD DOWNLOAD CANCELED")
-//                        throw Exception(CANCELED)
-//                    }
-//                }
-//            }
-//        }
-//    }
+    private fun singleThreadDownload(fileChannel: FileChannel) {
+        var response: Response? = null
+        try {
+            val req = getOkRequest()
+            AppLogger.d("Single-thread download request url=$url headers=${headers.keys}")
+            response = client.newCall(req).execute()
+            AppLogger.d(
+                "Single-thread download response code=${response.code} message=${response.message} contentLength=${response.body?.contentLength()}"
+            )
+            if (!response.isSuccessful) {
+                throw Exception("Download request failed: ${response.code} ${response.message}")
+            }
+            val inputStream = response.body?.byteStream() ?: throw Error("Input stream is null")
+            val buffer = ByteArray(DOWNLOAD_BUFFER_SIZE)
+            val totalBytes = response.body?.contentLength()?.takeIf { it > 0 } ?: totalBytesAll.get()
+            totalBytesAll.set(totalBytes.coerceAtLeast(0L))
+
+            var bytesCopied = 0L
+            inputStream.use { urlStream ->
+                while (!isPaused.get() && !isCanceled.get()) {
+                    val bytesRead = urlStream.read(buffer)
+                    if (bytesRead < 0) break
+                    fileChannel.write(ByteBuffer.wrap(buffer, 0, bytesRead), bytesCopied)
+                    bytesCopied += bytesRead
+                    copiedBytesSingle.set(bytesCopied)
+                    this.onProgressUpdate(bytesCopied, totalBytesAll.get())
+                }
+                if (isStopped(file)) {
+                    AppLogger.d("SINGLE THREAD DOWNLOAD STOPPED")
+                    throw Exception(STOPPED)
+                }
+                if (isCanceled(file)) {
+                    AppLogger.d("SINGLE THREAD DOWNLOAD CANCELED")
+                    throw Exception(CANCELED)
+                }
+            }
+            this.onSuccess()
+        } catch (e: Throwable) {
+            this.onFailure(e)
+        } finally {
+            response?.close()
+        }
+    }
 
     private fun isUrlSupportingBytesRangeHeader(): Boolean {
         val req = getOkRequestRange(0, 0)
@@ -335,8 +324,12 @@ class CustomFileDownloader(
         var res: Response? = null
         try {
             res = client.newCall(req).execute()
+            AppLogger.d(
+                "Range support check url=$url code=${res.code} message=${res.message} contentRange=${res.header("Content-Range")} acceptRanges=${res.header("Accept-Ranges")} contentLength=${res.body?.contentLength()} headers=${headers.keys}"
+            )
             return res.code == 206
         } catch (e: Throwable) {
+            AppLogger.e("Range support check failed for $url: ${e.message}")
             return false
         } finally {
             res?.close()
@@ -357,9 +350,15 @@ class CustomFileDownloader(
 
     private fun getContentLength(): Long {
         val req = getOkRequest()
-        val response = client.newCall(req).execute()
-
-        return response.body!!.contentLength()
+        client.newCall(req).execute().use { response ->
+            AppLogger.d(
+                "Content length check url=$url code=${response.code} message=${response.message} contentLength=${response.body?.contentLength()} headers=${headers.keys}"
+            )
+            if (!response.isSuccessful) {
+                throw Exception("Content length request failed: ${response.code} ${response.message}")
+            }
+            return response.body?.contentLength()?.takeIf { it >= 0 } ?: 0L
+        }
     }
 
     data class Chunk(val chunkIndex: Int, val range: LongRange, val chunkSize: Long) {

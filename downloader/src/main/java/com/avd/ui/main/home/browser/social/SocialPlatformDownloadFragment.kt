@@ -10,6 +10,7 @@ import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -67,6 +68,7 @@ import com.avd.util.CookieUtils
 import com.avd.util.DownloadDialogType
 import com.avd.util.FirebaseEvents.fbEvents
 import com.avd.util.NetworkUtils
+import com.avd.util.RemoteConfigHelper
 import com.avd.util.YoutubeDlUtils
 import com.avd.util.showDownloadDialog
 import dagger.hilt.android.AndroidEntryPoint
@@ -265,6 +267,7 @@ class SocialPlatformDownloadFragment : BaseWebTabFragment() {
         hideKeyboard()
         val url = binding.etVideoLink.text.toString().trim()
         if (url.isBlank()) {
+            Log.d("muaz_debug","Empty URL")
             requireContext().showDownloadDialog(type = DownloadDialogType.EMPTY_URL)
             return
         }
@@ -634,14 +637,25 @@ class SocialPlatformDownloadFragment : BaseWebTabFragment() {
 
     private fun SocialDownloaderResponse.toVideoInfo(title: String, selectedUrl: String): VideoInfo {
         val refererPlatform = platform?.lowercase() ?: this@SocialPlatformDownloadFragment.platform.displayName.lowercase()
+        val socialHeaders = RemoteConfigHelper.getSocialDownloaderHeaders()
+        val requestBuilder = Request.Builder()
+            .url(selectedUrl)
+            .addHeader("User-Agent", "Mozilla/5.0")
+            .addHeader("Referer", "https://www.$refererPlatform.com/")
+        socialHeaders.forEach { (name, value) -> requestBuilder.addHeader(name, value) }
+        val downloadHeaders = mutableMapOf(
+            "User-Agent" to "Mozilla/5.0",
+            "Referer" to "https://www.$refererPlatform.com/"
+        )
+        downloadHeaders.putAll(socialHeaders)
+        Log.d(
+            "SocialDownloaderDownload",
+            "Prepared regular download url=$selectedUrl platform=$refererPlatform headers=${downloadHeaders.keys}"
+        )
         return VideoInfo(
             id = UUID.randomUUID().toString(),
             downloadUrls = listOf(
-                Request.Builder()
-                    .url(selectedUrl)
-                    .addHeader("User-Agent", "Mozilla/5.0")
-                    .addHeader("Referer", "https://www.$refererPlatform.com/")
-                    .build()
+                requestBuilder.build()
             ),
             title = title,
             ext = "mp4",
@@ -660,10 +674,7 @@ class SocialPlatformDownloadFragment : BaseWebTabFragment() {
                         height = 0,
                         tbr = 0,
                         fileSize = 0L,
-                        httpHeaders = mapOf(
-                            "User-Agent" to "Mozilla/5.0",
-                            "Referer" to "https://www.$refererPlatform.com/"
-                        )
+                        httpHeaders = downloadHeaders
                     )
                 )
             ),

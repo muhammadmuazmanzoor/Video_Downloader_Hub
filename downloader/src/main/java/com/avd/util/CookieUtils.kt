@@ -56,18 +56,28 @@ object CookieUtils {
 
     fun SocialDownloaderResponse.toVideoInfo(): VideoInfo {
         val video = videos.firstOrNull() ?: throw IllegalStateException("No videos available")
+        val videoUrl = video.url ?: throw IllegalStateException("Missing video URL")
+        val socialHeaders = RemoteConfigHelper.getSocialDownloaderHeaders()
+        val requestBuilder = Request.Builder()
+            .url(videoUrl)
+            .addHeader("User-Agent", "Mozilla/5.0")
+            .addHeader("Referer", "https://www.${platform}.com/")
+        socialHeaders.forEach { (name, value) -> requestBuilder.addHeader(name, value) }
+        val downloadHeaders = mutableMapOf(
+            "User-Agent" to "Mozilla/5.0",
+            "Referer" to "https://www.${platform}.com/"
+        )
+        downloadHeaders.putAll(socialHeaders)
+        Log.d(
+            "SocialDownloaderDownload",
+            "Prepared widget regular download url=${video.url} platform=$platform headers=${downloadHeaders.keys}"
+        )
         return video.format?.let {
             VideoInfo(
                 id = UUID.randomUUID().toString(),
                 downloadUrls = listOf(
-                    video.url?.let {
-                        Request.Builder()
-                            .url(it)
-                    }
-                        ?.addHeader("User-Agent", "Mozilla/5.0")
-                        ?.addHeader("Referer", "https://www.${platform}.com/")
-                        ?.build()
-                ) as List<Request>,
+                    requestBuilder.build()
+                ),
                 title = "Video from $platform",
                 ext = it,
                 thumbnail = thumbnail ?: "",
@@ -85,10 +95,7 @@ object CookieUtils {
                             height = 0,
                             tbr = 0,
                             fileSize = 0L,
-                            httpHeaders = mapOf(
-                                "User-Agent" to "Mozilla/5.0",
-                                "Referer" to "https://www.${platform}.com/"
-                            )
+                            httpHeaders = downloadHeaders
                         )
                     )
                 )

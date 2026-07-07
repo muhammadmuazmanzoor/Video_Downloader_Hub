@@ -28,6 +28,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
+    private const val SOCIAL_DOWNLOADER_LOG_TAG = "SocialDownloaderHTTP"
 
     @Provides
     @Singleton
@@ -67,7 +68,7 @@ object NetworkModule {
         return OkHttpClient.Builder()
             .addInterceptor { chain ->
                 val request = chain.request().newBuilder()
-                    .addHeader("x-rapidapi-key", rapidApiKey)
+                    .addHeader("x-rapidapi-key", "396f7824p121f56jsnfdcae46a09baf2cmsh7ba6df8f2dee4c0peeaf742abe7e0fp19a49ajsn9e4")
                     .addHeader("x-rapidapi-host", "tiktok-download-without-watermark.p.rapidapi.com")
                     .addHeader("User-Agent", "Mozilla/5.0 (Android)")
                     .build()
@@ -123,37 +124,53 @@ object NetworkModule {
 
     @BaseUrl1
     @Provides
-    fun provideBaseUrl1(): String = "https://all-media-downloader5.p.rapidapi.com/"
+    fun provideBaseUrl1(): String = "https://backend-video-downloader.aspire.pics/"
 
     @BaseUrl2
     @Provides
-    fun provideBaseUrl2(): String = "https://tiktok-download-without-watermark.p.rapidapi.com/"
+    fun provideBaseUrl2(): String = "https://backend-video-downloader.aspire.pics/"
 
     @Provides
     @Named("SocialDownloaderKey")
-    fun provideSocialDownloaderKey(): String = "479ddba08f1091cdaf3d0ac95bf75b292eeb7c747be2140ad7d7c5cf47465070"
+    fun provideSocialDownloaderKey(): String = RemoteConfigHelper.getSocialDownloaderApiKey()
 
 
    @Provides
     @SocialDownloaderBaseUrl
     fun provideSocialDownloaderBaseUrl(): String =
-        "https://ai-livewallpaper-backend.aspire.pics/"
+        RemoteConfigHelper.getSocialDownloaderBaseUrl()
 
     @Provides
     @Singleton
     @Named("SocialDownloaderClient")
-    fun provideSocialDownloaderOkHttpClient(): OkHttpClient {
+    fun provideSocialDownloaderOkHttpClient(@Named("SocialDownloaderKey") apiKey: String): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor { chain ->
                 val request = chain.request().newBuilder()
-                    .addHeader("api-key", "479ddba08f1091cdaf3d0ac95bf75b292eeb7c747be2140ad7d7c5cf47465070")
+                    .addHeader("api-key", apiKey)
+                    .addHeader("x-api-key", apiKey)
+                    .addHeader("X-App-Label", RemoteConfigHelper.getSocialDownloaderAppLabel())
                     .build()
-                chain.proceed(request)
+                Log.d(
+                    SOCIAL_DOWNLOADER_LOG_TAG,
+                    "Request ${request.method} ${request.url} keySource=Hilt:SocialDownloaderKey apiKey=${apiKey.maskForLog()} keyLength=${apiKey.length} appLabel=${RemoteConfigHelper.getSocialDownloaderAppLabel()} authHeaders=${request.headers.names().filter { it.equals("api-key", true) || it.equals("x-api-key", true) || it.equals("X-App-Label", true) }}"
+                )
+                val response = chain.proceed(request)
+                Log.d(
+                    SOCIAL_DOWNLOADER_LOG_TAG,
+                    "Response code=${response.code} message=${response.message} requestUrl=${request.url}"
+                )
+                response
             }
             .connectTimeout(90, TimeUnit.SECONDS) // increase connect timeout
             .readTimeout(90, TimeUnit.SECONDS)    // increase read timeout
             .writeTimeout(90, TimeUnit.SECONDS)   // increase write timeout
             .build()
+    }
+
+    private fun String.maskForLog(): String {
+        if (isBlank()) return "<empty>"
+        return if (length <= 10) "***" else "${take(4)}...${takeLast(4)}"
     }
 
     @SocialDownloaderBaseUrl
@@ -163,7 +180,6 @@ object NetworkModule {
         @Named("SocialDownloaderClient") okHttpClient: OkHttpClient,
         @SocialDownloaderBaseUrl baseUrl: String
     ): Retrofit {
-        val baseUrl= RemoteConfigHelper.getSocialDownloaderBaseUrl()
         Log.d("checkBaseUrl","$baseUrl")
         return Retrofit.Builder()
             .baseUrl(baseUrl)

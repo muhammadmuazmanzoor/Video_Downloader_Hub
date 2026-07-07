@@ -137,6 +137,8 @@ enum class SocialPlatform(
             Regex("""(?:https?://)?(?:www\.|m\.)?(?:facebook\.com|fb\.com|fb\.watch)(?:/.*)?""", RegexOption.IGNORE_CASE)
         private val instagramPattern =
             Regex("""(?:https?://)?(?:www\.)?(?:instagram\.com|instagr\.am)(?:/.*)?""", RegexOption.IGNORE_CASE)
+        private val threadsPattern =
+            Regex("""(?:https?://)?(?:www\.)?(?:threads\.com|threads\.net)(?:/.*)?""", RegexOption.IGNORE_CASE)
         private val tiktokPattern =
             Regex("""(?:https?://)?(?:www\.|vm\.|vt\.)?tiktok\.com(?:/.*)?""", RegexOption.IGNORE_CASE)
         private val twitterPattern =
@@ -159,6 +161,7 @@ enum class SocialPlatform(
             return when {
                 facebookPattern.containsMatchIn(candidate) -> FACEBOOK
                 instagramPattern.containsMatchIn(candidate) -> INSTAGRAM
+                threadsPattern.containsMatchIn(candidate) -> INSTAGRAM
                 tiktokPattern.containsMatchIn(candidate) -> TIKTOK
                 twitterPattern.containsMatchIn(candidate) -> TWITTER
                 dailymotionPattern.containsMatchIn(candidate) -> DAILYMOTION

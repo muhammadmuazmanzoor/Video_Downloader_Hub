@@ -307,6 +307,9 @@ class CustomRegularDownloaderWorker @AssistedInject constructor(@Assisted appCon
         }
         val inf = changeProgressInfoDownloadId(taskId, taskId.hashCode()).blockingFirst()
         saveProgress(inf.id, Progress(0, 0), VideoTaskState.PENDING)
+        AppLogger.d(
+            "Regular downloader prepared url=$url file=$outputFileName headers=${fixedHeaders.keys} threadCount=$THREAD_COUNT"
+        )
         proxyController.getClient()?.let { okHttpClient ->
             CustomFileDownloader(
                 URL(url),
