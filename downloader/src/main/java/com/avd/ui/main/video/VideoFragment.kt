@@ -1,5 +1,6 @@
 package com.avd.ui.main.video
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -15,6 +16,8 @@ import android.widget.EditText
 import android.widget.PopupWindow
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.appcompat.widget.PopupMenu
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -84,6 +87,14 @@ class VideoFragment : BaseFragment() {
 
     private lateinit var videoAdapter: VideoAdapter
 
+    private val deletePermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
+            videoViewModel.onDeletePermissionResult(
+                requireContext(),
+                result.resultCode == Activity.RESULT_OK
+            )
+        }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -109,6 +120,10 @@ class VideoFragment : BaseFragment() {
         }
         videoViewModel.shareEvent.observe(viewLifecycleOwner) { uri ->
             intentUtil.shareVideo(requireContext(), uri)
+        }
+        videoViewModel.permissionNeededForDeleteVideo.observe(viewLifecycleOwner) { intentSender ->
+            intentSender ?: return@observe
+            deletePermissionLauncher.launch(IntentSenderRequest.Builder(intentSender).build())
         }
         return dataBinding.root
     }

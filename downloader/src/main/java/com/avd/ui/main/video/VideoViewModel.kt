@@ -1,11 +1,16 @@
 package com.avd.ui.main.video
 
 //import com.allVideoDownloaderXmaster.OpenForTesting
+import android.app.RecoverableSecurityException
 import android.content.Context
+import android.content.IntentSender
 import android.net.Uri
+import android.os.Build
 import android.provider.MediaStore
 import android.util.Log
 import androidx.databinding.ObservableField
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.avd.data.local.model.LocalVideo
 import com.avd.ui.main.base.BaseViewModel
@@ -40,6 +45,11 @@ class VideoViewModel @Inject constructor(
 
     val renameErrorEvent = SingleLiveEvent<Int>()
     val shareEvent = SingleLiveEvent<Uri>()
+
+    private val _permissionNeededForDeleteVideo = MutableLiveData<IntentSender?>()
+    val permissionNeededForDeleteVideo: LiveData<IntentSender?> = _permissionNeededForDeleteVideo
+
+    private var pendingDeleteVideo: LocalVideo? = null
 
     // Cache to avoid repeated file system operations and prevent deadlocks
     var cachedFilesList: List<LocalVideo> = emptyList()
@@ -202,6 +212,7 @@ class VideoViewModel @Inject constructor(
 
 
     fun deleteVideo(context: Context, video: LocalVideo) {
+        pendingDeleteVideo = video
         val currentList = localVideos.get().orEmpty()
         val updatedList = currentList.filterNot { it.uri.toString() == video.uri.toString() }
 
@@ -211,17 +222,70 @@ class VideoViewModel @Inject constructor(
         lastCacheTime = System.currentTimeMillis()
 
         viewModelScope.launch(Dispatchers.IO) {
-            val deleted = fileUtil.deleteMedia(context.applicationContext, video.uri)
+            try {
+                val deleted = fileUtil.deleteMediaOrThrow(context.applicationContext, video.uri)
 
-            if (!deleted || fileUtil.isUriExists(context.applicationContext, video.uri)) {
-                val freshList = getFilesList().sortedByDescending { it.time }.reversed()
-                withContext(Dispatchers.Main.immediate) {
-                    cachedFilesList = freshList
-                    cachedVideosList?.set(freshList.toMutableList())
-                    localVideos.set(freshList.toMutableList())
-                    lastCacheTime = System.currentTimeMillis()
+                if (!deleted || fileUtil.isUriExists(context.applicationContext, video.uri)) {
+                    refreshVideosAfterDelete()
                 }
+            } catch (securityException: SecurityException) {
+                val intentSender = getDeletePermissionIntentSender(context, video.uri, securityException)
+                if (intentSender != null) {
+                    withContext(Dispatchers.Main.immediate) {
+                        _permissionNeededForDeleteVideo.value = intentSender
+                    }
+                } else {
+                    Log.e("VideoViewModel", "Delete permission denied without recoverable action", securityException)
+                    refreshVideosAfterDelete()
+                }
+            } catch (e: Throwable) {
+                Log.e("VideoViewModel", "Unable to delete video", e)
+                refreshVideosAfterDelete()
             }
+        }
+    }
+
+    fun onDeletePermissionResult(context: Context, granted: Boolean) {
+        viewModelScope.launch(Dispatchers.IO) {
+            if (granted) {
+                fileUtil.invalidateListFilesCache()
+            }
+
+            refreshVideosAfterDelete()
+
+            withContext(Dispatchers.Main.immediate) {
+                pendingDeleteVideo = null
+                _permissionNeededForDeleteVideo.value = null
+            }
+        }
+    }
+
+    private fun getDeletePermissionIntentSender(
+        context: Context,
+        uri: Uri,
+        securityException: SecurityException
+    ): IntentSender? {
+        return when {
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.R -> {
+                MediaStore.createDeleteRequest(context.contentResolver, listOf(uri)).intentSender
+            }
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q -> {
+                (securityException as? RecoverableSecurityException)
+                    ?.userAction
+                    ?.actionIntent
+                    ?.intentSender
+            }
+            else -> null
+        }
+    }
+
+    private suspend fun refreshVideosAfterDelete() {
+        val freshList = getFilesList().sortedByDescending { it.time }.reversed()
+        withContext(Dispatchers.Main.immediate) {
+            cachedFilesList = freshList
+            cachedVideosList?.set(freshList.toMutableList())
+            localVideos.set(freshList.toMutableList())
+            lastCacheTime = System.currentTimeMillis()
         }
     }
 

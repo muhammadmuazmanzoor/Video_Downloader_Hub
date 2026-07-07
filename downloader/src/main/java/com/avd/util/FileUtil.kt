@@ -132,9 +132,9 @@ class FileUtil @Inject constructor() {
 
             val externalPrivateFilesObjs = getPrivateDownloadsDirFilesObj(context, true)
             val internalPrivateFilesObjs = getPrivateDownloadsDirFilesObj(context, false)
-            if (Build.VERSION.SDK_INT == Build.VERSION_CODES.Q) {
-                val externalPublicFilesObjs = getPublicDownloadsDirFilesObjOld(context, true)
-                val internalPublicFilesObjs = getPublicDownloadsDirFilesObjOld(context, false)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                val externalPublicFilesObjs = getPublicDownloadsVideoFilesObj(context, true)
+                val internalPublicFilesObjs = getPublicDownloadsVideoFilesObj(context, false)
                 result.putAll(externalPublicFilesObjs)
                 result.putAll(internalPublicFilesObjs)
             } else {
@@ -163,9 +163,9 @@ class FileUtil @Inject constructor() {
             val externalPrivateFilesObjs = getPrivateDownloadsDirFilesObj(context, true)
             val internalPrivateFilesObjs = getPrivateDownloadsDirFilesObj(context, false)
 
-            if (Build.VERSION.SDK_INT == Build.VERSION_CODES.Q) {
-                val externalPublicFilesObjs = getPublicDownloadsDirFilesObjOld(context, true)
-                val internalPublicFilesObjs = getPublicDownloadsDirFilesObjOld(context, false)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                val externalPublicFilesObjs = getPublicDownloadsVideoFilesObj(context, true)
+                val internalPublicFilesObjs = getPublicDownloadsVideoFilesObj(context, false)
                 result.putAll(addTimestamps(externalPublicFilesObjs))
                 result.putAll(addTimestamps(internalPublicFilesObjs))
             } else {
@@ -201,6 +201,10 @@ class FileUtil @Inject constructor() {
         }
     }
     private fun getLastModifiedTimestamp(context: Context, uri: Uri): Long {
+        if (isFileUri(uri)) {
+            return File(uri.path ?: uri.toString()).lastModified()
+        }
+
         val projection = arrayOf(MediaStore.MediaColumns.DATE_MODIFIED) // Use DATE_MODIFIED for media files
         val cursor = context.contentResolver.query(uri, projection, null, null, null)
         cursor?.use {
@@ -368,28 +372,32 @@ class FileUtil @Inject constructor() {
 
     fun deleteMedia(context: Context, uri: Uri): Boolean {
         return try {
-            if (!isUriExists(context, uri)) {
-                throw FileNotFoundException("File not found: $uri")
-            }
-
-            val deleted = if (isFileUri(uri)) {
-                deleteFileUri(uri)
-            } else {
-                deleteDownloadedVideoContent(context, uri)
-            }
-
-            if (!deleted) {
-                throw FileNotFoundException("Unable to delete: $uri")
-            }
-
-            // Invalidate cache after deletion completes to ensure fresh data
-            invalidateListFilesCache()
-            true
+            deleteMediaOrThrow(context, uri)
         } catch (e: Throwable) {
             e.printStackTrace()
             showToast(context, "Error: ${e.message}")
             false
         }
+    }
+
+    fun deleteMediaOrThrow(context: Context, uri: Uri): Boolean {
+        if (!isUriExists(context, uri)) {
+            throw FileNotFoundException("File not found: $uri")
+        }
+
+        val deleted = if (isFileUri(uri)) {
+            deleteFileUri(uri)
+        } else {
+            deleteDownloadedVideoContent(context, uri)
+        }
+
+        if (!deleted) {
+            throw FileNotFoundException("Unable to delete: $uri")
+        }
+
+        // Invalidate cache after deletion completes to ensure fresh data
+        invalidateListFilesCache()
+        return true
     }
 
     private fun isFileUri(uri: Uri): Boolean {
@@ -446,6 +454,10 @@ class FileUtil @Inject constructor() {
     }
 
     fun isFileApiSupportedByUri(context: Context, uri: Uri): Boolean {
+        if (!isFileUri(uri)) {
+            return false
+        }
+
         val isExternalTo = isExternalUri(uri)
 
         val privateDir = getPrivateDownloadsDir(context, isExternalTo)
@@ -572,6 +584,41 @@ class FileUtil @Inject constructor() {
         return filesMap
     }
 
+    private fun getPublicDownloadsVideoFilesObj(
+        context: Context,
+        isExternalStorage: Boolean
+    ): Map<String, Pair<Long, Uri>> {
+        val filesMap = mutableMapOf<String, Pair<Long, Uri>>()
+        val targetUri = if (isExternalStorage) {
+            MediaStore.Video.Media.EXTERNAL_CONTENT_URI
+        } else {
+            MediaStore.Video.Media.INTERNAL_CONTENT_URI
+        }
+        val projection = arrayOf(
+            MediaStore.Video.Media._ID,
+            MediaStore.Video.Media.DISPLAY_NAME
+        )
+        val selection = "${MediaStore.Video.Media.RELATIVE_PATH} LIKE ?"
+        val selectionArgs = arrayOf("%${Environment.DIRECTORY_DOWNLOADS}%")
+
+        context.contentResolver.query(targetUri, projection, selection, selectionArgs, null)?.use { cursor ->
+            val idColumn = cursor.getColumnIndexOrThrow(MediaStore.Video.Media._ID)
+            val nameColumn = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DISPLAY_NAME)
+
+            while (cursor.moveToNext()) {
+                val id = cursor.getLong(idColumn)
+                val name = cursor.getString(nameColumn) ?: continue
+                val contentUri = ContentUris.withAppendedId(targetUri, id)
+
+                if (isUriExists(context, contentUri)) {
+                    filesMap[name] = Pair(id, contentUri)
+                }
+            }
+        }
+
+        return filesMap
+    }
+
     private fun getPublicDownloadsDirFilesObjOld(
         context: Context, isExternalStorage: Boolean
     ): Map<String, Pair<Long, Uri>> {
@@ -619,10 +666,55 @@ class FileUtil @Inject constructor() {
     }
 
     private fun deleteDownloadedVideoContent(context: Context, uri: Uri): Boolean {
-        return if (DocumentsContract.isDocumentUri(context, uri)) {
-            DocumentsContract.deleteDocument(context.contentResolver, uri)
-        } else {
-            context.contentResolver.delete(uri, null, null) > 0
+        return try {
+            if (DocumentsContract.isDocumentUri(context, uri)) {
+                DocumentsContract.deleteDocument(context.contentResolver, uri)
+            } else {
+                context.contentResolver.delete(uri, null, null) > 0
+            }
+        } catch (e: IllegalArgumentException) {
+            deleteVideoContentFallback(context, uri)
+        }
+    }
+
+    private fun deleteVideoContentFallback(context: Context, uri: Uri): Boolean {
+        val displayName = getDisplayName(context, uri) ?: return false
+        val videoUri = findVideoContentUriByName(context, displayName) ?: return false
+        return context.contentResolver.delete(videoUri, null, null) > 0
+    }
+
+    private fun getDisplayName(context: Context, uri: Uri): String? {
+        return context.contentResolver.query(
+            uri,
+            arrayOf(MediaStore.MediaColumns.DISPLAY_NAME),
+            null,
+            null,
+            null
+        )?.use { cursor ->
+            val nameColumn = cursor.getColumnIndex(MediaStore.MediaColumns.DISPLAY_NAME)
+            if (nameColumn >= 0 && cursor.moveToFirst()) cursor.getString(nameColumn) else null
+        }
+    }
+
+    private fun findVideoContentUriByName(context: Context, displayName: String): Uri? {
+        return listOf(
+            MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
+            MediaStore.Video.Media.INTERNAL_CONTENT_URI
+        ).firstNotNullOfOrNull { targetUri ->
+            context.contentResolver.query(
+                targetUri,
+                arrayOf(MediaStore.Video.Media._ID),
+                "${MediaStore.Video.Media.DISPLAY_NAME} = ?",
+                arrayOf(displayName),
+                null
+            )?.use { cursor ->
+                val idColumn = cursor.getColumnIndexOrThrow(MediaStore.Video.Media._ID)
+                if (cursor.moveToFirst()) {
+                    ContentUris.withAppendedId(targetUri, cursor.getLong(idColumn))
+                } else {
+                    null
+                }
+            }
         }
     }
 

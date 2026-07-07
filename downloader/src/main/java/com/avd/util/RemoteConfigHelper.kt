@@ -20,30 +20,39 @@ object RemoteConfigHelper {
     }
 
     fun getSocialDownloaderBaseUrl(): String {
-        Log.d("RemoteConfig", "getSocialDownloaderBaseUrl: ${remoteConfig.getString("social_downloader_base_url")}")
-        return SOCIAL_DOWNLOADER_BASE_URL
+
+      //  return SOCIAL_DOWNLOADER_BASE_URL
         // To enable remote base URL again later:
-        // return remoteConfig.getString("social_downloader_base_url")
-        //     .ifEmpty { SOCIAL_DOWNLOADER_BASE_URL }
+         return remoteConfig.getString("social_downloader_base_url")
+            .ifEmpty { SOCIAL_DOWNLOADER_BASE_URL }
+        Log.d("RemoteConfig", "getSocialDownloaderBaseUrl: ${remoteConfig.getString("social_downloader_base_url")}")
     }
 
     fun getSocialDownloaderEndpoint(): String {
-        Log.d("RemoteConfig", "getSocialDownloaderEndpoint: ${remoteConfig.getString("social_downloader_endpoint")}")
-        return SOCIAL_DOWNLOADER_ENDPOINT
+        // return SOCIAL_DOWNLOADER_ENDPOINT
         // To enable remote endpoint again later:
-        // return remoteConfig.getString("social_downloader_endpoint")
-        //     .ifEmpty { SOCIAL_DOWNLOADER_ENDPOINT }
+         return remoteConfig.getString("social_downloader_endpoint")
+            .ifEmpty { SOCIAL_DOWNLOADER_ENDPOINT }
+        Log.d("RemoteConfig", "getSocialDownloaderEndpoint: ${remoteConfig.getString("social_downloader_endpoint")}")
     }
 
-    fun getSocialDownloaderApiKey(): String = SOCIAL_DOWNLOADER_API_KEY
+    fun getSocialDownloaderApiKey(): String {
+        Log.d("RemoteConfig", "getSocialDownloaderApiKey: ${remoteConfig.getString("social_downloader_api_key")}")
+        return remoteConfig.getString("social_downloader_api_key")
+            .ifEmpty { SOCIAL_DOWNLOADER_API_KEY }
+    }
 
-    fun getSocialDownloaderAppLabel(): String = SOCIAL_DOWNLOADER_APP_LABEL
+    fun getSocialDownloaderAppLabel(): String {
+        return remoteConfig.getString("social_downloader_app_label")
+            .ifEmpty { SOCIAL_DOWNLOADER_APP_LABEL }
+        Log.d("RemoteConfig", "getSocialDownloaderAppLabel: ${remoteConfig.getString("social_downloader_app_label")}")
+    }
 
     fun getSocialDownloaderHeaders(): Map<String, String> {
         return mapOf(
-            "api-key" to SOCIAL_DOWNLOADER_API_KEY,
-            "x-api-key" to SOCIAL_DOWNLOADER_API_KEY,
-            "X-App-Label" to SOCIAL_DOWNLOADER_APP_LABEL
+            "api-key" to getSocialDownloaderApiKey(),
+            "x-api-key" to getSocialDownloaderApiKey(),
+            "X-App-Label" to getSocialDownloaderAppLabel()
         )
     }
 }
