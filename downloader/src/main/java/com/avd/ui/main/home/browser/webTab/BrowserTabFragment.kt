@@ -242,6 +242,12 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (host != null) {
+            host?.showBottomBar()
+            Log.d("HostCheck", "showBottomBar")
+        } else {
+            Log.d("HostCheck", "null")
+        }
         permissionManager = PermissionManagerNew(
             requireContext(), requireActivity(),
             object : PermissionManagerNew.Callback {

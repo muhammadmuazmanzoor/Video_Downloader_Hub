@@ -6,8 +6,8 @@
 
     <LinearLayout
         android:id="@+id/top"
-        android:layout_width="@dimen/_43sdp"
-        android:layout_height="@dimen/_43sdp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_weight="1"
         android:gravity="center"
         android:orientation="vertical"
@@ -17,8 +17,8 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/movie"
-            android:layout_width="@dimen/_41sdp"
-            android:layout_height="@dimen/_41sdp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:scaleType="centerCrop"
             android:contentDescription="Movie"
             android:src="@drawable/movie_123"
@@ -31,6 +31,7 @@
         android:layout_height="wrap_content"
         android:maxWidth="75dp"
         android:gravity="center"
+        android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@+id/top"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/top"
