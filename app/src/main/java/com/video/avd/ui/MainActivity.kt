@@ -780,6 +780,11 @@ class MainActivity : AppCompatActivity(), NetworkStateListener, CommunicateWithA
     }
 
     private fun handleBottomNavigationItemClick(itemId: Int): Boolean {
+        if (navController?.currentDestination?.id == itemId) {
+            updateBottomNavigationSelection(itemId)
+            return true
+        }
+
         if (!isSafeClick()) {
             Log.d("safeClick", "blocked")
             return false
