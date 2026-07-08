@@ -720,7 +720,7 @@ class MainActivity : AppCompatActivity(), NetworkStateListener, CommunicateWithA
 
     private val bottomNavItems = listOf(
         BottomNavItem(R.id.fragmentDownloadQueue, R.drawable.bottom_web, R.string.bottom_browser),
-        BottomNavItem(R.id.mainDownloaderFragment, R.drawable.bottom_home, R.string.home),
+        BottomNavItem(R.id.mainDownloaderFragment, com.avd.R.drawable.ic_socialapps, R.string.home),
         BottomNavItem(R.id.fragmentDownloadHistory, R.drawable.bottom_progress, R.string.progress),
         BottomNavItem(R.id.homeFragment1, R.drawable.bottom_video, R.string.bottom_video_player)
     )

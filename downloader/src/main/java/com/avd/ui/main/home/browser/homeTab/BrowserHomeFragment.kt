@@ -954,12 +954,12 @@ class BrowserHomeFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListen
 
         AdBlockerHelper.isProVersion.observe(viewLifecycleOwner, Observer { it ->
             if (it == true) {
-                binding.clPremimumNew.visibility = View.GONE
+              //  binding.clPremimumNew.visibility = View.GONE
                 binding.flAdplace.visibility = View.GONE
                 binding.ivProNew.visibility = View.GONE
                 showShimmer(false)
             } else {
-                binding.clPremimumNew.visibility = View.VISIBLE
+             //   binding.clPremimumNew.visibility = View.GONE
                 binding.flAdplace.visibility = View.VISIBLE
                 binding.ivProNew.visibility = View.VISIBLE
                 if(home_native){
@@ -1031,8 +1031,8 @@ class BrowserHomeFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListen
             host?.setbottomseelection()
 //            host?.hideBottomBar()
         }
-
-        binding.clPremimumNew.setOnClickListener {
+//    Disable if want to enable uncomment this and the layout visibility at top
+        /*binding.clPremimumNew.setOnClickListener {
             try {
                 val activityClass =
                     Class.forName("com.video.avd.ui.splash_flow.activities.InAppActivity")
@@ -1044,7 +1044,7 @@ class BrowserHomeFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListen
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-        }
+        }*/
 
 
         binding.ivProNew.setOnClickListener {
