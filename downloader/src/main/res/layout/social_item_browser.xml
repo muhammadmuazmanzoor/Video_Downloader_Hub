@@ -20,7 +20,6 @@
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:scaleType="centerCrop"
-            android:padding="8dp"
             android:contentDescription="Movie"
             android:src="@drawable/movie_123"
             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Circle" />

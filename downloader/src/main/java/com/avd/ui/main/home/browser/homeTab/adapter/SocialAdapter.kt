@@ -21,6 +21,8 @@ class SocialAdapter(
         val title: TextView? = itemView.findViewById(R.id.movie_text)
 
         fun bind(item: PageInfo) {
+            icon.scaleType = ImageView.ScaleType.CENTER_CROP
+            icon.setPadding(0, 0, 0, 0)
             icon.setImageResource(item.drawableResId)
 
             if(item.link.contains("dailymotion")){
