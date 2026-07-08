@@ -98,7 +98,9 @@
                     android:layout_height="wrap_content"
                     android:indeterminate="true"
                     android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"
-                    tools:ignore="MissingConstraints" />
+                    tools:ignore="MissingConstraints"
+            android:progressTint="@color/bottom_nav_selected"
+            android:indeterminateTint="@color/bottom_nav_selected" />
             </FrameLayout>
         </LinearLayout>
     </LinearLayout>

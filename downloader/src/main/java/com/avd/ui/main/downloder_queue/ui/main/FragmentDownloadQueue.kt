@@ -99,7 +99,7 @@ class FragmentDownloadQueue : Fragment() {
     }
 
     private fun initLayout() {
-        pagerAdapter = DownloadListPagerAdapter(this)
+        pagerAdapter = DownloadListPagerAdapter(this, SHOW_LATEST_COMPLETED_DOWNLOADS_FIRST)
 
         binding.downloadListViewpager.apply {
             adapter = pagerAdapter
@@ -249,6 +249,7 @@ class FragmentDownloadQueue : Fragment() {
     companion object {
         @Suppress("unused")
         private val TAG: String = FragmentDownloadQueue::class.java.simpleName
+        private const val SHOW_LATEST_COMPLETED_DOWNLOADS_FIRST = true
         fun newInstance() = FragmentDownloadQueue()
         var lastTab:Int=0
     }

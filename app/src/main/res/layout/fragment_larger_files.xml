@@ -14,7 +14,9 @@
             app:layout_constraintBottom_toBottomOf="@+id/btnDelete"
             app:layout_constraintEnd_toEndOf="@+id/video_rv"
             app:layout_constraintStart_toStartOf="@+id/video_rv"
-            app:layout_constraintTop_toTopOf="@+id/video_rv" />
+            app:layout_constraintTop_toTopOf="@+id/video_rv"
+            android:progressTint="@color/bottom_nav_selected"
+            android:indeterminateTint="@color/bottom_nav_selected" />
 
         <ImageView
             android:id="@+id/imageView8"

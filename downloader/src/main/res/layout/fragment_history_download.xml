@@ -95,7 +95,9 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:progressTint="@color/bottom_nav_selected"
+            android:indeterminateTint="@color/bottom_nav_selected" />
 
         <ImageView
             android:id="@+id/img"

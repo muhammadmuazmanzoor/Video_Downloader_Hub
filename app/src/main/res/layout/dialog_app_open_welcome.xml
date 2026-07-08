@@ -10,7 +10,8 @@
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:indeterminateTint="@color/brand_accent" />
+        android:indeterminateTint="@color/bottom_nav_selected"
+            android:progressTint="@color/bottom_nav_selected" />
 
     <TextView
         android:id="@+id/tvWelcomeBack"

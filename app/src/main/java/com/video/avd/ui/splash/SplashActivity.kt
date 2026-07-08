@@ -24,6 +24,7 @@ import androidx.lifecycle.lifecycleScope
 import com.avd.util.AdBlockerHelper
 import com.avd.util.AdBlockerHelper.hideLoading
 import com.avd.util.AdBlockerHelper.isAdShowing
+import com.avd.util.AdBlockerHelper.isIapEnableAfterSplash
 import com.avd.util.AdBlockerHelper.isProVersion
 import com.avd.util.AdBlockerHelper.showLoading
 import com.google.android.gms.ads.AdError
@@ -225,7 +226,8 @@ class SplashActivity : AppCompatActivity() {
         splashTimeoutJob?.cancel()
         if(show) {
             if (shouldNavigateToLanguage() && NetworkUtils.isOnline(this)) {
-                if (isProVersion.value != true) {
+                if (isProVersion.value != true && isIapEnableAfterSplash ) {
+                    Log.d("SplashActivityweee", "Showing in-app purchase screen ${isProVersion.value} ${isIapEnableAfterSplash}")
                     startActivity(Intent(this@SplashActivity, InAppActivity::class.java))
                     finish()
                 } else {
@@ -234,7 +236,8 @@ class SplashActivity : AppCompatActivity() {
                 }
             }
             else if (NetworkUtils.isOnline(this)) {
-                if (isProVersion.value != true) {
+                if (isProVersion.value != true && isIapEnableAfterSplash ) {
+                    Log.d("SplashActivityweee", "Showing in-app purchase screen ${isProVersion.value} ${isIapEnableAfterSplash}")
                     startActivity(Intent(this@SplashActivity, InAppActivity::class.java))
                     finish()
                 } else {
@@ -608,7 +611,8 @@ class SplashActivity : AppCompatActivity() {
             isinternal = true
             lifecycleScope.launch(Dispatchers.Main){
                 delay(1000)
-                    if (isProVersion.value != true) {
+                    if (isProVersion.value != true && isIapEnableAfterSplash ) {
+                        Log.d("SplashActivityweee", "Showing in-app purchase screen ${isProVersion.value} ${isIapEnableAfterSplash}")
                         startActivity(Intent(this@SplashActivity, InAppActivity::class.java))
                         finish()
                     } else {

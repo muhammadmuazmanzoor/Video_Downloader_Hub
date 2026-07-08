@@ -186,11 +186,12 @@
                 android:layout_height="@dimen/_6sdp"
                 android:layout_marginTop="@dimen/_4sdp"
                 android:indeterminate="true"
-                android:indeterminateTint="@color/brand_accent"
+                android:indeterminateTint="@color/bottom_nav_selected"
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/actionButtonsRow" />
+                app:layout_constraintTop_toBottomOf="@id/actionButtonsRow"
+            android:progressTint="@color/bottom_nav_selected" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/appCard"

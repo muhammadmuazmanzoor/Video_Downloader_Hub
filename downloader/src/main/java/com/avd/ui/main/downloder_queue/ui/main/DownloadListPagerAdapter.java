@@ -34,8 +34,15 @@ public class DownloadListPagerAdapter extends FragmentStateAdapter {
     public static final int QUEUED_FRAG_POS = 0;
     public static final int COMPLETED_FRAG_POS = 1;
 
+    private final boolean showLatestCompletedDownloadsFirst;
+
     public DownloadListPagerAdapter(@NonNull Fragment fragment) {
+        this(fragment, false);
+    }
+
+    public DownloadListPagerAdapter(@NonNull Fragment fragment, boolean showLatestCompletedDownloadsFirst) {
         super(fragment);
+        this.showLatestCompletedDownloadsFirst = showLatestCompletedDownloadsFirst;
     }
 
     @NonNull
@@ -46,7 +53,7 @@ public class DownloadListPagerAdapter extends FragmentStateAdapter {
             case QUEUED_FRAG_POS:
                 return ProgressFragment.Companion.newInstance();
             case COMPLETED_FRAG_POS:
-                return VideoFragment.Companion.newInstance(true);
+                return VideoFragment.Companion.newInstance(showLatestCompletedDownloadsFirst);
             default:
                 return new Fragment();
         }

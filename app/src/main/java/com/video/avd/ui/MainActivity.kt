@@ -135,7 +135,7 @@ class MainActivity : AppCompatActivity(), NetworkStateListener, CommunicateWithA
     private val bottomNavItemViews = mutableMapOf<Int, LinearLayout>()
     private val bottomNavIconViews = mutableMapOf<Int, ImageView>()
     private val bottomNavLabelViews = mutableMapOf<Int, TextView>()
-    private var selectedBottomNavItemId = R.id.fragmentDownloadQueue
+    private var selectedBottomNavItemId = R.id.mainDownloaderFragment
     var navController: NavController? = null
     private var navHostFragment: NavHostFragment? = null
     private val networkChangeReceiver: NetworkChangeReceiver by lazy {
@@ -719,10 +719,10 @@ class MainActivity : AppCompatActivity(), NetworkStateListener, CommunicateWithA
     )
 
     private val bottomNavItems = listOf(
-        BottomNavItem(R.id.fragmentDownloadQueue, R.drawable.bottom_web, R.string.web),
+        BottomNavItem(R.id.fragmentDownloadQueue, R.drawable.bottom_web, R.string.bottom_browser),
         BottomNavItem(R.id.mainDownloaderFragment, R.drawable.bottom_home, R.string.home),
         BottomNavItem(R.id.fragmentDownloadHistory, R.drawable.bottom_progress, R.string.progress),
-        BottomNavItem(R.id.homeFragment1, R.drawable.bottom_video, R.string.player)
+        BottomNavItem(R.id.homeFragment1, R.drawable.bottom_video, R.string.bottom_video_player)
     )
 
     private fun setupBottomNavigationBar() {
@@ -767,13 +767,14 @@ class MainActivity : AppCompatActivity(), NetworkStateListener, CommunicateWithA
         if (itemView == null || icon == null || label == null) return
         val item = bottomNavItems.firstOrNull { it.id == itemId } ?: return
         itemView.gravity = Gravity.CENTER
+        itemView.orientation = LinearLayout.VERTICAL
         itemView.setBaselineAligned(false)
         itemView.contentDescription = getString(item.titleRes)
         itemView.setOnClickListener { handleBottomNavigationItemClick(itemId) }
         icon.setImageDrawable(tintedBottomNavIcon(item.iconRes, false))
         label.typeface = ResourcesCompat.getFont(this, R.font.poppins_light) ?: Typeface.DEFAULT
         label.visibility = View.VISIBLE
-        label.alpha = 0f
+        label.alpha = 1f
         bottomNavItemViews[itemId] = itemView
         bottomNavIconViews[itemId] = icon
         bottomNavLabelViews[itemId] = label
@@ -844,20 +845,13 @@ class MainActivity : AppCompatActivity(), NetworkStateListener, CommunicateWithA
             val icon = bottomNavIconViews[item.id] ?: return@forEach
             val label = bottomNavLabelViews[item.id] ?: return@forEach
             itemView.isSelected = isSelected
-            itemView.background = if (isSelected) {
-                ContextCompat.getDrawable(this, R.drawable.bg_selected_bottom_item)
-            } else {
-                null
-            }
+            itemView.background = null
             icon.setImageDrawable(tintedBottomNavIcon(item.iconRes, isSelected))
             label.setTextColor(bottomNavColor(isSelected))
             label.visibility = View.VISIBLE
             label.animate().cancel()
-            label.animate()
-                .alpha(if (isSelected) 1f else 0f)
-                .setDuration(120L)
-                .start()
-            label.isEnabled = isSelected
+            label.alpha = 1f
+            label.isEnabled = true
         }
     }
 
@@ -873,7 +867,7 @@ class MainActivity : AppCompatActivity(), NetworkStateListener, CommunicateWithA
         }
 
     private fun bottomNavColor(isSelected: Boolean): Int {
-        val colorRes = if (isSelected) R.color.gSelector_light else R.color.nonSelectedColor
+        val colorRes = if (isSelected) R.color.bottom_nav_selected else R.color.nonSelectedColor
         return ContextCompat.getColor(this, colorRes)
     }
 

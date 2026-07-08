@@ -962,8 +962,13 @@ class BrowserHomeFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListen
                 binding.clPremimumNew.visibility = View.VISIBLE
                 binding.flAdplace.visibility = View.VISIBLE
                 binding.ivProNew.visibility = View.VISIBLE
+                if(home_native){
                 showShimmer(true) // Show shimmer before loading ad
+                }else{
+                    showShimmer(false)
+                    binding.flAdplace.visibility = View.GONE
             }
+        }
         })
 
         AdBlockerHelper.setAdShown(ScreenName.valueOf("DOWNLOAD_VIDEO"), false)

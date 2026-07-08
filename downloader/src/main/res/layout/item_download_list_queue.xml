@@ -55,7 +55,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:indeterminate="false"
-                    android:max="100" />
+                    android:max="100"
+            android:progressTint="@color/bottom_nav_selected"
+            android:indeterminateTint="@color/bottom_nav_selected" />
 
                 <TextView
                     android:id="@+id/status"

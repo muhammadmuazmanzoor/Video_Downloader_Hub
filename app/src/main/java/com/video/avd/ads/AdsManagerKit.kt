@@ -20,6 +20,7 @@ import com.avd.util.AdBlockerHelper.inter_home
 import com.avd.util.AdBlockerHelper.inter_home_high
 import com.avd.util.AdBlockerHelper.inter_home_normal
 import com.avd.util.AdBlockerHelper.inter_videos
+import com.avd.util.AdBlockerHelper.isIapEnableAfterSplash
 import com.avd.util.AdBlockerHelper.isProVersion
 import com.avd.util.AdBlockerHelper.proCrossTimer
 import com.avd.util.AdBlockerHelper.recycler_native
@@ -76,6 +77,8 @@ object AdsManagerKit {
             inter_videos = remoteConfig.getBoolean("inter_videos")
             inter_home_normal = remoteConfig.getBoolean("inter_home_normal")
             banner_home_enable = remoteConfig.getBoolean("banner_home")
+            isIapEnableAfterSplash = remoteConfig.getBoolean("show_iap_after_splash")
+            Log.d("AdsManagerKit", "isIapEnableAfterSplash: $isIapEnableAfterSplash")
             AdsManager.ob_inter = remoteConfig.getString("ob_inter")
             MyApplication.Companion.isShowPermission = remoteConfig.getBoolean("show_permission_screen")
             AdBlockerHelper.cooldownValue = remoteConfig.getLong("cooldown_seconds")

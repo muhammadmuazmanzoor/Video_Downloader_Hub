@@ -73,7 +73,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        />
+            android:progressTint="@color/bottom_nav_selected"
+            android:indeterminateTint="@color/bottom_nav_selected" />
 
     <ImageView
         android:id="@+id/gridImg"

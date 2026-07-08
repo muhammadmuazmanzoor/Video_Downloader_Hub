@@ -131,7 +131,7 @@
                     <View
                         android:id="@+id/view2"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_48sdp"
+                        android:layout_height="@dimen/_40sdp"
                         android:layout_marginStart="@dimen/_5sdp"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:layout_marginEnd="@dimen/_5sdp"
@@ -149,18 +149,19 @@
                         android:layout_width="0dp"
                         android:layout_height="@dimen/_10sdp"
                         android:indeterminate="true"
-                        android:indeterminateTint="@color/gSelector_light"
+                        android:indeterminateTint="@color/bottom_nav_selected"
                         android:paddingStart="@dimen/_17sdp"
                         android:paddingEnd="@dimen/_15sdp"
                         android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="@+id/ic_search"
                         app:layout_constraintStart_toStartOf="@+id/view2"
-                        app:layout_constraintTop_toBottomOf="@+id/view2" />
+                        app:layout_constraintTop_toBottomOf="@+id/view2"
+            android:progressTint="@color/bottom_nav_selected" />
 
                     <com.google.android.material.textfield.MaterialAutoCompleteTextView
                         android:id="@+id/home_et_search"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="0dp"
                         android:layout_marginStart="5dp"
                         android:layout_marginEnd="@dimen/_10sdp"
                         android:background="@android:color/transparent"
@@ -185,7 +186,7 @@
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/ic_search"
                         android:layout_width="match_parent"
-                        android:layout_height="56dp"
+                        android:layout_height="@dimen/_40sdp"
                         android:layout_marginEnd="@dimen/_5sdp"
                         android:layout_marginStart="@dimen/_5sdp"
                         android:background="@drawable/gradient_bg"
@@ -198,7 +199,7 @@
                         android:paddingHorizontal="@dimen/_12sdp"
                         android:paddingVertical="@dimen/_4sdp"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/_18sdp"
+                        android:textSize="@dimen/_12ssp"
                         app:drawableTint="@color/white"
                         app:layout_constraintEnd_toEndOf="@+id/home_et_search"
                         app:layout_constraintTop_toBottomOf="@+id/view2" />

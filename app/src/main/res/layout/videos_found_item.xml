@@ -65,7 +65,9 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/videoFoundDetailsBarrier"
-                android:visibility="gone" />
+                android:visibility="gone"
+            android:progressTint="@color/bottom_nav_selected"
+            android:indeterminateTint="@color/bottom_nav_selected" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/videoFoundDetailsText"

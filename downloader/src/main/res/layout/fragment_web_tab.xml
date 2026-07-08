@@ -149,7 +149,9 @@
                     android:progress="@{viewModel.progress}"
                     android:progressDrawable="@drawable/progress_load_data"
                     android:visibility="@{viewModel.isShowProgress ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+            android:progressTint="@color/bottom_nav_selected"
+            android:indeterminateTint="@color/bottom_nav_selected" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

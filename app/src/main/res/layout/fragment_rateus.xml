@@ -72,7 +72,7 @@
                 android:layout_marginBottom="@dimen/_5sdp"
                 android:numStars="5"
                 android:progressBackgroundTint="@color/nonSelectedColor"
-                android:progressTint="@color/gSelector_light"
+                android:progressTint="@color/bottom_nav_selected"
                 android:rating="0"
                 android:secondaryProgressTint="@color/text_color_1"
                 android:stepSize="1.0"

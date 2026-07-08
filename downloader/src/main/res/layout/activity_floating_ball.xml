@@ -98,13 +98,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:indeterminate="true"
-        android:indeterminateTint="@color/colorPrimary"
+        android:indeterminateTint="@color/bottom_nav_selected"
         android:indeterminateTintMode="src_atop"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/floatingWidgetRcv"
         app:layout_constraintEnd_toEndOf="@+id/floatingWidgetRcv"
         app:layout_constraintStart_toStartOf="@+id/floatingWidgetRcv"
-        app:layout_constraintTop_toTopOf="@+id/floatingWidgetRcv" />
+        app:layout_constraintTop_toTopOf="@+id/floatingWidgetRcv"
+            android:progressTint="@color/bottom_nav_selected" />
 
 
     <androidx.appcompat.widget.AppCompatImageView

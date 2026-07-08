@@ -58,12 +58,13 @@
         android:layout_centerInParent="true"
         android:layout_marginTop="@dimen/_30sdp"
         android:indeterminate="true"
-        android:indeterminateTint="@color/gSelector"
+        android:indeterminateTint="@color/bottom_nav_selected"
         app:layout_constraintBottom_toTopOf="@+id/adText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
+        app:layout_constraintVertical_chainStyle="packed"
+            android:progressTint="@color/bottom_nav_selected" />
 
     <TextView
         android:id="@+id/adText"

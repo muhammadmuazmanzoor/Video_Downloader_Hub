@@ -61,7 +61,8 @@
           app:layout_constraintBottom_toBottomOf="@id/cl_main"
           app:layout_constraintStart_toStartOf="@id/cl_main"
           app:layout_constraintEnd_toEndOf="@id/cl_main"
-          />
+            android:progressTint="@color/bottom_nav_selected"
+            android:indeterminateTint="@color/bottom_nav_selected" />
 
         <TextView
             android:id="@+id/tv_fetch"

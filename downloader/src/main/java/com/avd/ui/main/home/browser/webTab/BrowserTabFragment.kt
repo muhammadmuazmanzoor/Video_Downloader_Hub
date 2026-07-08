@@ -703,7 +703,12 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
             } else {
                 binding.clPremimumNew.visibility = View.VISIBLE
                 binding.flAdplace.visibility = View.VISIBLE
-                showShimmer(true) // Show shimmer before loading ad
+                if (browser_native) {
+                    showShimmer(true)
+                } else {
+                    showShimmer(false)
+                    binding.flAdplace.visibility = View.GONE // optional, if no ad means no space
+                } // Show shimmer before loading ad
             }
         })
         AdBlockerHelper.setAdShown(ScreenName.valueOf("DOWNLOAD_VIDEO"), false)

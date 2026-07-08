@@ -41,21 +41,21 @@
             android:id="@+id/bottom_navigation"
             style="@style/NavigationView"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/brand_card_background"
+            android:layout_height="56dp"
+            android:background="@color/white"
             app:layout_constraintBottom_toTopOf="@id/bottomAd"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
-            <!-- Web -->
+            <!-- Browser -->
             <LinearLayout
                 android:id="@+id/fragmentDownloadQueue"
                 android:layout_width="0dp"
-                android:layout_height="50dp"
+                android:layout_height="match_parent"
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/mainDownloaderFragment"
                 app:layout_constraintTop_toTopOf="parent"
@@ -64,21 +64,21 @@
 
                 <ImageView
                     android:id="@+id/ivBottomWeb"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:contentDescription="@string/web"
+                    android:layout_width="23dp"
+                    android:layout_height="23dp"
+                    android:contentDescription="@string/bottom_browser"
                     android:src="@drawable/bottom_web" />
 
                 <TextView
                     android:id="@+id/tvBottomWeb"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="7dp"
-                    android:alpha="0"
+                    android:layout_marginTop="3dp"
+                    android:alpha="1"
                     android:includeFontPadding="false"
                     android:maxLines="1"
-                    android:text="@string/web"
-                    android:textSize="11sp" />
+                    android:text="@string/bottom_browser"
+                    android:textSize="9sp" />
 
             </LinearLayout>
 
@@ -86,11 +86,11 @@
             <LinearLayout
                 android:id="@+id/mainDownloaderFragment"
                 android:layout_width="0dp"
-                android:layout_height="50dp"
+                android:layout_height="match_parent"
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 app:layout_constraintStart_toEndOf="@id/fragmentDownloadQueue"
                 app:layout_constraintEnd_toStartOf="@id/fragmentDownloadHistory"
                 app:layout_constraintTop_toTopOf="parent"
@@ -98,21 +98,21 @@
 
                 <ImageView
                     android:id="@+id/ivBottomHome"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="23dp"
+                    android:layout_height="23dp"
                     android:contentDescription="@string/home"
-                    android:src="@drawable/bottom_home" />
+                    android:src="@drawable/ic_socialapps" />
 
                 <TextView
                     android:id="@+id/tvBottomHome"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="7dp"
-                    android:alpha="0"
+                    android:layout_marginTop="3dp"
+                    android:alpha="1"
                     android:includeFontPadding="false"
                     android:maxLines="1"
                     android:text="@string/home"
-                    android:textSize="11sp" />
+                    android:textSize="9sp" />
 
             </LinearLayout>
 
@@ -120,11 +120,11 @@
             <LinearLayout
                 android:id="@+id/fragmentDownloadHistory"
                 android:layout_width="0dp"
-                android:layout_height="50dp"
+                android:layout_height="match_parent"
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 app:layout_constraintStart_toEndOf="@id/mainDownloaderFragment"
                 app:layout_constraintEnd_toStartOf="@id/homeFragment1"
                 app:layout_constraintTop_toTopOf="parent"
@@ -132,8 +132,8 @@
 
                 <ImageView
                     android:id="@+id/ivBottomProgress"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="23dp"
+                    android:layout_height="23dp"
                     android:contentDescription="@string/progress"
                     android:src="@drawable/bottom_progress" />
 
@@ -141,24 +141,24 @@
                     android:id="@+id/tvBottomProgress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="7dp"
-                    android:alpha="0"
+                    android:layout_marginTop="3dp"
+                    android:alpha="1"
                     android:includeFontPadding="false"
                     android:maxLines="1"
                     android:text="@string/progress"
-                    android:textSize="11sp" />
+                    android:textSize="9sp" />
 
             </LinearLayout>
 
-            <!-- Player -->
+            <!-- Video Player -->
             <LinearLayout
                 android:id="@+id/homeFragment1"
                 android:layout_width="0dp"
-                android:layout_height="50dp"
+                android:layout_height="match_parent"
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 app:layout_constraintStart_toEndOf="@id/fragmentDownloadHistory"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -166,21 +166,21 @@
 
                 <ImageView
                     android:id="@+id/ivBottomPlayer"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:contentDescription="@string/player"
+                    android:layout_width="23dp"
+                    android:layout_height="23dp"
+                    android:contentDescription="@string/bottom_video_player"
                     android:src="@drawable/bottom_video" />
 
                 <TextView
                     android:id="@+id/tvBottomPlayer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="7dp"
-                    android:alpha="0"
+                    android:layout_marginTop="3dp"
+                    android:alpha="1"
                     android:includeFontPadding="false"
                     android:maxLines="1"
-                    android:text="@string/player"
-                    android:textSize="11sp" />
+                    android:text="@string/bottom_video_player"
+                    android:textSize="9sp" />
 
             </LinearLayout>
 

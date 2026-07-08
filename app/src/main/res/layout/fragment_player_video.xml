@@ -41,12 +41,13 @@
         android:id="@+id/ytProgress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:indeterminateTint="@color/gSelector"
+        android:indeterminateTint="@color/bottom_nav_selected"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+            android:progressTint="@color/bottom_nav_selected" />
 
     <LinearLayout
         android:id="@+id/progressduration"
@@ -69,7 +70,8 @@
             android:maxHeight="@dimen/_7sdp"
             android:minHeight="@dimen/_5sdp"
             android:progressBackgroundTint="@color/white"
-            android:progressTint="@color/gSelector" />
+            android:progressTint="@color/bottom_nav_selected"
+            android:indeterminateTint="@color/bottom_nav_selected" />
 
         <TextView
             android:id="@+id/progress_text"
@@ -153,12 +155,13 @@
                 android:orientation="vertical"
                 android:progress="40"
                 android:progressDrawable="@drawable/round_v_progressbar"
-                android:progressTint="@color/gSelector"
+                android:progressTint="@color/bottom_nav_selected"
                 android:rotation="360"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+            android:indeterminateTint="@color/bottom_nav_selected" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ImageView
@@ -208,12 +211,13 @@
                 android:orientation="vertical"
                 android:progress="40"
                 android:progressDrawable="@drawable/round_v_progressbar"
-                android:progressTint="@color/gSelector"
+                android:progressTint="@color/bottom_nav_selected"
                 android:rotation="360"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+            android:indeterminateTint="@color/bottom_nav_selected" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -710,7 +714,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:progressBackgroundTint="@color/unselectedcolor"
-                    android:progressTint="@color/gSelector"
+                    android:progressTint="@color/bottom_nav_selected"
                     android:thumbTint="@color/gSelector"
                     app:layout_constraintBottom_toBottomOf="@id/iv_sound_low"
                     app:layout_constraintEnd_toStartOf="@id/iv_sound_high"
@@ -741,7 +745,7 @@
                     android:layout_height="wrap_content"
                     android:max="100"
                     android:progressBackgroundTint="@color/unselectedcolor"
-                    android:progressTint="@color/gSelector"
+                    android:progressTint="@color/bottom_nav_selected"
                     android:thumbTint="@color/gSelector"
                     app:layout_constraintBottom_toBottomOf="@id/iv_brightness_low"
                     app:layout_constraintEnd_toStartOf="@id/iv_brightness_high"

@@ -110,6 +110,7 @@ object AdBlockerHelper {
     var fromVideo:Boolean=false
 
     var isinter = false
+    var isIapEnableAfterSplash: Boolean=true
 
     private val adShownMap = mutableMapOf<ScreenName, Boolean>()
 

@@ -252,7 +252,9 @@
                 android:background="@color/brand_card_background"
                 android:visibility="invisible"
                 app:layout_constraintTop_toTopOf="@+id/btnNext"
-                app:layout_constraintBottom_toBottomOf="@+id/btnNext"/>
+                app:layout_constraintBottom_toBottomOf="@+id/btnNext"
+            android:progressTint="@color/bottom_nav_selected"
+            android:indeterminateTint="@color/bottom_nav_selected" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -315,7 +317,7 @@
                 android:layout_height="64dp"
                 android:layout_gravity="center"
                 android:src="@drawable/outline_progress"
-                android:indeterminateTint="@color/gSelector_light"/>
+                android:indeterminateTint="@color/bottom_nav_selected"/>
 
             <TextView
                 android:layout_width="wrap_content"

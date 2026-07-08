@@ -13,7 +13,7 @@
             android:layout_height="64dp"
             android:layout_gravity="center"
             android:src="@drawable/outline_progress"
-            android:indeterminateTint="@color/gray_2.1"/>
+            android:indeterminateTint="@color/bottom_nav_selected"/>
 
         <TextView
             android:layout_width="wrap_content"

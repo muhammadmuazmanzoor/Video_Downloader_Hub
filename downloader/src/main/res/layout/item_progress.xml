@@ -98,9 +98,10 @@
                         android:layout_marginHorizontal="@dimen/_10sdp"
                         android:layout_marginBottom="@dimen/_5sdp"
                         android:progressBackgroundTint="@color/gray_text"
-                        android:progressTint="@color/gSelector_light"
+                        android:progressTint="@color/bottom_nav_selected"
                         android:max="100"
-                        android:progress="@{progressInfo.progress}" />
+                        android:progress="@{progressInfo.progress}"
+            android:indeterminateTint="@color/bottom_nav_selected" />
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/ip_more"
                         android:layout_width="24dp"
