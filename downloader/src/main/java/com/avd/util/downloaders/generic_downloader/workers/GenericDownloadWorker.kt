@@ -84,7 +84,7 @@ abstract class GenericDownloadWorker(appContext: Context, workerParams: WorkerPa
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
             ContextCompat.checkSelfPermission(
                 applicationContext,
-                Manifest.permission.FOREGROUND_SERVICE_DATA_SYNC
+                Manifest.permission.FOREGROUND_SERVICE_SPECIAL_USE
             ) == PackageManager.PERMISSION_GRANTED
         } else {
             ContextCompat.checkSelfPermission(

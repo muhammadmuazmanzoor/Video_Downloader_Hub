@@ -3,6 +3,7 @@ package com.avd.util.downloaders.generic_downloader.workers
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
+import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.hilt.work.HiltWorker
@@ -106,10 +107,18 @@ open class GenericDownloadWorkerWrapper @AssistedInject constructor  (
             ForegroundInfo(
                 pairData.first,
                 pairData.second.build(),
-                FOREGROUND_SERVICE_TYPE_DATA_SYNC
+                downloadForegroundServiceType()
             )
         } else {
             ForegroundInfo(pairData.first, pairData.second.build())
+        }
+    }
+
+    private fun downloadForegroundServiceType(): Int {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            FOREGROUND_SERVICE_TYPE_SPECIAL_USE
+        } else {
+            FOREGROUND_SERVICE_TYPE_DATA_SYNC
         }
     }
 
@@ -123,7 +132,7 @@ open class GenericDownloadWorkerWrapper @AssistedInject constructor  (
                 ForegroundInfo(
                     id, // taskId.hashcode()
                     notification.build(),
-                    FOREGROUND_SERVICE_TYPE_DATA_SYNC
+                    downloadForegroundServiceType()
                 )
             )
         } else {

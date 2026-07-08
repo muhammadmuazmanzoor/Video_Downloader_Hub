@@ -65,7 +65,13 @@ import javax.inject.Inject
 class VideoFragment : BaseFragment() {
 
     companion object {
-        fun newInstance() = VideoFragment()
+        private const val ARG_LATEST_DOWNLOADS_FIRST = "latest_downloads_first"
+
+        fun newInstance(showLatestDownloadsFirst: Boolean = false) = VideoFragment().apply {
+            arguments = Bundle().apply {
+                putBoolean(ARG_LATEST_DOWNLOADS_FIRST, showLatestDownloadsFirst)
+            }
+        }
     }
 
     private var disposable: Disposable? = null
@@ -131,6 +137,8 @@ class VideoFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         fromVideo=true
+        videoViewModel.showLatestDownloadsFirst =
+            arguments?.getBoolean(ARG_LATEST_DOWNLOADS_FIRST) == true
         videoViewModel.start()
         handleUIEvents()
         handleIfStartedFromNotification()
@@ -151,6 +159,7 @@ class VideoFragment : BaseFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         videoViewModel.stop()
+        videoViewModel.showLatestDownloadsFirst = false
         fromVideo= false
     }
     private fun handleIfStartedFromNotification() {

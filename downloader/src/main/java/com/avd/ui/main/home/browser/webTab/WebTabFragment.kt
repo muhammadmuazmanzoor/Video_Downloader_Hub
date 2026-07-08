@@ -305,6 +305,16 @@ class WebTabFragment : BaseWebTabFragment(), ButtonVisibilityYoutube {
         host?.hideBottomBar()
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, backPressedCallback)
     }
+
+    override fun onDestroyView() {
+        floatingLoadingResetJob?.cancel()
+        floatingLoadingResetJob = null
+        if (::dataBinding.isInitialized) {
+            dataBinding.webviewContainer.removeView(webTab?.getWebView())
+        }
+        super.onDestroyView()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         floatingLoadingResetJob?.cancel()
@@ -594,13 +604,20 @@ class WebTabFragment : BaseWebTabFragment(), ButtonVisibilityYoutube {
     }
 
     private fun scheduleFloatingLoadingReset() {
+        if (!isViewReadyForUiUpdate()) return
         floatingLoadingResetJob?.cancel()
-        floatingLoadingResetJob = viewLifecycleOwner.lifecycleScope.launch {
+        val owner = viewLifecycleOwner
+        floatingLoadingResetJob = owner.lifecycleScope.launch {
             delay(1200L)
-            if (viewLifecycleOwner.lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
+            if (owner.lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
                 videoDetectionTabViewModel.clearStaleLoadingIfNoVideos()
             }
         }
+    }
+
+    private fun isViewReadyForUiUpdate(): Boolean {
+        return view != null &&
+                viewLifecycleOwner.lifecycle.currentState.isAtLeast(Lifecycle.State.INITIALIZED)
     }
 
     private fun handleIndexChangeEvent() {
@@ -973,6 +990,7 @@ class WebTabFragment : BaseWebTabFragment(), ButtonVisibilityYoutube {
         fragmentTransaction?.commit()
     }
 
+
     private fun showVidFragment() {
         dataBinding.fullscreenContainer.visibility = View.VISIBLE
         val fragmentManager = activity?.supportFragmentManager
@@ -992,20 +1010,21 @@ class WebTabFragment : BaseWebTabFragment(), ButtonVisibilityYoutube {
             progressViewModel.downloadVideo(videoInfo)
         }
     }
-
+// Removed Dialog for YouTube detection as per your request. If you want to show a dialog, you can uncomment the code below.
     fun showYouTubeDialog() {
-        AlertDialog.Builder(requireContext())
+       /* AlertDialog.Builder(requireContext())
             .setTitle("YouTube Detected")
             .setMessage("You are viewing a YouTube page. Certain features like downloading are not available.")
             .setPositiveButton("OK") { dialog, _ ->
                 dialog.dismiss()
             }
-            .show()
+            .show()*/
     }
 
     var isshown = false
 
     override fun isYoutubeOpen(visibility: Boolean) {
+        if (!isViewReadyForUiUpdate()) return
         if (visibility) {
             if (!isshown) {
                 isshown = true
@@ -1027,6 +1046,7 @@ class WebTabFragment : BaseWebTabFragment(), ButtonVisibilityYoutube {
     }
 
     override fun isFaceBookOpen(visibility: Boolean) {
+        if (!isViewReadyForUiUpdate()) return
         if (visibility) {
             //  if (!YoutubeDlDownloader.isFaceBook) {
             YoutubeDlDownloader.isFaceBook = true

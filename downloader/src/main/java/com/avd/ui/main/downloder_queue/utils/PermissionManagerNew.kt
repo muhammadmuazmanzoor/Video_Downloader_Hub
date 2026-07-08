@@ -53,7 +53,7 @@ class PermissionManagerNew(
 
     fun isForegroundServiceGranted(): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-            ContextCompat.checkSelfPermission(context, Manifest.permission.FOREGROUND_SERVICE_DATA_SYNC) == PackageManager.PERMISSION_GRANTED
+            ContextCompat.checkSelfPermission(context, Manifest.permission.FOREGROUND_SERVICE_SPECIAL_USE) == PackageManager.PERMISSION_GRANTED
         } else {
             ContextCompat.checkSelfPermission(context, Manifest.permission.FOREGROUND_SERVICE) == PackageManager.PERMISSION_GRANTED
         }
@@ -86,7 +86,7 @@ class PermissionManagerNew(
         // Foreground Service
         if (!isForegroundServiceGranted()) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                permissionsToRequest.add(Manifest.permission.FOREGROUND_SERVICE_DATA_SYNC)
+                permissionsToRequest.add(Manifest.permission.FOREGROUND_SERVICE_SPECIAL_USE)
             } else {
                 permissionsToRequest.add(Manifest.permission.FOREGROUND_SERVICE)
             }
@@ -122,7 +122,9 @@ class PermissionManagerNew(
                         }
                     }
 
-                    Manifest.permission.FOREGROUND_SERVICE, Manifest.permission.FOREGROUND_SERVICE_DATA_SYNC -> {
+                    Manifest.permission.FOREGROUND_SERVICE,
+                    Manifest.permission.FOREGROUND_SERVICE_DATA_SYNC,
+                    Manifest.permission.FOREGROUND_SERVICE_SPECIAL_USE -> {
                         callback.onForegroundServiceResult(granted)
                         if (!granted && !fragment.shouldShowRequestPermissionRationale(permission)) {
                             showSettingsDialogOnce("Foreground Service permission permanently denied.")
@@ -159,7 +161,8 @@ class PermissionManagerNew(
             Manifest.permission.READ_MEDIA_VIDEO,
             Manifest.permission.POST_NOTIFICATIONS,
             Manifest.permission.FOREGROUND_SERVICE,
-            Manifest.permission.FOREGROUND_SERVICE_DATA_SYNC
+            Manifest.permission.FOREGROUND_SERVICE_DATA_SYNC,
+            Manifest.permission.FOREGROUND_SERVICE_SPECIAL_USE
         )
 
         for (perm in permissions) {

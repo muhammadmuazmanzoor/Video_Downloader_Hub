@@ -53,6 +53,7 @@ class VideoViewModel @Inject constructor(
 
     // Cache to avoid repeated file system operations and prevent deadlocks
     var cachedFilesList: List<LocalVideo> = emptyList()
+    var showLatestDownloadsFirst: Boolean = false
     private var lastCacheTime: Long = 0
     private val CACHE_DURATION_MS = 5000L // Cache for 5 seconds instead of polling every second
 
@@ -107,7 +108,7 @@ class VideoViewModel @Inject constructor(
                     // 1. Show cached data first if available
                     cachedFilesList?.let { cachedList ->
                         if (localVideos.get().isNullOrEmpty()) {
-                            localVideos.set(cachedList.toMutableList())
+                            localVideos.set(orderForCurrentView(cachedList).toMutableList())
                             if (cachedList.isNotEmpty()) {
                                 isLoadingVideos.set(false)
                             }
@@ -126,16 +127,16 @@ class VideoViewModel @Inject constructor(
                         continue
                     }
 
-                    val freshList = getFilesList()
-                        .sortedByDescending { it.time }
+                    val freshList = orderForCache(getFilesList())
+                    val displayList = orderForCurrentView(freshList)
 
                     val oldList = cachedFilesList.orEmpty()
 
                     // 4. Only refresh if data changed
                     if (!areVideoListsSame(oldList, freshList)) {
-                        cachedFilesList = freshList.reversed()
-                        cachedVideosList?.set(freshList.reversed().toMutableList())
-                        localVideos.set(freshList.reversed().toMutableList())
+                        cachedFilesList = freshList
+                        cachedVideosList?.set(freshList.toMutableList())
+                        localVideos.set(displayList.toMutableList())
                         lastCacheTime = System.currentTimeMillis()
                     } else {
                         // No new data, only update cache time
@@ -161,6 +162,18 @@ class VideoViewModel @Inject constructor(
             old.uri == new.uri &&
                     old.time == new.time &&
                     old.size == new.size
+        }
+    }
+
+    private fun orderForCache(videos: List<LocalVideo>): List<LocalVideo> {
+        return videos.sortedByDescending { it.time }.reversed()
+    }
+
+    private fun orderForCurrentView(videos: List<LocalVideo>): List<LocalVideo> {
+        return if (showLatestDownloadsFirst) {
+            videos.sortedByDescending { it.time }
+        } else {
+            orderForCache(videos)
         }
     }
 
@@ -217,8 +230,9 @@ class VideoViewModel @Inject constructor(
         val updatedList = currentList.filterNot { it.uri.toString() == video.uri.toString() }
 
         localVideos.set(updatedList.toMutableList())
-        cachedFilesList = updatedList
-        cachedVideosList?.set(updatedList.toMutableList())
+        val cacheList = orderForCache(updatedList)
+        cachedFilesList = cacheList
+        cachedVideosList?.set(cacheList.toMutableList())
         lastCacheTime = System.currentTimeMillis()
 
         viewModelScope.launch(Dispatchers.IO) {
@@ -280,11 +294,12 @@ class VideoViewModel @Inject constructor(
     }
 
     private suspend fun refreshVideosAfterDelete() {
-        val freshList = getFilesList().sortedByDescending { it.time }.reversed()
+        val freshList = orderForCache(getFilesList())
+        val displayList = orderForCurrentView(freshList)
         withContext(Dispatchers.Main.immediate) {
             cachedFilesList = freshList
             cachedVideosList?.set(freshList.toMutableList())
-            localVideos.set(freshList.toMutableList())
+            localVideos.set(displayList.toMutableList())
             lastCacheTime = System.currentTimeMillis()
         }
     }

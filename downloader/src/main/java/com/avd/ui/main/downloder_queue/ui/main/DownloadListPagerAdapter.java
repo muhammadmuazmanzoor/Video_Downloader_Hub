@@ -46,7 +46,7 @@ public class DownloadListPagerAdapter extends FragmentStateAdapter {
             case QUEUED_FRAG_POS:
                 return ProgressFragment.Companion.newInstance();
             case COMPLETED_FRAG_POS:
-                return VideoFragment.Companion.newInstance();
+                return VideoFragment.Companion.newInstance(true);
             default:
                 return new Fragment();
         }

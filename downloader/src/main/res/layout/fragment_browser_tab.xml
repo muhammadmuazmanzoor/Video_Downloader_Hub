@@ -18,19 +18,25 @@
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
+
         <ScrollView
             android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fillViewport="true">
+            android:fillViewport="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:background="@color/brand_background"
                 android:paddingBottom="@dimen/_45sdp"
-                android:rotationX="2">
+                >
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/actionbar"
@@ -121,28 +127,11 @@
                     app:layout_constraintTop_toBottomOf="@+id/actionbar">
 
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/ic_search"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/_5sdp"
-                        android:background="@drawable/gradient_bg"
-                        android:drawableStart="@drawable/arrow_forward24px"
-                        android:elevation="@dimen/_2sdp"
-                        android:paddingHorizontal="@dimen/_12sdp"
-                        android:paddingVertical="@dimen/_4sdp"
-                        android:textColor="@color/brand_text_primary"
-                        android:textSize="@dimen/_12ssp"
-                        app:drawableTint="@color/white"
-                        app:layout_constraintBottom_toBottomOf="@+id/view2"
-                        app:layout_constraintEnd_toEndOf="@+id/view2"
-                        app:layout_constraintTop_toTopOf="@+id/view2" />
-
 
                     <View
                         android:id="@+id/view2"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_40sdp"
+                        android:layout_height="@dimen/_48sdp"
                         android:layout_marginStart="@dimen/_5sdp"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:layout_marginEnd="@dimen/_5sdp"
@@ -170,8 +159,8 @@
 
                     <com.google.android.material.textfield.MaterialAutoCompleteTextView
                         android:id="@+id/home_et_search"
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:layout_marginEnd="@dimen/_10sdp"
                         android:background="@android:color/transparent"
@@ -189,10 +178,31 @@
                         android:textSize="@dimen/text_small"
                         app:items="@{viewModel.listSuggestions}"
                         app:layout_constraintBottom_toBottomOf="@+id/view2"
-                        app:layout_constraintEnd_toStartOf="@+id/ic_search"
+                        app:layout_constraintEnd_toEndOf="@+id/view2"
                         app:layout_constraintStart_toStartOf="@+id/view2"
                         app:layout_constraintTop_toTopOf="@id/view2"
                         tools:ignore="RtlSymmetry" />
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/ic_search"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:layout_marginEnd="@dimen/_5sdp"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:background="@drawable/gradient_bg"
+                        android:drawableEnd="@drawable/arrow_forward24px"
+                        android:elevation="@dimen/_2sdp"
+                        android:text="Check Url"
+                        android:gravity="center"
+                        android:layout_marginTop="20dp"
+                        android:fontFamily="@font/poppins_bold"
+                        android:paddingHorizontal="@dimen/_12sdp"
+                        android:paddingVertical="@dimen/_4sdp"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_18sdp"
+                        app:drawableTint="@color/white"
+                        app:layout_constraintEnd_toEndOf="@+id/home_et_search"
+                        app:layout_constraintTop_toBottomOf="@+id/view2" />
+
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/search_engine"
