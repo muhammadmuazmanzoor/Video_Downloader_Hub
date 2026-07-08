@@ -149,7 +149,7 @@
         android:paddingHorizontal="@dimen/_10sdp"
         android:paddingVertical="@dimen/_3sdp"
         android:layout_marginTop="@dimen/_8sdp"
-        android:textColor="@color/gSelector_light"
+        android:textColor="@color/bottom_nav_selected"
         app:layout_constraintStart_toStartOf="@+id/cl_how_download"
         app:layout_constraintTop_toBottomOf="@+id/cl_how_download" />
     <ImageView

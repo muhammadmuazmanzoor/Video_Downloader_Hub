@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/main"
@@ -69,22 +70,23 @@
                 <ImageView
                     android:id="@+id/ivCollage"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     android:background="@drawable/card_bg"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:padding="@dimen/_5sdp"
+                    android:layout_marginLeft="@dimen/_15sdp"
                     android:backgroundTint="@color/card_stroke"
                     android:src="@drawable/downloader_survey"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/ivCollage"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/ivCollage"
-                    android:text="Video Downloader"
+                    app:layout_constraintTop_toTopOf="@id/ivCollage"
+                    app:layout_constraintBottom_toBottomOf="@+id/ivCollage"
+                    android:text="Video \nDownloader"
                     android:fontFamily="@font/inter_medium"
                     android:textSize="@dimen/_11ssp"
                     android:textColor="@color/brand_text_primary"
@@ -113,11 +115,11 @@
                 <ImageView
                     android:id="@+id/ivEditPhoto"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:padding="@dimen/_5sdp"
+                    android:layout_marginLeft="@dimen/_15sdp"
                     android:background="@drawable/card_bg"
                     android:backgroundTint="#15B920"
                     android:src="@drawable/status_survey"/>
@@ -125,10 +127,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/ivEditPhoto"
+                    app:layout_constraintStart_toEndOf="@+id/ivEditPhoto"
+                    app:layout_constraintTop_toTopOf="@id/ivEditPhoto"
+                    app:layout_constraintBottom_toBottomOf="@+id/ivEditPhoto"
                     android:text="Status Saver"
+                    android:paddingLeft="@dimen/_8sdp"
                     android:fontFamily="@font/inter_medium"
                     android:textSize="@dimen/_11ssp"
                     android:textColor="@color/brand_text_primary"
@@ -157,10 +160,11 @@
                 <ImageView
                     android:id="@+id/ivBody"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     android:background="@drawable/card_bg"
                     android:layout_width="40dp"
+                    android:layout_marginLeft="@dimen/_15sdp"
+
                     android:layout_height="40dp"
                     android:padding="@dimen/_5sdp"
                     android:backgroundTint="@color/card_stroke"
@@ -169,10 +173,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/ivBody"
+                    app:layout_constraintStart_toEndOf="@+id/ivBody"
+                    app:layout_constraintTop_toTopOf="@id/ivBody"
+                    app:layout_constraintBottom_toBottomOf="@+id/ivBody"
                     android:text="Video Player"
+                    android:paddingLeft="@dimen/_12sdp"
                     android:fontFamily="@font/inter_medium"
                     android:textSize="@dimen/_11ssp"
                     android:textColor="@color/brand_text_primary"
@@ -201,11 +206,12 @@
                 <ImageView
                     android:id="@+id/ivGallery"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     android:background="@drawable/card_bg"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
+                    android:layout_marginLeft="@dimen/_15sdp"
+
                     android:padding="@dimen/_5sdp"
                     android:backgroundTint="@color/card_stroke"
                     android:src="@drawable/browser_survey"/>
@@ -213,12 +219,13 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/ivGallery"
+                    app:layout_constraintStart_toEndOf="@+id/ivGallery"
+                    app:layout_constraintTop_toTopOf="@id/ivGallery"
+                    app:layout_constraintBottom_toBottomOf="@+id/ivGallery"
                     android:text="Browser"
                     android:fontFamily="@font/inter_medium"
                     android:textSize="@dimen/_11ssp"
+                    android:paddingLeft="@dimen/_10sdp"
                     android:textColor="@color/brand_text_primary"
                     android:layout_marginTop="@dimen/_5sdp"
                     />
@@ -227,21 +234,22 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <TextView
-            android:id="@+id/btnNext"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingVertical="@dimen/_12sdp"
-            android:text="@string/next"
-            android:textColor="@color/white"
-            android:gravity="center_horizontal"
-            android:fontFamily="@font/inter_semibold"
-            android:textSize="@dimen/_14ssp"
-            android:layout_marginHorizontal="@dimen/_10sdp"
-            app:layout_constraintTop_toBottomOf="@id/clGallery"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:background="@drawable/round_corner_search"
-           />
+            <TextView
+                android:id="@+id/btnNext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:background="@drawable/round_corner_search"
+                android:fontFamily="@font/inter_semibold"
+                android:gravity="center_horizontal"
+                android:paddingVertical="@dimen/_12sdp"
+                android:text="@string/next"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14ssp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/clGallery"
+                tools:layout_editor_absoluteX="13dp" />
             <ProgressBar
                 android:id="@+id/progress"
                 android:layout_width="wrap_content"

@@ -176,7 +176,7 @@
     <color name="brand_gradient_end">#F78145</color>
 
     <color name="gSelector">@color/brand_gradient_start</color>
-    <color name="gSelector_light">@color/brand_accent</color>
+    <color name="gSelector_light">#2387F7</color>
     <color name="gSelector_dis">#66F9A450</color>
     <color name="card_bg">@color/brand_card_background</color>
     <color name="card_stroke">#F4F4F6</color>

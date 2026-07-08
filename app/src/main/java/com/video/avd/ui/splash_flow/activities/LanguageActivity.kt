@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -20,6 +22,8 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.airbnb.lottie.LottieProperty
+import com.airbnb.lottie.model.KeyPath
 import com.avd.util.AdBlockerHelper.isProVersion
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.LoadAdError
@@ -29,6 +33,7 @@ import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.gms.ads.nativead.NativeAdView
 import com.video.avd.BuildConfig
+import com.video.avd.MyApplication.Companion.context
 import com.video.avd.R
 import com.video.avd.ads.AdsHelper
 import com.video.avd.ads.AdsHelper.interstitialSurvey
@@ -87,6 +92,15 @@ class LanguageActivity : AppCompatActivity(),
                 v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
                 insets
             }
+        }
+        binding?.lottieAnimationView?.addValueCallback(
+            KeyPath("**"),
+            LottieProperty.COLOR_FILTER
+        ) {
+            PorterDuffColorFilter(
+                ContextCompat.getColor(this, R.color.bottom_nav_selected),
+                PorterDuff.Mode.SRC_ATOP
+            )
         }
         AppUtils.fbEvents("language_view", "Language",this)
         doneButtonDisableStyle()
@@ -291,6 +305,7 @@ class LanguageActivity : AppCompatActivity(),
                         this@LanguageActivity,
                         R.drawable.round_onboarding_button
                     )
+                    backgroundTintList = null
                     setTextColor(ContextCompat.getColor(this@LanguageActivity, R.color.brand_text_primary))
 
                     visibility = View.VISIBLE
@@ -311,7 +326,7 @@ class LanguageActivity : AppCompatActivity(),
 
             3 -> {
                 binding?.btnDone?.apply {
-                    setTextColor(ContextCompat.getColor(this@LanguageActivity, R.color.gSelector_disable))
+                    setTextColor(ContextCompat.getColor(this@LanguageActivity, R.color.bottom_nav_selected))
                     visibility = View.VISIBLE
                 }
             }
@@ -322,6 +337,7 @@ class LanguageActivity : AppCompatActivity(),
                         this@LanguageActivity,
                         R.drawable.round_onboarding_button
                     )
+                    backgroundTintList = null
                     setTextColor(ContextCompat.getColor(this@LanguageActivity, R.color.brand_text_primary))
                     visibility = View.VISIBLE
                 }
@@ -338,7 +354,10 @@ class LanguageActivity : AppCompatActivity(),
                         this@LanguageActivity,
                         R.drawable.round_onboarding_button2
                     )
-                    setTextColor(ContextCompat.getColor(this@LanguageActivity, R.color.brand_text_primary))
+                    backgroundTintList = ColorStateList.valueOf(
+                        ContextCompat.getColor(this@LanguageActivity, R.color.bottom_nav_selected)
+                    )
+                    setTextColor(ContextCompat.getColor(this@LanguageActivity, R.color.white))
 
                     visibility = View.VISIBLE
                 }
@@ -358,7 +377,7 @@ class LanguageActivity : AppCompatActivity(),
 
             3 -> {
                 binding?.btnDone?.apply {
-                    setTextColor(ContextCompat.getColor(this@LanguageActivity, R.color.gSelector_light))
+                    setTextColor(ContextCompat.getColor(this@LanguageActivity, R.color.bottom_nav_selected))
                     visibility = View.VISIBLE
                 }
             }
@@ -369,7 +388,10 @@ class LanguageActivity : AppCompatActivity(),
                         this@LanguageActivity,
                         R.drawable.round_onboarding_button2
                     )
-                    setTextColor(ContextCompat.getColor(this@LanguageActivity, R.color.brand_text_primary))
+                    backgroundTintList = ColorStateList.valueOf(
+                        ContextCompat.getColor(this@LanguageActivity, R.color.bottom_nav_selected)
+                    )
+                    setTextColor(ContextCompat.getColor(this@LanguageActivity, R.color.white))
                     visibility = View.VISIBLE
                 }
             }
@@ -379,20 +401,24 @@ class LanguageActivity : AppCompatActivity(),
 
     override fun onLanguageClick(language: LanguageSelectionModel?) {
         mSelectedLanguage = language?.lang ?: "en"
+        selectedLanguage = language?.lang ?: "en"
 
         if (!isShow) {
             loadOB1Ads()
             isShow = true
             showLangNative2()
+
             binding?.progressBar?.visibility = View.VISIBLE
             binding?.btnDone?.visibility = View.INVISIBLE
             binding?.icBtnDone?.visibility = View.INVISIBLE
+
             lifecycleScope.launch {
                 delay(1000 * languageButtonDelay.toLong())
                 doneButtonStyle()
             }
+        } else {
+            doneButtonStyle()
         }
-        selectedLanguage = language?.lang ?: "en"
     }
 
     private fun handleBackPress() {

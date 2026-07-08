@@ -20,7 +20,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:visibility="gone"
         android:id="@+id/btn_done"
         android:layout_width="wrap_content"
@@ -30,7 +30,7 @@
         android:paddingHorizontal="@dimen/_8sdp"
         android:paddingVertical="@dimen/_5sdp"
         android:text="@string/done"
-        android:textColor="@color/brand_text_primary"
+        android:textColor="@color/white"
         android:textSize="@dimen/_13ssp"
         app:layout_constraintBottom_toBottomOf="@id/tv_title"
         app:layout_constraintEnd_toEndOf="parent"
@@ -42,6 +42,7 @@
         android:layout_width="@dimen/_20sdp"
         android:layout_height="@dimen/_20sdp"
         android:src="@drawable/ic_done_disable"
+        app:tint="@color/bottom_nav_selected"
         android:layout_marginEnd="@dimen/_15sdp"
         app:layout_constraintBottom_toBottomOf="@id/tv_title"
         app:layout_constraintEnd_toEndOf="parent"
@@ -134,6 +135,7 @@
             android:layout_height="@dimen/_50sdp"
             android:layout_marginBottom="@dimen/_50sdp"
             android:scaleType="centerCrop"
+            app:tint="@color/bottom_nav_selected"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -148,7 +150,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
             android:text="@string/loading"
-            android:textColor="@color/brand_text_primary"
+            android:textColor="@color/bottom_nav_selected"
             android:textSize="@dimen/_14ssp"
             app:layout_constraintEnd_toEndOf="@+id/lottieAnimationView"
             app:layout_constraintStart_toStartOf="@+id/lottieAnimationView"
