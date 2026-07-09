@@ -111,7 +111,7 @@ class ExitActivity : AppCompatActivity() {
                     text = "Exit"
                     isEnabled = true
                     setBackgroundResource(R.drawable.bg_btn_exit)
-                    setTextColor(ContextCompat.getColor(context, R.color.gSelector))
+                    setTextColor(ContextCompat.getColor(context, R.color.bottom_nav_selected))
                 }
                 else{
                     for (i in exitTimer downTo 1) {
@@ -122,13 +122,13 @@ class ExitActivity : AppCompatActivity() {
                     text = "Exit"
                     isEnabled = true
                     setBackgroundResource(R.drawable.bg_btn_exit)
-                    setTextColor(ContextCompat.getColor(context, R.color.gSelector))
+                    setTextColor(ContextCompat.getColor(context, R.color.bottom_nav_selected))
                 }
             } catch (e: Exception) {
                 text = "Exit"
                 isEnabled = true
                 setBackgroundResource(R.drawable.bg_btn_exit)
-                setTextColor(ContextCompat.getColor(context, R.color.gSelector))
+                setTextColor(ContextCompat.getColor(context, R.color.bottom_nav_selected))
                 e.printStackTrace()
             }
         }

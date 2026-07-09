@@ -1,89 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/primary_bg"
-      >
+        android:fitsSystemWindows="true"
+        android:background="@color/primary_bg">
 
+        <!-- Top Section (55%) -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_main"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@id/btnNextOnboarding"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.55">
 
             <ImageView
                 android:id="@+id/videoView"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:background="@drawable/third"
-                app:layout_constraintDimensionRatio="585:1161"
+                android:scaleType="centerCrop"
+                android:src="@drawable/third"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/tv_remove_bg" />
 
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_160sdp"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_100sdp"
+                android:layout_marginBottom="-4dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/ob_blur"
-                android:layout_marginBottom="-4dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/videoView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:tint="@color/white" />
 
             <TextView
                 android:id="@+id/tv_remove_bg"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_16sdp"
+                android:layout_marginBottom="@dimen/_12sdp"
                 android:fontFamily="@font/poppins_bold"
                 android:gravity="center"
                 android:text="Download any Video from Social Media"
                 android:textColor="@color/brand_text_primary"
                 android:textSize="@dimen/_15ssp"
-                android:layout_marginBottom="@dimen/_10sdp"
-                app:layout_constraintBottom_toTopOf="@id/layoutViews"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent" />
-
-
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/layoutViews"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/_15sdp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/footer"
                 app:layout_constraintStart_toStartOf="parent"
-                app:srcCompat="@drawable/ob3dot" />
+                app:layout_constraintEnd_toEndOf="parent" />
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/footer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_10sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
 
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/layoutViews"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:srcCompat="@drawable/ob3dot" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnNextOnboarding"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_18sdp"
-            android:layout_marginTop="@dimen/_12sdp"
-            android:background="@drawable/gradient_bg"
-            android:paddingHorizontal="@dimen/_15sdp"
-            android:paddingVertical="@dimen/_10sdp"
-            android:textColor="@color/white"
-            android:textAllCaps="false"
-            android:textSize="@dimen/_15ssp"
-            android:fontFamily="@font/inter_semibold"
-            android:layout_marginBottom="@dimen/_20sdp"
+        <!-- Bottom Section (45%) -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_bottom"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:paddingHorizontal="@dimen/_18sdp"
+            app:layout_constraintTop_toBottomOf="@id/cl_main"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:text="@string/next" />
+            app:layout_constraintHeight_percent="0.45">
 
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnNextOnboarding"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/gradient_bg"
+                android:fontFamily="@font/inter_semibold"
+                android:paddingHorizontal="@dimen/_15sdp"
+                android:paddingVertical="@dimen/_10sdp"
+                android:text="@string/next"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:textSize="@dimen/_15ssp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

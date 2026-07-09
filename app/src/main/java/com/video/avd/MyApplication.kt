@@ -21,6 +21,7 @@ import com.avd.util.AdBlockerHelper.initialize
 import com.avd.util.AdBlockerHelper.isProVersion
 import com.avd.util.AdBlockerHelper.native_home_variation
 import com.avd.util.AdBlockerHelper.recycler_native
+import com.avd.util.AdBlockerHelper.resetAppOpenShownAd
 import com.facebook.ads.AudienceNetworkAds
 import com.google.android.gms.ads.MobileAds
 import com.google.firebase.FirebaseApp
@@ -93,6 +94,9 @@ class MyApplication : MultiDexApplication(), Configuration.Provider , DefaultLif
         MultiDex.install(this)
         AdsManager.adSdkChoice ="admob"
         initialize(applicationContext)
+        resetAppOpenShownAd = {
+            AppOpenManager.isShowingAd = false
+        }
         RemoteConfigHelper.init()
         // Initialize and fetch remote config
         ProcessLifecycleOwner.get().lifecycle.addObserver(this)

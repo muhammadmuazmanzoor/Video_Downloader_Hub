@@ -43,6 +43,7 @@ import com.avd.util.AdBlockerHelper.inter_home_high
 import com.avd.util.AdBlockerHelper.inter_home_normal
 import com.avd.util.AdBlockerHelper.inter_videos
 import com.avd.util.AdBlockerHelper.loadFallbackInterstitialAd
+import com.avd.util.AdBlockerHelper.resetAppOpenShownAd
 import com.avd.util.AdBlockerHelper.showInterstitial
 import com.avd.util.AppUtil
 import com.avd.util.FileUtil
@@ -286,6 +287,7 @@ class VideoFragment : BaseFragment() {
 
         popupView.findViewById<ConstraintLayout>(R.id.cl_delete).setOnClickListener {
             popupWindow.dismiss()
+            resetAppOpenShownAd?.invoke()
             videoViewModel.deleteVideo(context, localVideo)
         }
 

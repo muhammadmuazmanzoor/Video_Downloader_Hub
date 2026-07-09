@@ -70,6 +70,7 @@ object AdBlockerHelper {
     private lateinit var sharedPref: SharedPreferences
     private const val LAST_TIME_KEY = "ad_last_saved_time"
     var showExitScreen: (() -> Unit)? = null
+    var resetAppOpenShownAd: (() -> Unit)? = null
     var adChoice: String? = ""
     var isPro: Boolean = false
     var isProVersion = MutableLiveData(false)

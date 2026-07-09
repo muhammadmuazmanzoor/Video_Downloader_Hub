@@ -212,6 +212,8 @@
     <string name="allow_appear_on_top_permission">Allow Appear-on-top Permission</string>
     <string name="grant_permission">Grant Permission</string>
     <string name="delete">Delete\n</string>
+    <string name="social_step4_title">Go to Video Downloader Hub\n</string>
+    <string name="social_step4_subtitle">Paste the url. Download it and enjoy</string>
 
 
 </resources>

@@ -35,7 +35,7 @@
                     android:id="@+id/txtAd"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/blue1"
+                    android:background="@color/bottom_nav_selected"
                     android:paddingHorizontal="@dimen/_4sdp"
                     android:paddingVertical="@dimen/_2sdp"
                     android:text="Ad"

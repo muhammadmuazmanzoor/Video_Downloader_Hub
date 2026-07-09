@@ -48,6 +48,7 @@
     <color name="brand_text_secondary">#9EA2AA</color>
     <color name="brand_accent">#F78145</color>
     <color name="bottom_nav_selected">#2387F7</color>
+    <color name="search_text_indicator">#2286F7</color>
     <color name="brand_selected">#F78145</color>
     <color name="brand_gradient_start">#F32C2C</color>
     <color name="brand_gradient_end">#F78145</color>

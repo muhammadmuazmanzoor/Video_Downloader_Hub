@@ -225,6 +225,7 @@ class SocialPlatformDownloadFragment : BaseWebTabFragment() {
         bindStep(binding.step1.root, "1", platform.step1TitleRes, platform.step1SubtitleRes, platform.step1ImageRes)
         bindStep(binding.step2.root, "2", platform.step2TitleRes, platform.step2SubtitleRes, platform.step2ImageRes)
         bindStep(binding.step3.root, "3", platform.step3TitleRes, platform.step3SubtitleRes, platform.step3ImageRes)
+       // bindStep(binding.step4.root, "4", platform.step4TitleRes, platform.step4SubtitleRes, platform.step4ImageRes)
     }
 
     private fun bindStep(

@@ -22,7 +22,7 @@ class SocialAdapter(
 
         fun bind(item: PageInfo) {
             icon.scaleType = ImageView.ScaleType.CENTER_CROP
-            icon.setPadding(0, 0, 0, 0)
+         //   icon.setPadding(0, 0, 0, 0)
             icon.setImageResource(item.drawableResId)
 
             if(item.link.contains("dailymotion")){

@@ -1551,13 +1551,13 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
     private fun browserShortcutPages(): List<PageInfo> {
         return listOf(
             PageInfo(name = "facebook", link = "https://www.facebook.com/").apply {
-                drawableResId = R.drawable.icon_facebook
+                drawableResId = R.drawable.ic_facebook
             },
             PageInfo(name = "bing.com", link = "https://www.bing.com").apply {
-                drawableResId = R.drawable.ic_bing
+                drawableResId = R.drawable.bing_1
             },
             PageInfo(name = "duckduckgo.com", link = "https://duckduckgo.com").apply {
-                drawableResId = R.drawable.ic_duck_duck
+                drawableResId = R.drawable.ic_duck
             },
             PageInfo(name = "google", link = "https://www.google.com").apply {
                 drawableResId = R.drawable.ic_google

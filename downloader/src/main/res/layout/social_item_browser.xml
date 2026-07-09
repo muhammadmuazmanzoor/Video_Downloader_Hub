@@ -9,9 +9,11 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_weight="1"
+        android:background="@drawable/oval"
         android:gravity="center"
         android:orientation="vertical"
-        android:background="@drawable/oval"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -19,8 +21,9 @@
             android:id="@+id/movie"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:scaleType="centerCrop"
             android:contentDescription="Movie"
+            android:padding="@dimen/_5sdp"
+
             android:src="@drawable/movie_123"
             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Circle" />
 
