@@ -81,6 +81,7 @@ import com.avd.ui.main.home.bottomsheet.DefaultBrowserDialogFragment
 import com.avd.ui.main.home.bottomsheet.NotificationDialogFragment
 import com.avd.ui.main.home.browser.BaseWebTabFragment
 import com.avd.ui.main.home.browser.BrowserListener
+import com.avd.ui.main.home.browser.HOME_TAB_INDEX
 import com.avd.ui.main.home.browser.TabManagerProvider
 import com.avd.ui.main.home.browser.homeTab.BrowserHomeViewModel
 import com.avd.ui.main.home.browser.homeTab.OverlayPermissionDialog
@@ -346,6 +347,7 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
     private fun startClipboardObservation() {
         if (clipboardUrlObserver != null) return
         clipboardUrlObserver = Observer { url ->
+            if (!isBrowserHomeTabSelected()) return@Observer
             if (!isVisible || !isAdded) return@Observer
             if (isFetchInProgress) return@Observer
             if (url.isNullOrBlank()) return@Observer
@@ -360,6 +362,13 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
             }
         }
         viewModel.texturl.observe(viewLifecycleOwner, clipboardUrlObserver!!)
+    }
+
+    private fun isBrowserHomeTabSelected(): Boolean {
+        return DownloaderModuleNavigator.mainViewModel
+            ?.browserServicesProvider
+            ?.getCurrentTabIndex()
+            ?.get() == HOME_TAB_INDEX
     }
 
     private fun stopClipboardObservation() {

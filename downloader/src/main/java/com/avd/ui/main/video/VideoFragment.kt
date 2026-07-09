@@ -140,6 +140,9 @@ class VideoFragment : BaseFragment() {
         fromVideo=true
         videoViewModel.showLatestDownloadsFirst =
             arguments?.getBoolean(ARG_LATEST_DOWNLOADS_FIRST) == true
+        // Apply ordering immediately so UI reflects the preference without waiting
+        // for the background refresh loop to pick up the change.
+        videoViewModel.applyCurrentOrdering()
         videoViewModel.start()
         handleUIEvents()
         handleIfStartedFromNotification()

@@ -166,7 +166,12 @@ class VideoViewModel @Inject constructor(
     }
 
     private fun orderForCache(videos: List<LocalVideo>): List<LocalVideo> {
-        return videos.sortedByDescending { it.time }.reversed()
+        // Keep cached order consistent and make intent explicit: newest first.
+        // Previously this used `sortedByDescending { it.time }.reversed()` which
+        // effectively produced oldest-first and was confusing. Return newest-first
+        // directly so callers that expect recent items at the top get a correct
+        // ordering.
+        return videos.sortedByDescending { it.time }
     }
 
     private fun orderForCurrentView(videos: List<LocalVideo>): List<LocalVideo> {
@@ -256,6 +261,21 @@ class VideoViewModel @Inject constructor(
                 Log.e("VideoViewModel", "Unable to delete video", e)
                 refreshVideosAfterDelete()
             }
+        }
+    }
+
+    /**
+     * Re-apply current ordering to the visible list immediately.
+     * This is used when the ordering preference (showLatestDownloadsFirst)
+     * changes after the refresh job has already started so UI updates
+     * immediately without restarting the background job.
+     */
+    fun applyCurrentOrdering() {
+        try {
+            val displayList = orderForCurrentView(cachedFilesList)
+            localVideos.set(displayList.toMutableList())
+        } catch (e: Exception) {
+            Log.e("VideoViewModel", "Error applying current ordering", e)
         }
     }
 

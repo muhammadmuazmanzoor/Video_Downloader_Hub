@@ -290,7 +290,7 @@ class WebTabFragment : BaseWebTabFragment(), ButtonVisibilityYoutube {
         } catch (e: Exception) {
             e.printStackTrace()
         }
-        host?.hideBottomBar()
+        hideBottomBarIfActiveWebTab()
     }
 
     override fun onPause() {
@@ -302,7 +302,7 @@ class WebTabFragment : BaseWebTabFragment(), ButtonVisibilityYoutube {
     override fun onResume() {
         super.onResume()
         onWebViewResume()
-        host?.hideBottomBar()
+        hideBottomBarIfActiveWebTab()
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, backPressedCallback)
     }
 
@@ -334,7 +334,7 @@ class WebTabFragment : BaseWebTabFragment(), ButtonVisibilityYoutube {
                 .getTabsListChangeEvent()
                 .removeOnPropertyChangedCallback(tabsListChangeListener)
         }
-        host?.hideBottomBar()
+        hideBottomBarIfActiveWebTab()
     }
 
     private fun handleOpenDetectedVideos() {
@@ -646,6 +646,28 @@ class WebTabFragment : BaseWebTabFragment(), ButtonVisibilityYoutube {
 
     private fun onWebViewResume() {
         webTab?.getWebView()?.onResume()
+    }
+
+    private fun hideBottomBarIfActiveWebTab() {
+        if (isActiveBrowserWebTab()) {
+            host?.hideBottomBar()
+        }
+    }
+
+    private fun isActiveBrowserWebTab(): Boolean {
+        return try {
+            if (!::currentTabIndexProvider.isInitialized) return false
+
+            val currentRoute = DownloaderModuleNavigator.mainViewModel?.currentItem?.get()
+            val currentTabIndex = currentTabIndexProvider.getCurrentTabIndex().get()
+            val thisTabIndex = arguments?.getInt(TAB_INDEX_KEY) ?: return false
+
+            currentRoute == HOME_TAB_INDEX &&
+                    currentTabIndex != HOME_TAB_INDEX &&
+                    currentTabIndex == thisTabIndex
+        } catch (e: Exception) {
+            false
+        }
     }
 
     private val tabListener = object : BrowserListener {
