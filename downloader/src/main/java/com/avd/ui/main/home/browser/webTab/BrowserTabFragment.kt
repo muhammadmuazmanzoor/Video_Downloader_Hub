@@ -105,14 +105,17 @@ import com.avd.util.CommunicateWithActivity
 import com.avd.util.CookieUtils
 import com.avd.util.CookieUtils.WIDGET_SHOW
 import com.avd.util.DataStoreManager
+import com.avd.util.DownloadDialogType
 import com.avd.util.DownloaderModuleNavigator
 import com.avd.util.FirebaseEvents
 import com.avd.util.FloatingBallView.floatingView
+import com.avd.util.NetworkUtils
 import com.avd.util.Prefs
 import com.avd.util.RemoteConfigHelper
 import com.avd.util.ScreenName
 import com.avd.util.SharedPrefHelper
 import com.avd.util.YoutubeDlUtils
+import com.avd.util.showDownloadDialog
 import com.avd.youtubedl.VideoFormat
 import com.avd.ui.main.widgetactivity.FloatingBallActivity
 import com.avd.util.AdBlockerHelper.browser_native
@@ -126,6 +129,7 @@ import com.avd.util.AdBlockerHelper.loadFallbackInterstitialAd
 import com.avd.util.AdBlockerHelper.showInterstitial
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -218,6 +222,12 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
     var isUrlReceived = false
     private var isRestoringTiktokSwitchState = false
     private var hasRequestedPermissionsForView = false
+    private var lastHandledClipboardUrl: String? = null
+    private var expectingDownloadResult = false
+    private var isFetchInProgress = false
+    private var clipboardAutoFetchConsumed = false
+    private var clipboardUrlObserver: Observer<String>? = null
+    private var downloadStateJob: Job? = null
 
 //    private val moviesWebList = listOf(
 //        IconItem(R.drawable.plex_movie_icon, "Plex",R.drawable.plex_thumb),
@@ -305,64 +315,178 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
 
 
     private fun observer() {
-
         binding.progressloading.setOnClickListener {}
+        resetDownloadUiState()
+        seedClipboardState()
+        if (!clipboardAutoFetchConsumed) {
+            startClipboardObservation()
+        }
+    }
 
-/*        viewLifecycleOwner.lifecycleScope.launch {
+    private fun resetDownloadUiState() {
+        expectingDownloadResult = false
+        isFetchInProgress = false
+        hideDownloadLoading()
+    }
+
+    private fun hideDownloadLoading() {
+        binding.progressloading.visibility = View.GONE
+        binding.progressloading.isClickable = false
+        binding.videoProgressBar.visibility = View.GONE
+    }
+
+    private fun showDownloadLoading() {
+        binding.videoProgressBar.visibility = View.VISIBLE
+    }
+
+    private fun seedClipboardState() {
+        viewModel.clearDownloadState()
+    }
+
+    private fun startClipboardObservation() {
+        if (clipboardUrlObserver != null) return
+        clipboardUrlObserver = Observer { url ->
+            if (!isVisible || !isAdded) return@Observer
+            if (isFetchInProgress) return@Observer
+            if (url.isNullOrBlank()) return@Observer
+            val trimmed = url.trim()
+            if (trimmed == lastHandledClipboardUrl) return@Observer
+
+            lastHandledClipboardUrl = trimmed
+            applyClipboardUrlToSearch(trimmed)
+
+            if (isSupportedSocialMediaUrl(trimmed)) {
+                showCopiedLinkDetectedDialog(trimmed)
+            }
+        }
+        viewModel.texturl.observe(viewLifecycleOwner, clipboardUrlObserver!!)
+    }
+
+    private fun stopClipboardObservation() {
+        clipboardUrlObserver?.let { viewModel.texturl.removeObserver(it) }
+        clipboardUrlObserver = null
+    }
+
+    private fun startDownloadStateObservation() {
+        if (downloadStateJob?.isActive == true) return
+        downloadStateJob = viewLifecycleOwner.lifecycleScope.launch {
             viewModel.socialDownloadState.collectLatest { state ->
+                if (!isVisible || !isAdded) return@collectLatest
+                if (!isFetchInProgress && state !is ApiState.Idle) return@collectLatest
                 when (state) {
-                    is ApiState.Loading -> {
-                        // Show progress bar
-                        binding.progressloading.visibility = View.VISIBLE
-                        binding.videoProgressBar.visibility = View.VISIBLE
-                    }
-
-                    is ApiState.Success -> {
-                        // Hide progress bar & show data
-                        binding.progressloading.visibility = View.GONE
-                        binding.videoProgressBar.visibility = View.GONE
-                        if (isAdded && view != null && isVisible) {
-                            showSocialDownloadOptions(state.data)
-                        }
-                        // Update UI with videoData
-                    }
-
-                    is ApiState.Error -> {
-                        // Hide progress bar & show error
-                        binding.progressloading.visibility = View.GONE
-                        binding.videoProgressBar.visibility = View.GONE
-                        Toast.makeText(
-                            requireContext(),
-                            "Some Thing Went Wrong! try again",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-
-                    is ApiState.Idle -> {
-                        binding.progressloading.visibility = View.GONE
-                        binding.videoProgressBar.visibility = View.GONE
-                    }
+                    is ApiState.Idle -> hideDownloadLoading()
 
                     else -> {
-                        binding.progressloading.visibility = View.GONE
-                        binding.videoProgressBar.visibility = View.GONE
-                        Toast.makeText(
-                            requireContext(),
-                            "Some Thing Went Wrong! try again",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        if (!expectingDownloadResult || !isFetchInProgress) return@collectLatest
+                        when (state) {
+                            is ApiState.Loading -> showDownloadLoading()
+
+                            is ApiState.Success -> {
+                                if (isAdded && view != null) {
+                                    showSocialDownloadOptions(state.data)
+                                }
+                                finishDownloadFetch()
+                            }
+
+                            is ApiState.Error -> {
+                                finishDownloadFetch()
+                                requireContext().showDownloadDialog(type = DownloadDialogType.INVALID_URL)
+                            }
+
+                            else -> {
+                                finishDownloadFetch()
+                                requireContext().showDownloadDialog(type = DownloadDialogType.INVALID_URL)
+                            }
+                        }
                     }
                 }
             }
-        }*/
-
-        viewModel.texturl.observe(viewLifecycleOwner) {
-            if (isValidUrl(it)) {
-                homeViewModel.searchTextInput.set(it)
-            } else {
-                homeViewModel.searchTextInput.set("")
-            }
         }
+    }
+
+    private fun stopDownloadStateObservation() {
+        downloadStateJob?.cancel()
+        downloadStateJob = null
+    }
+
+    private fun finishDownloadFetch() {
+        expectingDownloadResult = false
+        isFetchInProgress = false
+        clipboardAutoFetchConsumed = true
+        hideDownloadLoading()
+        viewModel.clearDownloadState()
+        viewModel.texturl.value = ""
+        stopDownloadStateObservation()
+    }
+
+    private fun applyClipboardUrlToSearch(url: String) {
+        val trimmed = url.trim()
+        if (isSupportedSocialMediaUrl(trimmed) || isValidUrl(trimmed)) {
+            homeViewModel.searchTextInput.set(trimmed)
+        } else {
+            homeViewModel.searchTextInput.set("")
+        }
+    }
+
+    private fun beginSocialDownload(url: String) {
+        val trimmed = url.trim()
+        if (isFetchInProgress) return
+        lastHandledClipboardUrl = trimmed
+        isUrlReceived = true
+        expectingDownloadResult = true
+        isFetchInProgress = true
+        applyClipboardUrlToSearch(trimmed)
+        startDownloadStateObservation()
+        viewModel.socialDownloader(trimmed)
+    }
+
+    private fun triggerSocialDownload(url: String) {
+        stopClipboardObservation()
+        stopDownloadStateObservation()
+        viewModel.clearDownloadState()
+        beginSocialDownload(url)
+    }
+
+    private fun showCopiedLinkDetectedDialog(url: String) {
+        if (copiedLinkDialog?.isShowing == true) return
+
+        val dialogView = layoutInflater.inflate(R.layout.dialog_copied_link_detected, null)
+        val copiedLink = dialogView.findViewById<TextView>(R.id.tvCopiedLink)
+        val cancel = dialogView.findViewById<TextView>(R.id.btnCancel)
+        val download = dialogView.findViewById<TextView>(R.id.btnDownload)
+
+        copiedLink.text = url
+
+        copiedLinkDialog = AlertDialog.Builder(requireContext())
+            .setView(dialogView)
+            .setCancelable(true)
+            .create()
+
+        copiedLinkDialog?.setOnDismissListener {
+            copiedLinkDialog = null
+        }
+
+        cancel.setOnClickListener {
+            copiedLinkDialog?.dismiss()
+        }
+
+        download.setOnClickListener {
+            copiedLinkDialog?.dismiss()
+            if (!NetworkUtils.isOnline(requireContext())) {
+                requireContext().showDownloadDialog(
+                    type = DownloadDialogType.INTERNET_ERROR,
+                    onRetryConnection = {
+                        Toast.makeText(requireContext(), "Connect internet first", Toast.LENGTH_SHORT).show()
+                    }
+                )
+                return@setOnClickListener
+            }
+            clipboardAutoFetchConsumed = true
+            triggerSocialDownload(url)
+        }
+
+        copiedLinkDialog?.show()
+        copiedLinkDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
     private var activeBottomSheet1: BottomSheetDialog? = null
@@ -1250,6 +1374,8 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
         copiedLinkDialog = null
         fetchingDialog?.dismiss()
         fetchingDialog = null
+        stopClipboardObservation()
+        stopDownloadStateObservation()
         showShimmer(false) // Stop shimmer when fragment is destroyed
         progressViewModel.stop()
         videoViewModel.stop()
@@ -1491,7 +1617,7 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
         val trimmed = input.trim()
         if (trimmed.isEmpty()) return
         if (isSupportedSocialMediaUrl(trimmed)) {
-            viewModel.socialDownloader(trimmed)
+            beginSocialDownload(trimmed)
         }
         openNewTab(trimmed)
     }
