@@ -1,7 +1,6 @@
 package com.avd.ui.main.home.browser.homeTab
 
 import ViewPagerAdapter
-import android.Manifest
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
@@ -13,7 +12,6 @@ import android.app.Dialog
 import android.app.role.RoleManager
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.PixelFormat
@@ -46,7 +44,6 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import androidx.databinding.Observable
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -71,7 +68,6 @@ import com.avd.ui.component.adapter.RecentVideosAdapter
 import com.avd.ui.component.adapter.SuggestionAdapter
 import com.avd.ui.component.adapter.SuggestionListener
 import com.avd.ui.dialog.DownloadCompletionListener
-import com.avd.ui.main.downloder_queue.utils.PermissionManagerNew
 import com.avd.ui.main.home.MainViewModel
 import com.avd.ui.main.home.bottomsheet.DefaultBrowserDialogFragment
 import com.avd.ui.main.home.bottomsheet.NotificationDialogFragment
@@ -106,7 +102,6 @@ import com.avd.util.AdBlockerHelper.isDownloading
 import com.avd.util.AdBlockerHelper.isProVersion
 import com.avd.util.AdBlockerHelper.loadFallbackInterstitialAd
 import com.avd.util.AdBlockerHelper.refreshAd
-import com.avd.util.AdBlockerHelper.setinterstitialshown
 import com.avd.util.AdBlockerHelper.showExitScreen
 import com.avd.util.AdBlockerHelper.showInterstitial
 import com.avd.util.AdBlockerHelper.showLoading
@@ -161,7 +156,6 @@ interface BrowserHomeListener : BrowserListener {
 
 @AndroidEntryPoint
 class BrowserHomeFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListener,
-    NotificationDialogFragment.NotificationCallback,
     DefaultBrowserDialogFragment.DefaultBrowserCallback {
 
     private val viewModel: ApiViewModel by activityViewModels()
@@ -208,7 +202,6 @@ class BrowserHomeFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListen
 
     private lateinit var viewPagerAdapter: ViewPagerAdapter
 
-    private var permissionManager: PermissionManagerNew? = null
     private lateinit var openPageIProvider: TabManagerProvider
 
     private val homeViewModel: BrowserHomeViewModel by viewModels()
@@ -259,22 +252,6 @@ class BrowserHomeFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListen
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        permissionManager = PermissionManagerNew(
-            requireContext(), requireActivity(),
-            object : PermissionManagerNew.Callback {
-                override fun onStorageResult(isGranted: Boolean) {
-                    Log.d("Permissions", "Storage granted=$isGranted")
-                }
-
-                override fun onNotificationResult(isGranted: Boolean) {
-                    Log.d("Permissions", "Notification granted=$isGranted")
-                }
-
-                override fun onForegroundServiceResult(isGranted: Boolean) {
-                    Log.d("Permissions", "Foreground Service granted=$isGranted")
-                }
-            }
-        )
         videoDetectionTabViewModel.cancelAllCheckJobs()
     }
 
@@ -291,21 +268,6 @@ class BrowserHomeFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListen
 
         return dialog
     }
-
-
-    // In Fragment, override onRequestPermissionsResult
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == PermissionManagerNew.PERMISSION_REQUEST_CODE) {
-            permissionManager?.handlePermissionsResult(this, permissions, grantResults)
-        }
-    }
-
-
 
     private fun observer() {
         resetDownloadUiState()
@@ -862,11 +824,6 @@ class BrowserHomeFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListen
                 Log.d("HostCheck", "showBottomBar")
             } else {
                 Log.d("HostCheck", "null")
-            }
-            if (permissionManager?.areAllPermissionsGranted() == false) {
-                if (activity?.let { isPermissionGranted(it) } == false) {
-                    permissionManager?.requestAllPermissions(this)
-                }
             }
         } catch (e: Exception) {
             Log.d("HostCheck", "${e.printStackTrace()}")
@@ -1875,22 +1832,6 @@ class BrowserHomeFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListen
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
-    override fun onButtonClicked(result: Boolean) {
-        if (result) {
-            lifecycleScope.launch {
-                setinterstitialshown(true)
-                delay(15000)
-                setinterstitialshown(false)
-            }
-            if (!permissionManager!!.areAllPermissionsGranted()) {
-                if (!activity?.let { isPermissionGranted(it) }!!) {
-                    permissionManager!!.requestAllPermissions(this)
-                }
-            }
-        }
-    }
-
     override fun onBrowserButtonClicked(result: Boolean) {
         if (result) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -1933,27 +1874,6 @@ class BrowserHomeFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListen
         val imm =
             requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(requireActivity().window.decorView.windowToken, 0)
-    }
-
-    private fun isPermissionGranted(context: Context): Boolean {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            val videoPermission = Manifest.permission.READ_MEDIA_VIDEO
-            val notificationPermission = Manifest.permission.POST_NOTIFICATIONS
-            ContextCompat.checkSelfPermission(
-                context,
-                videoPermission
-            ) == PackageManager.PERMISSION_GRANTED &&
-                    ContextCompat.checkSelfPermission(
-                        context,
-                        notificationPermission
-                    ) == PackageManager.PERMISSION_GRANTED
-        } else {
-            val storagePermission = Manifest.permission.WRITE_EXTERNAL_STORAGE
-            ContextCompat.checkSelfPermission(
-                context,
-                storagePermission
-            ) == PackageManager.PERMISSION_GRANTED
-        }
     }
 
     private fun showShimmer(show: Boolean) {

@@ -878,8 +878,7 @@ class WebTabFragment : BaseWebTabFragment(), ButtonVisibilityYoutube {
     }
 
     private fun destroyWebView(webView: WebView) {
-        val webViewContainer: ViewGroup = webView.parent as ViewGroup
-        webViewContainer.removeView(webView)
+        (webView.parent as? ViewGroup)?.removeView(webView)
         webView.destroy()
         webTab?.setWebView(null)
     }

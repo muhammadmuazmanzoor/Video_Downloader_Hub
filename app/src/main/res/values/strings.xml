@@ -603,7 +603,7 @@
     <string name="desc_new_notifi">"Tap to view A new video has been added. Let's watch it!"</string>
     <string name="shorts">Shorts</string>
     <string name="random">Random</string>
-    <string name="home">Home</string>
+    <string name="home">Apps</string>
     <string name="plz_allow_permission_for_loading_videos">Please Allow Permission for loading videos</string>
     <string name="licenseKey">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA9BEKUw5WYg2a6g+20+Wj8W/xQu1e0d3K3G9yvQx1qmN6s24zC+m+btDgIWuRSEYjEw8Mkw1gucLkZfO3DXcjWwjFKD3nVwXDJ2O2eW1BLXDDGJaFLKP7C/Dk21nekPmzh0GRoKaRQvDGS/lbjNFA08f7LTVt4UnJhzN1yMFO+fQW07FJ/6wVKS9tiPkxskGQMbkbEME0P5F7muyKsr4xndvmvWF5V4hpUQfy/gUl7FPe2HdUvuOgX0qdM8yK0crudMK/my4iU81Q1HCnSxIKXQF8wrI7RQyn/qJP0ZL2ns+QgHUXLF9sDwLyA2iQhnhPodge2PavA2LjVnEP24qM0wIDAQAB</string>
     <string name="clear_history">Clear History</string>

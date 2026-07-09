@@ -28,6 +28,7 @@ import android.provider.Settings
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.util.Patterns
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -131,6 +132,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.Request
 import java.lang.ref.WeakReference
+import java.net.URLEncoder
 import java.util.UUID
 import javax.inject.Inject
 import kotlin.collections.filter
@@ -667,7 +669,7 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
                         if (text.isNotEmpty()) {
                             viewModel?.viewModelScope?.launch {
                                 delay(400)
-                                openNewTab((this@apply.homeEtSearch as EditText).text.toString())
+                                submitBrowserInput((this@apply.homeEtSearch as EditText).text.toString())
                                 this@apply.homeEtSearch.text.clear()
                             }
                         }
@@ -743,15 +745,11 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
         fetchingDialog = showFetchingVideoDialog()
         binding.icSearch.setOnClickListener {
 //            if (!isUrlReceived) {
-                val text = (binding.homeEtSearch as EditText).text.toString()
-                if (text.isNotEmpty() && !isSupportedSocialMediaUrl(text)) {
+                val text = (binding.homeEtSearch as EditText).text.toString().trim()
+                if (text.isNotEmpty()) {
                     hideKeyboard(requireActivity())
-                    openNewTab((binding.homeEtSearch as EditText).text.toString())
+                    submitBrowserInput(text)
                     binding.homeEtSearch.text.clear()
-                } else {
-                    if (text.isNotEmpty()) {
-                        viewModel.socialDownloader(binding.homeEtSearch.text.toString())
-                    }
                 }
            /* } else {
                 if (isSupportedSocialMediaUrl(binding.homeEtSearch.text.toString())) {
@@ -1263,7 +1261,7 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
         val trimmed = url.trim()
         if (trimmed.isEmpty()) return
         if (!isValidUrl(trimmed)) {
-            openNewTab(trimmed)
+            submitBrowserInput(trimmed)
             return
         }
         if (!isAdded || copiedLinkDialog?.isShowing == true) return
@@ -1293,7 +1291,7 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
 
         open.setOnClickListener {
             copiedLinkDialog?.dismiss()
-            openNewTab(trimmed)
+            submitBrowserInput(trimmed)
         }
 
         copiedLinkDialog?.show()
@@ -1482,10 +1480,41 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
     }
 
     private fun openNewTab(input: String) {
-        if (input.isNotEmpty()) {
+        val tab = createBrowserTabFromInput(input)
+        if (tab != null) {
             openPageIProvider.getOpenTabEvent().value =
-                WebTabFactory.createWebTabFromInput(input, BASEURL)
+                tab
         }
+    }
+
+    private fun submitBrowserInput(input: String) {
+        val trimmed = input.trim()
+        if (trimmed.isEmpty()) return
+        if (isSupportedSocialMediaUrl(trimmed)) {
+            viewModel.socialDownloader(trimmed)
+        }
+        openNewTab(trimmed)
+    }
+
+    private fun createBrowserTabFromInput(input: String): WebTab? {
+        val trimmed = input.trim()
+        if (trimmed.isEmpty()) return null
+
+        val url = when {
+            isValidWebUrl(trimmed) -> trimmed
+            isValidWebUrl("https://$trimmed") -> "https://$trimmed"
+            else -> "https://www.google.com/search?q=${URLEncoder.encode(trimmed, "UTF-8")}"
+        }
+
+        return WebTab(url, null, null, emptyMap())
+    }
+
+    private fun isValidWebUrl(input: String): Boolean {
+        val uri = Uri.parse(input)
+        val scheme = uri.scheme?.lowercase()
+        return (scheme == "http" || scheme == "https") &&
+            !uri.host.isNullOrBlank() &&
+            Patterns.WEB_URL.matcher(input).matches()
     }
 
     private val onInputHomeSearchChangeListener = object : TextWatcher {
