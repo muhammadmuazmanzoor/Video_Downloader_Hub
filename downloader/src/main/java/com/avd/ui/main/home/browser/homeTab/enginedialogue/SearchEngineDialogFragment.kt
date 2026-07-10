@@ -36,9 +36,9 @@ class SearchEngineDialogFragment (private val onSearchEngineSelected: (String,In
 
         val items = listOf(
 
-            GridItem(R.drawable.ic_bing, "bing","bing",false),
+            GridItem(R.drawable.bing_1, "bing","bing",false),
 
-            GridItem(R.drawable.ic_duck_duck, "duck","duckDuckGo",false),
+            GridItem(R.drawable.ic_duck, "duck","duckDuckGo",false),
 
             GridItem(R.drawable.ic_yahoo, "yahoo","yahoo",false),
 

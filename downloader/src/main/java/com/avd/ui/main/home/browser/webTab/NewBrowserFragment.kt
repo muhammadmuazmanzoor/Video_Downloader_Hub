@@ -125,9 +125,22 @@ class NewBrowserFragment : BaseFragment(), BrowserServicesProvider {
             return super.shouldInterceptRequest(request)
         }
     }
+
+    private val currentTabChangeCallback = object : Observable.OnPropertyChangedCallback() {
+        override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+            syncBottomBarForSelectedBrowserTab()
+        }
+    }
+
+    private val routeChangeCallback = object : Observable.OnPropertyChangedCallback() {
+        override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+            syncBottomBarForSelectedBrowserTab()
+        }
+    }
+
     override fun onResume() {
         super.onResume()
-        host?.showBottomBar()
+        syncBottomBarForSelectedBrowserTab()
     }
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -250,6 +263,11 @@ class NewBrowserFragment : BaseFragment(), BrowserServicesProvider {
         handleCloseWebTabEventEvent()
         handleOpenNavDrawerEvent()
         handleUpdateWebTabEventEvent()
+        browserViewModel.currentTab.removeOnPropertyChangedCallback(currentTabChangeCallback)
+        browserViewModel.currentTab.addOnPropertyChangedCallback(currentTabChangeCallback)
+        mainViewModel.currentItem.removeOnPropertyChangedCallback(routeChangeCallback)
+        mainViewModel.currentItem.addOnPropertyChangedCallback(routeChangeCallback)
+        syncBottomBarForSelectedBrowserTab()
         checkIsPowerSaveMode()
     }
 
@@ -261,6 +279,8 @@ class NewBrowserFragment : BaseFragment(), BrowserServicesProvider {
         } catch (e: Exception) {
             Log.e("FragmentLifecycle", "Error in onDestroy: ${e.localizedMessage}", e)
         }
+        browserViewModel.currentTab.removeOnPropertyChangedCallback(currentTabChangeCallback)
+        mainViewModel.currentItem.removeOnPropertyChangedCallback(routeChangeCallback)
         browserViewModel.stop()
         videoDetectionModel.stop()
         compositeDisposable.clear()
@@ -340,6 +360,16 @@ class NewBrowserFragment : BaseFragment(), BrowserServicesProvider {
                 tabs[updateIndex] = webTab
             }
             browserViewModel.tabs.set(tabs ?: emptyList())
+        }
+    }
+
+    private fun syncBottomBarForSelectedBrowserTab() {
+        val browserRoute = mainViewModel.currentItem.get() ?: HOME_TAB_INDEX
+        val selectedBrowserTab = browserViewModel.currentTab.get()
+        if (browserRoute == HOME_TAB_INDEX && selectedBrowserTab != HOME_TAB_INDEX) {
+            host?.hideBottomBar()
+        } else {
+            host?.showBottomBar()
         }
     }
 

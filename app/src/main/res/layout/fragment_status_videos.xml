@@ -192,6 +192,7 @@
             android:text="@string/allow_permission"
             android:textAppearance="?android:textAppearanceLarge"
             android:textSize="@dimen/_12ssp"
+            android:textColor="@color/white"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

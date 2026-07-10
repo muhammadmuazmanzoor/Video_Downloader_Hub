@@ -741,6 +741,12 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
         // This respects user's preference and checks permission status
         loadSwitchStateFromPreferences()
         try {
+            host =
+                context as? CommunicateWithActivity ?: error("Activity must implement HostActions")
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        try {
             if (host != null) {
                 host?.showBottomBar()
                 Log.d("HostCheck", "showBottomBar")

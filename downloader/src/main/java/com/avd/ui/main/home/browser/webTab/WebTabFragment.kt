@@ -334,7 +334,6 @@ class WebTabFragment : BaseWebTabFragment(), ButtonVisibilityYoutube {
                 .getTabsListChangeEvent()
                 .removeOnPropertyChangedCallback(tabsListChangeListener)
         }
-        hideBottomBarIfActiveWebTab()
     }
 
     private fun handleOpenDetectedVideos() {
