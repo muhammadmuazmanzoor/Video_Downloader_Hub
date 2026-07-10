@@ -124,7 +124,7 @@
                 android:gravity="center"
                 android:text="@string/rate_on_google_play"
                 android:textAllCaps="false"
-                android:textColor="@color/brand_text_primary"
+                android:textColor="@color/white"
                 android:textSize="15sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

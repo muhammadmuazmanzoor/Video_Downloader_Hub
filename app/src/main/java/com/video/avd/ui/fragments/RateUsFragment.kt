@@ -72,6 +72,27 @@ class RateUsFragment : BottomSheetDialogFragment() {
 
         mActivity?.let { context ->
             headingList = listOf(
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 context.getString(R.string.ur_ideas),
                 context.getString(R.string.unhappy_expe),
                 context.getString(R.string.seeking_insights),
