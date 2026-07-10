@@ -205,17 +205,27 @@ class FileUtil @Inject constructor() {
             return File(uri.path ?: uri.toString()).lastModified()
         }
 
-        val projection = arrayOf(MediaStore.MediaColumns.DATE_MODIFIED) // Use DATE_MODIFIED for media files
+        val projection = arrayOf(
+            MediaStore.MediaColumns.DATE_MODIFIED,
+            MediaStore.MediaColumns.DATE_ADDED
+        )
         val cursor = context.contentResolver.query(uri, projection, null, null, null)
         cursor?.use {
             if (it.moveToFirst()) {
-                val columnIndex = it.getColumnIndex(MediaStore.MediaColumns.DATE_MODIFIED)
-                if (columnIndex != -1) {
-                    return it.getLong(columnIndex) * 1000 // Convert seconds to milliseconds
+                val modifiedIndex = it.getColumnIndex(MediaStore.MediaColumns.DATE_MODIFIED)
+                if (modifiedIndex != -1 && !it.isNull(modifiedIndex)) {
+                    val modified = it.getLong(modifiedIndex)
+                    if (modified > 0) return modified * 1000
+                }
+
+                val addedIndex = it.getColumnIndex(MediaStore.MediaColumns.DATE_ADDED)
+                if (addedIndex != -1 && !it.isNull(addedIndex)) {
+                    val added = it.getLong(addedIndex)
+                    if (added > 0) return added * 1000
                 }
             }
         }
-        return 0L // default value if timestamp cannot be retrieved
+        return 0L
     }
 
     fun getVideoPreviewFromContent(context: Context, uri: Uri): Bitmap? {
@@ -467,14 +477,34 @@ class FileUtil @Inject constructor() {
     }
 
     private fun getContentSize(context: Context, uri: Uri): Long {
-        return context.contentResolver.query(uri, null, null, null, null)?.use { cursor ->
-            val sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE)
-            if (cursor.moveToFirst() && !cursor.isNull(sizeIndex)) {
-                cursor.getLong(sizeIndex)
-            } else {
-                -1 // Return -1 if size is unknown or an error occurred
+        val resolver = context.contentResolver
+        resolver.query(
+            uri,
+            arrayOf(OpenableColumns.SIZE, MediaStore.MediaColumns.SIZE),
+            null,
+            null,
+            null
+        )?.use { cursor ->
+            if (cursor.moveToFirst()) {
+                val openableSize = cursor.getColumnIndex(OpenableColumns.SIZE)
+                    .takeIf { it >= 0 && !cursor.isNull(it) }
+                    ?.let { cursor.getLong(it) }
+                if (openableSize != null && openableSize >= 0L) return openableSize
+
+                val mediaSize = cursor.getColumnIndex(MediaStore.MediaColumns.SIZE)
+                    .takeIf { it >= 0 && !cursor.isNull(it) }
+                    ?.let { cursor.getLong(it) }
+                if (mediaSize != null && mediaSize >= 0L) return mediaSize
             }
-        } ?: -1 // Return -1 if the query failed
+        }
+
+        return try {
+            resolver.openAssetFileDescriptor(uri, "r")?.use { descriptor ->
+                descriptor.length.takeIf { it >= 0L } ?: descriptor.parcelFileDescriptor.statSize
+            }?.takeIf { it >= 0L } ?: 0L
+        } catch (e: Exception) {
+            0L
+        }
     }
 
     private fun renameVideoContentFromDownloads(context: Context, uri: Uri, newName: String): Uri? {
@@ -612,6 +642,42 @@ class FileUtil @Inject constructor() {
 
                 if (isUriExists(context, contentUri)) {
                     filesMap[name] = Pair(id, contentUri)
+                }
+            }
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val downloadsUri = if (isExternalStorage) {
+                MediaStore.Downloads.EXTERNAL_CONTENT_URI
+            } else {
+                MediaStore.Downloads.INTERNAL_CONTENT_URI
+            }
+            val downloadsProjection = arrayOf(
+                MediaStore.Downloads._ID,
+                MediaStore.Downloads.DISPLAY_NAME
+            )
+            val downloadsSelection =
+                "${MediaStore.Downloads.RELATIVE_PATH} LIKE ? AND ${MediaStore.Downloads.MIME_TYPE} LIKE ?"
+            val downloadsSelectionArgs = arrayOf("%${Environment.DIRECTORY_DOWNLOADS}%", "video/%")
+
+            context.contentResolver.query(
+                downloadsUri,
+                downloadsProjection,
+                downloadsSelection,
+                downloadsSelectionArgs,
+                null
+            )?.use { cursor ->
+                val idColumn = cursor.getColumnIndexOrThrow(MediaStore.Downloads._ID)
+                val nameColumn = cursor.getColumnIndexOrThrow(MediaStore.Downloads.DISPLAY_NAME)
+
+                while (cursor.moveToNext()) {
+                    val id = cursor.getLong(idColumn)
+                    val name = cursor.getString(nameColumn) ?: continue
+                    val contentUri = ContentUris.withAppendedId(downloadsUri, id)
+
+                    if (isUriExists(context, contentUri)) {
+                        filesMap[name] = Pair(id, contentUri)
+                    }
                 }
             }
         }

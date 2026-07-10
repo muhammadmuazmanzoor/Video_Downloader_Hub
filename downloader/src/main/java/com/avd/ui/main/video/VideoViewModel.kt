@@ -115,15 +115,13 @@ class VideoViewModel @Inject constructor(
                         }
                     }
 
-                    // 2. Decide delay
-                    delay(5000L)
-
-                    // 3. Fetch fresh data only when cache expired or no cache
+                    // 2. Fetch fresh data only when cache expired or no cache
                     val shouldFetchFresh =
-                        cachedFilesList == null ||
+                        cachedFilesList.isEmpty() ||
                                 (currentTime - lastCacheTime) >= CACHE_DURATION_MS
 
                     if (!shouldFetchFresh) {
+                        delay(5000L)
                         continue
                     }
 
@@ -143,6 +141,7 @@ class VideoViewModel @Inject constructor(
                         lastCacheTime = System.currentTimeMillis()
                     }
                     isLoadingVideos.set(false)
+                    delay(5000L)
 
                 } catch (e: Exception) {
                     Log.e("VideoViewModel", "Error refreshing file list", e)
