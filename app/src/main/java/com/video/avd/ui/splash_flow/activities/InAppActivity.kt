@@ -353,7 +353,7 @@ class InAppActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceC
                     AppUtils.fbEvents("pro_pannel_purchase_click", "ProPanel",this)
                 }
                 iapConnector.subscribe(this, IapManager.skuKeyWeekly)
-            /*    binding?.btnContinue?.postDelayed({
+  /*  binding?.btnContinue?.postDelayed({
                     binding?.btnContinue?.isEnabled = true
                 }, 2000)
                 AppUtils.firebaseUserAction("subscription_clicked_splash", "InAppPanel")
@@ -370,7 +370,8 @@ class InAppActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceC
                     }
                 } catch (e: Exception) {
                     ToastUtils.showToast(this, "Please come back later")
-                }*/
+                }
+*/
             }
             val shake = AnimationUtils.loadAnimation(this, R.anim.shake)
             binding?.btnContinue?.startAnimation(shake)

@@ -60,7 +60,7 @@
                         android:padding="5dp"
                         android:src="@drawable/premium_svg"
                         android:layout_marginEnd="10dp"
-                        android:visibility="visible"
+                        android:visibility="gone"
                         app:layout_constraintBottom_toBottomOf="@+id/tab_count"
                         app:layout_constraintEnd_toStartOf="@+id/tab_count"
                         app:layout_constraintTop_toTopOf="@+id/tab_count" />

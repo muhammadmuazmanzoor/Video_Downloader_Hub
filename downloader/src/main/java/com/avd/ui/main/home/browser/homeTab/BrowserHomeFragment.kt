@@ -913,7 +913,7 @@ class BrowserHomeFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListen
             } else {
              //   binding.clPremimumNew.visibility = View.GONE
                 binding.flAdplace.visibility = View.VISIBLE
-                binding.ivProNew.visibility = View.VISIBLE
+              //  binding.ivProNew.visibility = View.VISIBLE
                 if(home_native){
                 showShimmer(true) // Show shimmer before loading ad
                 }else{
@@ -1001,7 +1001,7 @@ class BrowserHomeFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListen
         }*/
 
 
-        binding.ivProNew.setOnClickListener {
+       /* binding.ivProNew.setOnClickListener {
             try {
                 val activityClass =
                     Class.forName("com.video.avd.ui.splash_flow.activities.InAppActivity")
@@ -1013,7 +1013,7 @@ class BrowserHomeFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListen
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-        }
+        }*/
 
 
         binding.clHowDownload.setOnClickListener {

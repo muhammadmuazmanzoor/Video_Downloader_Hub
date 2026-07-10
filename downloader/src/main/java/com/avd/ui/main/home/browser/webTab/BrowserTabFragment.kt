@@ -849,7 +849,7 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
                 binding.flAdplace.visibility = View.GONE
                 showShimmer(false)
             } else {
-                binding.clPremimumNew.visibility = View.VISIBLE
+              //  binding.clPremimumNew.visibility = View.VISIBLE
                 binding.flAdplace.visibility = View.VISIBLE
                 if (browser_native) {
                     showShimmer(true)
@@ -919,7 +919,7 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
             host?.setbottomseelection()
         }
 
-        binding.clPremimumNew.setOnClickListener {
+       /* binding.clPremimumNew.setOnClickListener {
             try {
                 val activityClass =
                     Class.forName("com.video.avd.ui.splash_flow.activities.InAppActivity")
@@ -932,7 +932,7 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
                 e.printStackTrace()
             }
         }
-
+*/
 
         binding.ivProNew.setOnClickListener {
             try {

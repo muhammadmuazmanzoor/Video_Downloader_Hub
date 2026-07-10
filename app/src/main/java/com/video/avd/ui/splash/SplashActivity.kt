@@ -7,7 +7,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.os.Trace.isEnabled
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -34,7 +33,6 @@ import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.video.avd.BuildConfig
-import com.video.avd.MyApplication
 import com.video.avd.ads.AdsHelper
 import com.video.avd.ads.AdsHelper.attachRevenueListener
 import com.video.avd.ads.AdsHelper.langNativeAd1
@@ -52,7 +50,6 @@ import com.video.avd.constent.isinternal
 import com.video.avd.constent.isnotification
 import com.video.avd.databinding.ActivitySplashBinding
 import com.video.avd.ui.MainActivity
-import com.video.avd.ui.splash_flow.activities.InAppActivity
 import com.video.avd.ui.splash_flow.activities.LanguageActivity
 import com.video.avd.ui.splash_flow.utils.AppUtils.isOnline
 import com.video.avd.ui.splash_flow.utils.AppUtils.remoteConfigStatus
@@ -61,8 +58,6 @@ import com.video.avd.utils.AppPreference
 import com.video.avd.utils.AppUtils
 import com.video.avd.utils.AppUtils.changeStatusBarColor
 import com.video.avd.utils.AppUtils.hideNavigationBar
-import com.video.avd.utils.GlobalLoader
-import com.video.avd.utils.GlobalValues
 import com.video.avd.utils.GlobalValues.fromSplash
 import com.video.avd.utils.InAppPurchases
 import com.video.avd.utils.NetworkUtils
@@ -228,7 +223,9 @@ class SplashActivity : AppCompatActivity() {
             if (shouldNavigateToLanguage() && NetworkUtils.isOnline(this)) {
                 if (isProVersion.value != true && isIapEnableAfterSplash ) {
                     Log.d("SplashActivityweee", "Showing in-app purchase screen ${isProVersion.value} ${isIapEnableAfterSplash}")
-                    startActivity(Intent(this@SplashActivity, InAppActivity::class.java))
+                    // Un comment to show in-app purchase screen after splash if needed
+                   // startActivity(Intent(this@SplashActivity, InAppActivity::class.java))
+                    startActivity(Intent(this@SplashActivity, MainActivity::class.java))
                     finish()
                 } else {
                     startActivity(Intent(this@SplashActivity, LanguageActivity::class.java))
@@ -238,7 +235,9 @@ class SplashActivity : AppCompatActivity() {
             else if (NetworkUtils.isOnline(this)) {
                 if (isProVersion.value != true && isIapEnableAfterSplash ) {
                     Log.d("SplashActivityweee", "Showing in-app purchase screen ${isProVersion.value} ${isIapEnableAfterSplash}")
-                    startActivity(Intent(this@SplashActivity, InAppActivity::class.java))
+                    // Un comment to show in-app purchase screen after splash if needed
+                  //   startActivity(Intent(this@SplashActivity, InAppActivity::class.java))
+                    startActivity(Intent(this@SplashActivity, MainActivity::class.java))
                     finish()
                 } else {
                     startActivity(Intent(this, MainActivity::class.java))
@@ -613,7 +612,9 @@ class SplashActivity : AppCompatActivity() {
                 delay(1000)
                     if (isProVersion.value != true && isIapEnableAfterSplash ) {
                         Log.d("SplashActivityweee", "Showing in-app purchase screen ${isProVersion.value} ${isIapEnableAfterSplash}")
-                        startActivity(Intent(this@SplashActivity, InAppActivity::class.java))
+                        // Un comment to show in-app purchase screen after splash if needed
+                     //   startActivity(Intent(this@SplashActivity, InAppActivity::class.java))
+                        startActivity(Intent(this@SplashActivity, MainActivity::class.java))
                         finish()
                     } else {
                         startActivity(Intent(this@SplashActivity, MainActivity::class.java))
