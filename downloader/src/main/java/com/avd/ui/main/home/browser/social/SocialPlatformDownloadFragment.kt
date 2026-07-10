@@ -256,8 +256,9 @@ class SocialPlatformDownloadFragment : BaseWebTabFragment() {
     }
 
     private fun applyUrlToUi(url: String) {
-        binding.etVideoLink.setText(url)
-        SocialPlatform.fromInput(url)?.let { detected ->
+        val normalizedUrl = ApiViewModel.normalizeSocialDownloadUrl(url) ?: url.trim()
+        binding.etVideoLink.setText(normalizedUrl)
+        SocialPlatform.fromInput(normalizedUrl)?.let { detected ->
             platform = detected
             applyPlatformUi(platform)
             bindHowToSteps(platform)
@@ -266,8 +267,9 @@ class SocialPlatformDownloadFragment : BaseWebTabFragment() {
 
     private fun startDownloadFlow() {
         hideKeyboard()
-        val url = binding.etVideoLink.text.toString().trim()
-        if (url.isBlank()) {
+        val rawUrl = binding.etVideoLink.text.toString().trim()
+        val url = ApiViewModel.normalizeSocialDownloadUrl(rawUrl)
+        if (rawUrl.isBlank()) {
             Log.d("muaz_debug","Empty URL")
             requireContext().showDownloadDialog(type = DownloadDialogType.EMPTY_URL)
             return
@@ -281,7 +283,8 @@ class SocialPlatformDownloadFragment : BaseWebTabFragment() {
             )
             return
         }
-        if (!SocialPlatform.isSupportedSocialMediaUrl(url)) {
+        if (url == null || !SocialPlatform.isSupportedSocialMediaUrl(url)) {
+            Toast.makeText(requireContext(), "Invalid URL format: ${rawUrl.take(120)}", Toast.LENGTH_LONG).show()
             requireContext().showDownloadDialog(type = DownloadDialogType.INVALID_URL)
             return
         }
@@ -378,6 +381,7 @@ class SocialPlatformDownloadFragment : BaseWebTabFragment() {
 
                             is ApiState.Error -> {
                                 expectingDownloadResult = false
+                                Toast.makeText(requireContext(), state.message, Toast.LENGTH_LONG).show()
                                 requireContext().showDownloadDialog(type = DownloadDialogType.INVALID_URL)
                                 binding.progressloading.visibility = View.GONE
                                 binding.videoProgressBar.visibility = View.GONE

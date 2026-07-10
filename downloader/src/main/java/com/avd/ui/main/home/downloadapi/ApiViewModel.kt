@@ -1,6 +1,7 @@
 package com.avd.ui.main.home.downloadapi
 
 import android.util.Log
+import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -32,17 +33,22 @@ class ApiViewModel @Inject constructor(
 
     fun socialDownloader(url: String) {
         val logTag = "SocialDownloaderAPI"
-        Log.d(logTag, "URL: $url")
+        val normalizedUrl = normalizeSocialDownloadUrl(url)
+        Log.d(logTag, "URL: $url normalizedUrl: $normalizedUrl")
+        if (normalizedUrl == null) {
+            _socialDownloadState.value = ApiState.Error("Invalid URL format: ${url.trim().take(120)}")
+            return
+        }
         isDownloading=true
         viewModelScope.launch {
             try {
                 delay(250)
                 _socialDownloadState.value = ApiState.Loading
-                texturl.value = url
+                texturl.value = normalizedUrl
 
                 val endpoint = RemoteConfigHelper.getSocialDownloaderEndpoint()
                 Log.d(logTag, "Endpoint: $endpoint")
-                val response = socialDownloaderService.downloadVideo(endpoint,url)
+                val response = socialDownloaderService.downloadVideo(endpoint, normalizedUrl)
                 Log.d(logTag, "Response received: ${response.isSuccessful}")
                 Log.d(logTag, "Response code: ${response.code()}")
                 Log.d(logTag, "Response message: ${response.message()}")
@@ -76,7 +82,9 @@ class ApiViewModel @Inject constructor(
                     val errorBody = response.errorBody()?.string().orEmpty()
                     Log.e(logTag, "API call failed: ${response.code()} - ${response.message()}")
                     Log.e(logTag, "Error body: ${errorBody.ifBlank { "<empty>" }}")
-                    _socialDownloadState.value = ApiState.Error(response.message())
+                    _socialDownloadState.value = ApiState.Error(
+                        buildApiErrorMessage(response.code(), response.message(), errorBody)
+                    )
                 }
             } catch (e: Exception) {
                 Log.e(logTag, "Exception during API call: ${e.localizedMessage}", e)
@@ -87,6 +95,50 @@ class ApiViewModel @Inject constructor(
 
     fun clearDownloadState() {
         _socialDownloadState.value = ApiState.Idle
+    }
+
+    companion object {
+        private val urlPattern = Regex("""(?i)\bhttps?://[^\s<>"']+""")
+        private val repeatedSchemePattern = Regex("""(?i)^(https?://)(?:https?://)+""")
+
+        fun normalizeSocialDownloadUrl(rawUrl: String?): String? {
+            val trimmed = rawUrl
+                ?.trim()
+                ?.trim('\u200B', '\u200C', '\u200D', '\uFEFF')
+                .orEmpty()
+            if (trimmed.isBlank()) return null
+
+            val extracted = urlPattern.find(trimmed)?.value ?: trimmed
+            val cleaned = extracted
+                .trim()
+                .trimEnd('.', ',', ';', ')', ']', '}')
+                .replace(repeatedSchemePattern, "\$1")
+            val candidate = if (cleaned.startsWith("http://", true) || cleaned.startsWith("https://", true)) {
+                cleaned
+            } else {
+                "https://$cleaned"
+            }
+
+            return try {
+                val uri = Uri.parse(candidate)
+                if ((uri.scheme == "http" || uri.scheme == "https") && !uri.host.isNullOrBlank()) {
+                    candidate
+                } else {
+                    null
+                }
+            } catch (e: Exception) {
+                null
+            }
+        }
+
+        private fun buildApiErrorMessage(code: Int, message: String, errorBody: String): String {
+            val bodyMessage = errorBody.trim().take(180)
+            return when {
+                bodyMessage.isNotBlank() -> "Download API error $code: $bodyMessage"
+                message.isNotBlank() -> "Download API error $code: $message"
+                else -> "Download API error $code"
+            }
+        }
     }
 
 }

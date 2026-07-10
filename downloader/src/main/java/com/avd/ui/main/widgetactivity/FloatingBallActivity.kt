@@ -60,9 +60,16 @@ class FloatingBallActivity : AppCompatActivity() {
                 Log.d("Video_data", "Url: $text")
                 val storeUrl = Prefs[LAST_DOWNLOADED, ""]
                 Log.d("Video_data", "store Url: $storeUrl")
-                if(storeUrl != text){
-                    if (isSupportedSocialMediaUrl(text)) {
-                        viewModel.socialDownloader(text)
+                val normalizedText = ApiViewModel.normalizeSocialDownloadUrl(text)
+                if(storeUrl != normalizedText){
+                    if (normalizedText != null && isSupportedSocialMediaUrl(normalizedText)) {
+                        viewModel.socialDownloader(normalizedText)
+                    } else {
+                        Toast.makeText(
+                            this@FloatingBallActivity,
+                            "Invalid URL format: ${text.trim().take(120)}",
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
                 } else {
                     Toast.makeText(this@FloatingBallActivity, "This video already downloaded", Toast.LENGTH_SHORT).show()

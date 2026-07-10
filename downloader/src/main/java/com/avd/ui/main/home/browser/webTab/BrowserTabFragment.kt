@@ -91,6 +91,7 @@ import com.avd.ui.main.home.browser.homeTab.adapter.MovieItemAdapter
 import com.avd.ui.main.home.browser.homeTab.adapter.SocialAdapter
 import com.avd.ui.main.home.browser.homeTab.enginedialogue.SearchEngineDialogFragment
 import com.avd.ui.main.home.browser.homeTab.enginedialogue.model.IconItem
+import com.avd.ui.main.home.browser.social.SocialPlatform
 import com.avd.ui.main.home.downloadapi.ApiViewModel
 import com.avd.ui.main.home.downloadapi.SocialDownloaderResponse
 import com.avd.ui.main.home.downloadapi.VideoItem
@@ -399,6 +400,7 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
 
                             is ApiState.Error -> {
                                 finishDownloadFetch()
+                                Toast.makeText(requireContext(), state.message, Toast.LENGTH_LONG).show()
                                 requireContext().showDownloadDialog(type = DownloadDialogType.INVALID_URL)
                             }
 
@@ -429,7 +431,7 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
     }
 
     private fun applyClipboardUrlToSearch(url: String) {
-        val trimmed = url.trim()
+        val trimmed = ApiViewModel.normalizeSocialDownloadUrl(url) ?: url.trim()
         if (isSupportedSocialMediaUrl(trimmed) || isValidUrl(trimmed)) {
             homeViewModel.searchTextInput.set(trimmed)
         } else {
@@ -438,7 +440,12 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
     }
 
     private fun beginSocialDownload(url: String) {
-        val trimmed = url.trim()
+        val trimmed = ApiViewModel.normalizeSocialDownloadUrl(url)
+        if (trimmed == null) {
+            Toast.makeText(requireContext(), "Invalid URL format: ${url.trim().take(120)}", Toast.LENGTH_LONG).show()
+            requireContext().showDownloadDialog(type = DownloadDialogType.INVALID_URL)
+            return
+        }
         if (isFetchInProgress) return
         lastHandledClipboardUrl = trimmed
         isUrlReceived = true
@@ -1631,8 +1638,10 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
     private fun submitBrowserInput(input: String) {
         val trimmed = input.trim()
         if (trimmed.isEmpty()) return
-        if (isSupportedSocialMediaUrl(trimmed)) {
-            beginSocialDownload(trimmed)
+        val normalizedUrl = ApiViewModel.normalizeSocialDownloadUrl(trimmed)
+        if (normalizedUrl != null && isSupportedSocialMediaUrl(normalizedUrl)) {
+            beginSocialDownload(normalizedUrl)
+            return
         }
         openNewTab(trimmed)
     }
@@ -2041,11 +2050,7 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
 
 
     fun isSupportedSocialMediaUrl(text: String): Boolean {
-        val regex = Regex(
-            pattern = """^https?://(?:www\.)?(twitter\.com|t\.co|x\.com|facebook\.com|fb\.com|fb\.watch|m\.facebook\.com|instagram\.com|instagr\.am|tiktok\.com|vm\.tiktok\.com|vt\.tiktok\.com)(?:/.*)?$""",
-            option = RegexOption.IGNORE_CASE
-        )
-        return regex.containsMatchIn(text.trim())
+        return SocialPlatform.isSupportedSocialMediaUrl(text)
     }
 
 }

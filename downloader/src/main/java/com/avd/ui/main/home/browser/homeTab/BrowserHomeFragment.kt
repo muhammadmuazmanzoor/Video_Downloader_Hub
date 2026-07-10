@@ -348,6 +348,7 @@ class BrowserHomeFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListen
 
                             is ApiState.Error -> {
                                 finishDownloadFetch()
+                                Toast.makeText(requireContext(), state.message, Toast.LENGTH_LONG).show()
                                 requireContext().showDownloadDialog(type = DownloadDialogType.INVALID_URL)
                             }
 
@@ -383,7 +384,7 @@ class BrowserHomeFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListen
     }
 
     private fun applyClipboardUrlToSearch(url: String) {
-        val trimmed = url.trim()
+        val trimmed = ApiViewModel.normalizeSocialDownloadUrl(url) ?: url.trim()
         if (isSupportedSocialMediaUrl(trimmed) || isValidUrl(trimmed)) {
             homeViewModel.searchTextInput.set(trimmed)
         } else {
@@ -392,7 +393,12 @@ class BrowserHomeFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListen
     }
 
     private fun beginSocialDownload(url: String) {
-        val trimmed = url.trim()
+        val trimmed = ApiViewModel.normalizeSocialDownloadUrl(url)
+        if (trimmed == null) {
+            Toast.makeText(requireContext(), "Invalid URL format: ${url.trim().take(120)}", Toast.LENGTH_LONG).show()
+            requireContext().showDownloadDialog(type = DownloadDialogType.INVALID_URL)
+            return
+        }
         if (isFetchInProgress) return
         lastHandledClipboardUrl = trimmed
         isUrlReceived = true
@@ -955,15 +961,17 @@ class BrowserHomeFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListen
                 return@setOnClickListener
             }
             val text = binding.homeEtSearch.text.toString().trim()
+            val normalizedText = ApiViewModel.normalizeSocialDownloadUrl(text)
             when {
                 text.isBlank() -> {
                     requireContext().showDownloadDialog(type = DownloadDialogType.EMPTY_URL)
                 }
-                isSupportedSocialMediaUrl(text) -> {
+                normalizedText != null && isSupportedSocialMediaUrl(normalizedText) -> {
                     hideKeyboard(requireActivity())
-                    triggerSocialDownload(text)
+                    triggerSocialDownload(normalizedText)
                 }
                 else -> {
+                    Toast.makeText(requireContext(), "Invalid URL format: ${text.take(120)}", Toast.LENGTH_LONG).show()
                     requireContext().showDownloadDialog(type = DownloadDialogType.INVALID_URL)
                 }
             }
