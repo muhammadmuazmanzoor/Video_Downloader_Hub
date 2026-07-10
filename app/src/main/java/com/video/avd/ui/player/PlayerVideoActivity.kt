@@ -3803,6 +3803,7 @@ class PlayerVideoActivity : AppCompatActivity(), RewardAdDismissListener,
     }
 
     override fun onBackPressed() {
+        super.onBackPressed()
        /* try {
             if (fragmentclose == null) {
                 player?.stop()

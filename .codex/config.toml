@@ -1,0 +1,6 @@
+[mcp_servers.figma]
+command = "npx"
+args = ["-y", "figma-developer-mcp"]
+
+[mcp_servers.figma.env]
+FIGMA_ACCESS_TOKEN = "figd_nqHbaBSOe2xYknuylFFBmGsCq0Qb8jdr6qyVLNz3"

@@ -1,0 +1,15 @@
+{
+    "mcpServers": {
+        "figma": {
+            "type": "stdio",
+            "command": "npx",
+            "args": [
+                "-y",
+                "figma-developer-mcp"
+            ],
+            "env": {
+                "FIGMA_ACCESS_TOKEN": "figd_nqHbaBSOe2xYknuylFFBmGsCq0Qb8jdr6qyVLNz3"
+            }
+        }
+    }
+}
