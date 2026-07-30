@@ -38,7 +38,7 @@ class WebTabViewModel @Inject constructor(
     val thisTabIndex = ObservableInt(-1)
     val isDownloadDialogShown = ObservableBoolean(false)
     lateinit var tabPublishSubject: PublishSubject<String>
-    var listTabSuggestions: ObservableField<MutableList<HistoryItem>> = ObservableField(mutableListOf())
+    val listTabSuggestions: ObservableField<List<HistoryItem>> = ObservableField(mutableListOf())
     val isShowProgress = ObservableBoolean(true)
     val progress = ObservableInt(0)
     val progressIcon = ObservableInt(R.drawable.ic_refresh_24dp)
@@ -132,6 +132,10 @@ class WebTabViewModel @Inject constructor(
     fun changeTabFocus(isFocus: Boolean) {
         this.isTabInputFocused.set(isFocus)
         changeTabFocusEvent.value = isFocus
+    }
+
+    fun getTabSuggestionItems(): List<HistoryItem> {
+        return listTabSuggestions.get().orEmpty()
     }
 
 

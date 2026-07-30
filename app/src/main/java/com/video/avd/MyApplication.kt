@@ -42,6 +42,8 @@ import com.video.avd.ads.AdsManagerKit
 import com.avd.util.Prefs
 import com.avd.util.RemoteConfigHelper
 import com.video.avd.ads.AppOpenManager
+import com.avd.browserkit.api.BrowserKit
+import com.video.avd.downloader.BrowserKitBridge
 import com.video.avd.utils.AppUtils
 import com.video.avd.utils.AppUtils.hasNotifiedThisSession
 import com.video.avd.utils.GlobalValues
@@ -101,6 +103,9 @@ class MyApplication : MultiDexApplication(), Configuration.Provider , DefaultLif
         // Initialize and fetch remote config
         ProcessLifecycleOwner.get().lifecycle.addObserver(this)
         Prefs.init(this)
+        BrowserKitBridge.init(this)
+        BrowserKit.initialize(this)
+        BrowserKit.setDownloadBridge(BrowserKitBridge)
         
         // Initialize Picasso lazily on background thread to prevent ANR
         // PicassoProvider ContentProvider is disabled in AndroidManifest.xml

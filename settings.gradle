@@ -33,3 +33,4 @@ include ':indicatorseekbar'
 include ':opensubtitlesandroid'
 include(":downloader")
 include ':youtubedldynamic'
+include ':browserkit'

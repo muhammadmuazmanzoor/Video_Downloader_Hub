@@ -18,7 +18,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constriantlayout"
-        android:onClick="@{(view) -> historyListener.onHistoryOpenClicked(view, historyId)}"
+        android:onClick="@{(v) -> historyListener.onHistoryOpenClicked(v, historyId)}"
         android:layout_width="match_parent"
         android:background="@drawable/card_bg"
         android:layout_margin="@dimen/_5sdp"
@@ -93,7 +93,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:tint="@color/brand_text_primary"
-            android:onClick="@{(view) -> historyListener.onMenuClicked(view, historyItem.id)}"
+            android:onClick="@{(v) -> historyListener.onMenuClicked(v, historyItem.id)}"
             android:src="@drawable/ic_menu"
             android:padding="@dimen/_5sdp"
             app:layout_constraintBottom_toTopOf="@+id/view"

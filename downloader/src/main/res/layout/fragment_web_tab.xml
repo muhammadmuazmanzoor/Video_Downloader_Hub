@@ -6,6 +6,7 @@
     <data>
         <import type="android.view.View" />
         <import type="com.avd.R" />
+        <import type="com.avd.data.local.room.entity.HistoryItem" />
         <variable
             name="viewModel"
             type="com.avd.ui.main.home.browser.webTab.WebTabViewModel" />
@@ -77,7 +78,7 @@
                     android:focusableInTouchMode="@{viewModel.isTabInputFocused}"
                     android:onClick="@{() -> viewModel.changeTabFocus(true)}"
                     android:text="@{viewModel.getTabTextInput()}"
-                    app:items="@{viewModel.listTabSuggestions}"
+                    app:items="@{viewModel.tabSuggestionItems}"
                     android:importantForAutofill="noExcludeDescendants"
                     android:scrollHorizontally="true"
                     android:singleLine="true"

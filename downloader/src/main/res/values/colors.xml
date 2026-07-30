@@ -57,8 +57,8 @@
     <color name="browser_nav_icon_enabled">#0A0D13</color>
     <color name="browser_nav_icon_disabled">#656B76</color>
 
-    <color name="gSelector">@color/brand_gradient_start</color>
-    <color name="gSelector_light">@color/brand_accent</color>
+    <color name="gSelector">#2286F7</color>
+    <color name="gSelector_light">#2286F7</color>
     <color name="card_bg">#E9E9E9</color>
     <color name="card_stroke">#F4F4F6</color>
     <color name="shimmer_placeholder">#E8E8EC</color>

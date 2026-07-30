@@ -23,7 +23,7 @@
 
     <androidx.cardview.widget.CardView
         android:clickable="true"
-        android:onClick="@{(view) -> historyListener.onHistoryOpenClicked(view, historyId)}"
+        android:onClick="@{(v) -> historyListener.onHistoryOpenClicked(v, historyId)}"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:focusable="true">

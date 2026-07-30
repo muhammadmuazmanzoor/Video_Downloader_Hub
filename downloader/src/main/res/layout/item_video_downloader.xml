@@ -90,7 +90,7 @@
                     android:layout_marginEnd="10dp"
                     android:backgroundTint="@color/black"
                     android:contentDescription="@string/menu"
-                    android:onClick="@{(view) -> videoListener.onMenuClicked(view, localVideo)}"
+                    android:onClick="@{(v) -> videoListener.onMenuClicked(v, localVideo)}"
                     android:padding="6dp"
                     app:tint="@color/brand_text_primary"
                     app:layout_constraintBottom_toBottomOf="parent"

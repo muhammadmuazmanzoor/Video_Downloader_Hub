@@ -35,7 +35,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.avd.util.AdBlockerHelper
 import com.avd.util.AdBlockerHelper.hideLoading
 import com.avd.util.AdBlockerHelper.interHome
-import com.avd.util.AdBlockerHelper.inter_home
 import com.avd.util.AdBlockerHelper.inter_home_high
 import com.avd.util.AdBlockerHelper.inter_home_normal
 import com.avd.util.AdBlockerHelper.inter_videos
@@ -43,10 +42,10 @@ import com.avd.util.AdBlockerHelper.loadFallbackInterstitialAd
 import com.avd.util.AdBlockerHelper.showInterstitial
 import com.google.android.gms.ads.OnUserEarnedRewardListener
 import com.google.android.gms.ads.rewarded.RewardItem
-import com.avd.util.ads.InterstitialManagerA.showInterstitialHome
 import com.video.avd.BuildConfig
 import com.video.avd.R
 import com.video.avd.ads.AdsManager.recyclerNative
+import com.video.avd.ads.AppOpenManager.Companion.isShowingAd
 import com.video.avd.constent.GRID_ITEM_SPAN_COUNT
 import com.video.avd.constent.SORT_TYPE
 import com.video.avd.constent.VIEW_TYPE
@@ -67,8 +66,6 @@ import com.video.avd.ui.player.PlayerVideoActivity
 import com.video.avd.ui.videos.adapter.VideoAdapter
 import com.video.avd.ui.videos.adapter.VideoListner
 import com.video.avd.ui.videos.model.Video
-import com.video.avd.ads.AppOpenManager
-import com.video.avd.ads.AppOpenManager.Companion.isShowingAd
 import com.video.avd.utils.AppUtils
 import com.video.avd.utils.AppUtils.getFilePathFromContentUri
 import com.video.avd.utils.AppUtils.hideKeyboard

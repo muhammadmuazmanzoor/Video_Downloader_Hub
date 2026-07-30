@@ -71,6 +71,7 @@ import com.avd.data.remote.service.VideoServiceLocal.Companion.COOKIE_HEADER
 import com.avd.data.remote.service.VideoServiceLocal.Companion.MP4_EXT
 import com.avd.databinding.DialogFetchingVideoBinding
 import com.avd.databinding.FragmentBrowserTabBinding
+import com.avd.browserkit.api.BrowserKit
 import com.avd.ui.component.adapter.RecentVideosAdapter
 import com.avd.ui.component.adapter.SuggestionAdapter
 import com.avd.ui.component.adapter.SuggestionListener
@@ -142,6 +143,63 @@ import java.net.URLEncoder
 import java.util.UUID
 import javax.inject.Inject
 import kotlin.collections.filter
+
+private sealed class BrowserTabInputKind {
+    data class Link(val url: String) : BrowserTabInputKind()
+    data class SearchQuery(val text: String) : BrowserTabInputKind()
+    data object Empty : BrowserTabInputKind()
+}
+
+private enum class BrowserTabPrimaryAction {
+    OPEN_BROWSER,
+    DOWNLOAD,
+}
+
+private object BrowserTabInputClassifier {
+    private val domainPathRegex = Regex(
+        "^[a-zA-Z0-9][a-zA-Z0-9.-]*\\.[a-zA-Z]{2,}(/.*)?$",
+        RegexOption.IGNORE_CASE,
+    )
+
+    fun classify(raw: String): BrowserTabInputKind {
+        val trimmed = raw.trim()
+        if (trimmed.isBlank()) return BrowserTabInputKind.Empty
+
+        val withScheme = if (
+            trimmed.startsWith("http://", true) ||
+            trimmed.startsWith("https://", true)
+        ) {
+            trimmed
+        } else if (domainPathRegex.matches(trimmed)) {
+            "https://$trimmed"
+        } else {
+            null
+        }
+
+        if (withScheme != null) {
+            val normalized = withScheme.trim()
+            if (
+                Patterns.WEB_URL.matcher(normalized).matches() &&
+                Uri.parse(normalized).host != null
+            ) {
+                return BrowserTabInputKind.Link(normalized)
+            }
+        }
+
+        if (
+            Patterns.WEB_URL.matcher(trimmed).matches() &&
+            Uri.parse(
+                if (trimmed.startsWith("http")) trimmed else "https://$trimmed"
+            ).host != null
+        ) {
+            return BrowserTabInputKind.Link(
+                if (trimmed.startsWith("http")) trimmed else "https://$trimmed"
+            )
+        }
+
+        return BrowserTabInputKind.SearchQuery(trimmed)
+    }
+}
 
 interface BrowserHomeListener : BrowserListener {
     override fun onBrowserReloadClicked() {
@@ -221,14 +279,12 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
 
     private val videoViewModel: VideoViewModel by viewModels()
 
-    var isUrlReceived = false
     private var isRestoringTiktokSwitchState = false
     private var hasRequestedPermissionsForView = false
     private var lastHandledClipboardUrl: String? = null
+    private var clipboardUrlObserver: Observer<String>? = null
     private var expectingDownloadResult = false
     private var isFetchInProgress = false
-    private var clipboardAutoFetchConsumed = false
-    private var clipboardUrlObserver: Observer<String>? = null
     private var downloadStateJob: Job? = null
 
 //    private val moviesWebList = listOf(
@@ -318,31 +374,7 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
 
     private fun observer() {
         binding.progressloading.setOnClickListener {}
-        resetDownloadUiState()
-        seedClipboardState()
-        if (!clipboardAutoFetchConsumed) {
-            startClipboardObservation()
-        }
-    }
-
-    private fun resetDownloadUiState() {
-        expectingDownloadResult = false
-        isFetchInProgress = false
-        hideDownloadLoading()
-    }
-
-    private fun hideDownloadLoading() {
-        binding.progressloading.visibility = View.GONE
-        binding.progressloading.isClickable = false
-        binding.videoProgressBar.visibility = View.GONE
-    }
-
-    private fun showDownloadLoading() {
-        binding.videoProgressBar.visibility = View.VISIBLE
-    }
-
-    private fun seedClipboardState() {
-        viewModel.clearDownloadState()
+        startClipboardObservation()
     }
 
     private fun startClipboardObservation() {
@@ -350,17 +382,12 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
         clipboardUrlObserver = Observer { url ->
             if (!isBrowserHomeTabSelected()) return@Observer
             if (!isVisible || !isAdded) return@Observer
-            if (isFetchInProgress) return@Observer
             if (url.isNullOrBlank()) return@Observer
             val trimmed = url.trim()
             if (trimmed == lastHandledClipboardUrl) return@Observer
 
             lastHandledClipboardUrl = trimmed
             applyClipboardUrlToSearch(trimmed)
-
-            if (isSupportedSocialMediaUrl(trimmed)) {
-                showCopiedLinkDetectedDialog(trimmed)
-            }
         }
         viewModel.texturl.observe(viewLifecycleOwner, clipboardUrlObserver!!)
     }
@@ -377,59 +404,6 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
         clipboardUrlObserver = null
     }
 
-    private fun startDownloadStateObservation() {
-        if (downloadStateJob?.isActive == true) return
-        downloadStateJob = viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.socialDownloadState.collectLatest { state ->
-                if (!isVisible || !isAdded) return@collectLatest
-                if (!isFetchInProgress && state !is ApiState.Idle) return@collectLatest
-                when (state) {
-                    is ApiState.Idle -> hideDownloadLoading()
-
-                    else -> {
-                        if (!expectingDownloadResult || !isFetchInProgress) return@collectLatest
-                        when (state) {
-                            is ApiState.Loading -> showDownloadLoading()
-
-                            is ApiState.Success -> {
-                                if (isAdded && view != null) {
-                                    showSocialDownloadOptions(state.data)
-                                }
-                                finishDownloadFetch()
-                            }
-
-                            is ApiState.Error -> {
-                                finishDownloadFetch()
-                                Toast.makeText(requireContext(), state.message, Toast.LENGTH_LONG).show()
-                                requireContext().showDownloadDialog(type = DownloadDialogType.INVALID_URL)
-                            }
-
-                            else -> {
-                                finishDownloadFetch()
-                                requireContext().showDownloadDialog(type = DownloadDialogType.INVALID_URL)
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private fun stopDownloadStateObservation() {
-        downloadStateJob?.cancel()
-        downloadStateJob = null
-    }
-
-    private fun finishDownloadFetch() {
-        expectingDownloadResult = false
-        isFetchInProgress = false
-        clipboardAutoFetchConsumed = true
-        hideDownloadLoading()
-        viewModel.clearDownloadState()
-        viewModel.texturl.value = ""
-        stopDownloadStateObservation()
-    }
-
     private fun applyClipboardUrlToSearch(url: String) {
         val trimmed = ApiViewModel.normalizeSocialDownloadUrl(url) ?: url.trim()
         if (isSupportedSocialMediaUrl(trimmed) || isValidUrl(trimmed)) {
@@ -437,72 +411,6 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
         } else {
             homeViewModel.searchTextInput.set("")
         }
-    }
-
-    private fun beginSocialDownload(url: String) {
-        val trimmed = ApiViewModel.normalizeSocialDownloadUrl(url)
-        if (trimmed == null) {
-            Toast.makeText(requireContext(), "Invalid URL format: ${url.trim().take(120)}", Toast.LENGTH_LONG).show()
-            requireContext().showDownloadDialog(type = DownloadDialogType.INVALID_URL)
-            return
-        }
-        if (isFetchInProgress) return
-        lastHandledClipboardUrl = trimmed
-        isUrlReceived = true
-        expectingDownloadResult = true
-        isFetchInProgress = true
-        applyClipboardUrlToSearch(trimmed)
-        startDownloadStateObservation()
-        viewModel.socialDownloader(trimmed)
-    }
-
-    private fun triggerSocialDownload(url: String) {
-        stopClipboardObservation()
-        stopDownloadStateObservation()
-        viewModel.clearDownloadState()
-        beginSocialDownload(url)
-    }
-
-    private fun showCopiedLinkDetectedDialog(url: String) {
-        if (copiedLinkDialog?.isShowing == true) return
-
-        val dialogView = layoutInflater.inflate(R.layout.dialog_copied_link_detected, null)
-        val copiedLink = dialogView.findViewById<TextView>(R.id.tvCopiedLink)
-        val cancel = dialogView.findViewById<TextView>(R.id.btnCancel)
-        val download = dialogView.findViewById<TextView>(R.id.btnDownload)
-
-        copiedLink.text = url
-
-        copiedLinkDialog = AlertDialog.Builder(requireContext())
-            .setView(dialogView)
-            .setCancelable(true)
-            .create()
-
-        copiedLinkDialog?.setOnDismissListener {
-            copiedLinkDialog = null
-        }
-
-        cancel.setOnClickListener {
-            copiedLinkDialog?.dismiss()
-        }
-
-        download.setOnClickListener {
-            copiedLinkDialog?.dismiss()
-            if (!NetworkUtils.isOnline(requireContext())) {
-                requireContext().showDownloadDialog(
-                    type = DownloadDialogType.INTERNET_ERROR,
-                    onRetryConnection = {
-                        Toast.makeText(requireContext(), "Connect internet first", Toast.LENGTH_SHORT).show()
-                    }
-                )
-                return@setOnClickListener
-            }
-            clipboardAutoFetchConsumed = true
-            triggerSocialDownload(url)
-        }
-
-        copiedLinkDialog?.show()
-        copiedLinkDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
     private var activeBottomSheet1: BottomSheetDialog? = null
@@ -580,7 +488,6 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
                 }
             }
             viewModel.texturl.value = ""
-            isUrlReceived = false
             activeBottomSheet1?.dismiss()
         }
 
@@ -785,9 +692,11 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        suggestionAdapter = SuggestionAdapter(requireContext(), emptyList(), suggestionListener)
         try {
-            openPageIProvider = DownloaderModuleNavigator.mainViewModel?.browserServicesProvider!!
-            suggestionAdapter = SuggestionAdapter(requireContext(), emptyList(), suggestionListener)
+            DownloaderModuleNavigator.mainViewModel?.browserServicesProvider?.let {
+                openPageIProvider = it
+            }
             dataStoreManager = DataStoreManager(requireContext())
         } catch (e: Exception) {
             e.printStackTrace()
@@ -807,20 +716,16 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
             this.homeEtSearch.addTextChangedListener(onInputHomeSearchChangeListener)
             this.homeEtSearch.imeOptions = EditorInfo.IME_ACTION_SEARCH
             this.homeEtSearch.bringToFront()
+            updatePrimaryActionUi(this.homeEtSearch.text?.toString().orEmpty())
             this.homeEtSearch.setOnEditorActionListener { _, actionId, _ ->
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     this.homeEtSearch.clearFocus()
-                    val text = (this@apply.homeEtSearch as EditText).text.toString()
-                    if (!isUrlReceived) {
-                        if (text.isNotEmpty()) {
-                            viewModel?.viewModelScope?.launch {
-                                delay(400)
-                                submitBrowserInput((this@apply.homeEtSearch as EditText).text.toString())
-                                this@apply.homeEtSearch.text.clear()
-                            }
+                    val text = (this@apply.homeEtSearch as EditText).text.toString().trim()
+                    if (text.isNotEmpty() && !isFetchInProgress) {
+                        viewModel?.viewModelScope?.launch {
+                            delay(150)
+                            launchInputAndReset(text)
                         }
-                    } else {
-
                     }
                     false
                 } else false
@@ -869,12 +774,12 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
         val openingText = mainViewModel.openedText.get()
 
         if (openingUrl != null) {
-            showCopiedLinkOpenDialog(openingUrl)
+            launchInputAndReset(openingUrl)
             mainViewModel.openedUrl.set(null)
         }
 
         if (openingText != null) {
-            showCopiedLinkOpenDialog(openingText)
+            launchInputAndReset(openingText)
             mainViewModel.openedText.set(null)
         }
 
@@ -890,25 +795,8 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
         observer()
         fetchingDialog = showFetchingVideoDialog()
         binding.icSearch.setOnClickListener {
-//            if (!isUrlReceived) {
-                val text = (binding.homeEtSearch as EditText).text.toString().trim()
-                if (text.isNotEmpty()) {
-                    hideKeyboard(requireActivity())
-                    submitBrowserInput(text)
-                    binding.homeEtSearch.text.clear()
-                }
-           /* } else {
-                if (isSupportedSocialMediaUrl(binding.homeEtSearch.text.toString())) {
-                    if (binding.homeEtSearch.text.toString().isNotEmpty()) {
-                        viewModel.socialDownloader(binding.homeEtSearch.text.toString())
-                    }
-                } else {
-                    hideKeyboard(requireActivity())
-                    openNewTab((binding.homeEtSearch as EditText).text.toString())
-                    binding.homeEtSearch.text.clear()
-                }
-
-            }*/
+            if (isFetchInProgress) return@setOnClickListener
+            launchInputAndReset((binding.homeEtSearch as EditText).text.toString())
         }
 
         binding.homeEtSearch.setOnFocusChangeListener { view, hasFocus ->
@@ -1398,6 +1286,8 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
         fetchingDialog = null
         stopClipboardObservation()
         stopDownloadStateObservation()
+        expectingDownloadResult = false
+        isFetchInProgress = false
         showShimmer(false) // Stop shimmer when fragment is destroyed
         progressViewModel.stop()
         videoViewModel.stop()
@@ -1405,45 +1295,12 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
         super.onDestroyView()
     }
 
-    private fun showCopiedLinkOpenDialog(url: String) {
-        val trimmed = url.trim()
+    private fun launchInputAndReset(input: String) {
+        val trimmed = input.trim()
         if (trimmed.isEmpty()) return
-        if (!isValidUrl(trimmed)) {
-            submitBrowserInput(trimmed)
-            return
+        if (submitBrowserInput(trimmed) && this::binding.isInitialized) {
+            binding.homeEtSearch.text?.clear()
         }
-        if (!isAdded || copiedLinkDialog?.isShowing == true) return
-
-        val dialogView = layoutInflater.inflate(R.layout.dialog_copied_link_detected, null)
-        val title = dialogView.findViewById<TextView>(R.id.tvTitle)
-        val copiedLink = dialogView.findViewById<TextView>(R.id.tvCopiedLink)
-        val cancel = dialogView.findViewById<TextView>(R.id.btnCancel)
-        val open = dialogView.findViewById<TextView>(R.id.btnDownload)
-
-        title.text = "Copied link detected"
-        copiedLink.text = trimmed
-        open.text = "OPEN"
-
-        copiedLinkDialog = AlertDialog.Builder(requireContext())
-            .setView(dialogView)
-            .setCancelable(true)
-            .create()
-
-        copiedLinkDialog?.setOnDismissListener {
-            copiedLinkDialog = null
-        }
-
-        cancel.setOnClickListener {
-            copiedLinkDialog?.dismiss()
-        }
-
-        open.setOnClickListener {
-            copiedLinkDialog?.dismiss()
-            submitBrowserInput(trimmed)
-        }
-
-        copiedLinkDialog?.show()
-        copiedLinkDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
     private fun checkOverlayPermissionAndUpdateSwitch() {
@@ -1623,27 +1480,37 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
     private val suggestionListener = object : SuggestionListener {
         override fun onItemClicked(suggestion: Suggestion) {
 //            host?.hideBottomBar()
-            openNewTab(suggestion.content)
+            launchInputAndReset(suggestion.content)
         }
     }
 
     private fun openNewTab(input: String) {
-        val tab = createBrowserTabFromInput(input)
-        if (tab != null) {
-            openPageIProvider.getOpenTabEvent().value =
-                tab
+        when (val kind = BrowserTabInputClassifier.classify(input)) {
+            BrowserTabInputKind.Empty -> return
+            is BrowserTabInputKind.Link -> BrowserKit.launchUrl(requireContext(), kind.url)
+            is BrowserTabInputKind.SearchQuery -> BrowserKit.launchSearch(requireContext(), kind.text)
         }
     }
 
-    private fun submitBrowserInput(input: String) {
-        val trimmed = input.trim()
-        if (trimmed.isEmpty()) return
-        val normalizedUrl = ApiViewModel.normalizeSocialDownloadUrl(trimmed)
-        if (normalizedUrl != null && isSupportedSocialMediaUrl(normalizedUrl)) {
-            beginSocialDownload(normalizedUrl)
-            return
+    private fun submitBrowserInput(input: String): Boolean {
+        if (BrowserTabInputClassifier.classify(input) is BrowserTabInputKind.Empty) return false
+        if (!NetworkUtils.isOnline(requireContext())) {
+            requireContext().showDownloadDialog(
+                type = DownloadDialogType.INTERNET_ERROR,
+                onRetryConnection = {
+                    Toast.makeText(requireContext(), "Connect internet first", Toast.LENGTH_SHORT).show()
+                }
+            )
+            return false
         }
-        openNewTab(trimmed)
+        hideKeyboard(requireActivity())
+        val directDownloadUrl = resolveDirectDownloadUrl(input)
+        if (directDownloadUrl != null) {
+            triggerSocialDownload(directDownloadUrl)
+        } else {
+            openNewTab(input)
+        }
+        return true
     }
 
     private fun createBrowserTabFromInput(input: String): WebTab? {
@@ -1667,14 +1534,112 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
             Patterns.WEB_URL.matcher(input).matches()
     }
 
+    private fun resolveDirectDownloadUrl(raw: String): String? {
+        val normalized = ApiViewModel.normalizeSocialDownloadUrl(raw) ?: return null
+        return normalized.takeIf {
+            SocialPlatform.isSupportedSocialMediaUrl(it) &&
+                !SocialPlatform.isPlatformHomeUrl(it)
+        }
+    }
+
+    private fun resolvePrimaryAction(raw: String): BrowserTabPrimaryAction {
+        return if (resolveDirectDownloadUrl(raw) != null) {
+            BrowserTabPrimaryAction.DOWNLOAD
+        } else {
+            BrowserTabPrimaryAction.OPEN_BROWSER
+        }
+    }
+
+    private fun updatePrimaryActionUi(raw: String) {
+        if (!this::binding.isInitialized) return
+        binding.icSearch.text = when (resolvePrimaryAction(raw)) {
+            BrowserTabPrimaryAction.DOWNLOAD -> "Download"
+            BrowserTabPrimaryAction.OPEN_BROWSER -> "Check Url"
+        }
+    }
+
+    private fun showDownloadLoading() {
+        fetchingDialog?.show()
+    }
+
+    private fun hideDownloadLoading() {
+        fetchingDialog?.dismiss()
+    }
+
+    private fun startDownloadStateObservation() {
+        if (downloadStateJob?.isActive == true) return
+        downloadStateJob = viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.socialDownloadState.collectLatest { state ->
+                if (!isVisible || !isAdded) return@collectLatest
+                if (!isFetchInProgress && state !is ApiState.Idle) return@collectLatest
+                when (state) {
+                    is ApiState.Idle -> hideDownloadLoading()
+                    else -> {
+                        if (!expectingDownloadResult || !isFetchInProgress) return@collectLatest
+                        when (state) {
+                            is ApiState.Loading -> showDownloadLoading()
+                            is ApiState.Success -> {
+                                if (isAdded && view != null) {
+                                    showSocialDownloadOptions(state.data)
+                                }
+                                finishDownloadFetch()
+                            }
+                            is ApiState.Error -> {
+                                finishDownloadFetch()
+                                Toast.makeText(requireContext(), state.message, Toast.LENGTH_LONG).show()
+                                requireContext().showDownloadDialog(type = DownloadDialogType.INVALID_URL)
+                            }
+                            else -> {
+                                finishDownloadFetch()
+                                requireContext().showDownloadDialog(type = DownloadDialogType.INVALID_URL)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun stopDownloadStateObservation() {
+        downloadStateJob?.cancel()
+        downloadStateJob = null
+    }
+
+    private fun finishDownloadFetch() {
+        expectingDownloadResult = false
+        isFetchInProgress = false
+        hideDownloadLoading()
+        viewModel.clearDownloadState()
+        viewModel.texturl.value = ""
+        stopDownloadStateObservation()
+    }
+
+    private fun triggerSocialDownload(url: String) {
+        val trimmed = resolveDirectDownloadUrl(url)
+        if (trimmed == null) {
+            Toast.makeText(
+                requireContext(),
+                "Invalid URL format: ${url.trim().take(120)}",
+                Toast.LENGTH_LONG
+            ).show()
+            requireContext().showDownloadDialog(type = DownloadDialogType.INVALID_URL)
+            return
+        }
+        if (isFetchInProgress) return
+        expectingDownloadResult = true
+        isFetchInProgress = true
+        lastHandledClipboardUrl = trimmed
+        startDownloadStateObservation()
+        viewModel.clearDownloadState()
+        viewModel.socialDownloader(trimmed)
+    }
+
     private val onInputHomeSearchChangeListener = object : TextWatcher {
         override fun afterTextChanged(s: Editable) {
             val input = s.toString()
-            if (input.isEmpty()) {
-                isUrlReceived = false
-            }
             homeViewModel.searchTextInput.set(input)
-            if (!(input.startsWith("http://") || input.startsWith("https://"))) {
+            updatePrimaryActionUi(input)
+            if (input.isNotEmpty() && !(input.startsWith("http://") || input.startsWith("https://"))) {
                 homeViewModel.showSuggestions()
             }
             homeViewModel.homePublishSubject.onNext(input)
@@ -1684,10 +1649,6 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
         }
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            val input = s.toString()
-            if (input.isEmpty()) {
-                isUrlReceived = false
-            }
         }
     }
 

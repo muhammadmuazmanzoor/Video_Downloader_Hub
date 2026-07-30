@@ -850,9 +850,9 @@ class BrowserHomeFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListen
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        suggestionAdapter = SuggestionAdapter(requireContext(), emptyList(), suggestionListener)
         try {
             openPageIProvider = DownloaderModuleNavigator.mainViewModel?.browserServicesProvider!!
-            suggestionAdapter = SuggestionAdapter(requireContext(), emptyList(), suggestionListener)
             dataStoreManager = DataStoreManager(requireContext())
         } catch (e: Exception) {
             e.printStackTrace()

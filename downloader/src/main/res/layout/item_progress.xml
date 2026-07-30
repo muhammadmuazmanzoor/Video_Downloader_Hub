@@ -112,7 +112,7 @@
                         app:tint="@color/brand_text_primary"
                         android:layout_marginBottom="8dp"
                         android:contentDescription="@string/cancel"
-                        android:onClick="@{(view) -> progressListener.onMenuClicked(view, downloadId, isRegular)}"
+                        android:onClick="@{(v) -> progressListener.onMenuClicked(v, downloadId, isRegular)}"
                         app:srcCompat="@drawable/ic_menu" />
 
                 </RelativeLayout>

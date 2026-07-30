@@ -50,6 +50,7 @@ import com.video.avd.utils.chromecast.ChromecastConnection
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import androidx.core.net.toUri
+import com.avd.browserkit.api.BrowserKit
 import com.avd.util.AdBlockerHelper
 import com.avd.util.AdBlockerHelper.interHome
 import com.avd.util.AdBlockerHelper.inter_home
@@ -224,33 +225,7 @@ class HomeFragment : Fragment(), ExitDialogListener, OnSortChangedListner{
             binding?.imgSearch?.setOnClickListener {
                 AppUtils.firebaseUserAction("search_clicked_HomeScreen", "HomeFragment")
                 mActivity?.let {
-                    AppUtils.getMain(it).hidebottombar()
-                    isFolder = binding?.viewPager?.currentItem == 0
-                    if(interHome!=null) {
-                        interHome?.let {
-                            showInterstitial(true, it, mActivity?:requireActivity(), {
-                                mActivity?.nextNavigateTo(
-                                    HomeFragmentDirections.actionHomeFragmentToSearchVideoFragment(
-                                        isFolder = isFolder
-                                    )
-                                )
-                            },inter_home)
-                        }
-
-                    }
-                    else{
-                        loadFallbackInterstitialAd(mActivity?:requireActivity(), BuildConfig.inter_home_high, BuildConfig.inter_home,inter_home_high,inter_home_normal,{
-                            interHome=it
-                        },{
-                            interHome=it
-                        })
-                        it.nextNavigateTo(
-                            HomeFragmentDirections.actionHomeFragmentToSearchVideoFragment(
-                                isFolder = isFolder
-                            )
-                        )
-                    }
-
+                    BrowserKit.launchBlank(it)
                 }
                 AppUtils.firebaseUserAction("searchBtnClicked_HomeFragment", "HomeFragment")
             }

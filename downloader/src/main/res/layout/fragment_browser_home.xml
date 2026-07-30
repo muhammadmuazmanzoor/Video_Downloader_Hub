@@ -6,6 +6,7 @@
 
     <data>
         <import type="android.view.View" />
+        <import type="com.avd.data.local.model.Suggestion" />
         <variable
             name="browserMenuListener"
             type="com.avd.ui.main.home.browser.BrowserListener" />
@@ -205,7 +206,7 @@
                         android:textSelectHandleLeft="@drawable/search_text_select_handle_blue"
                         android:textSelectHandleRight="@drawable/search_text_select_handle_blue"
                         android:textSize="@dimen/text_small"
-                        app:items="@{viewModel.listSuggestions}"
+                        app:items="@{viewModel.suggestionItems}"
                         app:layout_constraintBottom_toBottomOf="@+id/view2"
                         app:layout_constraintEnd_toEndOf="@+id/view2"
                         app:layout_constraintStart_toStartOf="@+id/view2"

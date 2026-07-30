@@ -30,15 +30,22 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
+import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navOptions
+import androidx.navigation.findNavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.google.android.play.core.review.ReviewManagerFactory
+import com.avd.browserkit.api.BrowserKit
+import com.video.avd.downloader.BrowserKitBridge
+import com.avd.ui.main.progress.ProgressViewModel
 import com.avd.DynamicModuleDownloader
 import com.avd.ui.dialog.DownloadDialogManager
 import com.avd.ui.main.downloder_queue.ui.main.DownloadListPagerAdapter
@@ -121,6 +128,7 @@ class MainActivity : AppCompatActivity(), NetworkStateListener, CommunicateWithA
     val viewModel: MainActivityViewModel by viewModels()
 
     val mainViewModel: MainViewModel by viewModels()
+    val progressViewModel: ProgressViewModel by viewModels()
 
     // Broadcast receiver for download completion dialog
     private var downloadCompleteReceiver: BroadcastReceiver? = null
@@ -135,7 +143,7 @@ class MainActivity : AppCompatActivity(), NetworkStateListener, CommunicateWithA
     private val bottomNavItemViews = mutableMapOf<Int, LinearLayout>()
     private val bottomNavIconViews = mutableMapOf<Int, ImageView>()
     private val bottomNavLabelViews = mutableMapOf<Int, TextView>()
-    private var selectedBottomNavItemId = R.id.mainDownloaderFragment
+    private var selectedBottomNavItemId = R.id.fragmentDownloadQueue
     var navController: NavController? = null
     private var navHostFragment: NavHostFragment? = null
     private val networkChangeReceiver: NetworkChangeReceiver by lazy {
@@ -208,6 +216,9 @@ class MainActivity : AppCompatActivity(), NetworkStateListener, CommunicateWithA
         navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host) as NavHostFragment
         navController = navHostFragment?.navController
         setupBottomNavigationBar()
+
+        // BrowserKit is initialized from Application to match the source app flow.
+
         navController?.let { controller ->
           /*  controller.addOnDestinationChangedListener { _, destination, _ ->
                 when (destination.id) {
@@ -796,44 +807,56 @@ class MainActivity : AppCompatActivity(), NetworkStateListener, CommunicateWithA
                 if (interHome != null) {
                     showInterstitial(false, interHome!!, this, {
                         hideLoading()
-                        navController?.navigate(R.id.homeFragment1)
+                        navigateToBottomDestination(R.id.homeFragment1)
                     }, inter_home)
                 } else {
-                    navController?.navigate(R.id.homeFragment1)
+                    navigateToBottomDestination(R.id.homeFragment1)
                 }
             }
             R.id.fragmentDownloadHistory -> {
                 if (interHome != null) {
                     showInterstitial(false, interHome!!, this, {
                         hideLoading()
-                        navController?.navigate(R.id.fragmentDownloadHistory)
+                        navigateToBottomDestination(R.id.fragmentDownloadHistory)
                     }, inter_home)
                 } else {
-                    navController?.navigate(R.id.fragmentDownloadHistory)
+                    navigateToBottomDestination(R.id.fragmentDownloadHistory)
                 }
             }
             R.id.mainDownloaderFragment -> {
                 if (interHome != null) {
                     showInterstitial(false, interHome!!, this, {
                         hideLoading()
-                        navController?.navigate(R.id.mainDownloaderFragment)
+                        navigateToBottomDestination(R.id.mainDownloaderFragment)
                     }, inter_home)
                 } else {
-                    navController?.navigate(R.id.mainDownloaderFragment)
+                    navigateToBottomDestination(R.id.mainDownloaderFragment)
                 }
             }
             R.id.fragmentDownloadQueue -> {
                 if (interHome != null) {
                     showInterstitial(false, interHome!!, this, {
                         hideLoading()
-                        navController?.navigate(R.id.fragmentDownloadQueue)
+                        navigateToBottomDestination(R.id.fragmentDownloadQueue)
                     }, inter_home)
                 } else {
-                    navController?.navigate(R.id.fragmentDownloadQueue)
+                    navigateToBottomDestination(R.id.fragmentDownloadQueue)
                 }
             }
         }
         return true
+    }
+
+    private fun navigateToBottomDestination(itemId: Int) {
+        val controller = navController ?: return
+        val options = navOptions {
+            launchSingleTop = true
+            restoreState = true
+            popUpTo(controller.graph.findStartDestination().id) {
+                saveState = true
+            }
+        }
+        controller.navigate(itemId, null, options)
     }
 
     private fun updateBottomNavigationSelection(itemId: Int) {

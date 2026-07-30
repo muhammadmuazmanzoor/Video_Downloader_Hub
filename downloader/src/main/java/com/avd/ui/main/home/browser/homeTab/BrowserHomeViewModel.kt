@@ -36,8 +36,8 @@ class BrowserHomeViewModel @Inject constructor(
 
     val isSearchInputFocused = ObservableBoolean(false)
     val searchTextInput = ObservableField("")
-    val listSuggestions: ObservableField<MutableList<Suggestion>> = ObservableField(mutableListOf())
-    var listPages: ObservableField<MutableList<PageInfo>> = ObservableField(mutableListOf())
+    val listSuggestions: ObservableField<List<Suggestion>> = ObservableField(mutableListOf())
+    val listPages: ObservableField<List<PageInfo>> = ObservableField(mutableListOf())
     var lisofpages=MutableLiveData<List<PageInfo>?>()
 
     lateinit var homePublishSubject: PublishSubject<String>
@@ -80,6 +80,10 @@ class BrowserHomeViewModel @Inject constructor(
 
     fun logClick() {
         Log.d("TESTLong", "Search field clicked!")
+    }
+
+    fun getSuggestionItems(): List<Suggestion> {
+        return listSuggestions.get().orEmpty()
     }
 
     private fun getListSuggestions(): Flowable<List<Suggestion>> {

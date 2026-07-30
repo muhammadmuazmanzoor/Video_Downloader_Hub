@@ -63,7 +63,7 @@
                 android:layout_marginEnd="16dp"
                 android:layout_weight="1"
                 android:checked="@{viewModel.isProxyOn}"
-                android:onCheckedChanged="@{(view, isChecked) -> listener.onProxyToggle(isChecked)}"
+                android:onCheckedChanged="@{(v, isChecked) -> listener.onProxyToggle(isChecked)}"
                 app:thumbTint="@color/colorAccent"
                 app:trackDecorationTint="@color/colorAccentDark"
                 app:trackTint="@color/color_gray" />

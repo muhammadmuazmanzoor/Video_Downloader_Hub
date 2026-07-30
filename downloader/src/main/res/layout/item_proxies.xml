@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="8dp"
-        android:onClick="@{(view) -> proxiesListener.onProxyClicked(view, proxy) }">
+        android:onClick="@{(v) -> proxiesListener.onProxyClicked(v, proxy) }">
 
         <LinearLayout
             android:layout_width="match_parent"

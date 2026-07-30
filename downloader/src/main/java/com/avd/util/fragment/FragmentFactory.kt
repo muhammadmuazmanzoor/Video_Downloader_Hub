@@ -1,6 +1,7 @@
 package com.avd.util.fragment
 
 import androidx.fragment.app.Fragment
+import com.avd.ui.main.home.browser.webTab.BrowserTabFragment
 import com.avd.ui.main.downloder_queue.ui.main.FragmentDownloadQueue
 import com.avd.ui.main.history.HistoryFragment
 import com.avd.ui.main.home.browser.BrowserFragment
@@ -11,6 +12,8 @@ import com.avd.ui.main.home.browser.webTab.NewBrowserFragment
 import com.avd.ui.main.link.LinkFragment
 import com.avd.ui.main.settings.SettingsFragmentDownloader
 import com.avd.ui.main.video.VideoFragment
+import com.avd.browserkit.ui.browser.BrowserHostFragment
+import com.avd.browserkit.api.BrowserLaunchMode
 import javax.inject.Inject
 
 interface FragmentFactory {
@@ -30,8 +33,8 @@ interface FragmentFactory {
 }
 
 class FragmentFactoryImpl @Inject constructor() : FragmentFactory {
-    override fun createBrowserFragment() = BrowserFragment.newInstance()
-    override fun createNewBrowserFragment() = NewBrowserFragment.newInstance()
+    override fun createBrowserFragment() = BrowserHomeFragment.newInstance()
+    override fun createNewBrowserFragment() = BrowserTabFragment.newInstance()
 
     override fun createProgressFragment() = FragmentDownloadQueue.newInstance()
 
