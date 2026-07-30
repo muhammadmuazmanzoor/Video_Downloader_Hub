@@ -1,26 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/brand_background"
     android:gravity="center"
     android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout7"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <TextView
+            android:id="@+id/tvWelcomeBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:text="@string/welcome_back"
+            android:textColor="@color/brand_text_primary"
+            android:textSize="22sp"
+            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout7"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_launcher"
+            android:background="@android:color/transparent"
+            android:layout_marginBottom="25dp"
+            app:layout_constraintBottom_toTopOf="@+id/tvWelcomeBack"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:indeterminateTint="@color/bottom_nav_selected"
-            android:progressTint="@color/bottom_nav_selected" />
+            android:progressTint="@color/bottom_nav_selected"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
-    <TextView
-        android:id="@+id/tvWelcomeBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:fontFamily="@font/poppins_medium"
-        android:text="@string/welcome_back"
-        android:textColor="@color/brand_text_primary"
-        android:textSize="16sp" />
 
-</LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
