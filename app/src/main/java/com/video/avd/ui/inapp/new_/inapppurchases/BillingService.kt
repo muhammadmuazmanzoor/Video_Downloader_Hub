@@ -292,7 +292,7 @@ class BillingService(
                 .setProductType(type)
                 .build())
         }
-        
+
         val params = QueryProductDetailsParams.newBuilder().setProductList(productList)
 
         mBillingClient.queryProductDetailsAsync(params.build()) { billingResult, productDetailsList ->
@@ -377,7 +377,7 @@ class BillingService(
                 billingResult.isOk() -> {
                     isBillingClientConnected(true, billingResult.responseCode)
                     val productDetails: ProductDetails? = productDetailsList.productDetailsList.find { it.productId == this }
-                   // productDetails[this] = productDetails
+                    // productDetails[this] = productDetails
                     done(productDetails)
                 }
                 else -> {
