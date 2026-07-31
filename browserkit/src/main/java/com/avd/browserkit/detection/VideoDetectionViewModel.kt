@@ -87,6 +87,7 @@ class VideoDetectionViewModel : ViewModel() {
         val igMedia = InstagramUrlUtils.isInstagramMediaUrl(requestUrl)
         val streamTypeHint = VideoUtils.streamTypeFromUrl(requestUrl)
         val looksMedia = VideoUtils.looksLikeMediaUrl(requestUrl)
+        val tikTokMedia = VideoUtils.isTikTokMediaUrl(requestUrl)
         val fbCdn = requestUrl.contains("fbcdn", true) || requestUrl.contains("fbsbx", true)
         val dmCdn = DailymotionUrlUtils.isDailymotionMediaUrl(requestUrl)
 
@@ -99,7 +100,7 @@ class VideoDetectionViewModel : ViewModel() {
         if (RegularMp4Checker.shouldSkipUrl(requestUrl)) return
 
         // Xilli checkRegularMp4: progressive / extensionless CDN (FB, IG, DM, …)
-        if (!igMedia && !looksMedia && !fbCdn && !dmCdn && streamTypeHint == null) return
+        if (!igMedia && !tikTokMedia && !looksMedia && !fbCdn && !dmCdn && streamTypeHint == null) return
 
         val activePage = pageUrl.ifBlank { currentPageUrl }
         BrowserKitLog.i(
@@ -351,6 +352,8 @@ class VideoDetectionViewModel : ViewModel() {
         return when {
             InstagramUrlUtils.isInstagramUrl(pageUrl) ||
                 InstagramUrlUtils.isInstagramMediaUrl(mediaUrl) -> InstagramUrlUtils.REFERER
+            VideoUtils.isTikTokMediaUrl(mediaUrl) ||
+                pageUrl.contains("tiktok.com", true) -> "https://www.tiktok.com/"
             FacebookUrlUtils.isFacebookUrl(pageUrl) ||
                 mediaUrl.contains("fbcdn", true) -> "https://www.facebook.com/"
             DailymotionUrlUtils.isDailymotionUrl(pageUrl) ||
@@ -362,6 +365,7 @@ class VideoDetectionViewModel : ViewModel() {
     private fun cookieUrlFor(pageUrl: String, mediaUrl: String): String {
         return when {
             pageUrl.startsWith("http") -> pageUrl
+            VideoUtils.isTikTokMediaUrl(mediaUrl) -> "https://www.tiktok.com/"
             InstagramUrlUtils.isInstagramMediaUrl(mediaUrl) -> InstagramUrlUtils.REFERER
             else -> mediaUrl
         }

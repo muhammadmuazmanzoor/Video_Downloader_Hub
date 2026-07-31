@@ -15,13 +15,31 @@ object VideoUtils {
 
     private val skipProbeRegex = Regex("\\.(js|css|m4s|ts|vtt|jpg|jpeg|png|gif|webp|svg|woff2?|ico)(\\?|$)", RegexOption.IGNORE_CASE)
     private val mediaUrlRegex = Regex(
-        """\.m3u8|\.mpd|\.mp4|\.webm|\.m4v|\.mov|/hls/|/dash/|videoplayback|googlevideo|mime=video|mime%3Dvideo|master\.txt|index\.m3u8|playlist\.m3u8|manifest|cdninstagram|scontent.*fbcdn|/o1/v/t16/|/v/t16/|dmcdn\.net.*(\.m3u8|\.mpd|\.mp4|manifest|/hls/|mpegurl|sec2\()""",
+        """\.m3u8|\.mpd|\.mp4|\.webm|\.m4v|\.mov|/hls/|/dash/|videoplayback|googlevideo|mime=video|mime%3Dvideo|master\.txt|index\.m3u8|playlist\.m3u8|manifest|cdninstagram|scontent.*fbcdn|/o1/v/t16/|/v/t16/|/video/tos/|playwm|playaddr|aweme/v1/play|dmcdn\.net.*(\.m3u8|\.mpd|\.mp4|manifest|/hls/|mpegurl|sec2\()""",
         RegexOption.IGNORE_CASE,
     )
+
+    fun isTikTokMediaUrl(url: String): Boolean {
+        if (url.isBlank()) return false
+        val lower = url.lowercase()
+        return lower.contains("tiktokcdn") ||
+            lower.contains("tiktokv") ||
+            lower.contains("muscdn") ||
+            lower.contains("byteoversea") ||
+            lower.contains("ibyteimg") ||
+            lower.contains("ibytedtos") ||
+            lower.contains("aweme/v1/play") ||
+            lower.contains("playwm") ||
+            lower.contains("playaddr") ||
+            lower.contains("/video/tos/") ||
+            lower.contains("/o1/v/") ||
+            lower.contains("/v/t16/")
+    }
 
     fun looksLikeMediaUrl(url: String): Boolean {
         if (url.isBlank() || url.startsWith("blob:") || url.startsWith("data:")) return false
         if (skipProbeRegex.containsMatchIn(url)) return false
+        if (isTikTokMediaUrl(url)) return true
         if (InstagramUrlUtils.isInstagramMediaUrl(url)) return true
         if (DailymotionUrlUtils.isDailymotionMediaUrl(url) &&
             (url.contains(".m3u8", true) || url.contains(".mpd", true) ||
@@ -41,6 +59,7 @@ object VideoUtils {
             lower.contains(".mp3") || lower.contains(".m4a") -> StreamType.AUDIO
             lower.contains(".mp4") || lower.contains(".webm") || lower.contains(".m4v") ||
                 lower.contains("videoplayback") || lower.contains("googlevideo") -> StreamType.PROGRESSIVE_MP4
+            isTikTokMediaUrl(url) -> StreamType.PROGRESSIVE_MP4
             // Instagram CDN often omits file extension
             InstagramUrlUtils.isInstagramMediaUrl(url) -> StreamType.PROGRESSIVE_MP4
             else -> null

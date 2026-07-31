@@ -10,6 +10,8 @@ import com.avd.data.local.room.entity.ProgressInfo
 import com.avd.data.local.room.entity.VideoInfo
 import com.avd.data.local.room.entity.VideFormatEntityList
 import com.avd.data.repository.ProgressRepository
+import com.avd.browserkit.api.BrowserDownloadSharedStore
+import com.avd.browserkit.api.BrowserSharedDownloadTask
 import com.avd.ui.main.base.BaseViewModel
 import com.avd.util.ContextUtils
 import com.avd.util.FileUtil
@@ -17,6 +19,7 @@ import com.avd.util.NetworkUtils
 import com.avd.util.downloaders.custom_downloader_service.CustomRegularDownloader
 import com.avd.util.downloaders.generic_downloader.models.VideoTaskState
 import com.avd.util.downloaders.youtubedl_downloader.YoutubeDlDownloader
+import androidx.work.WorkManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.core.BackpressureStrategy
 import io.reactivex.rxjava3.core.Observable
@@ -72,6 +75,13 @@ class ProgressViewModel @Inject constructor(
 
     fun cancelDownload(id: Long, removeFile: Boolean) {
         val inf = progressInfos.get()?.find { it.downloadId == id }
+        if (inf != null && isBrowserSharedTask(inf)) {
+            val taskId = inf.id.removePrefix(BROWSER_ID_PREFIX)
+            WorkManager.getInstance(ContextUtils.getApplicationContext()).cancelUniqueWork("browser_host_$taskId")
+            BrowserDownloadSharedStore.remove(taskId)
+            progressInfos.set(progressInfos.get()?.filterNot { it.id == inf.id }?.sortedBy { it.id })
+            return
+        }
         inf?.let { progressInfo ->
             deleteProgressInfo(progressInfo) { info ->
                 if (info.videoInfo.isRegularDownload) {
@@ -95,6 +105,10 @@ class ProgressViewModel @Inject constructor(
 
     fun pauseDownload(id: Long) {
         val inf = progressInfos.get()?.find { it.downloadId == id }
+        if (inf != null && isBrowserSharedTask(inf)) {
+            Toast.makeText(ContextUtils.getApplicationContext(), "Pause not supported for browser downloads", Toast.LENGTH_SHORT).show()
+            return
+        }
 
         if (inf?.videoInfo?.isRegularDownload == true) {
             CustomRegularDownloader.pauseDownload(ContextUtils.getApplicationContext(), inf)
@@ -111,6 +125,10 @@ class ProgressViewModel @Inject constructor(
     fun resumeDownload(id: Long) {
         try {
             val inf = progressInfos.get()?.find { it.downloadId == id }
+            if (inf != null && isBrowserSharedTask(inf)) {
+                Toast.makeText(ContextUtils.getApplicationContext(), "Resume not supported for browser downloads", Toast.LENGTH_SHORT).show()
+                return
+            }
             if (inf?.videoInfo?.isRegularDownload == true) {
                 CustomRegularDownloader.resumeDownload(ContextUtils.getApplicationContext(), inf)
             } else {
@@ -240,7 +258,56 @@ class ProgressViewModel @Inject constructor(
                 error.printStackTrace()
             }
         }
-        return youtubeDlDownloads
+        return youtubeDlDownloads.map { dbItems ->
+            mergeBrowserkitTasks(dbItems)
+        }
+    }
+
+    private fun mergeBrowserkitTasks(dbItems: List<ProgressInfo>): List<ProgressInfo> {
+        val browserItems = BrowserDownloadSharedStore.tasks.value
+            .filter { it.status != com.avd.browserkit.download.BrowserDownloadStatus.COMPLETED }
+            .map { it.toProgressInfo() }
+        return (dbItems + browserItems)
+            .distinctBy { it.id }
+            .sortedBy { it.id }
+    }
+
+    private fun BrowserSharedDownloadTask.toProgressInfo(): ProgressInfo {
+        val infoId = "$BROWSER_ID_PREFIX$taskId"
+        val safeUrl = downloadUrl.ifBlank { pageUrl }
+        val videoInfo = VideoInfo(
+            id = infoId,
+            title = title,
+            ext = "mp4",
+            originalUrl = safeUrl,
+            formats = VideFormatEntityList(emptyList()),
+            isRegularDownload = false,
+        )
+        return ProgressInfo(
+            id = infoId,
+            downloadId = browserDownloadId(taskId),
+            videoInfo = videoInfo,
+            progressDownloaded = percent.toLong(),
+            progressTotal = 100L,
+            downloadStatus = when (status) {
+                com.avd.browserkit.download.BrowserDownloadStatus.QUEUED -> VideoTaskState.PENDING
+                com.avd.browserkit.download.BrowserDownloadStatus.DOWNLOADING -> VideoTaskState.DOWNLOADING
+                com.avd.browserkit.download.BrowserDownloadStatus.PAUSED -> VideoTaskState.PAUSE
+                com.avd.browserkit.download.BrowserDownloadStatus.COMPLETED -> VideoTaskState.SUCCESS
+                com.avd.browserkit.download.BrowserDownloadStatus.FAILED -> VideoTaskState.ERROR
+            },
+            isLive = false,
+            isM3u8 = safeUrl.contains(".m3u8") || safeUrl.contains(".mpd"),
+            infoLine = "browserkit",
+        )
+    }
+
+    private fun isBrowserSharedTask(info: ProgressInfo): Boolean = info.id.startsWith(BROWSER_ID_PREFIX)
+
+    private fun browserDownloadId(taskId: String): Long = -kotlin.math.abs(taskId.hashCode().toLong()).coerceAtLeast(1L)
+
+    private companion object {
+        const val BROWSER_ID_PREFIX = "browser_"
     }
 
 }

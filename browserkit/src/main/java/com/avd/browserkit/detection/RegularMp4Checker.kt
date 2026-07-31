@@ -4,6 +4,7 @@ import android.net.Uri
 import android.webkit.CookieManager
 import com.avd.browserkit.util.BrowserKitLog
 import com.avd.browserkit.util.InstagramUrlUtils
+import com.avd.browserkit.util.VideoUtils
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.net.HttpURLConnection
@@ -123,7 +124,7 @@ object RegularMp4Checker {
                 return null
             }
 
-            val isTikTok = url.contains(".tiktok.com/", ignoreCase = true)
+            val isTikTok = VideoUtils.isTikTokMediaUrl(url) || finalUrl.contains(".tiktok.com/", ignoreCase = true)
             val isIg = InstagramUrlUtils.isInstagramMediaUrl(url) ||
                 url.contains("cdninstagram", ignoreCase = true)
             val tikTokMin = 1024L * 1024 / 3

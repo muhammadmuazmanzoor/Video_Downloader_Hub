@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import com.avd.browserkit.api.BrowserDownloadBridge
 import com.avd.browserkit.api.BrowserDownloadResult
+import com.avd.browserkit.api.BrowserDownloadSharedStore
 import com.avd.browserkit.api.BrowserDownloadSnapshot
 import com.avd.browserkit.api.BrowserHostDownloadRequest
 object BrowserKitBridge : BrowserDownloadBridge {
@@ -28,6 +29,15 @@ object BrowserKitBridge : BrowserDownloadBridge {
     }
 
     override fun onTaskUpdated(snapshot: BrowserDownloadSnapshot) {
+        BrowserDownloadSharedStore.update(
+            taskId = snapshot.taskId,
+            title = snapshot.title,
+            pageUrl = snapshot.pageUrl,
+            percent = snapshot.percent,
+            status = snapshot.status,
+            filePath = snapshot.filePath,
+            qualityLabel = snapshot.qualityLabel,
+        )
         Log.d(
             TAG,
             "bridge update taskId=${snapshot.taskId} status=${snapshot.status} percent=${snapshot.percent} " +
@@ -36,6 +46,14 @@ object BrowserKitBridge : BrowserDownloadBridge {
     }
 
     override fun onTaskCompleted(result: BrowserDownloadResult) {
+        BrowserDownloadSharedStore.update(
+            taskId = result.taskId,
+            title = result.title,
+            pageUrl = "",
+            percent = 100,
+            status = com.avd.browserkit.download.BrowserDownloadStatus.COMPLETED,
+            filePath = result.filePath,
+        )
         Log.d(
             TAG,
             "bridge complete taskId=${result.taskId} success=${result.success} path=${result.filePath}",
@@ -43,6 +61,13 @@ object BrowserKitBridge : BrowserDownloadBridge {
     }
 
     override fun onTaskFailed(taskId: String, message: String) {
+        BrowserDownloadSharedStore.update(
+            taskId = taskId,
+            title = "",
+            pageUrl = "",
+            percent = 0,
+            status = com.avd.browserkit.download.BrowserDownloadStatus.FAILED,
+        )
         Log.e(TAG, "bridge failed taskId=$taskId message=$message")
     }
 }

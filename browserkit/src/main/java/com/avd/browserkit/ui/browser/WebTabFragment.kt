@@ -1550,17 +1550,17 @@ class WebTabFragment : Fragment() {
                 "raw=${state?.javaClass?.simpleName ?: "null"} effective=${effectiveState?.javaClass?.simpleName ?: "null"} " +
                     "page=${BrowserKitLog.shortUrl(currentPageUrl)}",
             )
-            binding.fabDownload.isVisible = true
             when (effectiveState) {
                 DownloadButtonState.CannotDownload -> {
-                    setFabLoading(false)
-                    binding.fabDownload.alpha = 0.5f
+                    hideDownloadFab()
                 }
                 DownloadButtonState.Loading -> {
+                    binding.fabDownload.isVisible = true
                     setFabLoading(true)
                     binding.fabDownload.alpha = 1f
                 }
                 is DownloadButtonState.CanDownload -> {
+                    binding.fabDownload.isVisible = true
                     setFabLoading(false)
                     binding.fabDownload.alpha = 1f
                 }
