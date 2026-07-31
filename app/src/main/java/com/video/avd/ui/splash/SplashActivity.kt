@@ -19,6 +19,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.avd.util.AdBlockerHelper
 import com.avd.util.AdBlockerHelper.hideLoading
@@ -82,12 +83,18 @@ class SplashActivity : AppCompatActivity() {
 
     private var interstitialSplash: InterstitialAd? = null
     companion object{
+        private const val REMOTE_CONFIG_WAIT_TIMEOUT_MS = 8_000L
+        private const val SPLASH_MAX_WAIT_MS = 30_000L
         var show:Boolean=true
         var alreadyRequested:Boolean=false
         var fromNoti=false
         var currentActivity: Activity? = null
     }
     private var splashTimeoutJob: Job? = null
+    private var remoteConfigTimeoutJob: Job? = null
+    private var remoteConfigObserver: Observer<Boolean>? = null
+    private var splashFlowStarted = false
+    private var splashAdsRequested = false
 
     fun restartApp(activity: Activity) {
         val intent = activity.packageManager
@@ -144,27 +151,15 @@ class SplashActivity : AppCompatActivity() {
                     binding?.adText?.visibility = if (value == true) {
                         View.INVISIBLE
                     } else {
-                        lifecycleScope.launch {
-                            startSplashTimeout()
-                            //  requestNotificationPermission()
-                            if (isOnline(this@SplashActivity)) {
-                                initConsent()
-                            }
-                        }
+                        startSplashFlowOnce()
                         View.VISIBLE
                     }
                 }
 
             }
             else{
-                    lifecycleScope.launch {
-                        startSplashTimeout()
-                        //  requestNotificationPermission()
-                        getP()
-                        if (isOnline(this@SplashActivity)) {
-                            initConsent()
-                        }
-                    }
+                    getP()
+                    startSplashFlowOnce()
                     View.VISIBLE
             }
         }
@@ -198,22 +193,66 @@ class SplashActivity : AppCompatActivity() {
         }
     }
 
+    private fun startSplashFlowOnce() {
+        if (splashFlowStarted) return
+        splashFlowStarted = true
+        startSplashTimeout()
+        if (isOnline(this@SplashActivity)) {
+            initConsent()
+        }
+    }
+
     fun loadAds() {
-        remoteConfigStatus.observeForever { success ->
-            if (success) {
+        if (splashAdsRequested || isFinishing || isDestroyed) return
+
+        remoteConfigObserver?.let { remoteConfigStatus.removeObserver(it) }
+        remoteConfigTimeoutJob?.cancel()
+
+        val observer = object : Observer<Boolean> {
+            override fun onChanged(success: Boolean) {
+                remoteConfigStatus.removeObserver(this)
+                remoteConfigObserver = null
+                remoteConfigTimeoutJob?.cancel()
+
                 lifecycleScope.launch {
                     delay(1_000)
-                    if(!fromNoti) {
-                        requestingAllAds()
+                    if (success) {
+                        requestSplashAdsOnce()
+                    } else {
+                        Log.e("RemoteConfig", "Fetch failed, continuing with cached/default splash state")
+                        requestSplashAdsOnce()
                     }
                 }
-            } else {
-                lifecycleScope.launch {
-                    delay(15_000)
-                    navigateToNext()
-                }
-                Log.e("RemoteConfig", "Fetch failed11")
             }
+        }
+
+        remoteConfigObserver = observer
+        remoteConfigStatus.observe(this, observer)
+
+        remoteConfigTimeoutJob = lifecycleScope.launch {
+            delay(REMOTE_CONFIG_WAIT_TIMEOUT_MS)
+
+            if (splashAdsRequested || isFinishing || isDestroyed) return@launch
+
+            remoteConfigObserver?.let {
+                remoteConfigStatus.removeObserver(it)
+                remoteConfigObserver = null
+            }
+
+            Log.w("RemoteConfig", "Splash remote config wait timed out, continuing with cached/default splash state")
+            requestSplashAdsOnce()
+        }
+    }
+
+    private fun requestSplashAdsOnce() {
+        if (splashAdsRequested || isFinishing || isDestroyed) return
+
+        splashAdsRequested = true
+
+        if (!fromNoti) {
+            requestingAllAds()
+        } else {
+            navigateToNext()
         }
     }
 
@@ -256,7 +295,7 @@ class SplashActivity : AppCompatActivity() {
         splashTimeoutJob?.cancel()
 
         splashTimeoutJob = lifecycleScope.launch {
-            delay(240_000L) // ⏱️ 4 minutes max
+            delay(SPLASH_MAX_WAIT_MS)
 
             if (!isFinishing && !isDestroyed) {
                 AppUtils.fbEvents("splash_timeout", "SplashActivity",this@SplashActivity)
@@ -279,6 +318,10 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun requestingAllAds() {
+        if (isFinishing || isDestroyed) return
+
+        alreadyRequested = false
+
         // Setup bottom banner loader for splash
         binding?.splashAdContainer?.let {
             splashBottomAdLoader = SplashBottomAdLoader(
@@ -470,12 +513,16 @@ class SplashActivity : AppCompatActivity() {
                                 override fun onAdFailedToShowFullScreenContent(adError: AdError) {
 //                                    GlobalLoader.hide(currentActivity)
                                     interstitialSplash = null
+                                    alreadyRequested = false
+                                    isShowingAd = false
                                     hideLoading()
+                                    navigateToNext()
                                 }
 
                                 override fun onAdDismissedFullScreenContent() {
 //                                    GlobalLoader.hide(currentActivity)
                                     interstitialSplash = null
+                                    alreadyRequested = false
                                     isShowingAd = false
                                     hideLoading()
                                     navigateToNext()
@@ -486,9 +533,8 @@ class SplashActivity : AppCompatActivity() {
                                     interstitialSplash = null
                                 }
                             }
-                        navigateToNext()
                         delay(300)
-                            currentActivity?.let {  interstitialSplash?.show(it)}
+                            interstitialSplash?.show(currentActivitys)
                         Log.d("checkInterAd", "Showing Inter")
                             interstitialSplash = null
                         currentActivitys.onBackPressedDispatcher.addCallback(currentActivitys) {
@@ -525,6 +571,9 @@ class SplashActivity : AppCompatActivity() {
     override fun onDestroy() {
         splashBottomAdLoader?.cleanup()
         splashTimeoutJob?.cancel()
+        remoteConfigTimeoutJob?.cancel()
+        remoteConfigObserver?.let { remoteConfigStatus.removeObserver(it) }
+        remoteConfigObserver = null
         super.onDestroy()
     }
 

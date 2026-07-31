@@ -5,7 +5,7 @@
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
     <color name="unslected">#737373</color>
-    <color name="teal_200">#F78145</color>
+    <color name="teal_200">#48D6F8</color>
     <color name="teal_700">#FF018786</color>
     <color name="color_system_ui">#FFFFFF</color>
     <color name="black">#FF000000</color>
@@ -18,7 +18,7 @@
     <color name="dark_gray">#E6E6E6</color>
     <color name="yellowselect">#FFED48</color>
     <color name="adaptive_ad_bg">#A2A2A2</color>
-    <color name="red">#EF745C</color>
+    <color name="red">#2387F7</color>
     <color name="red01">#FF0000</color>
     <color name="next_btn">#535151</color>
     <color name="green">#2AB079</color>
@@ -27,7 +27,7 @@
     <color name="greens">#00FF00</color>
     <color name="bluetheme">#91C4DA</color>
     <color name="lightblue">#46B1CA</color>
-    <color name="darkred">#EF745C</color>
+    <color name="darkred">#2387F7</color>
     <color name="toolsbgcolor">#F0F0F0</color>
     <color name="White_Grey">#9EA2AA</color>
 
@@ -61,7 +61,7 @@
     <color name="text_color">#222126</color>
     <color name="text_light">#B8B8B8</color>
     <color name="Black0Percent">#00000000</color>
-    <color name="orangetabcolor">#FF610A</color>
+    <color name="orangetabcolor">#2387F7</color>
     <color name="bottom_nav_selected">#2387F7</color>
     <color name="trackbgColor">#4B4B4B</color>
     <color name="greenselect">#05FF00</color>
@@ -137,11 +137,11 @@
     <color name="theme_background_black">#3D3D3D</color>
     <color name="jade_theme_darker_color">#15767E</color>
     <color name="colorBlueLight">#3397E3</color>
-    <color name="redLight">#F44336</color>
+    <color name="redLight">#2387F7</color>
     <color name="pro_dark_color">#454444</color>
     <color name="pro_light_color">@color/brand_background</color>
     <color name="ad_background_color">#EDF1F5</color>
-    <color name="item_selected_background">#F75655</color> <!-- Light red background -->
+    <color name="item_selected_background">#2387F7</color> <!-- Light red background -->
     <color name="item_default_background">@color/brand_card_background</color>
 
     <color name="foldercolor">#535151</color>
@@ -170,10 +170,10 @@
     <color name="brand_surface_muted">#EFEFEF</color>
     <color name="brand_text_primary">#000000</color>
     <color name="brand_text_secondary">#9EA2AA</color>
-    <color name="brand_accent">#F78145</color>
-    <color name="brand_selected">#F78145</color>
-    <color name="brand_gradient_start">#F32C2C</color>
-    <color name="brand_gradient_end">#F78145</color>
+    <color name="brand_accent">#2286F7</color>
+    <color name="brand_selected">#2286F7</color>
+    <color name="brand_gradient_start">#2286F7</color>
+    <color name="brand_gradient_end">#48D6F8</color>
 
     <color name="gSelector">#2286F7</color>
     <color name="gSelector_light">#2387F7</color>

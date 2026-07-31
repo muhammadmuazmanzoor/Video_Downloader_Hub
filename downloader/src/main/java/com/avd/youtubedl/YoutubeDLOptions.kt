@@ -69,4 +69,8 @@ class YoutubeDLOptions {
         }
         return commandList
     }
+
+    fun snapshot(): Map<String, List<String>> {
+        return options.mapValues { (_, values) -> values.toList() }
+    }
 }

@@ -18,12 +18,13 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.avd.R
+import com.avd.browserkit.api.BrowserLaunchMode
+import com.avd.browserkit.ui.browser.BrowserHostFragment
 import com.avd.databinding.FragmentHistoryDownloadBinding
 import com.avd.ui.component.adapter.HistoryAdapter
 import com.avd.ui.component.adapter.HistoryListener
 import com.avd.ui.main.base.BaseFragment
 import com.avd.ui.main.home.browser.BrowserViewModel
-import com.avd.ui.main.home.browser.webTab.NewBrowserFragment
 import com.avd.ui.main.home.browser.webTab.WebTab
 import com.avd.ui.main.progress.WrapContentLinearLayoutManager
 import com.avd.util.AppLogger
@@ -116,7 +117,10 @@ class HistoryFragment : BaseFragment() {
                 activityFragmentContainer?.let {
                     val transaction =
                         currentFragment.requireActivity().supportFragmentManager.beginTransaction()
-                    transaction.replace(it.id, NewBrowserFragment.newInstance())
+                    transaction.replace(
+                        it.id,
+                        BrowserHostFragment.newInstance(BrowserLaunchMode.BLANK, null, null)
+                    )
                     transaction.addToBackStack("history")
                     transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     transaction.commit()

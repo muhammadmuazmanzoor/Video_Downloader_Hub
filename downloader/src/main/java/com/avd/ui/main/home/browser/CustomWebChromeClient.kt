@@ -33,27 +33,30 @@ class CustomWebChromeClient(
 
     override fun onCreateWindow(view: WebView?, isDialog: Boolean, isUserGesture: Boolean, resultMsg: Message?): Boolean {
         if (view != null && view.handler != null) {
+            if (!isUserGesture || resultMsg == null) {
+                return false
+            }
             val href = view.handler.obtainMessage()
             view.requestFocusNodeHref(href)
             val url = href.data.getString("url") ?: ""
             val isAd = if (settingsViewModel.isAdBlocker.get()) {
-                tabViewModel.isAd(url)
+                url.isNotBlank() && tabViewModel.isAd(url)
             } else {
                 false
             }
             AppLogger.d("ON_CREATE_WINDOW::************* $url ${view.url} isAd:: $isAd  $isUserGesture")
-            if (url.isEmpty() || !url.startsWith("http") || isAd || !isUserGesture) {
+            if (isAd) {
                 return false
             }
 
-            val transport = resultMsg!!.obj as WebView.WebViewTransport
+            val transport = resultMsg.obj as WebView.WebViewTransport
             transport.webView = WebView(view.context)
 
             tabViewModel.openPageEvent.value =
                 WebTab(
                     webview = transport.webView,
                     resultMsg = resultMsg,
-                    url = "url",
+                    url = url.ifBlank { view.url.orEmpty() },
                     title = view.title,
                     iconBytes = null
                 )

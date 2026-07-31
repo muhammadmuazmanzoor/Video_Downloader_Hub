@@ -161,12 +161,15 @@ object CookieUtils {
         try {
             if (Build.VERSION.SDK_INT > 32) {
                 val cookieFile = File(chromeDefaultPathApi29More)
-                if (cookieFile.exists() && !cookieFile.isFile) {
+                if (cookieFile.exists()) {
                     // Use reflection to invoke the addOption method on the request object
                     if (request != null) {
                         val addOptionMethod = request::class.java.getMethod("addOption", String::class.java, String::class.java)
                         addOptionMethod.invoke(request, "--cookies-from-browser", "chrome:${cookieFile.path}")
+                        Log.d("CookieUtils", "Added --cookies-from-browser for $url from ${cookieFile.path}")
                     }
+                } else {
+                    Log.w("CookieUtils", "Browser cookie path missing for $url at ${cookieFile.path}")
                 }
 
                 return cookieFile
@@ -186,6 +189,7 @@ object CookieUtils {
                 if (request != null) {
                     val addOptionMethod = request::class.java.getMethod("addOption", String::class.java, String::class.java)
                     addOptionMethod.invoke(request, "--cookies", cookieFile.path)
+                    Log.d("CookieUtils", "Added --cookies for $url from ${cookieFile.path}")
                 }
             }
 

@@ -83,6 +83,8 @@ class DetectedVideosTabViewModel @Inject constructor(
 
     @Volatile
     private var verifyVideoLinkJobStorage = mutableMapOf<String, Disposable>()
+    private val activeRegularChecks = mutableSetOf<String>()
+    private val rejectedRegularChecks = LinkedHashSet<String>()
 
     private val hasCheckLoadingsM3u8 = ObservableBoolean(false)
     private val hasCheckLoadingsRegular = ObservableBoolean(false)
@@ -137,6 +139,8 @@ class DetectedVideosTabViewModel @Inject constructor(
         downloadButtonState.set(DownloadButtonStateCanNotDownload())
         detectedVideosList.set(mutableSetOf())
         cancelAllCheckJobs()
+        activeRegularChecks.clear()
+        rejectedRegularChecks.clear()
         val req = getRequestWithHeadersForUrl(
             url,
             url,
@@ -367,68 +371,85 @@ class DetectedVideosTabViewModel @Inject constructor(
 
     override fun checkRegularMp4(request: Request?): Disposable? {
         if (request == null) {
-            Log.d("InstaGramDetection", "Request is null, returning without processing.")
             return null
         }
 
         val uriString = request.url.toString()
-        Log.d("InstaGramDetection", "Processing URL: $uriString")
-
         val isAd = webTabModel?.isAd(uriString) ?: false
         if (!uriString.startsWith("http") || isAd) {
-            Log.d("InstaGramDetection", "URL is either not HTTP or is identified as an ad. Skipping detection.")
             return null
         }
 
-        val clearedUrl = uriString.split("?").first().trim()
-        Log.d("InstaGramDetection", "Cleared URL (without parameters): $clearedUrl")
+        val clearedUrl = normalizedUrl(uriString)
+        if (clearedUrl.isEmpty() || isExcludedRegularUrl(clearedUrl)) {
+            return null
+        }
 
-        if (clearedUrl.contains(Regex("^(.*\\.(apk|html|xml|ico|css|js|png|gif|json|jpg|jpeg|svg|woff|woff2|m3u8|mpd|ts|php|ttf|otf|eot|cur|webp|bmp|tif|tiff|psd|ai|eps|pdf|doc|docx|xls|xlsx|ppt|pptx|csv|md|rtf|vtt|srt|swf|jar|log|txt))?$"))) {
-            Log.d("InstaGramDetection", "URL matches excluded file types. Skipping detection.")
+        val regularCheckKey = clearedUrl.lowercase()
+        synchronized(jobStorageLock) {
+            if (regularCheckKey in activeRegularChecks || regularCheckKey in rejectedRegularChecks) {
+                return null
+            }
+        }
+
+        if (!isLikelyRegularVideoCandidate(request, clearedUrl)) {
+            synchronized(jobStorageLock) {
+                rememberRejectedRegularCheck(regularCheckKey)
+            }
             return null
         }
 
         val headers = try {
-            request.headers.toMap().toMutableMap().also {
-                Log.d("InstaGramDetection", "Headers extracted: $it")
-            }
+            request.headers.toMap().toMutableMap()
         } catch (e: Throwable) {
-            Log.e("InstaGramDetection", "Error extracting headers, proceeding with empty headers", e)
             mutableMapOf()
         }
 
+        val shouldShowLoading = shouldShowRegularLoading(request, clearedUrl)
+        synchronized(jobStorageLock) {
+            activeRegularChecks.add(regularCheckKey)
+        }
+
         val disposable = io.reactivex.rxjava3.core.Observable.create<Unit> {
-            if (request.url.toString().contains(".mp4")) {
-                Log.d("InstaGramDetection", "URL contains .mp4, setting download button state to loading.")
+            if (shouldShowLoading) {
                 setButtonState(DownloadButtonStateLoading())
+                val loadings = regularLoadingList.get()
+                loadings?.add(request.url.toString())
+                regularLoadingList.set(loadings?.toMutableSet())
             }
-
-            val loadings = regularLoadingList.get()
-            loadings?.add(request.url.toString())
-            regularLoadingList.set(loadings?.toMutableSet())
-            Log.d("InstaGramDetection", "Added URL to loading list: ${request.url}")
-
-            Log.d("InstaGramDetection", "Starting propagateCheckJob with URI: $uriString and headers: $headers")
             propagateCheckJob(uriString, headers)
             it.onComplete()
         }
             .subscribeOn(baseSchedulers.io)
             .doOnComplete {
-                val loadings = regularLoadingList.get()
                 val url = request.url.toString()
-                loadings?.remove(url)
-                loadings?.remove(normalizedUrl(url))
-                regularLoadingList.set(loadings?.toMutableSet())
+                val normalized = normalizedUrl(url).lowercase()
+                if (shouldShowLoading) {
+                    val loadings = regularLoadingList.get()
+                    loadings?.remove(url)
+                    loadings?.remove(normalizedUrl(url))
+                    regularLoadingList.set(loadings?.toMutableSet())
+                }
+                synchronized(jobStorageLock) {
+                    activeRegularChecks.remove(normalized)
+                    val matchedDetected = detectedVideosList.get()?.any {
+                        it.firstUrlToString == url || normalizedUrl(it.firstUrlToString).equals(normalized, true)
+                    } == true
+                    if (!matchedDetected) {
+                        rememberRejectedRegularCheck(normalized)
+                    }
+                }
                 resetButtonIfNoActiveDetection()
-                //Log.d("InstaGramDetection", "Removed URL from loading list after completion: ${request.url}")
             }
             .onErrorComplete()
-            .doOnError { error ->
-                Log.e("InstaGramDetection", "Error during video check for URL: $clearedUrl", error)
+            .doOnError {
+                synchronized(jobStorageLock) {
+                    activeRegularChecks.remove(regularCheckKey)
+                    rememberRejectedRegularCheck(regularCheckKey)
+                }
             }
             .subscribe()
 
-        Log.d("InstaGramDetection", "Disposable created and returned for URL: $uriString")
         return disposable
     }
 
@@ -455,6 +476,63 @@ class DetectedVideosTabViewModel @Inject constructor(
         return url.substringBefore("?").trim()
     }
 
+    private fun isExcludedRegularUrl(clearedUrl: String): Boolean {
+        val lower = clearedUrl.lowercase()
+        return lower.contains(
+            Regex("^(.*\\.(apk|html|xml|ico|css|js|png|gif|json|jpg|jpeg|svg|woff|woff2|m3u8|mpd|ts|php|ttf|otf|eot|cur|webp|bmp|tif|tiff|psd|ai|eps|pdf|doc|docx|xls|xlsx|ppt|pptx|csv|md|rtf|vtt|srt|swf|jar|log|txt))?$")
+        )
+    }
+
+    private fun isLikelyRegularVideoCandidate(request: Request, clearedUrl: String): Boolean {
+        val lowerUrl = clearedUrl.lowercase()
+        val acceptHeader = request.header("Accept").orEmpty().lowercase()
+        val fetchDest = request.header("Sec-Fetch-Dest").orEmpty().lowercase()
+        val contentTypeHint = request.header("Content-Type").orEmpty().lowercase()
+
+        if (lowerUrl.contains(Regex("\\.(mp4|m4v|mov|webm|3gp|mkv|avi|flv|wmv)($|[/#])"))) {
+            return true
+        }
+        if (acceptHeader.contains("video/") || contentTypeHint.contains("video/")) {
+            return true
+        }
+        if (fetchDest == "video") {
+            return true
+        }
+
+        val mediaHints = listOf(
+            "videoplayback",
+            "/video/",
+            "video.",
+            "mime=video",
+            "type=video",
+            "/media/",
+            "/stream",
+            "download",
+            "playback"
+        )
+        return mediaHints.any { lowerUrl.contains(it) }
+    }
+
+    private fun shouldShowRegularLoading(request: Request, clearedUrl: String): Boolean {
+        val lowerUrl = clearedUrl.lowercase()
+        val acceptHeader = request.header("Accept").orEmpty().lowercase()
+        val fetchDest = request.header("Sec-Fetch-Dest").orEmpty().lowercase()
+        return lowerUrl.contains(Regex("\\.(mp4|m4v|mov|webm|3gp|mkv|avi|flv|wmv)($|[/#])")) ||
+            acceptHeader.contains("video/") ||
+            fetchDest == "video"
+    }
+
+    private fun rememberRejectedRegularCheck(normalizedUrl: String) {
+        if (normalizedUrl.isBlank()) return
+        if (rejectedRegularChecks.size >= 250) {
+            val first = rejectedRegularChecks.firstOrNull()
+            if (first != null) {
+                rejectedRegularChecks.remove(first)
+            }
+        }
+        rejectedRegularChecks.add(normalizedUrl)
+    }
+
     private val jobStorageLock = Any()
     override fun cancelAllCheckJobs() {
         try {
@@ -464,6 +542,8 @@ class DetectedVideosTabViewModel @Inject constructor(
                 try {
                     regularLoadingList.set(mutableSetOf())
                     m3u8LoadingList.set(mutableSetOf())
+                    activeRegularChecks.clear()
+                    rejectedRegularChecks.clear()
                 } catch (e: Throwable) {
                     AppLogger.e("Failed to reset loading lists: ${e.message}")
                 }

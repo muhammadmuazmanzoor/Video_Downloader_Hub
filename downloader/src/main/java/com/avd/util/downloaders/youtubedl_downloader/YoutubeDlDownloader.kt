@@ -142,11 +142,22 @@ class YoutubeDlDownloader : GenericDownloader() {
         }
 
         private fun getDownloadDataFromVideoInfo(context: Context, videoInfo: VideoInfo): Data.Builder {
-            val videoUrl: String = if (videoInfo.downloadUrls.isNotEmpty()) {
-                videoInfo.originalUrl
-            } else {
-                videoInfo.formats.formats.firstOrNull()?.url.toString()
+            val formatUrl = videoInfo.formats.formats.firstOrNull()?.url?.trim().orEmpty()
+            val originalUrl = videoInfo.originalUrl.trim()
+            val isDirectStream = formatUrl.contains(".m3u8", ignoreCase = true) ||
+                formatUrl.contains(".mpd", ignoreCase = true) ||
+                formatUrl.contains(".mp4", ignoreCase = true) ||
+                formatUrl.contains(".webm", ignoreCase = true)
+            val videoUrl: String = when {
+                formatUrl.isNotBlank() && isDirectStream -> formatUrl
+                videoInfo.downloadUrls.isNotEmpty() -> originalUrl
+                formatUrl.isNotBlank() -> formatUrl
+                else -> originalUrl
             }
+            Log.d(
+                TAG,
+                "Resolved source URL for id=${videoInfo.id}: chosen=$videoUrl original=$originalUrl format=$formatUrl directStream=$isDirectStream",
+            )
             val headersMap = if (videoInfo.formats.formats.isNotEmpty()) {
                     videoInfo.formats.formats.firstOrNull()?.httpHeaders?.toMutableMap()
                         ?: mutableMapOf()

@@ -49,6 +49,18 @@ class YoutubeDLRequest {
         return urls
     }
 
+    fun getUrls(): List<String> {
+        return urls
+    }
+
+    fun getCustomCommands(): List<String> {
+        return customCommandList.toList()
+    }
+
+    fun getOptionsSnapshot(): Map<String, List<String>> {
+        return options.snapshot()
+    }
+
     fun buildCommand(): List<String> {
         val commandList: MutableList<String> = ArrayList()
         commandList.addAll(options.buildOptions())

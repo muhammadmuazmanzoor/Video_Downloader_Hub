@@ -1,5 +1,7 @@
 package com.avd.ui.main.home.browser
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.graphics.Bitmap
 import android.webkit.RenderProcessGoneDetail
 import android.webkit.WebResourceRequest
@@ -82,7 +84,7 @@ class CustomWebViewClient(
 //    }
 
     override fun shouldInterceptRequest(view: WebView?, request: WebResourceRequest?): WebResourceResponse? {
-        if (!youtube || !isFacebook){
+        if (!youtube && !isFacebook){
             val isAdBlockerOn = settingsModel.isAdBlocker.get()
             val url = request?.url.toString()
             val isUrlAd: Boolean = isAdBlockerOn && tabViewModel.isAd(url)
@@ -189,16 +191,34 @@ class CustomWebViewClient(
     }
 
     override fun shouldOverrideUrlLoading(view: WebView, url: WebResourceRequest): Boolean {
+        val target = url.url.toString()
         val isAdBlockerOn = settingsModel.isAdBlocker.get()
-        val isAd = if (isAdBlockerOn) tabViewModel.isAd(url.url.toString()) else false
-        val uri=url.url.toString()
-        return if (url.url.toString().startsWith("http") && url.isForMainFrame && !isAd) {
-            if (!tabViewModel.isTabInputFocused.get()) {
-                tabViewModel.setTabTextInput(url.url.toString())
+        val isAd = if (isAdBlockerOn) tabViewModel.isAd(target) else false
+        if (isAd) return true
+
+        if (!tabViewModel.isTabInputFocused.get()) {
+            tabViewModel.setTabTextInput(target)
+        }
+
+        if (
+            target.startsWith("http://", true) ||
+            target.startsWith("https://", true) ||
+            target.startsWith("about:", true) ||
+            target.startsWith("javascript:", true) ||
+            target.startsWith("blob:", true) ||
+            target.startsWith("data:", true)
+        ) {
+            return false
+        }
+
+        return try {
+            val externalIntent = Intent(Intent.ACTION_VIEW, url.url).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
-            false
-        } else {
+            view.context.startActivity(externalIntent)
             true
+        } catch (_: ActivityNotFoundException) {
+            false
         }
     }
 

@@ -112,7 +112,7 @@ abstract class BaseWebTabFragment : BaseFragment() {
                     true
                 }
 
-                R.id.history_screen_menu_item -> {
+             /*   R.id.history_screen_menu_item -> {
                     try {
                         if (host != null){
                             host?.hideBottomBar()
@@ -122,7 +122,7 @@ abstract class BaseWebTabFragment : BaseFragment() {
                     }
                     navigateToHistory()
                     true
-                }
+                }*/
 
                 R.id.desktop_mode -> {
                     menuItem.isChecked = !menuItem.isChecked

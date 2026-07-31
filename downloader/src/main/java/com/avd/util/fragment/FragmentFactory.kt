@@ -1,14 +1,8 @@
 package com.avd.util.fragment
 
 import androidx.fragment.app.Fragment
-import com.avd.ui.main.home.browser.webTab.BrowserTabFragment
 import com.avd.ui.main.downloder_queue.ui.main.FragmentDownloadQueue
 import com.avd.ui.main.history.HistoryFragment
-import com.avd.ui.main.home.browser.BrowserFragment
-import com.avd.ui.main.home.browser.homeTab.BrowserHomeFragment
-import com.avd.ui.main.home.browser.webTab.WebTabFragment
-import com.avd.ui.main.home.browser.detectedVideos.DetectedVideosTabFragment
-import com.avd.ui.main.home.browser.webTab.NewBrowserFragment
 import com.avd.ui.main.link.LinkFragment
 import com.avd.ui.main.settings.SettingsFragmentDownloader
 import com.avd.ui.main.video.VideoFragment
@@ -33,8 +27,11 @@ interface FragmentFactory {
 }
 
 class FragmentFactoryImpl @Inject constructor() : FragmentFactory {
-    override fun createBrowserFragment() = BrowserHomeFragment.newInstance()
-    override fun createNewBrowserFragment() = BrowserTabFragment.newInstance()
+    private fun createBrowserHost() =
+        BrowserHostFragment.newInstance(BrowserLaunchMode.BLANK, null, null)
+
+    override fun createBrowserFragment() = createBrowserHost()
+    override fun createNewBrowserFragment() = createBrowserHost()
 
     override fun createProgressFragment() = FragmentDownloadQueue.newInstance()
 
@@ -46,9 +43,9 @@ class FragmentFactoryImpl @Inject constructor() : FragmentFactory {
 
     override fun createHistoryFragment() = HistoryFragment.newInstance()
 
-    override fun createBrowserHomeFragment() = BrowserHomeFragment.newInstance()
+    override fun createBrowserHomeFragment() = createBrowserHost()
 
-    override fun createWebTabFragment() = WebTabFragment.newInstance()
+    override fun createWebTabFragment() = createBrowserHost()
 
-    override fun createDetectedVideosTabFragment() = DetectedVideosTabFragment.newInstance()
+    override fun createDetectedVideosTabFragment() = createBrowserHost()
 }

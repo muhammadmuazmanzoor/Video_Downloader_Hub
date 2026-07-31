@@ -2,11 +2,6 @@ package com.avd.di.module.activity
 
 import com.avd.ui.main.help.HelpFragment
 import com.avd.ui.main.history.HistoryFragment
-import com.avd.ui.main.home.browser.BrowserFragment
-import com.avd.ui.main.home.browser.detectedVideos.DetectedVideosTabFragment
-import com.avd.ui.main.home.browser.homeTab.BrowserHomeFragment
-import com.avd.ui.main.home.browser.webTab.BrowserTabFragment
-import com.avd.ui.main.home.browser.webTab.WebTabFragment
 import com.avd.ui.main.link.LinkFragment
 import com.avd.ui.main.progress.ProgressFragment
 import com.avd.ui.main.proxies.ProxiesFragment
@@ -24,10 +19,6 @@ import dagger.hilt.android.scopes.FragmentScoped
 @Module
 @InstallIn(ActivityComponent::class) // Hilt's replacement for custom scopes
 abstract class MainModule {
-
-    @FragmentScoped
-    @Binds
-    abstract fun bindBrowserFragment(browserFragment: BrowserFragment): BrowserFragment
 
     @FragmentScoped
     @Binds
@@ -52,21 +43,6 @@ abstract class MainModule {
     @FragmentScoped
     @Binds
     abstract fun bindSettingsFragment(settingsFragment: SettingsFragmentDownloader): SettingsFragmentDownloader
-
-    @FragmentScoped
-    @Binds
-    abstract fun bindWebTabFragment(webTabFragment: WebTabFragment): WebTabFragment
-
-    @FragmentScoped
-    @Binds
-    abstract fun bindDetectedVideosFragment(detectedVideosTabFragment: DetectedVideosTabFragment): DetectedVideosTabFragment
-
-    @FragmentScoped
-    @Binds
-    abstract fun bindBrowserHomeFragment(browserHomeFragment: BrowserHomeFragment): BrowserHomeFragment
-    @FragmentScoped
-    @Binds
-    abstract fun bindBrowserTabFragment(browserTabFragment: BrowserTabFragment): BrowserTabFragment
 
     @FragmentScoped
     @Binds

@@ -175,18 +175,55 @@ class YoutubeDlDownloaderWorker @AssistedInject constructor(
         }
 
         val taskId = inputData.getString(GenericDownloader.DOWNLOAD_ID_KEY) ?: return
-        val url = inputData.getString(GenericDownloader.ORIGIN_KEY) ?: throw Throwable("URL is NULL")
+        val originUrl = inputData.getString(GenericDownloader.ORIGIN_KEY) ?: throw Throwable("URL is NULL")
+        val requestUrl = inputData.getString(GenericDownloader.URL_KEY) ?: originUrl
 
         // Load and decode headers
         val rawHeaders = GenericDownloader.loadHeadersStringFromSharedPreferences(applicationContext, taskId)
-        val decompressedRaw = rawHeaders?.let { GenericDownloader.decompressString(it) }
-//      val decodedHeadersString = String(Base64.getDecoder().decode(decompressedRaw))
-//      Assuming `decompressedRaw` is your Base64-encoded string
-        val decodedBytes = Base64.decode(decompressedRaw, Base64.DEFAULT)
+        if (rawHeaders.isNullOrBlank()) {
+            Log.e("YoutubeDlDownloaderWorker", "Missing saved format headers taskId=$taskId requestUrl=$requestUrl")
+            finishWork(task.also {
+                it.taskState = VideoTaskState.ERROR
+                it.errorMessage = "Missing saved format headers"
+            })
+            return
+        }
+        val decompressedRaw = try {
+            GenericDownloader.decompressString(rawHeaders)
+        } catch (e: Exception) {
+            Log.e("YoutubeDlDownloaderWorker", "Header decompress failed taskId=$taskId", e)
+            finishWork(task.also {
+                it.taskState = VideoTaskState.ERROR
+                it.errorMessage = "Header decompress failed"
+            })
+            return
+        }
+        val decodedBytes = try {
+            Base64.decode(decompressedRaw, Base64.DEFAULT)
+        } catch (e: Exception) {
+            Log.e("YoutubeDlDownloaderWorker", "Header base64 decode failed taskId=$taskId", e)
+            finishWork(task.also {
+                it.taskState = VideoTaskState.ERROR
+                it.errorMessage = "Header decode failed"
+            })
+            return
+        }
         val decodedHeadersString = String(decodedBytes, Charsets.UTF_8)
         val vFormat = Gson().fromJson(decodedHeadersString, VideoFormatEntity::class.java)
+        if (vFormat == null) {
+            Log.e("YoutubeDlDownloaderWorker", "Parsed format is null taskId=$taskId")
+            finishWork(task.also {
+                it.taskState = VideoTaskState.ERROR
+                it.errorMessage = "Format parse failed"
+            })
+            return
+        }
 
-        AppLogger.d("Start download dl:  ${vFormat.formatId} $url $task")
+        AppLogger.d("Start download dl: formatId=${vFormat.formatId} requestUrl=$requestUrl originUrl=$originUrl task=$task")
+        Log.d(
+            "YoutubeDlDownloaderWorker",
+            "Resolved worker URLs taskId=$taskId requestUrl=$requestUrl originUrl=$originUrl formatUrl=${vFormat.url}",
+        )
 
         // Setup download directory and notifications
         val name = task.title
@@ -196,10 +233,20 @@ class YoutubeDlDownloaderWorker @AssistedInject constructor(
         notificationsHelper.hideNotification(taskId.hashCode() + 1)
 
         // Get the mapped YoutubeDLRequest
-        val request = YoutubeDlUtils.getMappedYoutubeDLRequestDownload(url) ?: return // Handle null case
+        val request = YoutubeDlUtils.getMappedYoutubeDLRequestDownload(requestUrl) ?: run {
+            Log.e(
+                "YoutubeDlDownloaderWorker",
+                "Failed to map YoutubeDL request taskId=$taskId requestUrl=$requestUrl originUrl=$originUrl",
+            )
+            finishWork(task.also {
+                it.taskState = VideoTaskState.ERROR
+                it.errorMessage = "YoutubeDL request mapping failed"
+            })
+            return
+        }
 
         cookieFile = CookieUtils.addCookiesToRequestdownload(
-            url, request, inputData.getString(GenericDownloader.ORIGIN_KEY)
+            requestUrl, request, originUrl
         )
 
         tmpFile = File("${fileUtil.tmpDir}/$taskId").apply {
@@ -309,7 +356,7 @@ class YoutubeDlDownloaderWorker @AssistedInject constructor(
                     if (moved) {
                         tmpFile.delete()
                     }
-                    finishWork(VideoTaskItem(url).also { f ->
+                    finishWork(VideoTaskItem(requestUrl).also { f ->
                         f.fileName = it.name
                         f.errorCode = if (moved) 0 else 1
                         f.percent = 100F
@@ -340,11 +387,19 @@ class YoutubeDlDownloaderWorker @AssistedInject constructor(
         val result = withContext(Dispatchers.IO) {
             YoutubeDlUtils.executeYoutubeDLCommand(request, taskId, progressCallback, completionCallback)
         }
+        Log.d("YoutubeDlDownloaderWorker", "YoutubeDL command finished taskId=$taskId responseNull=${result == null}")
 
         // Check for cancellation after execution
         if (isStopped) {
             Log.d("YoutubeDlDownloaderWorker", "Work stopped after download execution")
             return
+        }
+        if (result == null && !getDone()) {
+            Log.e("YoutubeDlDownloaderWorker", "YoutubeDL returned null response taskId=$taskId requestUrl=$requestUrl")
+            finishWork(task.also {
+                it.taskState = VideoTaskState.ERROR
+                it.errorMessage = "YoutubeDL returned null response"
+            })
         }
     } catch (e: CancellationException) {
         Log.d("YoutubeDlDownloaderWorker", "Download was cancelled")
@@ -356,6 +411,10 @@ class YoutubeDlDownloaderWorker @AssistedInject constructor(
     } catch (e: Exception) {
         Log.e("YoutubeDlDownloaderWorker", "Error in startDownload: ${e.message}")
         e.printStackTrace()
+        finishWork(task.also {
+            it.taskState = VideoTaskState.ERROR
+            it.errorMessage = e.message ?: "Unknown worker error"
+        })
     } }
 
 

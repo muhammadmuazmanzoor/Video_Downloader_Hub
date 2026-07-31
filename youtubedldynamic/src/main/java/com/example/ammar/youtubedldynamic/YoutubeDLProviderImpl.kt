@@ -6,48 +6,44 @@ import androidx.annotation.Keep
 import com.avd.youtubedl.YoutubeDLProvider
 import com.yausername.ffmpeg.FFmpeg
 import com.yausername.youtubedl_android.YoutubeDL
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import com.avd.youtubedl.YoutubeDLRequest as YoutubeDLRequest1
 
 
 @Keep
 class YoutubeDLProviderImpl(private val applicationContext: Application) : YoutubeDLProvider {
 
+    @Volatile
     private var isInitialized = false
 
     init {
-        // Initialize YoutubeDL if not already initialized
+        ensureInitialized()
+    }
+
+    override fun getYoutubeDLInstance(): Any {
+        ensureInitialized()
+        return YoutubeDL.getInstance() // Return the YoutubeDL instance as Any
+    }
+
+    override fun getYoutubeDLRequest(url: Any): Any {
+        ensureInitialized()
+        return YoutubeDLRequest1(url.toString()) // Return the YoutubeDL instance as Any
+    }
+
+    override fun getorignalpathtoYoutubeDLRequest(url: Any): Any {
+        ensureInitialized()
+        return  com.yausername.youtubedl_android.YoutubeDLRequest(url.toString())
+    }
+
+
+    @Synchronized
+    private fun ensureInitialized() {
+        if (isInitialized) return
         initializeYoutubeDl(applicationContext)
         updateYoutubeDL(applicationContext)
         isInitialized = true
     }
 
-    override fun getYoutubeDLInstance(): Any {
-        if (!isInitialized) {
-            initializeYoutubeDl(applicationContext)
-        }
-        return YoutubeDL.getInstance() // Return the YoutubeDL instance as Any
-    }
-
-    override fun getYoutubeDLRequest(url: Any): Any {
-        if (!isInitialized) {
-            throw IllegalStateException("YoutubeDL is not initialized")
-        }
-        return YoutubeDLRequest1(url.toString()) // Return the YoutubeDL instance as Any
-    }
-
-    override fun getorignalpathtoYoutubeDLRequest(url: Any): Any {
-        if (!isInitialized) {
-            throw IllegalStateException("YoutubeDL is not initialized")
-        }
-        return  com.yausername.youtubedl_android.YoutubeDLRequest(url.toString())
-    }
-
-
     private fun initializeYoutubeDl(applicationContext: Application) {
-        CoroutineScope(Dispatchers.IO).launch {
             try {
                 YoutubeDL.getInstance().init(applicationContext)
                 FFmpeg.getInstance().init(applicationContext)
@@ -60,8 +56,6 @@ class YoutubeDLProviderImpl(private val applicationContext: Application) : Youtu
                 Log.e("YoutubeDlUtils", "Unexpected error initializing YoutubeDL: ${e.message}")
                 e.printStackTrace()
             }
-        }
-
     }
 
     private fun updateYoutubeDL(applicationContext: Application) {

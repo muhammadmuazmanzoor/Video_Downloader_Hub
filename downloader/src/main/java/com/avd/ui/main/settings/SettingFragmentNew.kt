@@ -19,9 +19,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.avd.R
+import com.avd.browserkit.api.BrowserLaunchMode
+import com.avd.browserkit.ui.browser.BrowserHostFragment
 import com.avd.databinding.FragmentSettingNewBinding
-import com.avd.ui.main.home.browser.homeTab.BrowserHomeFragment
-import com.avd.ui.main.home.browser.webTab.BrowserTabFragment
 import com.avd.util.AdBlockerHelper
 import com.avd.util.AdBlockerHelper.browser_native
 import com.avd.util.AdBlockerHelper.exit_native
@@ -212,7 +212,10 @@ class SettingFragmentNew : Fragment() {
                 val activityFragmentContainer = currentFragment.activity?.findViewById<FragmentContainerView>(R.id.fragment_container_view)
                 activityFragmentContainer?.let {
                     val transaction = currentFragment.requireActivity().supportFragmentManager.beginTransaction()
-                    transaction.replace(it.id, BrowserTabFragment.newInstance())
+                    transaction.replace(
+                        it.id,
+                        BrowserHostFragment.newInstance(BrowserLaunchMode.BLANK, null, null)
+                    )
                     transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     transaction.commit()
                 }
