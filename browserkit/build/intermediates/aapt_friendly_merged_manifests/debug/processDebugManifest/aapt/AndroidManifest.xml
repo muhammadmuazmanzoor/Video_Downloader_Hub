@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.avd.browserkit" >
+
+    <uses-sdk android:minSdkVersion="28" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <application>
+        <activity
+            android:name="com.avd.browserkit.BrowserKitActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:theme="@style/Theme.BrowserKit" />
+        <activity
+            android:name="com.avd.browserkit.ui.player.BrowserPlayerActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="false"
+            android:theme="@style/Theme.BrowserKit.Fullscreen" />
+        <activity
+            android:name="com.avd.browserkit.ui.history.BrowserHistoryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="false"
+            android:theme="@style/Theme.BrowserKit" />
+
+        <provider
+            android:name="com.avd.browserkit.util.BrowserKitFileProvider"
+            android:authorities="dollar_openBracket_applicationId_closeBracket.browserkit.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true" >
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/browserkit_file_paths" />
+        </provider>
+
+        <receiver
+            android:name="com.avd.browserkit.download.BrowserDownloadCancelReceiver"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.avd.browserkit.download.ACTION_CANCEL" />
+            </intent-filter>
+        </receiver>
+    </application>
+
+</manifest>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.BrowserKit" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="colorPrimary">@color/bk_primary</item>
+        <item name="colorOnPrimary">@color/bk_on_primary</item>
+        <item name="android:statusBarColor">@color/bk_bg</item>
+        <item name="android:navigationBarColor">@color/bk_bg</item>
+        <item name="android:windowBackground">@color/bk_bg</item>
+    </style>
+
+    <style name="Theme.BrowserKit.Fullscreen" parent="Theme.BrowserKit">
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <style name="Theme.BrowserKit.BottomSheet" parent="ThemeOverlay.Material3.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BrowserMenuBottomSheetStyle</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <style name="Theme.BrowserKit.Dialog" parent="Theme.Material3.Dark.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowMinWidthMajor">85%</item>
+        <item name="android:windowMinWidthMinor">85%</item>
+    </style>
+
+    <style name="BrowserMenuBottomSheetStyle" parent="Widget.Material3.BottomSheet">
+        <item name="backgroundTint">@android:color/transparent</item>
+    </style>
+
+    <style name="BrowserMenuSheetItem">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">52dp</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingHorizontal">20dp</item>
+        <item name="android:textColor">@color/bk_text_primary</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+</resources>
