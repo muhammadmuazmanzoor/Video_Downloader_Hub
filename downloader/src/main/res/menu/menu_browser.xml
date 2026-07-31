@@ -23,6 +23,13 @@
         android:checked="false"
         app:showAsAction="always|collapseActionView" />
 
+    <!-- Keep last: buildWebTabMenu() addresses share/desktop by index 1/2. -->
+    <item
+        android:id="@+id/browser_history_menu_item"
+        android:icon="@drawable/history_menu_icon_24dp"
+        android:title="@string/browser_history"
+        android:visible="false"
+        app:showAsAction="always|collapseActionView" />
 
 
    <!-- <item

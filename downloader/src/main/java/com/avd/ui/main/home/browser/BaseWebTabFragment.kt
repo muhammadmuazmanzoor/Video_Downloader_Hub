@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentTransaction
 import com.avd.ui.main.home.browser.social.SocialPlatform
 import com.avd.ui.main.home.browser.social.SocialPlatformDownloadFragment
 import com.avd.R
+import com.avd.browserkit.api.BrowserKit
 import com.avd.ui.main.base.BaseFragment
 import com.avd.ui.main.history.HistoryFragment
 import com.avd.ui.main.proxies.ProxiesFragment
@@ -46,6 +47,12 @@ abstract class BaseWebTabFragment : BaseFragment() {
 
     abstract fun shareWebLink()
 
+    /**
+     * Screens that reach BrowserKit's browser (rather than the in-app download history)
+     * override this to expose the browsing-history entry in the overflow menu.
+     */
+    open val showsBrowserHistoryMenuItem: Boolean = false
+
     fun buildWebTabMenu(browserMenu: View, isShareItemVisible: Boolean) {
         val isdesk= settingsViewModel?.isDesktopMode?.get()
         if (popupMenu == null) {
@@ -70,6 +77,8 @@ abstract class BaseWebTabFragment : BaseFragment() {
             })
 
             shareMenuItem.isVisible = isShareItemVisible
+            popupMenu!!.menu.findItem(R.id.browser_history_menu_item)?.isVisible =
+                showsBrowserHistoryMenuItem
     }
 
     fun showPopupMenu() {
@@ -95,6 +104,11 @@ abstract class BaseWebTabFragment : BaseFragment() {
 
                 R.id.share_link -> {
                     shareWebLink()
+                    true
+                }
+
+                R.id.browser_history_menu_item -> {
+                    BrowserKit.launchHistory(requireContext())
                     true
                 }
 

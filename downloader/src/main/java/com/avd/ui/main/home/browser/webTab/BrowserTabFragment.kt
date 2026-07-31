@@ -224,10 +224,11 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
     DefaultBrowserDialogFragment.DefaultBrowserCallback {
 
     private val viewModel: ApiViewModel by activityViewModels()
-
     private lateinit var binding: FragmentBrowserTabBinding
 
-    //private val binding get() = _binding!!
+    /** This screen hands off to BrowserKit's browser, so surface its browsing history. */
+    override val showsBrowserHistoryMenuItem: Boolean = true
+
     private var fetchingDialog: Dialog? = null
     private var copiedLinkDialog: AlertDialog? = null
 
@@ -784,7 +785,10 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
         }
 
         binding.tabCount.setOnClickListener {
-            mainViewModel.openNavDrawerEvent.call()
+            Log.d("button", "button tab clicked ")
+            // Home screen is not inside BrowserHostFragment, so open BrowserKit's own
+            // tabs switcher through the activity entry point instead of a parent cast.
+            BrowserKit.launchTabs(requireContext())
         }
         activity?.onBackPressedDispatcher?.addCallback(
             viewLifecycleOwner,
@@ -868,10 +872,10 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
         Log.d(TAG, "setupTiktokDownloadSwitch: initializing switch")
         // Remove listener temporarily to avoid triggering when setting initial state
         binding.switchTiktokDownload?.setOnCheckedChangeListener(null)
-        
+
         // Load initial state from preferences
         loadSwitchStateFromPreferences()
-        
+
         // Set up listener
         binding.switchTiktokDownload?.setOnCheckedChangeListener { _, isChecked ->
             if (isRestoringTiktokSwitchState) {
@@ -1218,7 +1222,6 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
 
         handler.post(blinkRunnable)
     }
-
     private fun showTiktokDownloadFeatureDialog() {
         val dialog = TiktokDownloadFeatureDialogFragment {
             // "Try Now" clicked callback - mark feature dialog as shown
@@ -1236,7 +1239,7 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
 
     private fun proceedWithPermissionOrProPanel() {
         val isPro = AdBlockerHelper.isProVersion.value == true || AdBlockerHelper.isPro
-        
+
         if (isPro) {
             // Check if permission is already granted
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -1309,7 +1312,7 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val hasOverlayPermission = Settings.canDrawOverlays(requireContext())
             val isPro = AdBlockerHelper.isProVersion.value == true || AdBlockerHelper.isPro
-            
+
             if (hasOverlayPermission && isPro) {
                 // Permission granted and user is pro - enable switch
                 binding.switchTiktokDownload?.isChecked = true
@@ -2015,3 +2018,4 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
     }
 
 }
+

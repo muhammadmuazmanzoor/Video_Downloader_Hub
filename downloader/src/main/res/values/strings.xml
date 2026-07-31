@@ -42,6 +42,7 @@
     <string name="view" translatable="false">View</string>
     <string name="paste">paste</string>
     <string name="history">History</string>
+    <string name="browser_history">Browser History</string>
     <string name="share_link">Share Link</string>
     <string name="desktop_mode">Desktop Mode</string>
     <string name="searchbar_hint">Search</string>
