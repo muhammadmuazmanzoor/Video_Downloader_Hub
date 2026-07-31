@@ -43,6 +43,7 @@ import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.google.android.play.core.review.ReviewManagerFactory
+import com.avd.browserkit.BrowserKitInitializer
 import com.avd.browserkit.api.BrowserKit
 import com.video.avd.downloader.BrowserKitBridge
 import com.avd.ui.main.progress.ProgressViewModel
@@ -69,7 +70,6 @@ import com.avd.util.AdBlockerHelper.showExitScreen
 import com.avd.util.AdBlockerHelper.showInterstitial
 import com.avd.util.CommunicateWithActivity
 import com.avd.util.RemoteConfigHelper
-import com.avd.util.YoutubeDlUtils
 import com.avd.util.ads.InterstitialManagerA.loadHomeInterstitialAd
 import com.avd.util.ads.InterstitialManagerA.showInterstitialHome
 import com.singular.sdk.Singular
@@ -172,9 +172,12 @@ class MainActivity : AppCompatActivity(), NetworkStateListener, CommunicateWithA
             DynamicModuleDownloader(activity = activity, moduleName = "youtubedldynamic")
         lifecycleScope.launch(Dispatchers.IO) {
             dynamicModuleDownloader.installOrLaunchModule {
-                lifecycleScope.launch(Dispatchers.Main) {
-                    YoutubeDlUtils.initYtdl { instance ->
-                        YoutubeDlUtils.youtubeDl = instance
+                lifecycleScope.launch(Dispatchers.IO) {
+                    runCatching {
+                        BrowserKitInitializer.initializeAwait(applicationContext)
+                        Log.d("BrowserKitInit", "MainActivity ready=${BrowserKitInitializer.isInitialized()}")
+                    }.onFailure {
+                        Log.e("BrowserKitInit", "MainActivity init failed", it)
                     }
                 }
             }

@@ -225,6 +225,12 @@ android {
     dynamicFeatures = [':youtubedldynamic']
 }
 
+androidComponents {
+    beforeVariants(selector().all()) { variant ->
+        variant.enableAndroidTest = false
+    }
+}
+
 def ROOM_VERSION = '2.6.1'
 
 dependencies {

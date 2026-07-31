@@ -69,6 +69,7 @@ import com.avd.browserkit.util.VideoUtils
 import com.avd.browserkit.detection.DetectedVideoInfo
 import com.avd.browserkit.detection.StreamFormat
 import com.avd.browserkit.detection.StreamType
+import com.avd.browserkit.ui.dialog.BrowserDialogBuilders
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -1450,7 +1451,7 @@ class WebTabFragment : Fragment() {
         val forceStream = com.avd.browserkit.util.BrowserDetectionPrefs.isForceStreamDetection(ctx)
         val legacyM3u8 = com.avd.browserkit.util.BrowserDetectionPrefs.isUseLegacyM3u8Detection(ctx)
         val checked = booleanArrayOf(forceStream, legacyM3u8)
-        MaterialAlertDialogBuilder(ctx)
+        BrowserDialogBuilders.create(ctx)
             .setTitle(R.string.bk_settings)
             .setMultiChoiceItems(
                 arrayOf(
@@ -1503,7 +1504,7 @@ class WebTabFragment : Fragment() {
     }
 
     private fun confirmClearBrowsingData() {
-        MaterialAlertDialogBuilder(requireContext())
+        BrowserDialogBuilders.create(requireContext())
             .setMessage(R.string.bk_clear_data_confirm)
             .setPositiveButton(android.R.string.ok) { _, _ ->
                 lifecycleScope.launch {

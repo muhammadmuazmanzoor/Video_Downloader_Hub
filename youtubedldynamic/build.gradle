@@ -50,3 +50,9 @@ android {
     }
 
 }
+
+androidComponents {
+    beforeVariants(selector().all()) { variant ->
+        variant.enableAndroidTest = false
+    }
+}

@@ -22,7 +22,7 @@ import com.avd.browserkit.data.BrowserRepository
 import com.avd.browserkit.databinding.ActivityBrowserHistoryBinding
 import com.avd.browserkit.databinding.ItemBrowserHistoryEntryBinding
 import com.avd.browserkit.databinding.ItemBrowserHistorySectionBinding
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.avd.browserkit.ui.dialog.BrowserDialogBuilders
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -88,7 +88,7 @@ class BrowserHistoryActivity : AppCompatActivity() {
     }
 
     private fun confirmClearHistory() {
-        MaterialAlertDialogBuilder(this)
+        BrowserDialogBuilders.create(this)
             .setMessage(R.string.bk_clear_history_confirm)
             .setPositiveButton(R.string.bk_clear_history) { _, _ ->
                 lifecycleScope.launch {

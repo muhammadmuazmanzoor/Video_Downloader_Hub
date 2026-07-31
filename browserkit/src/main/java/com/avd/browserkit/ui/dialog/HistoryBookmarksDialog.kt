@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.avd.browserkit.R
 import com.avd.browserkit.data.BrowserRepository
 import com.avd.browserkit.databinding.ItemHistoryBookmarkBinding
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.launch
 
@@ -64,7 +63,7 @@ class HistoryBookmarksDialogFragment : DialogFragment() {
         })
         loadTab(0)
 
-        return MaterialAlertDialogBuilder(requireContext())
+        return BrowserDialogBuilders.create(requireContext())
             .setTitle(R.string.bk_history)
             .setView(view)
             .setNegativeButton(R.string.bk_cancel, null)

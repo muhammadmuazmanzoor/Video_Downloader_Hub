@@ -6,7 +6,6 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import com.avd.browserkit.R
 import com.avd.browserkit.data.BrowserRepository
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.runBlocking
 
 object BrowserDownloadsDialog {
@@ -27,7 +26,7 @@ class BrowserDownloadsDialogFragment : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val items = runBlocking { repository.getAllDownloads() }
-        val builder = MaterialAlertDialogBuilder(requireContext())
+        val builder = BrowserDialogBuilders.create(requireContext())
             .setTitle(R.string.bk_downloads)
             .setPositiveButton(android.R.string.ok, null)
         if (items.isEmpty()) {

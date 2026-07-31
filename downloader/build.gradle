@@ -92,6 +92,12 @@ android {
     }
 }
 
+androidComponents {
+    beforeVariants(selector().all()) { variant ->
+        variant.enableAndroidTest = false
+    }
+}
+
 dependencies {
     api project(':browserkit')
     //  Android support

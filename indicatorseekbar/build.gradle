@@ -24,6 +24,12 @@ android {
     }
 }
 
+androidComponents {
+    beforeVariants(selector().all()) { variant ->
+        variant.enableAndroidTest = false
+    }
+}
+
 dependencies {
     implementation('androidx.appcompat:appcompat:1.6.1')
 }

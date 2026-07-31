@@ -33,6 +33,7 @@ import com.google.firebase.remoteconfig.remoteConfig
 import com.avd.util.AppConstant.ADJUST_TOKEN
 import com.avd.util.ContextUtils
 import com.avd.util.RevenueManager
+import com.avd.browserkit.BrowserKitInitializer
 import com.avd.util.YoutubeDlUtils
 import com.avd.util.ads.InterstitialManagerA
 import com.squareup.picasso.Picasso
@@ -106,6 +107,14 @@ class MyApplication : MultiDexApplication(), Configuration.Provider , DefaultLif
         BrowserKitBridge.init(this)
         BrowserKit.initialize(this)
         BrowserKit.setDownloadBridge(BrowserKitBridge)
+        applicationScope.launch {
+            runCatching {
+                BrowserKitInitializer.initializeAwait(applicationContext)
+                Log.d("BrowserKitInit", "ready=${BrowserKitInitializer.isInitialized()}")
+            }.onFailure {
+                Log.e("BrowserKitInit", "initialize failed", it)
+            }
+        }
         
         // Initialize Picasso lazily on background thread to prevent ANR
         // PicassoProvider ContentProvider is disabled in AndroidManifest.xml
