@@ -55,15 +55,15 @@ abstract class BaseWebTabFragment : BaseFragment() {
 
     fun buildWebTabMenu(browserMenu: View, isShareItemVisible: Boolean) {
         val isdesk= settingsViewModel?.isDesktopMode?.get()
-        if (popupMenu == null) {
-            popupMenu = buildPopupMenu(browserMenu)
-        }
-            val shareMenuItem = popupMenu!!.menu.getItem(1)
-            val desktopMenuItem = popupMenu!!.menu.getItem(2)
+        // Rebuild the popup for the current anchor view to avoid stale references after view recreation.
+        popupMenu = buildPopupMenu(browserMenu)
+            val shareMenuItem = popupMenu!!.menu.findItem(R.id.share_link)
+            val desktopMenuItem = popupMenu!!.menu.findItem(R.id.desktop_mode)
+            val browserHistoryMenuItem = popupMenu!!.menu.findItem(R.id.browser_history_menu_item)
 //            val isAdblockMenuItem = popupMenu!!.menu.getItem(4)
             val isAdBlocker = settingsViewModel?.isAdBlocker
         if (isdesk != null) {
-            desktopMenuItem.isChecked =isdesk
+            desktopMenuItem?.isChecked =isdesk
         }
 //            isAdblockMenuItem.isChecked = isAdBlocker.get() == true
             popupMenu!!.setForceShowIcon(true)
@@ -76,9 +76,8 @@ abstract class BaseWebTabFragment : BaseFragment() {
                 }
             })
 
-            shareMenuItem.isVisible = isShareItemVisible
-            popupMenu!!.menu.findItem(R.id.browser_history_menu_item)?.isVisible =
-                showsBrowserHistoryMenuItem
+            shareMenuItem?.isVisible = isShareItemVisible
+            browserHistoryMenuItem?.isVisible = showsBrowserHistoryMenuItem
     }
 
     fun showPopupMenu() {

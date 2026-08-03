@@ -210,10 +210,11 @@
             android:gravity="center"
             android:padding="@dimen/_15sdp"
             android:text="@string/watch_now"
+            android:textColor="@color/white"
             android:textAppearance="?android:textAppearanceLarge"
             android:textSize="@dimen/_12ssp"
             android:visibility="gone"
-            app1:tint="@color/black"
+
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
