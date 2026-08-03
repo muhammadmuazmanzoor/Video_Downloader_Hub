@@ -20,6 +20,7 @@ import com.avd.util.downloaders.custom_downloader_service.CustomRegularDownloade
 import com.avd.util.downloaders.generic_downloader.models.VideoTaskState
 import com.avd.util.downloaders.youtubedl_downloader.YoutubeDlDownloader
 import androidx.work.WorkManager
+import com.video.avd.downloader.BrowserHostDownloader
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.core.BackpressureStrategy
 import io.reactivex.rxjava3.core.Observable
@@ -106,7 +107,15 @@ class ProgressViewModel @Inject constructor(
     fun pauseDownload(id: Long) {
         val inf = progressInfos.get()?.find { it.downloadId == id }
         if (inf != null && isBrowserSharedTask(inf)) {
-            Toast.makeText(ContextUtils.getApplicationContext(), "Pause not supported for browser downloads", Toast.LENGTH_SHORT).show()
+            val taskId = inf.id.removePrefix(BROWSER_ID_PREFIX)
+            WorkManager.getInstance(ContextUtils.getApplicationContext()).cancelUniqueWork("browser_host_$taskId")
+            BrowserDownloadSharedStore.update(
+                taskId = taskId,
+                title = inf.videoInfo.title,
+                pageUrl = inf.videoInfo.originalUrl,
+                percent = inf.progressDownloaded.toInt().coerceIn(0, 100),
+                status = com.avd.browserkit.download.BrowserDownloadStatus.PAUSED,
+            )
             return
         }
 
@@ -126,7 +135,16 @@ class ProgressViewModel @Inject constructor(
         try {
             val inf = progressInfos.get()?.find { it.downloadId == id }
             if (inf != null && isBrowserSharedTask(inf)) {
-                Toast.makeText(ContextUtils.getApplicationContext(), "Resume not supported for browser downloads", Toast.LENGTH_SHORT).show()
+                val taskId = inf.id.removePrefix(BROWSER_ID_PREFIX)
+                val task = BrowserDownloadSharedStore.tasks.value.firstOrNull { it.taskId == taskId }
+                if (task == null) {
+                    Toast.makeText(ContextUtils.getApplicationContext(), "Browser download can not be resumed", Toast.LENGTH_SHORT).show()
+                    return
+                }
+                val restarted = BrowserHostDownloader.restart(ContextUtils.getApplicationContext(), task)
+                if (!restarted) {
+                    Toast.makeText(ContextUtils.getApplicationContext(), "Failed to restart browser download", Toast.LENGTH_SHORT).show()
+                }
                 return
             }
             if (inf?.videoInfo?.isRegularDownload == true) {

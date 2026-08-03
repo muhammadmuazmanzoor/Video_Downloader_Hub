@@ -19,7 +19,32 @@ object BrowserHostDownloader {
     private const val TAG = "BrowserHostDownloader"
 
     fun enqueue(context: Context, request: BrowserHostDownloadRequest): Boolean {
-        val app = context.applicationContext
+        return enqueueInternal(context.applicationContext, request)
+    }
+
+    fun restart(context: Context, task: BrowserSharedDownloadTask): Boolean {
+        val request = BrowserHostDownloadRequest(
+            title = task.title,
+            pageUrl = task.pageUrl,
+            downloadUrl = task.downloadUrl,
+            qualityLabel = task.qualityLabel,
+            streamType = task.streamType,
+            headers = task.headers,
+            useYtdlp = task.useYtdlp,
+            facebookMode = task.facebookMode,
+            useAvd = task.useAvd,
+            formatId = task.formatId,
+            audioUrl = task.audioUrl,
+            isLive = task.isLive,
+        )
+        return enqueueInternal(context.applicationContext, request, existingTaskId = task.taskId)
+    }
+
+    private fun enqueueInternal(
+        app: Context,
+        request: BrowserHostDownloadRequest,
+        existingTaskId: String? = null,
+    ): Boolean {
         var url = request.downloadUrl.trim()
         if (url.isBlank() || !url.startsWith("http", ignoreCase = true)) {
             Log.e(TAG, "reject blank/non-http url")
@@ -32,7 +57,7 @@ object BrowserHostDownloader {
             url = request.pageUrl.trim()
         }
 
-        val taskId = System.currentTimeMillis().toString()
+        val taskId = existingTaskId ?: System.currentTimeMillis().toString()
         val title = request.title.ifBlank {
             if (request.facebookMode) "face_book" else "browser_video"
         }
@@ -61,6 +86,14 @@ object BrowserHostDownloader {
                 pageUrl = request.pageUrl,
                 downloadUrl = url,
                 qualityLabel = request.qualityLabel,
+                streamType = if (dailymotion) StreamType.HLS_M3U8.name else request.streamType,
+                headers = headers,
+                useYtdlp = useYtdlp,
+                facebookMode = request.facebookMode,
+                useAvd = request.useAvd,
+                formatId = request.formatId,
+                audioUrl = request.audioUrl,
+                isLive = request.isLive,
                 percent = 0,
                 status = BrowserDownloadStatus.QUEUED,
             ),

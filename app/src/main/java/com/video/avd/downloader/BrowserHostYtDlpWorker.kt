@@ -8,9 +8,13 @@ import com.avd.browserkit.api.BrowserDownloadResult
 import com.avd.browserkit.api.BrowserDownloadSnapshot
 import com.avd.browserkit.download.BrowserDownloadStatus
 import com.avd.browserkit.ytdlp.YoutubeDlBridge
+import com.avd.util.downloaders.custom_downloader_service.CustomFileDownloader
+import com.avd.util.downloaders.custom_downloader_service.DownloadListener
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import okhttp3.OkHttpClient
 import java.io.File
+import java.net.URL
 
 class BrowserHostYtDlpWorker(
     appContext: Context,
@@ -71,17 +75,38 @@ class BrowserHostYtDlpWorker(
             if (!valid && !isHtmlWatchPage(downloadUrl)) {
                 saved?.delete()
                 httpFile.delete()
+                val client = OkHttpClient()
                 CustomFileDownloader(
-                    url = downloadUrl,
+                    url = URL(downloadUrl),
                     file = httpFile,
-                    headers = headers,
                     threadCount = 1,
-                ) { downloaded, total ->
-                    val percent = if (total > 0) ((downloaded * 100) / total).toInt().coerceIn(0, 100) else 0
-                    BrowserKitBridge.onTaskUpdated(
-                        BrowserDownloadSnapshot(taskId, title, pageUrl, percent, BrowserDownloadStatus.DOWNLOADING),
-                    )
-                }.download()
+                    headers = headers,
+                    client = client,
+                    listener = object : DownloadListener {
+                        override fun onSuccess() = Unit
+
+                        override fun onFailure(e: Throwable) = Unit
+
+                        override fun onProgressUpdate(downloadedBytes: Long, totalBytes: Long) {
+                            val percent =
+                                if (totalBytes > 0L) ((downloadedBytes * 100) / totalBytes).toInt().coerceIn(0, 100) else 0
+                            BrowserKitBridge.onTaskUpdated(
+                                BrowserDownloadSnapshot(taskId, title, pageUrl, percent, BrowserDownloadStatus.DOWNLOADING),
+                            )
+                        }
+
+                        override fun onChunkProgressUpdate(
+                            downloadedBytes: Long,
+                            allBytesChunk: Long,
+                            chunkIndex: Int,
+                        ) = Unit
+
+                        override fun onChunkFailure(
+                            e: Throwable,
+                            index: CustomFileDownloader.Chunk,
+                        ) = Unit
+                    },
+                ).download()
                 if (BrowserHostRegularWorker.isValidProgressiveMp4(httpFile, pageUrl.ifBlank { downloadUrl })) {
                     saved = httpFile
                     valid = true

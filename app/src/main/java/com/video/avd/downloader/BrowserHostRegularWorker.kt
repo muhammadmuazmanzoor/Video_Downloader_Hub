@@ -6,9 +6,13 @@ import androidx.work.WorkerParameters
 import com.avd.browserkit.api.BrowserDownloadResult
 import com.avd.browserkit.api.BrowserDownloadSnapshot
 import com.avd.browserkit.download.BrowserDownloadStatus
+import com.avd.util.downloaders.custom_downloader_service.CustomFileDownloader
+import com.avd.util.downloaders.custom_downloader_service.DownloadListener
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import okhttp3.OkHttpClient
 import java.io.File
+import java.net.URL
 
 class BrowserHostRegularWorker(
     appContext: Context,
@@ -34,20 +38,47 @@ class BrowserHostRegularWorker(
         )
         return@withContext try {
             var lastPercent = -1
+            val client = OkHttpClient()
             CustomFileDownloader(
-                url = downloadUrl,
+                url = URL(downloadUrl),
                 file = tmpFile,
-                headers = headers,
                 threadCount = 1,
-            ) { downloaded, total ->
-                val percent = if (total > 0) ((downloaded * 100) / total).toInt().coerceIn(0, 100) else 0
-                if (percent != lastPercent || total <= 0L) {
-                    lastPercent = percent
-                    BrowserKitBridge.onTaskUpdated(
-                        BrowserDownloadSnapshot(taskId, title, pageUrl, percent, BrowserDownloadStatus.DOWNLOADING),
-                    )
-                }
-            }.download()
+                headers = headers,
+                client = client,
+                listener = object : DownloadListener {
+                    override fun onSuccess() = Unit
+
+                    override fun onFailure(e: Throwable) = Unit
+
+                    override fun onProgressUpdate(downloadedBytes: Long, totalBytes: Long) {
+                        val percent =
+                            if (totalBytes > 0L) ((downloadedBytes * 100) / totalBytes).toInt().coerceIn(0, 100) else 0
+                        if (percent != lastPercent || totalBytes <= 0L) {
+                            lastPercent = percent
+                            BrowserKitBridge.onTaskUpdated(
+                                BrowserDownloadSnapshot(
+                                    taskId,
+                                    title,
+                                    pageUrl,
+                                    percent,
+                                    BrowserDownloadStatus.DOWNLOADING,
+                                ),
+                            )
+                        }
+                    }
+
+                    override fun onChunkProgressUpdate(
+                        downloadedBytes: Long,
+                        allBytesChunk: Long,
+                        chunkIndex: Int,
+                    ) = Unit
+
+                    override fun onChunkFailure(
+                        e: Throwable,
+                        index: CustomFileDownloader.Chunk,
+                    ) = Unit
+                },
+            ).download()
 
             if (!isValidProgressiveMp4(tmpFile, pageUrl.ifBlank { downloadUrl })) {
                 error("Invalid video stub size=${tmpFile.length()}")
@@ -81,28 +112,31 @@ class BrowserHostRegularWorker(
         const val KEY_TITLE = "title"
         const val KEY_DOWNLOAD_URL = "download_url"
         const val KEY_PAGE_URL = "page_url"
-        private const val MIN_BYTES = 500_000L
-        private const val MIN_BYTES_FACEBOOK = 1_000_000L
+        private const val MIN_BYTES = 1_024L
 
         fun isValidProgressiveMp4(file: File, sourceUrl: String): Boolean {
-            val minBytes = if (sourceUrl.contains("facebook", true) || sourceUrl.contains("fbcdn", true)) {
-                MIN_BYTES_FACEBOOK
-            } else {
-                MIN_BYTES
-            }
-            if (!file.exists() || file.length() < minBytes) return false
+            if (!file.exists() || file.length() < MIN_BYTES) return false
             return runCatching {
                 file.inputStream().use { input ->
                     val head = ByteArray(64)
                     val read = input.read(head)
                     if (read < 12) return@runCatching false
                     val asText = head.decodeToString(0, read).lowercase()
-                    if (asText.contains("<html") || asText.contains("<!doctype")) return@runCatching false
+                    if (
+                        asText.contains("<html") ||
+                        asText.contains("<!doctype") ||
+                        asText.contains("{\"error") ||
+                        asText.contains("\"error\"")
+                    ) {
+                        return@runCatching false
+                    }
                     val hasFtyp = head.indexOfSequence("ftyp".toByteArray()) >= 0
                     val hasMoof = head.indexOfSequence("moof".toByteArray()) >= 0
+                    val isWebm = read >= 4 &&
+                        head[0] == 0x1A.toByte() && head[1] == 0x45.toByte() &&
+                        head[2] == 0xDF.toByte() && head[3] == 0xA3.toByte()
                     if (hasMoof && !hasFtyp) return@runCatching false
-                    if (hasMoof && hasFtyp && file.length() < MIN_BYTES_FACEBOOK) return@runCatching false
-                    hasFtyp
+                    hasFtyp || isWebm || sourceUrl.contains(".mp4", true) || sourceUrl.contains(".webm", true)
                 }
             }.getOrDefault(false)
         }
