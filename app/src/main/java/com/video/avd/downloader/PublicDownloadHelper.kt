@@ -10,6 +10,7 @@ import java.util.Locale
 
 object PublicDownloadHelper {
     private const val DEFAULT_TITLE = "browser_video"
+    private const val BROWSER_VIDEO_DIR = "All Video Downloader/Browser"
 
     fun displayFileNameForTask(title: String, taskId: String, extension: String = "mp4"): String {
         val cleanedTitle = title.trim()
@@ -27,7 +28,10 @@ object PublicDownloadHelper {
         val values = ContentValues().apply {
             put(MediaStore.MediaColumns.DISPLAY_NAME, displayName)
             put(MediaStore.MediaColumns.MIME_TYPE, "video/mp4")
-            put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS)
+            put(
+                MediaStore.MediaColumns.RELATIVE_PATH,
+                Environment.DIRECTORY_MOVIES + "/" + BROWSER_VIDEO_DIR,
+            )
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 put(MediaStore.MediaColumns.IS_PENDING, 1)
             }
@@ -35,7 +39,6 @@ object PublicDownloadHelper {
         return context.contentResolver.insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values)
             ?: error("MediaStore insert failed")
     }
-
     fun markVideoComplete(context: Context, uri: Uri) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) return
         val values = ContentValues().apply {

@@ -24,6 +24,11 @@ object BrowserHostDownloader {
     }
 
     fun restart(context: Context, task: BrowserSharedDownloadTask): Boolean {
+        Log.i(
+            TAG,
+            "restart taskId=${task.taskId} status=${task.status} stream=${task.streamType} " +
+                "ytdlp=${task.useYtdlp} avd=${task.useAvd} fb=${task.facebookMode} url=${task.downloadUrl.take(160)}",
+        )
         val request = BrowserHostDownloadRequest(
             title = task.title,
             pageUrl = task.pageUrl,
@@ -134,14 +139,16 @@ object BrowserHostDownloader {
             )
             .build()
 
+        val workName = "browser_host_$taskId"
         WorkManager.getInstance(app).enqueueUniqueWork(
-            "browser_host_$taskId",
+            workName,
             ExistingWorkPolicy.REPLACE,
             workRequest,
         )
         Log.i(
             TAG,
-            "enqueued taskId=$taskId ytdlp=$useYtdlp fb=${request.facebookMode} avd=${request.useAvd} " +
+            "enqueued taskId=$taskId workName=$workName worker=${workRequest.workSpec.workerClassName} " +
+                "ytdlp=$useYtdlp fb=${request.facebookMode} avd=${request.useAvd} " +
                 "stream=${request.streamType} headers=${headers.keys} url=${url.take(160)}",
         )
         return true

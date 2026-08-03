@@ -1,6 +1,7 @@
 package com.video.avd.downloader
 
 import android.content.Context
+import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.avd.browserkit.BrowserKitInitializer
@@ -20,6 +21,7 @@ class BrowserHostYtDlpWorker(
     appContext: Context,
     params: WorkerParameters,
 ) : CoroutineWorker(appContext, params) {
+    private val tag = "BrowserHostYtDlp"
 
     override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
         val taskId = inputData.getString(KEY_TASK_ID).orEmpty()
@@ -27,7 +29,10 @@ class BrowserHostYtDlpWorker(
         val downloadUrl = inputData.getString(KEY_DOWNLOAD_URL).orEmpty()
         val pageUrl = inputData.getString(KEY_PAGE_URL).orEmpty()
         val facebookMode = inputData.getBoolean(KEY_FACEBOOK_MODE, false)
-        if (taskId.isBlank() || downloadUrl.isBlank()) return@withContext Result.failure()
+        if (taskId.isBlank() || downloadUrl.isBlank()) {
+            Log.e(tag, "reject invalid input taskIdBlank=${taskId.isBlank()} urlBlank=${downloadUrl.isBlank()}")
+            return@withContext Result.failure()
+        }
 
         BrowserKitBridge.onTaskUpdated(
             BrowserDownloadSnapshot(taskId, title, pageUrl, 0, BrowserDownloadStatus.QUEUED),
@@ -49,12 +54,18 @@ class BrowserHostYtDlpWorker(
         val baseName = if (facebookMode) "face_book_$taskId" else "browser_$taskId"
         val template = File(tmpDir, "$baseName.%(ext)s").absolutePath
         val httpFile = File(tmpDir, "$baseName.mp4")
+        Log.i(
+            tag,
+            "start taskId=$taskId title=$title fb=$facebookMode headers=${headers.keys} " +
+                "page=${pageUrl.take(160)} url=${downloadUrl.take(160)}",
+        )
 
         return@withContext try {
             if (!BrowserKitInitializer.isInitialized()) {
                 BrowserKitInitializer.initializeBlocking(applicationContext)
             }
             val engine = YoutubeDlBridge.engineOrNull() ?: error("yt-dlp engine not ready")
+            Log.i(tag, "engine ready taskId=$taskId outputTemplate=$template")
             var lastPercent = -1
             engine.execute(
                 url = downloadUrl,
@@ -71,8 +82,16 @@ class BrowserHostYtDlpWorker(
                 }
             }
             var saved = findOutput(tmpDir, baseName)
-            var valid = saved != null && BrowserHostRegularWorker.isValidProgressiveMp4(saved, pageUrl.ifBlank { downloadUrl })
+            var validationError: String? = saved?.let {
+                BrowserHostRegularWorker.validateProgressiveVideo(it, pageUrl.ifBlank { downloadUrl })
+            } ?: "missing_output_after_ytdlp"
+            var valid = validationError == null
+            Log.i(
+                tag,
+                "post-ytdlp taskId=$taskId saved=${saved?.absolutePath} bytes=${saved?.length()} valid=$valid reason=$validationError",
+            )
             if (!valid && !isHtmlWatchPage(downloadUrl)) {
+                Log.w(tag, "fallback to direct http taskId=$taskId watchPage=false reason=$validationError")
                 saved?.delete()
                 httpFile.delete()
                 val client = OkHttpClient()
@@ -85,7 +104,9 @@ class BrowserHostYtDlpWorker(
                     listener = object : DownloadListener {
                         override fun onSuccess() = Unit
 
-                        override fun onFailure(e: Throwable) = Unit
+                        override fun onFailure(e: Throwable) {
+                            Log.e(tag, "fallback downloader failure taskId=$taskId msg=${e.message}", e)
+                        }
 
                         override fun onProgressUpdate(downloadedBytes: Long, totalBytes: Long) {
                             val percent =
@@ -107,15 +128,23 @@ class BrowserHostYtDlpWorker(
                         ) = Unit
                     },
                 ).download()
-                if (BrowserHostRegularWorker.isValidProgressiveMp4(httpFile, pageUrl.ifBlank { downloadUrl })) {
+                validationError = BrowserHostRegularWorker.validateProgressiveVideo(httpFile, pageUrl.ifBlank { downloadUrl })
+                Log.i(
+                    tag,
+                    "post-http-fallback taskId=$taskId exists=${httpFile.exists()} bytes=${httpFile.length()} reason=$validationError",
+                )
+                if (validationError == null) {
                     saved = httpFile
                     valid = true
                 }
             }
-            if (!valid || saved == null) error("unplayable output")
+            if (!valid || saved == null) {
+                error("unplayable output reason=${validationError ?: "missing_saved_file"}")
+            }
 
             val displayName = PublicDownloadHelper.displayFileNameForTask(title, taskId)
             val uri = PublicDownloadHelper.insertPendingVideo(applicationContext, displayName)
+            Log.i(tag, "writing MediaStore taskId=$taskId uri=$uri file=${saved.absolutePath}")
             applicationContext.contentResolver.openOutputStream(uri, "w")?.use { out ->
                 saved.inputStream().use { it.copyTo(out) }
             } ?: run {
@@ -125,6 +154,7 @@ class BrowserHostYtDlpWorker(
             PublicDownloadHelper.markVideoComplete(applicationContext, uri)
             tmpDir.deleteRecursively()
             BrowserDownloadHeadersStore.clear(applicationContext, taskId)
+            Log.i(tag, "success taskId=$taskId uri=$uri")
             BrowserKitBridge.onTaskCompleted(
                 BrowserDownloadResult(taskId = taskId, title = title, filePath = uri.toString(), success = true),
             )
@@ -132,6 +162,7 @@ class BrowserHostYtDlpWorker(
         } catch (t: Throwable) {
             tmpDir.deleteRecursively()
             BrowserDownloadHeadersStore.clear(applicationContext, taskId)
+            Log.e(tag, "failed taskId=$taskId title=$title msg=${t.message}", t)
             BrowserKitBridge.onTaskFailed(taskId, t.message ?: "yt-dlp download failed")
             Result.failure()
         }
