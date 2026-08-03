@@ -8,8 +8,10 @@ import com.avd.browserkit.api.BrowserDownloadSharedStore
 import com.avd.browserkit.api.BrowserDownloadSnapshot
 import com.avd.browserkit.api.BrowserHostDownloadRequest
 import com.avd.browserkit.api.BrowserSharedDownloadTask
+import com.avd.util.DownloaderModuleNavigator
 object BrowserKitBridge : BrowserDownloadBridge {
     private const val TAG = "BrowserKitBridge"
+    private const val DOWNLOAD_QUEUE_PAGE_INDEX = 1
 
     @Volatile
     private var appContext: Context? = null
@@ -33,6 +35,14 @@ object BrowserKitBridge : BrowserDownloadBridge {
         val ctx = appContext ?: return false
         Log.d(TAG, "restartHostDownload taskId=${task.taskId} status=${task.status} url=${task.downloadUrl}")
         return BrowserHostDownloader.restart(ctx, task)
+    }
+
+    override fun openDownloadQueue(): Boolean {
+        val mainViewModel = DownloaderModuleNavigator.mainViewModel ?: return false
+        Log.d(TAG, "openDownloadQueue route=$DOWNLOAD_QUEUE_PAGE_INDEX")
+        mainViewModel.isBrowserCurrent.set(false)
+        mainViewModel.currentItem.set(DOWNLOAD_QUEUE_PAGE_INDEX)
+        return true
     }
 
     override fun onTaskUpdated(snapshot: BrowserDownloadSnapshot) {

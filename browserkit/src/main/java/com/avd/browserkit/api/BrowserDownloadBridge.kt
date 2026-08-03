@@ -45,6 +45,7 @@ interface BrowserDownloadBridge {
     fun onTaskCompleted(result: BrowserDownloadResult) {}
     fun onTaskFailed(taskId: String, message: String) {}
     fun restartHostDownload(task: BrowserSharedDownloadTask): Boolean = false
+    fun openDownloadQueue(): Boolean = false
 
     /**
      * Host app handles download (CustomRegular / yt-dlp).

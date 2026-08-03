@@ -43,6 +43,10 @@ object BrowserKit {
         return downloadBridge?.restartHostDownload(task) == true
     }
 
+    fun openDownloadQueue(): Boolean {
+        return downloadBridge?.openDownloadQueue() == true
+    }
+
     fun setAnalyticsBridge(bridge: BrowserAnalyticsBridge?) {
         analyticsBridge = bridge
     }

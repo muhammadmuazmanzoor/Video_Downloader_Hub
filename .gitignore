@@ -13,6 +13,14 @@
 .externalNativeBuild
 .cxx
 local.properties
+/.kotlin/
+**/build/
+**/out/
+**/.transforms/
+**/generated/
+**/intermediates/
+**/tmp/
+**/kspCaches/
 
 # Ignore APKs
 *.apk
