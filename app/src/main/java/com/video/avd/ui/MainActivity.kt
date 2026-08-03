@@ -805,45 +805,16 @@ class MainActivity : AppCompatActivity(), NetworkStateListener, CommunicateWithA
             return false
         }
         updateBottomNavigationSelection(itemId)
+        navigateToBottomDestination(itemId)
         when (itemId) {
-            R.id.homeFragment1 -> {
-                if (interHome != null) {
-                    showInterstitial(false, interHome!!, this, {
-                        hideLoading()
-                        navigateToBottomDestination(R.id.homeFragment1)
-                    }, inter_home)
-                } else {
-                    navigateToBottomDestination(R.id.homeFragment1)
-                }
-            }
-            R.id.fragmentDownloadHistory -> {
-                if (interHome != null) {
-                    showInterstitial(false, interHome!!, this, {
-                        hideLoading()
-                        navigateToBottomDestination(R.id.fragmentDownloadHistory)
-                    }, inter_home)
-                } else {
-                    navigateToBottomDestination(R.id.fragmentDownloadHistory)
-                }
-            }
-            R.id.mainDownloaderFragment -> {
-                if (interHome != null) {
-                    showInterstitial(false, interHome!!, this, {
-                        hideLoading()
-                        navigateToBottomDestination(R.id.mainDownloaderFragment)
-                    }, inter_home)
-                } else {
-                    navigateToBottomDestination(R.id.mainDownloaderFragment)
-                }
-            }
+            R.id.homeFragment1,
+            R.id.fragmentDownloadHistory,
+            R.id.mainDownloaderFragment,
             R.id.fragmentDownloadQueue -> {
                 if (interHome != null) {
                     showInterstitial(false, interHome!!, this, {
                         hideLoading()
-                        navigateToBottomDestination(R.id.fragmentDownloadQueue)
                     }, inter_home)
-                } else {
-                    navigateToBottomDestination(R.id.fragmentDownloadQueue)
                 }
             }
         }

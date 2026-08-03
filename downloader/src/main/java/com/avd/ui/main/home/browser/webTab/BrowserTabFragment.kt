@@ -1555,9 +1555,10 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
 
     private fun updatePrimaryActionUi(raw: String) {
         if (!this::binding.isInitialized) return
-        binding.icSearch.text = when (resolvePrimaryAction(raw)) {
+        binding.icSearch.alpha = if (raw.trim().isEmpty()) 0.72f else 1f
+        binding.icSearch.contentDescription = when (resolvePrimaryAction(raw)) {
             BrowserTabPrimaryAction.DOWNLOAD -> "Download"
-            BrowserTabPrimaryAction.OPEN_BROWSER -> "Check Url"
+            BrowserTabPrimaryAction.OPEN_BROWSER -> "Search"
         }
     }
 
