@@ -39,6 +39,10 @@ object BrowserKit {
 
     internal fun getDownloadBridge(): BrowserDownloadBridge? = downloadBridge
 
+    fun restartHostDownload(task: BrowserSharedDownloadTask): Boolean {
+        return downloadBridge?.restartHostDownload(task) == true
+    }
+
     fun setAnalyticsBridge(bridge: BrowserAnalyticsBridge?) {
         analyticsBridge = bridge
     }

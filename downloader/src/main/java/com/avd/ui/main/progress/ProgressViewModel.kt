@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.avd.data.local.room.entity.ProgressInfo
 import com.avd.data.local.room.entity.VideoInfo
 import com.avd.data.local.room.entity.VideFormatEntityList
+import com.avd.browserkit.api.BrowserKit
 import com.avd.data.repository.ProgressRepository
 import com.avd.browserkit.api.BrowserDownloadSharedStore
 import com.avd.browserkit.api.BrowserSharedDownloadTask
@@ -20,7 +21,6 @@ import com.avd.util.downloaders.custom_downloader_service.CustomRegularDownloade
 import com.avd.util.downloaders.generic_downloader.models.VideoTaskState
 import com.avd.util.downloaders.youtubedl_downloader.YoutubeDlDownloader
 import androidx.work.WorkManager
-import com.video.avd.downloader.BrowserHostDownloader
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.core.BackpressureStrategy
 import io.reactivex.rxjava3.core.Observable
@@ -112,7 +112,7 @@ class ProgressViewModel @Inject constructor(
             BrowserDownloadSharedStore.update(
                 taskId = taskId,
                 title = inf.videoInfo.title,
-                pageUrl = inf.videoInfo.originalUrl,
+                pageUrl = "",
                 percent = inf.progressDownloaded.toInt().coerceIn(0, 100),
                 status = com.avd.browserkit.download.BrowserDownloadStatus.PAUSED,
             )
@@ -141,7 +141,7 @@ class ProgressViewModel @Inject constructor(
                     Toast.makeText(ContextUtils.getApplicationContext(), "Browser download can not be resumed", Toast.LENGTH_SHORT).show()
                     return
                 }
-                val restarted = BrowserHostDownloader.restart(ContextUtils.getApplicationContext(), task)
+                val restarted = BrowserKit.restartHostDownload(task)
                 if (!restarted) {
                     Toast.makeText(ContextUtils.getApplicationContext(), "Failed to restart browser download", Toast.LENGTH_SHORT).show()
                 }

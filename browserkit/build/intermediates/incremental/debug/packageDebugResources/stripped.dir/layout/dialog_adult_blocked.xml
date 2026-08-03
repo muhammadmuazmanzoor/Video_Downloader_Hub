@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bk_bg_youtube_blocked_dialog"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingHorizontal="24dp"
+    android:paddingTop="28dp"
+    android:paddingBottom="24dp">
+
+    <ImageView
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:contentDescription="@string/bk_adult_blocked_title"
+        android:importantForAccessibility="no"
+        android:src="@drawable/bk_ic_adult_blocked" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:text="@string/bk_adult_blocked_title"
+        android:textColor="@color/bk_text_primary"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="@string/bk_adult_blocked_message"
+        android:textColor="@color/bk_text_secondary"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/btnAdultBlockedOk"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/bk_bg_youtube_blocked_button"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:text="@string/bk_okey"
+        android:textColor="@color/bk_on_primary"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+</LinearLayout>

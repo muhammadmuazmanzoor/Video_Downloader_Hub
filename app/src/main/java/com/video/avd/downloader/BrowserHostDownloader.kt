@@ -13,6 +13,7 @@ import androidx.work.workDataOf
 import com.avd.browserkit.api.BrowserDownloadSnapshot
 import com.avd.browserkit.api.BrowserHostDownloadRequest
 import com.avd.browserkit.download.BrowserDownloadStatus
+import com.avd.browserkit.detection.StreamType
 import com.avd.browserkit.util.DailymotionUrlUtils
 
 object BrowserHostDownloader {

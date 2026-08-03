@@ -7,6 +7,7 @@ import com.avd.browserkit.api.BrowserDownloadResult
 import com.avd.browserkit.api.BrowserDownloadSharedStore
 import com.avd.browserkit.api.BrowserDownloadSnapshot
 import com.avd.browserkit.api.BrowserHostDownloadRequest
+import com.avd.browserkit.api.BrowserSharedDownloadTask
 object BrowserKitBridge : BrowserDownloadBridge {
     private const val TAG = "BrowserKitBridge"
 
@@ -26,6 +27,12 @@ object BrowserKitBridge : BrowserDownloadBridge {
         )
         val ctx = appContext ?: return false
         return BrowserHostDownloader.enqueue(ctx, request)
+    }
+
+    override fun restartHostDownload(task: BrowserSharedDownloadTask): Boolean {
+        val ctx = appContext ?: return false
+        Log.d(TAG, "restartHostDownload taskId=${task.taskId} status=${task.status} url=${task.downloadUrl}")
+        return BrowserHostDownloader.restart(ctx, task)
     }
 
     override fun onTaskUpdated(snapshot: BrowserDownloadSnapshot) {

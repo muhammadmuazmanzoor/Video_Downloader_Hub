@@ -1,0 +1,85 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.avd.browserkit" >
+4
+5    <uses-sdk android:minSdkVersion="28" />
+6
+7    <uses-permission android:name="android.permission.INTERNET" />
+7-->C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:4:5-67
+7-->C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:4:22-64
+8    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+8-->C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:5:5-87
+8-->C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:5:22-84
+9    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+9-->C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:6:5-77
+9-->C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:6:22-74
+10
+11    <application>
+11-->C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:8:5-45:19
+12        <activity
+12-->C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:9:9-14:55
+13            android:name="com.avd.browserkit.BrowserKitActivity"
+13-->C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:10:13-47
+14            android:configChanges="keyboardHidden|orientation|screenSize"
+14-->C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:13:13-74
+15            android:exported="false"
+15-->C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:11:13-37
+16            android:launchMode="singleTask"
+16-->C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:12:13-44
+17            android:theme="@style/Theme.BrowserKit" />
+17-->C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:14:13-52
+18        <activity
+18-->C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:16:9-20:66
+19            android:name="com.avd.browserkit.ui.player.BrowserPlayerActivity"
+19-->C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:17:13-60
+20            android:configChanges="keyboardHidden|orientation|screenSize"
+20-->C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:19:13-74
+21            android:exported="false"
+21-->C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:18:13-37
+22            android:theme="@style/Theme.BrowserKit.Fullscreen" />
+22-->C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:20:13-63
+23        <activity
+23-->C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:22:9-26:55
+24            android:name="com.avd.browserkit.ui.history.BrowserHistoryActivity"
+24-->C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:23:13-62
+25            android:configChanges="keyboardHidden|orientation|screenSize"
+25-->C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:25:13-74
+26            android:exported="false"
+26-->C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:24:13-37
+27            android:theme="@style/Theme.BrowserKit" />
+27-->C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:26:13-52
+28
+29        <provider
+29-->C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:28:9-36:20
+30            android:name="com.avd.browserkit.util.BrowserKitFileProvider"
+30-->C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:29:13-56
+31            android:authorities="${applicationId}.browserkit.fileprovider"
+31-->C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:30:13-75
+32            android:exported="false"
+32-->C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:31:13-37
+33            android:grantUriPermissions="true" >
+33-->C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:32:13-47
+34            <meta-data
+34-->C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:33:13-35:65
+35                android:name="android.support.FILE_PROVIDER_PATHS"
+35-->C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:34:17-67
+36                android:resource="@xml/browserkit_file_paths" />
+36-->C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:35:17-62
+37        </provider>
+38
+39        <receiver
+39-->C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:38:9-44:20
+40            android:name="com.avd.browserkit.download.BrowserDownloadCancelReceiver"
+40-->C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:39:13-67
+41            android:exported="false" >
+41-->C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:40:13-37
+42            <intent-filter>
+42-->C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:41:13-43:29
+43                <action android:name="com.avd.browserkit.download.ACTION_CANCEL" />
+43-->C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:42:17-84
+43-->C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:42:25-81
+44            </intent-filter>
+45        </receiver>
+46    </application>
+47
+48</manifest>

@@ -1,0 +1,90 @@
+-- Merging decision tree log ---
+manifest
+ADDED from C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:2:1-46:12
+INJECTED from C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:2:1-46:12
+	package
+		INJECTED from C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:2:11-69
+uses-permission#android.permission.INTERNET
+ADDED from C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:4:5-67
+	android:name
+		ADDED from C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:4:22-64
+uses-permission#android.permission.FOREGROUND_SERVICE_DATA_SYNC
+ADDED from C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:5:5-87
+	android:name
+		ADDED from C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:5:22-84
+uses-permission#android.permission.POST_NOTIFICATIONS
+ADDED from C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:6:5-77
+	android:name
+		ADDED from C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:6:22-74
+application
+ADDED from C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:8:5-45:19
+activity#com.avd.browserkit.BrowserKitActivity
+ADDED from C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:9:9-14:55
+	android:launchMode
+		ADDED from C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:12:13-44
+	android:exported
+		ADDED from C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:11:13-37
+	android:configChanges
+		ADDED from C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:13:13-74
+	android:theme
+		ADDED from C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:14:13-52
+	android:name
+		ADDED from C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:10:13-47
+activity#com.avd.browserkit.ui.player.BrowserPlayerActivity
+ADDED from C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:16:9-20:66
+	android:exported
+		ADDED from C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:18:13-37
+	android:configChanges
+		ADDED from C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:19:13-74
+	android:theme
+		ADDED from C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:20:13-63
+	android:name
+		ADDED from C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:17:13-60
+activity#com.avd.browserkit.ui.history.BrowserHistoryActivity
+ADDED from C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:22:9-26:55
+	android:exported
+		ADDED from C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:24:13-37
+	android:configChanges
+		ADDED from C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:25:13-74
+	android:theme
+		ADDED from C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:26:13-52
+	android:name
+		ADDED from C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:23:13-62
+provider#com.avd.browserkit.util.BrowserKitFileProvider
+ADDED from C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:28:9-36:20
+	android:grantUriPermissions
+		ADDED from C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:32:13-47
+	android:authorities
+		ADDED from C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:30:13-75
+	android:exported
+		ADDED from C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:31:13-37
+	android:name
+		ADDED from C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:29:13-56
+meta-data#android.support.FILE_PROVIDER_PATHS
+ADDED from C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:33:13-35:65
+	android:resource
+		ADDED from C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:35:17-62
+	android:name
+		ADDED from C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:34:17-67
+receiver#com.avd.browserkit.download.BrowserDownloadCancelReceiver
+ADDED from C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:38:9-44:20
+	android:exported
+		ADDED from C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:40:13-37
+	android:name
+		ADDED from C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:39:13-67
+intent-filter#action:name:com.avd.browserkit.download.ACTION_CANCEL
+ADDED from C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:41:13-43:29
+action#com.avd.browserkit.download.ACTION_CANCEL
+ADDED from C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:42:17-84
+	android:name
+		ADDED from C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml:42:25-81
+uses-sdk
+INJECTED from C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml
+INJECTED from C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from C:\Users\TF\AndroidStudioProjects\Video Downloader Browser Hub\browserkit\src\main\AndroidManifest.xml
