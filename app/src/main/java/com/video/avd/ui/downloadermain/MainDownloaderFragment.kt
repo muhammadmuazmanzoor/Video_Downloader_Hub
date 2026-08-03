@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.databinding.Observable
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavArgument
@@ -76,6 +77,12 @@ class MainDownloaderFragment : Fragment() {
 
     var downloadInterstitial: MaxInterstitialAd? = null
 
+    private val currentItemCallback = object : Observable.OnPropertyChangedCallback() {
+        override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+            syncViewPagerWithViewModel()
+        }
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         dataBinding = DataBindingUtil.inflate(inflater, com.video.avd.R.layout.fragment_main_downloader, container, false)
         initAppBase(requireContext())
@@ -107,6 +114,8 @@ class MainDownloaderFragment : Fragment() {
         dataBinding.viewPager.adapter = mainAdapter
         dataBinding.viewPager.registerOnPageChangeCallback(onPageChangeListener)
         dataBinding.viewModel = mainViewModel
+        mainViewModel?.currentItem?.addOnPropertyChangedCallback(currentItemCallback)
+        syncViewPagerWithViewModel()
         // Handle intents (same logic as before)
         // handleIntent(arguments)
         // Start other view models
@@ -123,31 +132,38 @@ class MainDownloaderFragment : Fragment() {
 
     private val onPageChangeListener = object : ViewPager2.OnPageChangeCallback() {
         override fun onPageSelected(position: Int) {
-            if(!fromBrowser){
-                if (position == 0) {
-                    Handler(Looper.getMainLooper()).postDelayed({
-                        mainViewModel?.isBrowserCurrent?.set(true)
-                    }, 500)
-                } else {
-                    mainViewModel?.isBrowserCurrent?.set(false)
-                }
-                Log.d("checkBoolean","onPageSelected fromBrowser: $fromBrowser")
-                val childrenCount = dataBinding.fragmentContainerView.childCount
-                if (childrenCount > 0) {
-                    childFragmentManager.popBackStack()
-                }
+            Log.d("checkBoolean","onPageSelected fromBrowser: $fromBrowser position=$position")
 
-                mainViewModel?.currentItem?.set(position)
-            }
-            else{
-                    Handler(Looper.getMainLooper()).postDelayed({
-                        mainViewModel?.isBrowserCurrent?.set(true)
-                        mainViewModel?.currentItem?.set(0)
-                    }, 300)
-                Log.d("checkBoolean","onPageSelected fromBrowser: $fromBrowser")
-
+            if (position == 0) {
+                val delayMillis = if (fromBrowser) 300L else 500L
+                Handler(Looper.getMainLooper()).postDelayed({
+                    mainViewModel?.isBrowserCurrent?.set(true)
+                }, delayMillis)
+            } else {
+                mainViewModel?.isBrowserCurrent?.set(false)
             }
 
+            val childrenCount = dataBinding.fragmentContainerView.childCount
+            if (childrenCount > 0) {
+                childFragmentManager.popBackStack()
+            }
+
+            mainViewModel?.currentItem?.set(position)
+
+        }
+    }
+
+    override fun onDestroyView() {
+        mainViewModel?.currentItem?.removeOnPropertyChangedCallback(currentItemCallback)
+        super.onDestroyView()
+    }
+
+    private fun syncViewPagerWithViewModel() {
+        val target = mainViewModel?.currentItem?.get() ?: return
+        if (!::dataBinding.isInitialized) return
+        if (dataBinding.viewPager.currentItem != target) {
+            Log.d("checkBoolean", "syncViewPagerWithViewModel target=$target fromBrowser=$fromBrowser")
+            dataBinding.viewPager.setCurrentItem(target, false)
         }
     }
 

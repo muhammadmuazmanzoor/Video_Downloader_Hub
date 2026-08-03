@@ -38,7 +38,11 @@ object BrowserKitBridge : BrowserDownloadBridge {
     }
 
     override fun openDownloadQueue(): Boolean {
-        val mainViewModel = DownloaderModuleNavigator.mainViewModel ?: return false
+        val mainViewModel = DownloaderModuleNavigator.mainViewModel
+        if (mainViewModel == null) {
+            Log.w(TAG, "openDownloadQueue skipped: mainViewModel is null")
+            return false
+        }
         Log.d(TAG, "openDownloadQueue route=$DOWNLOAD_QUEUE_PAGE_INDEX")
         mainViewModel.isBrowserCurrent.set(false)
         mainViewModel.currentItem.set(DOWNLOAD_QUEUE_PAGE_INDEX)

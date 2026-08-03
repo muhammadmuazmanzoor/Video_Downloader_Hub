@@ -43,11 +43,13 @@ class CustomFileDownloader(
     private val isPaused = AtomicBoolean(false)
     private val isCanceled = AtomicBoolean(false)
     private var lastProgressUpdate = AtomicLong(0L)
+    private val lastProgressPercent = AtomicLong(-1L)
+    private val lastProgressBytes = AtomicLong(-1L)
     private val totalBytesAll = AtomicLong(0L)
     private val totalBytesChunks = AtomicLongArray(threadCount)
     private val copiedBytesChunks = AtomicLongArray(threadCount)
     private val copiedBytesSingle = AtomicLong(0L)
-    private val callBackIntervalMin = 1000
+    private val callBackIntervalMin = 250
 
     companion object {
         const val STOPPED = "STOPPED"
@@ -183,6 +185,11 @@ class CustomFileDownloader(
 
         AppLogger.d("DOWNLOAD SUCCESS: $file")
 
+        val totalBytes = totalBytesAll.get().takeIf { it > 0L } ?: totalCopiedBytes.coerceAtLeast(copiedBytesSingle.get())
+        val downloadedBytes = totalCopiedBytes.coerceAtLeast(copiedBytesSingle.get())
+        if (downloadedBytes > 0L) {
+            listener?.onProgressUpdate(downloadedBytes, totalBytes.coerceAtLeast(downloadedBytes))
+        }
         listener?.onSuccess()
     }
 
@@ -196,11 +203,28 @@ class CustomFileDownloader(
 
     override fun onProgressUpdate(downloadedBytes: Long, totalBytes: Long) {
         val time = Date().time
-        if (time - lastProgressUpdate.get() >= callBackIntervalMin) {
+        val safeTotalBytes = totalBytes.coerceAtLeast(0L)
+        val percent = if (safeTotalBytes > 0L) {
+            ((downloadedBytes * 100L) / safeTotalBytes).coerceIn(0L, 100L)
+        } else {
+            -1L
+        }
+        val shouldDispatch =
+            time - lastProgressUpdate.get() >= callBackIntervalMin ||
+                downloadedBytes == safeTotalBytes ||
+                downloadedBytes != lastProgressBytes.get() && (
+                    percent >= 0L && percent != lastProgressPercent.get()
+                    )
+
+        if (shouldDispatch) {
             isPaused.set(isStopped(file))
             isCanceled.set(isCanceled(file))
             lastProgressUpdate.set(time)
-            listener?.onProgressUpdate(downloadedBytes, totalBytes)
+            lastProgressBytes.set(downloadedBytes)
+            if (percent >= 0L) {
+                lastProgressPercent.set(percent)
+            }
+            listener?.onProgressUpdate(downloadedBytes, safeTotalBytes)
         }
     }
 

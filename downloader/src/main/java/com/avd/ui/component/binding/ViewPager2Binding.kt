@@ -8,7 +8,7 @@ import com.avd.ui.main.home.browser.webTab.WebTab
 object ViewPager2Binding {
 
 
-    @BindingAdapter("app:items")
+    @BindingAdapter("items")
     @JvmStatic
     fun ViewPager2.setWebItems(currentItems: List<WebTab>?) {
         with(adapter as BrowserFragment.TabsFragmentStateAdapter?) {
@@ -16,9 +16,18 @@ object ViewPager2Binding {
         }
     }
 
-    @BindingAdapter("app:offScreenPageLimit")
+    @BindingAdapter("offScreenPageLimit")
     @JvmStatic
     fun ViewPager2.setOffScreenPageLimit(pageLimit: Int) {
         offscreenPageLimit = pageLimit
+    }
+
+    @BindingAdapter("currentItem")
+    @JvmStatic
+    fun ViewPager2.setCurrentItemBinding(currentItemPosition: Int?) {
+        val target = currentItemPosition ?: return
+        if (currentItem != target) {
+            setCurrentItem(target, false)
+        }
     }
 }

@@ -1398,10 +1398,7 @@ class WebTabFragment : Fragment() {
                 }
 
                 override fun onMenuDownloads() {
-                    val opened = BrowserKit.openDownloadQueue()
-                    if (!opened) {
-                        BrowserDownloadsDialog.show(parentFragmentManager, repository)
-                    }
+                    BrowserDownloadsDialog.show(parentFragmentManager, repository)
                 }
 
                 override fun onMenuHistory() {
