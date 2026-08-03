@@ -8,19 +8,19 @@
 
     <View
         android:id="@+id/shimmer_ad_label"
-        android:layout_width="@dimen/_28sdp"
-        android:layout_height="@dimen/_14sdp"
+        android:layout_width="28dp"
+        android:layout_height="16dp"
         android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_10sdp"
         android:background="@drawable/round_corner_ad"
-        android:backgroundTint="@color/shimmer_placeholder"
+        android:backgroundTint="@color/shimmer_placeholder_accent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <View
         android:id="@+id/shimmer_title"
         android:layout_width="0dp"
-        android:layout_height="@dimen/_14sdp"
+        android:layout_height="14dp"
         android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_20sdp"
         android:background="@drawable/round_corner_ad"
@@ -45,11 +45,11 @@
     <View
         android:id="@+id/shimmer_cta"
         android:layout_width="0dp"
-        android:layout_height="@dimen/_38sdp"
+        android:layout_height="44dp"
         android:layout_marginHorizontal="@dimen/_18sdp"
         android:layout_marginTop="@dimen/_12sdp"
         android:background="@drawable/gradient_bg"
-        android:backgroundTint="@color/shimmer_placeholder"
+        android:backgroundTint="@color/shimmer_placeholder_accent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

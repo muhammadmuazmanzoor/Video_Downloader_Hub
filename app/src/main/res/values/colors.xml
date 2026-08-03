@@ -45,8 +45,8 @@
     <color name="next">#B2EFEFEF</color>
     <color name="nextdisable">#7FEFEFEF</color>
     <color name="ui_controls_background">#98000000</color>
-    <color name="progress_color">#0075FF</color>
-    <color name="green_selector">#00F0FF</color>
+    <color name="progress_color">#F4551A</color>
+    <color name="green_selector">#F88551</color>
     <color name="exo_bottom_bar_background" tools:keep="@color/exo_bottom_bar_background">
         #985F5C5C
     </color>
@@ -55,14 +55,14 @@
     <color name="darkgrey">#F0F4F7</color>
     <color name="dark_orange">#f98e02</color>
     <color name="light_orange">#FFC327</color>
-    <color name="blue">#0063D8</color>
+    <color name="blue">#F4551A</color>
     <color name="cyan">#00FFFF</color>
     <color name="magenta">#FF00FF</color>
     <color name="text_color">#222126</color>
     <color name="text_light">#B8B8B8</color>
     <color name="Black0Percent">#00000000</color>
-    <color name="orangetabcolor">#2387F7</color>
-    <color name="bottom_nav_selected">#2387F7</color>
+    <color name="orangetabcolor">#F4551A</color>
+    <color name="bottom_nav_selected">#F4551A</color>
     <color name="trackbgColor">#4B4B4B</color>
     <color name="greenselect">#05FF00</color>
     <color name="unselectedcolor">#8A8380</color>
@@ -77,7 +77,7 @@
     <color name="gSelector_disable">#66F9A450</color>
     <color name="gray500">#A1A1A1</color>
 
-    <color name="pin_screen_color">#1054FE</color>
+    <color name="pin_screen_color">#F4551A</color>
     <color name="permissions_icon_color">#2C221A</color>
     <color name="edittext_light_color">#FFFFFF</color>
     <color name="light_dark">#74000000</color>
@@ -136,12 +136,12 @@
     <color name="theme_background_white">#C1C1C1</color>
     <color name="theme_background_black">#3D3D3D</color>
     <color name="jade_theme_darker_color">#15767E</color>
-    <color name="colorBlueLight">#3397E3</color>
-    <color name="redLight">#2387F7</color>
+    <color name="colorBlueLight">#F4551A</color>
+    <color name="redLight">#F4551A</color>
     <color name="pro_dark_color">#454444</color>
     <color name="pro_light_color">@color/brand_background</color>
     <color name="ad_background_color">#EDF1F5</color>
-    <color name="item_selected_background">#2387F7</color> <!-- Light red background -->
+    <color name="item_selected_background">#F4551A</color> <!-- Light red background -->
     <color name="item_default_background">@color/brand_card_background</color>
 
     <color name="foldercolor">#535151</color>
@@ -170,13 +170,13 @@
     <color name="brand_surface_muted">#EFEFEF</color>
     <color name="brand_text_primary">#000000</color>
     <color name="brand_text_secondary">#9EA2AA</color>
-    <color name="brand_accent">#2286F7</color>
-    <color name="brand_selected">#2286F7</color>
-    <color name="brand_gradient_start">#2286F7</color>
-    <color name="brand_gradient_end">#48D6F8</color>
+    <color name="brand_accent">#F4551A</color>
+    <color name="brand_selected">#F4551A</color>
+    <color name="brand_gradient_start">#F4551A</color>
+    <color name="brand_gradient_end">#F88551</color>
 
-    <color name="gSelector">#2286F7</color>
-    <color name="gSelector_light">#2387F7</color>
+    <color name="gSelector">#F4551A</color>
+    <color name="gSelector_light">#F4551A</color>
     <color name="gSelector_dis">#66F9A450</color>
     <color name="card_bg">@color/brand_card_background</color>
     <color name="card_stroke">#F4F4F6</color>

@@ -172,9 +172,18 @@ class WatchHistoryRecyclerView(
                     val nativeAd = AdBlockerHelper.nativeAdNow
                     adView.mediaView = adView.findViewById(R.id.ad_media)
                     adView.headlineView = adView.findViewById(R.id.ad_headline)
+                    adView.bodyView = adView.findViewById(R.id.ad_body)
                     adView.callToActionView = adView.findViewById(R.id.ad_call_to_action)
 
                     (adView.headlineView as TextView).text = nativeAd?.headline
+                    (adView.bodyView as TextView).apply {
+                        if (nativeAd?.body.isNullOrBlank()) {
+                            visibility = View.GONE
+                        } else {
+                            visibility = View.VISIBLE
+                            text = nativeAd?.body
+                        }
+                    }
                     (adView.callToActionView as Button).text = nativeAd?.callToAction
                     adView.mediaView?.mediaContent = nativeAd?.mediaContent
 

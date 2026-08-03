@@ -29,7 +29,6 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.VideoController
 import com.google.android.gms.ads.nativead.NativeAdView
-import com.google.android.material.imageview.ShapeableImageView
 import com.video.avd.R
 import com.video.avd.ads.AdsManager
 import com.video.avd.ads.AdsManager.recyclerNative
@@ -426,9 +425,7 @@ class VideoAdapter(
             val mediaView = adView.findViewById<com.google.android.gms.ads.nativead.MediaView>(R.id.ad_media)
             val headlineView = adView.findViewById<TextView>(R.id.ad_headline)
             val ad_body = adView.findViewById<TextView>(R.id.ad_body)
-            val appicon = adView.findViewById<ShapeableImageView>(R.id.ad_app_icon)
             val ctaView = adView.findViewById<Button>(R.id.ad_call_to_action)
-            adView.iconView=appicon
             adView.mediaView = mediaView
             adView.headlineView = headlineView
             adView.bodyView = ad_body
@@ -454,13 +451,6 @@ class VideoAdapter(
                 ad_body.text = nativeAd.body
             }
 
-// ICON
-            if (nativeAd.icon == null) {
-                appicon.visibility = View.GONE
-            } else {
-                appicon.visibility = View.VISIBLE
-                appicon.setImageDrawable(nativeAd.icon?.drawable)
-            }
             adView.setNativeAd(nativeAd)
 
             nativeAd.mediaContent?.videoController?.let { videoController ->

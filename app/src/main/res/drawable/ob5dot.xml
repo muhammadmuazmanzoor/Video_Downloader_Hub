@@ -17,5 +17,5 @@
       android:fillColor="#E7EAEF"/>
   <path
       android:pathData="M68,0L92,0A4,4 0,0 1,96 4L96,4A4,4 0,0 1,92 8L68,8A4,4 0,0 1,64 4L64,4A4,4 0,0 1,68 0z"
-      android:fillColor="#2286F7"/>
+      android:fillColor="@color/brand_accent"/>
 </vector>

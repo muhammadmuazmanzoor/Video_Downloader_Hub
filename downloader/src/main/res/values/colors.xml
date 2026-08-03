@@ -8,7 +8,7 @@
     <color name="lightgreen">#1DB954</color>
 
     <color name="colorPrimaryProxy">#64B5F6</color>
-    <color name="colorPrimaryDarkProxy">#2196F3</color>
+    <color name="colorPrimaryDarkProxy">#F88551</color>
     <color name="colorAccentProxy">#355DC3</color>
     <color name="colorAccentDarkProxy">#233E9F</color>
 
@@ -46,9 +46,9 @@
     <color name="brand_surface_muted">#EFEFEF</color>
     <color name="brand_text_primary">#0A0D13</color>
     <color name="brand_text_secondary">#9EA2AA</color>
-    <color name="brand_accent">#F78145</color>
-    <color name="bottom_nav_selected">#2387F7</color>
-    <color name="search_text_indicator">#2286F7</color>
+    <color name="brand_accent">#F4551A</color>
+    <color name="bottom_nav_selected">#F4551A</color>
+    <color name="search_text_indicator">#F4551A</color>
     <color name="brand_selected">#F78145</color>
     <color name="brand_gradient_start">#F32C2C</color>
     <color name="brand_gradient_end">#F78145</color>
@@ -57,8 +57,8 @@
     <color name="browser_nav_icon_enabled">#0A0D13</color>
     <color name="browser_nav_icon_disabled">#656B76</color>
 
-    <color name="gSelector">#2286F7</color>
-    <color name="gSelector_light">#2286F7</color>
+    <color name="gSelector">#F4551A</color>
+    <color name="gSelector_light">#F4551A</color>
     <color name="card_bg">#E9E9E9</color>
     <color name="card_stroke">#F4F4F6</color>
     <color name="shimmer_placeholder">#E8E8EC</color>

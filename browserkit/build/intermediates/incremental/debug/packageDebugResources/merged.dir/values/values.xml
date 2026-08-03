@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="bk_accent">#2286F7</color>
+    <color name="bk_accent">#F4551A</color>
     <color name="bk_bg">#FF000000</color>
     <color name="bk_blocked_dialog_bg">#FF1A1C22</color>
-    <color name="bk_chrome_active">#2286F7</color>
+    <color name="bk_chrome_active">#F4551A</color>
     <color name="bk_chrome_disabled">#FF4B5563</color>
     <color name="bk_chrome_icon">#FFD1D5DB</color>
     <color name="bk_divider">#FF2D3340</color>
-    <color name="bk_download_fab_end">#2286F7</color>
-    <color name="bk_download_fab_start">#48D6F8</color>
+    <color name="bk_download_fab_end">#F4551A</color>
+    <color name="bk_download_fab_start">#F88551</color>
     <color name="bk_error">#FFEF4444</color>
     <color name="bk_history_card">#FF1C1E23</color>
-    <color name="bk_history_clear">#2286F7</color>
-    <color name="bk_history_icon_globe">#2286F7</color>
+    <color name="bk_history_clear">#F4551A</color>
+    <color name="bk_history_icon_globe">#F4551A</color>
     <color name="bk_history_icon_globe_bg">#3048D6F8</color>
     <color name="bk_history_icon_settings">#FF9C27B0</color>
     <color name="bk_history_icon_settings_bg">#FF2A1F3D</color>
@@ -22,14 +22,14 @@
     <color name="bk_on_primary">#FFFFFFFF</color>
     <color name="bk_primary">#FF6C63FF</color>
     <color name="bk_quality_card">#FF1C1E23</color>
-    <color name="bk_quality_resolution">#2286F7</color>
+    <color name="bk_quality_resolution">#F4551A</color>
     <color name="bk_sheet">#FF1A1D2E</color>
     <color name="bk_surface">#FF121212</color>
     <color name="bk_tab_footer">#FF1A1A1A</color>
     <color name="bk_text_primary">#FFF5F5F7</color>
     <color name="bk_text_secondary">#FF9CA3AF</color>
     <color name="bk_url_bar">#FF2A2A2A</color>
-    <color name="bk_youtube_red">#2286F7</color>
+    <color name="bk_youtube_red">#F4551A</color>
     <string name="bk_add_bookmark">Add bookmark</string>
     <string name="bk_address_hint">Search or enter URL</string>
     <string name="bk_adult_blocked_message">Adult websites are not allowed in this app.</string>

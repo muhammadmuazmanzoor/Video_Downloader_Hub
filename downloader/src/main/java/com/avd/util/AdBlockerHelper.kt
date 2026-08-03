@@ -989,7 +989,7 @@ ative_home_variation: 1=download, 2=small, 3=without media. */
                 }
             }
 
-            adView.findViewById<ImageView>(R.id.ad_app_icon)?.let { icon ->
+            adView.findViewById<ImageView>(R.id.appicon)?.let { icon ->
                 if (nativeAd.icon == null) {
                     icon.visibility = View.GONE
                 } else {

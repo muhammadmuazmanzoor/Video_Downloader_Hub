@@ -8,7 +8,7 @@
       android:fillColor="#A1A5A3"/>
   <path
       android:pathData="M21,0L31,0A5,5 0,0 1,36 5L36,5A5,5 0,0 1,31 10L21,10A5,5 0,0 1,16 5L16,5A5,5 0,0 1,21 0z"
-      android:fillColor="#2286F7"/>
+      android:fillColor="@color/brand_accent"/>
   <path
       android:pathData="M47,0L47,0A5,5 0,0 1,52 5L52,5A5,5 0,0 1,47 10L47,10A5,5 0,0 1,42 5L42,5A5,5 0,0 1,47 0z"
       android:fillColor="#A1A5A3"/>

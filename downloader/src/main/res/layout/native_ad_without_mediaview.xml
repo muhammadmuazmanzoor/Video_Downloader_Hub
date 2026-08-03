@@ -3,48 +3,57 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/native_ad_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/card_stroke"
-    android:id="@+id/native_ad_view">
+    android:background="@color/card_stroke">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:paddingBottom="@dimen/_10sdp">
 
-     <!--   <com.google.android.gms.ads.nativead.MediaView
-            android:id="@+id/ad_media"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:visibility="gone"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ad_media_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="140dp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_8sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/llAdsContent" />-->
+            app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/ad_app_icon"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:paddingVertical="@dimen/_4sdp"
-            android:paddingHorizontal="@dimen/_3sdp"
-            android:layout_marginHorizontal="@dimen/_5sdp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            app:shapeAppearanceOverlay="@style/circleImageView" />
+            <com.google.android.gms.ads.nativead.MediaView
+                android:id="@+id/ad_media"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+            <FrameLayout
+                android:id="@+id/roundedMedia"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/round_corner_native_stroke"
+                app:layout_constraintBottom_toBottomOf="@id/ad_media"
+                app:layout_constraintEnd_toEndOf="@id/ad_media"
+                app:layout_constraintStart_toStartOf="@id/ad_media"
+                app:layout_constraintTop_toTopOf="@id/ad_media" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
             android:id="@+id/llAdsContent"
             android:layout_width="0dp"
-            app:layout_constraintStart_toEndOf="@id/ad_app_icon"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
             android:orientation="horizontal"
-            android:padding="@dimen/_10sdp"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ad_media_layout">
 
             <TextView
                 android:id="@+id/txtAds"
@@ -55,8 +64,6 @@
                 android:paddingHorizontal="@dimen/_4sdp"
                 android:paddingVertical="@dimen/_2sdp"
                 android:text="Ad"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
                 android:textColor="@color/white"
                 android:textSize="10sp"
                 android:textStyle="bold" />
@@ -65,50 +72,50 @@
                 android:id="@+id/ad_headline"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginBottom="@dimen/_1sdp"
+                android:layout_marginStart="@dimen/_8sdp"
+                android:layout_weight="1"
                 android:ellipsize="end"
-                app:layout_constraintStart_toEndOf="@id/txtAds"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/txtAds"
+                android:maxLength="45"
                 android:maxLines="2"
                 android:textColor="@color/brand_text_primary"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                tools:text="StreamYard is a live streaming that has passed to" />
-
-            <TextView
-                android:id="@+id/ad_body"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLength="90"
-                android:maxLines="2"
-                android:textColor="@color/gray_2.1"
                 android:textSize="12sp"
-                android:layout_marginBottom="@dimen/_10sdp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@id/txtAds"
-                app:layout_constraintTop_toBottomOf="@id/ad_headline"
-                tools:text="The easiest way to create professional livestream. Get started today. " />
+                android:textStyle="bold"
+                tools:text="Test Ad : Google Ads" />
+        </LinearLayout>
 
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/ad_body"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:ellipsize="end"
+            android:maxLength="110"
+            android:maxLines="2"
+            android:textColor="@color/gray_2.1"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/llAdsContent"
+            tools:text="The Google Ads mobile app helps you stay connected to your campaigns while on the go." />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/ad_call_to_action"
             style="?android:attr/borderlessButtonStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_18sdp"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:background="@drawable/gradient_bg"
             android:paddingHorizontal="@dimen/_15sdp"
             android:paddingVertical="@dimen/_8sdp"
             android:textColor="@color/white"
-            android:textSize="16sp"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/llAdsContent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ad_body"
             tools:text="INSTALL" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.gms.ads.nativead.NativeAdView>

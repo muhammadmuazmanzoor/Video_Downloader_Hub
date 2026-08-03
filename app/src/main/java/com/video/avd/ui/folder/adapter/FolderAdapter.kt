@@ -227,20 +227,26 @@ class FolderAdapter(var list: List<VideoFolder>, var context: Context) : Recycle
                 Log.d("FolderAdapter", "Binding video at position=$position, videoIndex=$videoIndex")
                 if (videoIndex >= filteredVideos.size) return
                 val item = filteredVideos[videoIndex]
-                when (VIEW_TYPE.value) {
-                    0 -> {
-                        Log.d("FolderAdapter", "Video data=${item.name}")
-                        (holder as FolderAdapterViewHolders.FolderViewHolder).bind(item)
+                when (holder) {
+                    is FolderAdapterViewHolders.FolderViewHolder -> {
+                        Log.d("FolderAdapter", "Binding list holder for ${item.name}")
+                        holder.bind(item, privateVideosCount)
                         holder.binding.root.setOnClickListener {
                             onClickFolder.onClickListner(item.id.toString(), item.name)
                         }
                     }
-                    1 -> {
-                        Log.d("FolderAdapter", "Video data=${item.name}")
-                        (holder as FolderAdapterViewHolders.FolderViewHolderGrid).bind(item)
+                    is FolderAdapterViewHolders.FolderViewHolderGrid -> {
+                        Log.d("FolderAdapter", "Binding grid holder for ${item.name}")
+                        holder.bind(item, privateVideosCount)
                         holder.binding.root.setOnClickListener {
                             onClickFolder.onClickListner(item.id.toString(), item.name)
                         }
+                    }
+                    else -> {
+                        Log.e(
+                            "FolderAdapter",
+                            "Unexpected holder=${holder::class.java.simpleName} at position=$position"
+                        )
                     }
                 }
             }
