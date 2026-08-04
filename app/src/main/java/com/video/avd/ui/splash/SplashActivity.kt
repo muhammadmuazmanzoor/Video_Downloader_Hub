@@ -265,14 +265,14 @@ class SplashActivity : AppCompatActivity() {
         splashTimeoutJob?.cancel()
         if(show) {
             if (NetworkUtils.isOnline(this)) {
-                val nextActivity = when {
-                    isProVersion.value != true && isIapEnableAfterSplash -> InAppActivity::class.java
-                    shouldNavigateToLanguage() -> LanguageActivity::class.java
-                    shouldNavigateToOnboarding() -> OnboardingActivity::class.java
-                    shouldNavigateToSurvey() -> SurveyActivity::class.java
-                    else -> MainActivity::class.java
+                val nextIntent = when {
+                    isProVersion.value != true && isIapEnableAfterSplash -> Intent(this@SplashActivity, InAppActivity::class.java)
+                    shouldNavigateToLanguage() -> LanguageActivity.createIntent(this@SplashActivity, false)
+                    shouldNavigateToOnboarding() -> Intent(this@SplashActivity, OnboardingActivity::class.java)
+                    shouldNavigateToSurvey() -> Intent(this@SplashActivity, SurveyActivity::class.java)
+                    else -> Intent(this@SplashActivity, MainActivity::class.java)
                 }
-                startActivity(Intent(this@SplashActivity, nextActivity))
+                startActivity(nextIntent)
                 finish()
             }
             if(!fromNoti){

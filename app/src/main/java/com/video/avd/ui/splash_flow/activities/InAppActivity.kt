@@ -271,13 +271,13 @@ class InAppActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceC
             AppUtils.fbEvents("first_user_language", "Language",this)
         }
         Log.d("navToNext", "navToNext: ${shouldAllObDisable()}")
-        val nextActivity = when {
-            shouldNavigateToLanguage() && fromSplash -> LanguageActivity::class.java
-            shouldNavigateToOnboarding() && fromSplash -> OnboardingActivity::class.java
-            shouldNavigateToSurvey() && fromSplash -> SurveyActivity::class.java
-            else -> MainActivity::class.java
+        val nextIntent = when {
+            shouldNavigateToLanguage() && fromSplash -> LanguageActivity.createIntent(this, false)
+            shouldNavigateToOnboarding() && fromSplash -> Intent(this, OnboardingActivity::class.java)
+            shouldNavigateToSurvey() && fromSplash -> Intent(this, SurveyActivity::class.java)
+            else -> Intent(this, MainActivity::class.java)
         }
-        startActivity(Intent(this, nextActivity))
+        startActivity(nextIntent)
         finish()
     }
     private fun handleClicks() {

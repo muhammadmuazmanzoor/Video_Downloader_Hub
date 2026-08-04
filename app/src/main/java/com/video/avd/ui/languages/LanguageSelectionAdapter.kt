@@ -14,6 +14,7 @@ import com.video.avd.R
 class LanguageSelectionAdapter(private val list: List<LanguageSelectionModel>, private val listener: LanguageSelectionClickListener) : RecyclerView.Adapter<LanguageSelectionAdapter.LanguageSelectionViewHolder>() {
 
     private var startupHighlight = true
+    private var startupHighlightPosition = 2
 
     inner class LanguageSelectionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var rootLayout: ConstraintLayout? = null
@@ -53,7 +54,7 @@ class LanguageSelectionAdapter(private val list: List<LanguageSelectionModel>, p
         holder.itemView.setOnClickListener {
             if (startupHighlight) {
                 startupHighlight = false
-                notifyItemChanged(0)
+                notifyItemChanged(startupHighlightPosition)
             }
             val old = list.indexOfFirst { it.isSelected }
             if (old == position) return@setOnClickListener   // already selected
@@ -69,7 +70,7 @@ class LanguageSelectionAdapter(private val list: List<LanguageSelectionModel>, p
         }
 
         // Handle animation visibility
-        if (startupHighlight && position == 2) {
+        if (startupHighlight && position == startupHighlightPosition) {
             holder.item_back?.visibility = View.GONE
             holder.anim?.visibility = View.VISIBLE
             holder.anim?.playAnimation()
@@ -95,6 +96,12 @@ class LanguageSelectionAdapter(private val list: List<LanguageSelectionModel>, p
 
     override fun getItemCount(): Int {
         return list.size
+    }
+
+    fun stopStartupHighlight() {
+        if (!startupHighlight) return
+        startupHighlight = false
+        notifyItemChanged(startupHighlightPosition)
     }
 
 

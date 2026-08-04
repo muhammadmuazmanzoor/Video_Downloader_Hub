@@ -83,6 +83,8 @@ class LanguageActivity : AppCompatActivity(),
     private var binding: ActivityLanguageBinding? = null
     private var selectedLanguage = "none"
     private var isShow = false
+    private var isSettingsFlow = false
+    private var languageAdapter: LanguageSelectionAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -107,6 +109,8 @@ class LanguageActivity : AppCompatActivity(),
                 PorterDuff.Mode.SRC_ATOP
             )
         }
+        isSettingsFlow = intent.getBooleanExtra(EXTRA_OPENED_FROM_SETTINGS, false) || !fromSplash
+        setupHeader()
         AppUtils.fbEvents("language_view", "Language",this)
         doneButtonDisableStyle()
         setDataAndAdapter()
@@ -172,6 +176,16 @@ class LanguageActivity : AppCompatActivity(),
         }
     }
 
+    private fun setupHeader() {
+        binding?.tvTitle?.text = getString(
+            if (isSettingsFlow) R.string.change_language else R.string.select_language
+        )
+        binding?.ivBack?.visibility = if (isSettingsFlow) View.VISIBLE else View.GONE
+        binding?.ivBack?.setOnClickListener {
+            finish()
+        }
+    }
+
     private fun setDataAndAdapter() {
         val list = arrayListOf<LanguageSelectionModel>()
         list.add(LanguageSelectionModel("ar", "العربية", false, resources.getDrawable(R.drawable.ic_saudia)))
@@ -194,6 +208,8 @@ class LanguageActivity : AppCompatActivity(),
                 break
             }
         }
+        val savedLanguage = AppPreference.getLanguage(this) ?: Locale.getDefault().language
+        selectedLanguage = savedLanguage
         val appLanguage = Locale.getDefault().language
         var itemToInsert: LanguageSelectionModel? = null
         for (item in list) {
@@ -208,8 +224,11 @@ class LanguageActivity : AppCompatActivity(),
             list.add(2, itemToInsert)
         }
 
+        list.firstOrNull { it.lang == savedLanguage }?.isSelected = true
+
 
         val adapter = LanguageSelectionAdapter(list, this)
+        languageAdapter = adapter
         binding?.rvLanguage?.layoutManager = LinearLayoutManager(this)
         binding?.rvLanguage?.adapter = adapter
     }
@@ -238,6 +257,10 @@ class LanguageActivity : AppCompatActivity(),
     fun navToNext() {
         AppPreference.saveLanguage(this, selectedLanguage)
         Prefs[LANG_SESSION] = 1
+        if (isSettingsFlow) {
+            finish()
+            return
+        }
         val nextActivity = when {
             shouldNavigateToOnboarding() -> OnboardingActivity::class.java
             shouldNavigateToSurvey() -> SurveyActivity::class.java
@@ -409,6 +432,7 @@ class LanguageActivity : AppCompatActivity(),
     override fun onLanguageClick(language: LanguageSelectionModel?) {
         mSelectedLanguage = language?.lang ?: "en"
         selectedLanguage = language?.lang ?: "en"
+        languageAdapter?.stopStartupHighlight()
 
         if (!isShow) {
             loadOB1Ads()
@@ -431,7 +455,9 @@ class LanguageActivity : AppCompatActivity(),
     private fun handleBackPress() {
         val onBackPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (!isFinishing && !isDestroyed) {
+                if (isSettingsFlow) {
+                    finish()
+                } else if (!isFinishing && !isDestroyed) {
                     doneAndNavigate()
                 }
             }
@@ -606,6 +632,16 @@ class LanguageActivity : AppCompatActivity(),
     }
 
     companion object {
+        private const val EXTRA_OPENED_FROM_SETTINGS = "opened_from_settings"
         var mSelectedLanguage = "none"
+
+        fun createIntent(context: Context, openedFromSettings: Boolean): Intent {
+            return Intent(context, LanguageActivity::class.java).apply {
+                putExtra(EXTRA_OPENED_FROM_SETTINGS, openedFromSettings)
+            }
+        }
     }
 }
+
+
+

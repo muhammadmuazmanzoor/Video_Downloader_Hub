@@ -41,6 +41,7 @@ class LanguagesSelectionFragment : Fragment(), LanguageSelectionAdapter.Language
     private var selectedLanguage = ""
     private var selectedPosition = 0 //English
     private var systemLanguage = ""
+    private var languageAdapter: LanguageSelectionAdapter? = null
 
     var languagenativeAd2: NativeAd? = null
     var languagenativeAdhigh2: NativeAd? = null
@@ -95,15 +96,13 @@ class LanguagesSelectionFragment : Fragment(), LanguageSelectionAdapter.Language
             Log.d("ActivityCheck", "isSplash: $isSplash")
         }
 
+        setupHeader()
+
         // Set layout direction based on current locale
         view.layoutDirection = if (Locale.getDefault().language == "ar") {
             View.LAYOUT_DIRECTION_RTL
         } else {
             View.LAYOUT_DIRECTION_LTR
-        }
-
-        binding?.imageView9?.setOnClickListener {
-            mActivity?.onBackPressed()
         }
 
         binding?.textView20?.setOnClickListener {
@@ -118,6 +117,18 @@ class LanguagesSelectionFragment : Fragment(), LanguageSelectionAdapter.Language
         }
 
         setSelector()
+    }
+
+    private fun setupHeader() {
+        binding?.textView19?.text = getString(R.string.change_language)
+        binding?.textView19?.textDirection = when (Locale.getDefault().language) {
+            "ar" -> View.TEXT_DIRECTION_RTL
+            else -> View.TEXT_DIRECTION_LTR
+        }
+        binding?.imageView9?.visibility = View.VISIBLE
+        binding?.imageView9?.setOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 
     private fun setDataAndAdapter(activity: FragmentActivity) {
@@ -160,20 +171,8 @@ class LanguagesSelectionFragment : Fragment(), LanguageSelectionAdapter.Language
         if (currentLang != null) {
 //            selectedLanguage = currentLang
         }
-
-        // Update UI based on current language
-        binding?.textView19?.text = when (currentLang) {
-            "ar" -> "اللغات"
-            else -> getString(R.string.select_language)
-        }
-        
-        // Set text direction for title
-        binding?.textView19?.textDirection = when (currentLang) {
-            "ar" -> View.TEXT_DIRECTION_RTL
-            else -> View.TEXT_DIRECTION_LTR
-        }
-
         val adapter = LanguageSelectionAdapter(list, this)
+        languageAdapter = adapter
         binding?.rvLanguage?.layoutManager = LinearLayoutManager(activity)
         binding?.rvLanguage?.adapter = adapter
     }
@@ -263,84 +262,24 @@ class LanguagesSelectionFragment : Fragment(), LanguageSelectionAdapter.Language
     }
 
     private fun setSelector() {
-        when (selectedLanguage) {
-            "en" -> {
-                selectedPosition = 0
-                binding?.textView19?.text = "Select Language"
-            }
-
-            "ar" -> {
-                selectedPosition = 1
-                binding?.textView19?.text = "اللغات"
-            }
-
-            "ko" -> {
-                selectedPosition = 2
-                binding?.textView19?.text = "언어"
-            }
-
-            "ja" -> {
-                selectedPosition = 3
-                binding?.textView19?.text = "言語"
-            }
-
-            "es" -> {
-                selectedPosition = 4
-                binding?.textView19?.text = "Idiomas"
-            }
-
-            "in" -> {
-                selectedPosition = 5
-                binding?.textView19?.text = "Bahasa"
-            }
-
-            "pt" -> {
-                selectedPosition = 6
-                binding?.textView19?.text = "línguas"
-            }
-
-            "fr" -> {
-                selectedPosition = 7
-                binding?.textView19?.text = "Langues"
-            }
-
-            "vi" -> {
-                selectedPosition = 8
-                binding?.textView19?.text = "Ngôn ngữ"
-            }
-
-            "ru" -> {
-                selectedPosition = 9
-                binding?.textView19?.text = "Языки"
-            }
-
-            "tr" -> {
-                selectedPosition = 10
-                binding?.textView19?.text = "Diller"
-            }
-
-            "ms" -> {
-                selectedPosition = 11
-                binding?.textView19?.text = "Bahasa"
-            }
-
-            "th" -> {
-                selectedPosition = 12
-                binding?.textView19?.text = "ภาษา"
-            }
-
-            "pl" -> {
-                selectedPosition = 13
-                binding?.textView19?.text = "Języki"
-            }
-
-            else -> {
-                selectedPosition = 3
-                binding?.textView19?.text = "Select Language"
-            }
+        selectedPosition = when (selectedLanguage) {
+            "en" -> 0
+            "ar" -> 1
+            "ko" -> 2
+            "ja" -> 3
+            "es" -> 4
+            "in" -> 5
+            "pt" -> 6
+            "fr" -> 7
+            "vi" -> 8
+            "ru" -> 9
+            "tr" -> 10
+            "ms" -> 11
+            "th" -> 12
+            "pl" -> 13
+            else -> 3
         }
     }
-
     private fun applyLanguage() {
         if (selectedLanguage.isNotEmpty()) {
             AppUtils.firebaseUserAction("Langu_done_click", "languagescreen")
@@ -356,9 +295,10 @@ class LanguagesSelectionFragment : Fragment(), LanguageSelectionAdapter.Language
 
     @SuppressLint("UseCompatLoadingForDrawables")
     override fun onLanguageClick(language: LanguageSelectionModel?) {
-        binding?.textView20?.visibility=View.VISIBLE
-        binding?.textView21?.visibility=View.INVISIBLE
-        binding?.anim?.visibility=View.VISIBLE
+        binding?.textView20?.visibility = View.VISIBLE
+        binding?.textView21?.visibility = View.INVISIBLE
+        binding?.anim?.visibility = View.VISIBLE
+        languageAdapter?.stopStartupHighlight()
         if (!onetime){
             onetime=true
             if (AdBlockerHelper.isProVersion.value != true) {
@@ -449,3 +389,5 @@ class LanguagesSelectionFragment : Fragment(), LanguageSelectionAdapter.Language
         }
     }*/
 }
+
+

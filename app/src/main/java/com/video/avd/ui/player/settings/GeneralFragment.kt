@@ -12,8 +12,8 @@ import androidx.navigation.fragment.findNavController
 import com.video.avd.BuildConfig
 import com.video.avd.R
 import com.video.avd.databinding.FragmentGeneralBinding
-import com.video.avd.extension.nextNavigateTo
 import com.video.avd.extension.openLink
+import com.video.avd.ui.splash_flow.activities.LanguageActivity
 import com.video.avd.utils.AppPreference
 import com.video.avd.utils.AppUtils
 import com.avd.util.AdBlockerHelper
@@ -49,9 +49,7 @@ class GeneralFragment : Fragment() {
         }
         val packageName = mActivity?.packageName
         binding.layoutLanguage.setOnClickListener {
-            mActivity?.let {
-                it.nextNavigateTo(GeneralFragmentDirections.actionGeneralFragmentToLanguagesSelectionFragment3())
-            }
+            startActivity(LanguageActivity.createIntent(requireContext(), true))
         }
        val isHistory= mActivity?.let { AppPreference.isHistoryOn(it) } == true
        binding.simpleSwitch.isChecked=isHistory
