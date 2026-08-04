@@ -28,6 +28,8 @@ import com.video.avd.extension.shake
 import com.video.avd.ui.splash_flow.utils.AppUtils.hideNavigationBar
 import com.video.avd.ui.splash_flow.utils.AppUtils.shouldAllObDisable
 import com.video.avd.ui.splash_flow.utils.AppUtils.shouldNavigateToLanguage
+import com.video.avd.ui.splash_flow.utils.AppUtils.shouldNavigateToOnboarding
+import com.video.avd.ui.splash_flow.utils.AppUtils.shouldNavigateToSurvey
 import com.video.avd.ui.MainActivity
 import com.video.avd.ui.inapp.ProViewModel
 import com.video.avd.ui.inapp.new_.inapppurchases.BillingClientConnectionListener
@@ -271,7 +273,8 @@ class InAppActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceC
         Log.d("navToNext", "navToNext: ${shouldAllObDisable()}")
         val nextActivity = when {
             shouldNavigateToLanguage() && fromSplash -> LanguageActivity::class.java
-            !shouldNavigateToLanguage() && fromSplash -> MainActivity::class.java
+            shouldNavigateToOnboarding() && fromSplash -> OnboardingActivity::class.java
+            shouldNavigateToSurvey() && fromSplash -> SurveyActivity::class.java
             else -> MainActivity::class.java
         }
         startActivity(Intent(this, nextActivity))

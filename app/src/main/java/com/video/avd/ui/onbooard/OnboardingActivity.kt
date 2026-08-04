@@ -7,8 +7,6 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.avd.util.DataStoreManager
 import com.avd.util.Prefs
 import com.video.avd.R
@@ -20,12 +18,12 @@ import com.video.avd.ads.AdsHelper.obInterstitialHighEnabled
 import com.video.avd.ads.loadInterOb
 import com.video.avd.ads.loadInterObHigh
 import com.video.avd.databinding.ActivityOnboardingBinding
-import com.video.avd.ui.splash_flow.activities.LanguageActivity
-import com.video.avd.ui.splash_flow.utils.AppUtils.hideNavigationBar
 import com.video.avd.ui.MainActivity
-import com.video.avd.ui.splash_flow.utils.AppUtils.LANG_SESSION
+import com.video.avd.ui.splash_flow.activities.LanguageActivity
+import com.video.avd.ui.splash_flow.utils.AppUtils.OB_SESSION
+import com.video.avd.ui.splash_flow.utils.AppUtils.hideNavigationBar
+import com.video.avd.ui.splash_flow.utils.AppUtils.shouldNavigateToSurvey
 import com.video.avd.utils.AppUtils.IS_LANGUAGE
-
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 import javax.inject.Inject
@@ -129,11 +127,11 @@ class OnboardingActivity : AppCompatActivity(), PagerNav {
             }
         }
 
-       /* if (obInterstitialHighEnabled && obInterstitialEnabled){
+        if (obInterstitialHighEnabled && obInterstitialEnabled){
             loadInterObHigh(this)
         }else if (obInterstitialEnabled){
             loadInterOb(this)
-        }*/
+        }
 
     }
 
@@ -162,8 +160,13 @@ class OnboardingActivity : AppCompatActivity(), PagerNav {
     }
 
     fun navigateNext(){
-        Prefs[LANG_SESSION] = Prefs[LANG_SESSION, 1] + 1
-        startActivity(Intent(this, MainActivity::class.java))
+        Prefs[OB_SESSION] = 1
+        val nextActivity = if (shouldNavigateToSurvey()) {
+            SurveyActivity::class.java
+        } else {
+            MainActivity::class.java
+        }
+        startActivity(Intent(this, nextActivity))
         finish()
     }
 

@@ -12,4 +12,20 @@
         <key>social_downloader_endpoint</key>
         <value>api/v1/video/download</value>
     </entry>
+    <entry>
+        <key>show_iap_after_splash</key>
+        <value>true</value>
+    </entry>
+    <entry>
+        <key>splash_ads</key>
+        <value>{"Interstitialhigh":1,"NativeFullHigh":1,"InterstitialMedium":1,"Interstitialall":1,"Appopenhigh":0,"Appopen":0,"Bannerhigh":1,"Banner":1,"Nativehigh":0,"Native":0,"NativeFormat":1,"Ctacolor":"#F75655","CtatextColor":"#000000","CtatextStyle":"bold","NativeFullCrossDelay":3}</value>
+    </entry>
+    <entry>
+        <key>language_ads</key>
+        <value>{"SessionCount":1,"LanguageButton":0,"LanguageButtonDelay":3,"InterstitialHigh":1,"InterstitialAll":1,"NativeHigh1":1,"NativeAll1":1,"NativeHigh2":1,"NativeAll2":1,"NativeFormat":1,"AdCtaColor":"#0AC43E","AdCtaTextColor":"#000000","CtaTextStyle":"bold"}</value>
+    </entry>
+    <entry>
+        <key>onboarding_ads</key>
+        <value>{"ObEnable":1,"surveyEnable":1,"surveyNativeHigh":1,"surveyNative":1,"surveyInterstitialHigh":1,"surveyInterstitialAll":1,"ObNativeHigh1":1,"ObNativeAll1":1,"FullScreenNativeHigh1":0,"FullScreenNativeAll1":0,"ObNativeHigh3":1,"ObNativeAll3":1,"FullScreenNativeHigh2":1,"FullScreenNativeAll2":1,"ObNativeHigh4":1,"ObNativeAll4":1,"ObInterstitialHigh":1,"ObInterstitialAll":1,"FeatureNativeHigh1":1,"FeatureNativeAll1":1,"NativeFormat":2,"AdCtaColor":"#0AC43E","AdCtaTextColor":"#000000","CtaTextStyle":"bold","NativeFullCrossDelay":3,"ShowNativeFullCross":true}</value>
+    </entry>
 </defaultsMap>

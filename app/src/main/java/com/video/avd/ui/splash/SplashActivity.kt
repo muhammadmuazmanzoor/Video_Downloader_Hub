@@ -51,10 +51,15 @@ import com.video.avd.constent.isinternal
 import com.video.avd.constent.isnotification
 import com.video.avd.databinding.ActivitySplashBinding
 import com.video.avd.ui.MainActivity
+import com.video.avd.ui.onbooard.OnboardingActivity
+import com.video.avd.ui.onbooard.SurveyActivity
 import com.video.avd.ui.splash_flow.activities.LanguageActivity
+import com.video.avd.ui.splash_flow.activities.InAppActivity
 import com.video.avd.ui.splash_flow.utils.AppUtils.isOnline
 import com.video.avd.ui.splash_flow.utils.AppUtils.remoteConfigStatus
 import com.video.avd.ui.splash_flow.utils.AppUtils.shouldNavigateToLanguage
+import com.video.avd.ui.splash_flow.utils.AppUtils.shouldNavigateToOnboarding
+import com.video.avd.ui.splash_flow.utils.AppUtils.shouldNavigateToSurvey
 import com.video.avd.utils.AppPreference
 import com.video.avd.utils.AppUtils
 import com.video.avd.utils.AppUtils.changeStatusBarColor
@@ -259,30 +264,16 @@ class SplashActivity : AppCompatActivity() {
     fun navigateToNext() {
         splashTimeoutJob?.cancel()
         if(show) {
-            if (shouldNavigateToLanguage() && NetworkUtils.isOnline(this)) {
-                if (isProVersion.value != true && isIapEnableAfterSplash ) {
-                    Log.d("SplashActivityweee", "Showing in-app purchase screen ${isProVersion.value} ${isIapEnableAfterSplash}")
-                    // Un comment to show in-app purchase screen after splash if needed
-                   // startActivity(Intent(this@SplashActivity, InAppActivity::class.java))
-                    startActivity(Intent(this@SplashActivity, MainActivity::class.java))
-                    finish()
-                } else {
-                    startActivity(Intent(this@SplashActivity, LanguageActivity::class.java))
-                    finish()
+            if (NetworkUtils.isOnline(this)) {
+                val nextActivity = when {
+                    isProVersion.value != true && isIapEnableAfterSplash -> InAppActivity::class.java
+                    shouldNavigateToLanguage() -> LanguageActivity::class.java
+                    shouldNavigateToOnboarding() -> OnboardingActivity::class.java
+                    shouldNavigateToSurvey() -> SurveyActivity::class.java
+                    else -> MainActivity::class.java
                 }
-            }
-            else if (NetworkUtils.isOnline(this)) {
-                if (isProVersion.value != true && isIapEnableAfterSplash ) {
-                    Log.d("SplashActivityweee", "Showing in-app purchase screen ${isProVersion.value} ${isIapEnableAfterSplash}")
-                    // Un comment to show in-app purchase screen after splash if needed
-                  //   startActivity(Intent(this@SplashActivity, InAppActivity::class.java))
-                    startActivity(Intent(this@SplashActivity, MainActivity::class.java))
-                    finish()
-                } else {
-                    startActivity(Intent(this, MainActivity::class.java))
-                    finish()
-                }
-
+                startActivity(Intent(this@SplashActivity, nextActivity))
+                finish()
             }
             if(!fromNoti){
             show=false

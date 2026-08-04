@@ -17,6 +17,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
+import com.avd.util.Prefs
 import com.avd.util.AdBlockerHelper.isAdShowing
 import com.avd.util.AdBlockerHelper.isProVersion
 import com.google.android.gms.ads.AdError
@@ -44,6 +45,7 @@ import com.video.avd.ads.adjustRevenueMMP
 import com.video.avd.databinding.ActivitySurveyBinding
 import com.video.avd.ui.MainActivity
 import com.video.avd.ads.AppOpenManager.Companion.isShowingAd
+import com.video.avd.ui.splash_flow.utils.AppUtils.SURVEY_SESSION
 import com.video.avd.utils.AppUtils
 import com.video.avd.utils.AppUtils.changeStatusBarColor
 import com.video.avd.utils.AppUtils.hideNavigationBar
@@ -222,12 +224,8 @@ class SurveyActivity  : AppCompatActivity()  {
 
     private fun navigateNext(){
         AppUtils.fbEvents("survey_scr_next", "Survey",this)
-        val nextActivity = if (obEnable) {
-            OnboardingActivity::class.java
-        } else {
-            MainActivity::class.java
-        }
-        startActivity(Intent(this, nextActivity))
+        Prefs[SURVEY_SESSION] = 1
+        startActivity(Intent(this, MainActivity::class.java))
         finish()
     }
 
@@ -238,8 +236,6 @@ class SurveyActivity  : AppCompatActivity()  {
             try {
                 binding?.clbottom?.visibility = View.VISIBLE
                 binding?.shimmer?.visibility = View.VISIBLE
-
-
                 val adUnitId = BuildConfig.native_survey_hf
                 val adLoader =
                     AdLoader.Builder(this@SurveyActivity, adUnitId)

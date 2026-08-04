@@ -24,6 +24,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.lottie.LottieProperty
 import com.airbnb.lottie.model.KeyPath
+import com.avd.util.Prefs
 import com.avd.util.AdBlockerHelper.isProVersion
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.LoadAdError
@@ -61,8 +62,12 @@ import com.video.avd.ui.languages.LanguageSelectionAdapter
 import com.video.avd.ui.languages.LanguageSelectionModel
 import com.video.avd.ui.onbooard.OnboardingActivity
 import com.video.avd.ui.onbooard.SurveyActivity
+import com.video.avd.ui.MainActivity
 import com.video.avd.ui.splash_flow.utils.AppUtils.getMediationInfo
 import com.video.avd.ui.splash_flow.utils.AppUtils.hideNavigationBar
+import com.video.avd.ui.splash_flow.utils.AppUtils.LANG_SESSION
+import com.video.avd.ui.splash_flow.utils.AppUtils.shouldNavigateToOnboarding
+import com.video.avd.ui.splash_flow.utils.AppUtils.shouldNavigateToSurvey
 import com.video.avd.utils.AppPreference
 import com.video.avd.utils.AppUtils
 import com.video.avd.utils.AppUtils.setLocate
@@ -232,11 +237,13 @@ class LanguageActivity : AppCompatActivity(),
 
     fun navToNext() {
         AppPreference.saveLanguage(this, selectedLanguage)
-        if (AdsHelper.surveyEnable){
-            startActivity(Intent(this, SurveyActivity::class.java))
-        }else{
-            startActivity(Intent(this, OnboardingActivity::class.java))
+        Prefs[LANG_SESSION] = 1
+        val nextActivity = when {
+            shouldNavigateToOnboarding() -> OnboardingActivity::class.java
+            shouldNavigateToSurvey() -> SurveyActivity::class.java
+            else -> MainActivity::class.java
         }
+        startActivity(Intent(this, nextActivity))
         finish()
     }
     fun loadInterSurveyHigh(

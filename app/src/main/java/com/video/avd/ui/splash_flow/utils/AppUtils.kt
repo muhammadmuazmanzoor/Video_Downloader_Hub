@@ -17,10 +17,12 @@ import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.avd.util.Prefs
 import com.video.avd.ads.AdsHelper.langSessionRemote
+import com.video.avd.ads.AdsHelper.obEnable
 import com.video.avd.ads.AdsHelper.obFirstEnable
 import com.video.avd.ads.AdsHelper.obFourthEnable
 import com.video.avd.ads.AdsHelper.obSecondEnable
 import com.video.avd.ads.AdsHelper.obThirdEnable
+import com.video.avd.ads.AdsHelper.surveyEnable
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -37,6 +39,7 @@ object AppUtils {
 
     const val LANG_SESSION = "lang_session"
     const val OB_SESSION = "ob_session"
+    const val SURVEY_SESSION = "survey_session"
     const val PREF_KEY = "ProjectPrefs"
 
     var selectedTags: ArrayList<String> = arrayListOf()
@@ -50,22 +53,18 @@ object AppUtils {
 //            SPLASH_AD to true,
         )
 
-    fun shouldNavigateToLanguage(
-    ): Boolean {
-        // If remote says 0 → never navigate
+    fun shouldNavigateToLanguage(): Boolean {
         if (langSessionRemote == 0) return false
-
-        // If remote matches current session → navigate
-        return Prefs[LANG_SESSION, 0] < langSessionRemote
+        return Prefs[LANG_SESSION, 0] < 1
     }
 
- /*   fun shouldNavigateToOB(
-    ): Boolean {
-        // 0 → never navigate
-        if (obSessions == 0) return false
-        // Only navigate if current session matches remote session
-        return Prefs[OB_SESSION, 0] < obSessions
-    }*/
+    fun shouldNavigateToOnboarding(): Boolean {
+        return obEnable && Prefs[OB_SESSION, 0] < 1
+    }
+
+    fun shouldNavigateToSurvey(): Boolean {
+        return surveyEnable && Prefs[SURVEY_SESSION, 0] < 1
+    }
 
     fun shouldAllObDisable(): Boolean{
         return !obFirstEnable && !obSecondEnable &&
