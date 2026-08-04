@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bk_bg">
+    android:background="@color/bk_on_primary">
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/tabPager"
@@ -15,11 +15,11 @@
         android:id="@+id/tabsSwitcher"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/bk_bg"
+        android:background="@color/bk_on_primary"
         android:clickable="true"
         android:focusable="true"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -38,7 +38,7 @@
                 android:padding="10dp"
                 android:scaleType="centerInside"
                 android:src="@drawable/bk_ic_chevron_left"
-                app:tint="@color/bk_text_primary" />
+                app:tint="@color/black" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -69,7 +69,7 @@
                     android:padding="8dp"
                     android:scaleType="centerInside"
                     android:src="@drawable/bk_ic_close"
-                    app:tint="@color/bk_text_secondary" />
+                    app:tint="@color/bk_on_primary" />
             </LinearLayout>
         </LinearLayout>
 
@@ -105,7 +105,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:background="@color/bk_tab_footer"
+            android:background="@color/bk_on_primary"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingHorizontal="12dp">
@@ -120,7 +120,7 @@
                 android:padding="12dp"
                 android:scaleType="centerInside"
                 android:src="@drawable/bk_ic_nav_back"
-                app:tint="@color/bk_chrome_disabled" />
+                app:tint="@color/black" />
 
             <ImageButton
                 android:id="@+id/btnTabsWebForward"
@@ -132,7 +132,7 @@
                 android:padding="12dp"
                 android:scaleType="centerInside"
                 android:src="@drawable/bk_ic_nav_forward"
-                app:tint="@color/bk_chrome_disabled" />
+                app:tint="@color/black" />
 
             <ImageButton
                 android:id="@+id/btnTabsHome"
@@ -144,7 +144,7 @@
                 android:padding="12dp"
                 android:scaleType="centerInside"
                 android:src="@drawable/bk_ic_home_outline"
-                app:tint="@color/bk_chrome_icon" />
+                app:tint="@color/black" />
 
             <ImageButton
                 android:id="@+id/btnTabsSwitcher"
@@ -156,7 +156,7 @@
                 android:padding="12dp"
                 android:scaleType="centerInside"
                 android:src="@drawable/bk_ic_tabs_stack"
-                app:tint="@color/bk_chrome_active" />
+                app:tint="@color/black" />
 
             <ImageButton
                 android:id="@+id/btnTabsMenu"
@@ -168,7 +168,7 @@
                 android:padding="12dp"
                 android:scaleType="centerInside"
                 android:src="@drawable/bk_ic_more_horiz"
-                app:tint="@color/bk_chrome_icon" />
+                app:tint="@color/black" />
         </LinearLayout>
     </LinearLayout>
 </FrameLayout>

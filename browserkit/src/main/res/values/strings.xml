@@ -30,6 +30,7 @@
     <color name="bk_quality_card">#FF1C1E23</color>
     <color name="bk_blocked_dialog_bg">#FF1A1C22</color>
     <color name="bk_youtube_red">#F4551A</color>
+    <color name="black">#FF000000</color>
 
     <string name="bk_back">Back</string>
     <string name="bk_forward">Forward</string>

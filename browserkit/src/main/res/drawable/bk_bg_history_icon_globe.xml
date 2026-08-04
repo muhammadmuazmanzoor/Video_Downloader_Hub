@@ -3,5 +3,5 @@
     android:shape="oval">
 
 
-    <solid android:color="@color/bk_history_icon_globe_bg" />
+    <solid android:color="#F88551" />
 </shape>

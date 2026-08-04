@@ -30,6 +30,7 @@
     <color name="bk_text_secondary">#FF9CA3AF</color>
     <color name="bk_url_bar">#FF2A2A2A</color>
     <color name="bk_youtube_red">#F4551A</color>
+    <color name="black">#FF000000</color>
     <string name="bk_add_bookmark">Add bookmark</string>
     <string name="bk_address_hint">Search or enter URL</string>
     <string name="bk_adult_blocked_message">Adult websites are not allowed in this app.</string>
@@ -107,7 +108,7 @@
         <item name="android:background">?attr/selectableItemBackground</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:paddingHorizontal">20dp</item>
-        <item name="android:textColor">@color/bk_text_primary</item>
+        <item name="android:textColor">@color/black</item>
         <item name="android:textSize">15sp</item>
     </style>
     <style name="Theme.BrowserKit" parent="Theme.Material3.Dark.NoActionBar">
@@ -115,6 +116,8 @@
         <item name="colorOnPrimary">@color/bk_on_primary</item>
         <item name="android:statusBarColor">@color/bk_bg</item>
         <item name="android:navigationBarColor">@color/bk_bg</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar">true</item>
         <item name="android:windowBackground">@color/bk_bg</item>
     </style>
     <style name="Theme.BrowserKit.BottomSheet" parent="ThemeOverlay.Material3.BottomSheetDialog">

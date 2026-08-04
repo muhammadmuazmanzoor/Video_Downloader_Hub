@@ -19,7 +19,9 @@ import com.avd.ui.component.adapter.ProgressAdapter
 import com.avd.ui.component.adapter.ProgressListener
 import com.avd.ui.main.base.BaseFragment
 import com.avd.ui.main.home.MainViewModel
+import com.avd.util.DownloadDialogType
 import com.avd.util.AppLogger
+import com.avd.util.showDownloadDialog
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -60,6 +62,7 @@ class ProgressFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         progressViewModel.start()
         handleDownloadVideoEvent()
+        observeNoInternetDuringDownload()
     }
 
     override fun onDestroyView() {
@@ -73,6 +76,13 @@ class ProgressFragment : BaseFragment() {
             mainViewModel.currentOriginal.set(currentOriginal)
             progressViewModel.downloadVideo(videoInfo)
         })
+    }
+
+    private fun observeNoInternetDuringDownload() {
+        progressViewModel.noInternetDuringDownloadEvent.observe(viewLifecycleOwner) {
+            if (!isAdded) return@observe
+            requireContext().showDownloadDialog(type = DownloadDialogType.INTERNET_ERROR)
+        }
     }
 
     private val progressListener = object : ProgressListener {

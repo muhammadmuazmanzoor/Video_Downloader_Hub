@@ -11,7 +11,9 @@ import com.avd.data.remote.service.YoutubedlHelper
 import com.avd.di.qualifier.BaseUrl1
 import com.avd.di.qualifier.BaseUrl2
 import com.avd.di.qualifier.SocialDownloaderBaseUrl
+import com.avd.util.ContextUtils
 import com.avd.util.RemoteConfigHelper
+import com.avd.util.SocialDownloaderIdentity
 import com.avd.util.proxy_utils.CustomProxyController
 import com.avd.util.proxy_utils.OkHttpProxyClient
 import dagger.Module
@@ -146,14 +148,24 @@ object NetworkModule {
     fun provideSocialDownloaderOkHttpClient(@Named("SocialDownloaderKey") apiKey: String): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor { chain ->
+                val appContext = ContextUtils.getApplicationContext()
+                val packageName = appContext?.let { SocialDownloaderIdentity.getPackageName(it) } ?: "unknown.package"
+                val installationId = appContext?.let { SocialDownloaderIdentity.getInstallationId(it) } ?: "unknown_installation"
+                val deviceId = appContext?.let { SocialDownloaderIdentity.getDeviceId(it) } ?: "unknown_device"
                 val request = chain.request().newBuilder()
                     .addHeader("api-key", apiKey)
                     .addHeader("x-api-key", apiKey)
                     .addHeader("X-App-Label", RemoteConfigHelper.getSocialDownloaderAppLabel())
+                    .addHeader("X-Client-Package", packageName)
+                    .addHeader("X-Install-Id", installationId)
+                    .addHeader("X-Device-Id", deviceId)
+                    .addHeader("X-Request-Id", java.util.UUID.randomUUID().toString())
+                    .addHeader("Cache-Control", "no-cache")
+                    .addHeader("Pragma", "no-cache")
                     .build()
                 Log.d(
                     SOCIAL_DOWNLOADER_LOG_TAG,
-                    "Request ${request.method} ${request.url} keySource=Hilt:SocialDownloaderKey apiKey=${apiKey.maskForLog()} keyLength=${apiKey.length} appLabel=${RemoteConfigHelper.getSocialDownloaderAppLabel()} authHeaders=${request.headers.names().filter { it.equals("api-key", true) || it.equals("x-api-key", true) || it.equals("X-App-Label", true) }}"
+                    "Request ${request.method} ${request.url} keySource=Hilt:SocialDownloaderKey apiKey=${apiKey.maskForLog()} keyLength=${apiKey.length} appLabel=${RemoteConfigHelper.getSocialDownloaderAppLabel()} package=$packageName install=${installationId.take(8)} device=${deviceId.take(8)} authHeaders=${request.headers.names().filter { it.equals("api-key", true) || it.equals("x-api-key", true) || it.equals("X-App-Label", true) }}"
                 )
                 val response = chain.proceed(request)
                 Log.d(

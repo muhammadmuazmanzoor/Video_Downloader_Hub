@@ -557,6 +557,12 @@ object AdBlockerHelper {
         }
         if (isCooldownOver()) {
             activity.lifecycleScope.launch {
+                var callbackCalled = false
+                fun continueOnce() {
+                    if (callbackCalled) return
+                    callbackCalled = true
+                    continueWhenResumed(activity, onDismissed)
+                }
                 try {
                     isAdShowing = true
                     showLoading(activity, "Loading Ad...")
@@ -580,35 +586,35 @@ object AdBlockerHelper {
                                 inter_home_normal,
                                 { interHome = it },
                                 { interHome = it }
-                            )
-                            hideLoading()
-                            isAdShowing = false
-                            onDismissed?.invoke()
-                        }
-                        override fun onAdFailedToShowFullScreenContent(adError: AdError) {
-                            interHome = null
-                            loadFallbackInterstitialAd(
-                                activity,
+                              )
+                              hideLoading()
+                              isAdShowing = false
+                              continueOnce()
+                          }
+                          override fun onAdFailedToShowFullScreenContent(adError: AdError) {
+                              interHome = null
+                              loadFallbackInterstitialAd(
+                                  activity,
                                 activity.resources.getString(R.string.Interstitial_Home_ID_High),
                                 activity.resources.getString(R.string.Interstitial_Home_ID),
                                 inter_home_high,
                                 inter_home_normal,
                                 { interHome = it },
                                 { interHome = it }
-                            )
-                            hideLoading()
-                            isAdShowing = false
-                            onDismissed?.invoke()
-                        }
-                    }
-                    interstitialAd.show(activity)
-                } catch (e: Exception) {
-                    Log.e("AdsManager", "Error showing interstitial ad", e)
-                    isAdShowing = false
-                    onDismissed?.invoke()
-                    hideLoading()
-                }
-            }
+                              )
+                              hideLoading()
+                              isAdShowing = false
+                              continueOnce()
+                          }
+                      }
+                      interstitialAd.show(activity)
+                  } catch (e: Exception) {
+                      Log.e("AdsManager", "Error showing interstitial ad", e)
+                      isAdShowing = false
+                      hideLoading()
+                      continueOnce()
+                  }
+              }
             try {
                 if (forFragment) {
                     activity.onBackPressedDispatcher.addCallback(activity) {
@@ -631,11 +637,11 @@ object AdBlockerHelper {
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-        } else {
-            hideLoading()
-            onDismissed?.invoke()
-        }
-    }
+          } else {
+              hideLoading()
+              continueWhenResumed(activity, onDismissed)
+          }
+      }
     fun showInterstitialPlayer(
         forFragment: Boolean = false,
         interstitialAd: InterstitialAd,
@@ -686,9 +692,24 @@ object AdBlockerHelper {
                             hideLoading()
                         }
                     }
-                    override fun onAdDismissedFullScreenContent() {
+                  override fun onAdDismissedFullScreenContent() {
+                      interHome = null
+                      saveCurrentTime()
+                      hideLoading()
+                      isAdShowing = false
+                        loadFallbackInterstitialAd(
+                            activity,
+                            activity.resources.getString(R.string.Interstitial_Home_ID_High),
+                            activity.resources.getString(R.string.Interstitial_Home_ID),
+                            inter_home_high,
+                            inter_home_normal,
+                            { interHome = it },
+                              { interHome = it }
+                          )
+                          continueOnce()
+                      }
+                      override fun onAdFailedToShowFullScreenContent(adError: AdError) {
                         interHome = null
-                        saveCurrentTime()
                         hideLoading()
                         isAdShowing = false
                         loadFallbackInterstitialAd(
@@ -702,28 +723,25 @@ object AdBlockerHelper {
                         )
                         continueOnce()
                     }
-                    override fun onAdFailedToShowFullScreenContent(adError: AdError) {
-                        interHome = null
-                        hideLoading()
-                        isAdShowing = false
-                        loadFallbackInterstitialAd(
-                            activity,
-                            activity.resources.getString(R.string.Interstitial_Home_ID_High),
-                            activity.resources.getString(R.string.Interstitial_Home_ID),
-                            inter_home_high,
-                            inter_home_normal,
-                            { interHome = it },
-                            { interHome = it }
-                        )
-                        continueOnce()
-                    }
-                }
-                interstitialAd.show(activity)
-            } catch (e: Exception) {
-                Log.e("AdsManager", "Error showing interstitial ad", e)
-                hideLoading()
-                isAdShowing = false
-                continueOnce()
+                  }
+                  interstitialAd.show(activity)
+              } catch (e: Exception) {
+                  Log.e("AdsManager", "Error showing interstitial ad", e)
+                  hideLoading()
+                  isAdShowing = false
+                  continueOnce()
+              }
+          }
+      }
+
+    private fun continueWhenResumed(
+        activity: FragmentActivity,
+        onDismissed: (() -> Unit)?
+    ) {
+        if (onDismissed == null) return
+        activity.lifecycleScope.launchWhenResumed {
+            if (!activity.isFinishing && !activity.isDestroyed) {
+                onDismissed.invoke()
             }
         }
     }

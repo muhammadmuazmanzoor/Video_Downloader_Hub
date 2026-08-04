@@ -55,6 +55,7 @@ abstract class BaseWebTabFragment : BaseFragment() {
      * override this to expose the browsing-history entry in the overflow menu.
      */
     open val showsBrowserHistoryMenuItem: Boolean = false
+    open val showsDesktopModeMenuItem: Boolean = true
 
     fun buildWebTabMenu(browserMenu: View, isShareItemVisible: Boolean) {
         val isdesk= settingsViewModel?.isDesktopMode?.get()
@@ -81,6 +82,7 @@ abstract class BaseWebTabFragment : BaseFragment() {
 
             shareMenuItem?.isVisible = isShareItemVisible
             browserHistoryMenuItem?.isVisible = showsBrowserHistoryMenuItem
+            desktopMenuItem?.isVisible = showsDesktopModeMenuItem
     }
 
     fun showPopupMenu() {
@@ -234,37 +236,13 @@ abstract class BaseWebTabFragment : BaseFragment() {
          if(interHome!=null) {
              interHome?.let {
                  showInterstitial(true, it, requireActivity(), {
-                     try {
-                         val currentFragment = this
-                         val activityFragmentContainer = currentFragment.activity?.findViewById<FragmentContainerView>(R.id.fragment_container_view)
-                         activityFragmentContainer?.let {
-                             val transaction = currentFragment.requireActivity().supportFragmentManager.beginTransaction()
-                             transaction.replace(it.id, SettingFragmentNew.newInstance())
-                             transaction.addToBackStack("settings")
-                             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                             transaction.commit()
-                         }
-                     } catch (e: ClassCastException) {
-                         AppLogger.d("Can't get the fragment manager with this")
-                     }
+                     navigateInMainContainer(SettingFragmentNew.newInstance(), "settings")
                  },inter_browser)
              }
 
          }
          else{
-             try {
-                 val currentFragment = this
-                 val activityFragmentContainer = currentFragment.activity?.findViewById<FragmentContainerView>(R.id.fragment_container_view)
-                 activityFragmentContainer?.let {
-                     val transaction = currentFragment.requireActivity().supportFragmentManager.beginTransaction()
-                     transaction.replace(it.id, SettingFragmentNew.newInstance())
-                     transaction.addToBackStack("settings")
-                     transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                     transaction.commit()
-                 }
-             } catch (e: ClassCastException) {
-                 AppLogger.d("Can't get the fragment manager with this")
-             }
+             navigateInMainContainer(SettingFragmentNew.newInstance(), "settings")
          }
 
     }

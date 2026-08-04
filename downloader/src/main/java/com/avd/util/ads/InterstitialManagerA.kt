@@ -128,7 +128,7 @@ object InterstitialManagerA {
             fun continueOnce() {
                 if (!callbackCalled) {
                     callbackCalled = true
-                    onDismissed?.invoke()
+                    continueWhenResumed(activity, onDismissed)
                 }
             }
 
@@ -177,7 +177,7 @@ object InterstitialManagerA {
             } catch (e: Exception) {
                 Log.e(TAG, "Error showing interstitial ad", e)
                 AdBlockerHelper.hideLoading()
-                onDismissed?.invoke()
+                continueOnce()
             }
         }
     }
@@ -201,6 +201,18 @@ object InterstitialManagerA {
                 token = AppConstant.AD_IMPRESSION_TOKEN,
                 appContext = activity as Context
             )
+        }
+    }
+
+    private fun continueWhenResumed(
+        activity: FragmentActivity,
+        onDismissed: (() -> Unit)?
+    ) {
+        if (onDismissed == null) return
+        activity.lifecycleScope.launchWhenResumed {
+            if (!activity.isFinishing && !activity.isDestroyed) {
+                onDismissed.invoke()
+            }
         }
     }
 }

@@ -228,6 +228,7 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
 
     /** This screen hands off to BrowserKit's browser, so surface its browsing history. */
     override val showsBrowserHistoryMenuItem: Boolean = true
+    override val showsDesktopModeMenuItem: Boolean = false
 
     private var fetchingDialog: Dialog? = null
     private var copiedLinkDialog: AlertDialog? = null
@@ -282,6 +283,7 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
 
     private var isRestoringTiktokSwitchState = false
     private var hasRequestedPermissionsForView = false
+    private var hasRequestedNotificationPermissionForSession = false
     private var lastHandledClipboardUrl: String? = null
     private var clipboardUrlObserver: Observer<String>? = null
     private var expectingDownloadResult = false
@@ -668,12 +670,13 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
             } else {
                 Log.d("HostCheck", "null")
             }
-            if (!hasRequestedPermissionsForView && permissionManager?.areAllPermissionsGranted() == false) {
+            if (!hasRequestedPermissionsForView && permissionManager?.areCorePermissionsGranted() == false) {
                 hasRequestedPermissionsForView = true
                 if (activity?.let { isPermissionGranted(it) } == false) {
                     permissionManager?.requestAllPermissions(this)
                 }
             }
+            requestNotificationPermissionIfNeeded()
         } catch (e: Exception) {
             Log.d("HostCheck", "${e.printStackTrace()}")
             e.printStackTrace()
@@ -784,12 +787,9 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
             mainViewModel.openedText.set(null)
         }
 
-        binding.tabCount.setOnClickListener {
-            Log.d("button", "button tab clicked ")
-            // Home screen is not inside BrowserHostFragment, so open BrowserKit's own
-            // tabs switcher through the activity entry point instead of a parent cast.
-            BrowserKit.launchTabs(requireContext())
-        }
+            binding.tabCount.setOnClickListener {
+                BrowserKit.launchNewTab(requireContext())
+            }
         activity?.onBackPressedDispatcher?.addCallback(
             viewLifecycleOwner,
             onBackPressedCallback
@@ -798,6 +798,7 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
         setupRecyclerView()
         observer()
         fetchingDialog = showFetchingVideoDialog()
+        observeNoInternetDuringDownload()
         binding.icSearch.setOnClickListener {
             if (isFetchInProgress) return@setOnClickListener
             launchInputAndReset((binding.homeEtSearch as EditText).text.toString())
@@ -1507,12 +1508,7 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
             return false
         }
         hideKeyboard(requireActivity())
-        val directDownloadUrl = resolveDirectDownloadUrl(input)
-        if (directDownloadUrl != null) {
-            triggerSocialDownload(directDownloadUrl)
-        } else {
-            openNewTab(input)
-        }
+        openNewTab(input)
         return true
     }
 
@@ -1546,11 +1542,7 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
     }
 
     private fun resolvePrimaryAction(raw: String): BrowserTabPrimaryAction {
-        return if (resolveDirectDownloadUrl(raw) != null) {
-            BrowserTabPrimaryAction.DOWNLOAD
-        } else {
-            BrowserTabPrimaryAction.OPEN_BROWSER
-        }
+        return BrowserTabPrimaryAction.OPEN_BROWSER
     }
 
     private fun updatePrimaryActionUi(raw: String) {
@@ -1607,6 +1599,13 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
     private fun stopDownloadStateObservation() {
         downloadStateJob?.cancel()
         downloadStateJob = null
+    }
+
+    private fun observeNoInternetDuringDownload() {
+        progressViewModel.noInternetDuringDownloadEvent.observe(viewLifecycleOwner) {
+            if (!isAdded) return@observe
+            requireContext().showDownloadDialog(type = DownloadDialogType.INTERNET_ERROR)
+        }
     }
 
     private fun finishDownloadFetch() {
@@ -1825,11 +1824,12 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
                 delay(15000)
                 setinterstitialshown(false)
             }
-            if (!permissionManager!!.areAllPermissionsGranted()) {
+            if (!permissionManager!!.areCorePermissionsGranted()) {
                 if (!activity?.let { isPermissionGranted(it) }!!) {
                     permissionManager!!.requestAllPermissions(this)
                 }
             }
+            requestNotificationPermissionIfNeeded()
         }
     }
 
@@ -1880,15 +1880,10 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
     private fun isPermissionGranted(context: Context): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             val videoPermission = Manifest.permission.READ_MEDIA_VIDEO
-            val notificationPermission = Manifest.permission.POST_NOTIFICATIONS
             ContextCompat.checkSelfPermission(
                 context,
                 videoPermission
-            ) == PackageManager.PERMISSION_GRANTED &&
-                    ContextCompat.checkSelfPermission(
-                        context,
-                        notificationPermission
-                    ) == PackageManager.PERMISSION_GRANTED
+            ) == PackageManager.PERMISSION_GRANTED
         } else {
             val storagePermission = Manifest.permission.WRITE_EXTERNAL_STORAGE
             ContextCompat.checkSelfPermission(
@@ -1896,6 +1891,13 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
                 storagePermission
             ) == PackageManager.PERMISSION_GRANTED
         }
+    }
+
+    private fun requestNotificationPermissionIfNeeded() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) return
+        if (hasRequestedNotificationPermissionForSession) return
+        hasRequestedNotificationPermissionForSession = true
+        permissionManager?.requestNotificationPermissionOncePerSession(this)
     }
 
     private fun showShimmer(show: Boolean) {

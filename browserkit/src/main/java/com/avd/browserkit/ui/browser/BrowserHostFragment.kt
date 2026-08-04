@@ -96,6 +96,7 @@ class BrowserHostFragment : Fragment() {
                 browserViewModel.closeTab(index)
             },
             previewProvider = { tabId -> browserViewModel.getPreview(tabId) },
+            faviconProvider = { tabId -> browserViewModel.getFavicon(tabId) },
         )
 
         binding.tabPager.adapter = tabsAdapter
@@ -188,8 +189,8 @@ class BrowserHostFragment : Fragment() {
     private fun updateSwitcherChrome() {
         val context = requireContext()
         val active = ContextCompat.getColor(context, R.color.bk_chrome_active)
-        val icon = ContextCompat.getColor(context, R.color.bk_chrome_icon)
-        val disabled = ContextCompat.getColor(context, R.color.bk_chrome_disabled)
+        val icon = ContextCompat.getColor(context, R.color.black)
+        val disabled = ContextCompat.getColor(context, R.color.black)
 
         binding.btnTabsHome.setImageResource(R.drawable.bk_ic_home_outline)
         binding.btnTabsHome.imageTintList = ColorStateList.valueOf(icon)
@@ -202,8 +203,8 @@ class BrowserHostFragment : Fragment() {
         val canBack = currentWebTab()?.canNavigateBack() == true
         val canForward = currentWebTab()?.canNavigateForward() == true
         val context = requireContext()
-        val icon = ContextCompat.getColor(context, R.color.bk_chrome_icon)
-        val disabled = ContextCompat.getColor(context, R.color.bk_chrome_disabled)
+        val icon = ContextCompat.getColor(context, R.color.black)
+        val disabled = ContextCompat.getColor(context, R.color.black)
 
         binding.btnTabsWebBack.isEnabled = true
         binding.btnTabsWebForward.isEnabled = true

@@ -1057,6 +1057,7 @@ class BrowserHomeFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListen
 
         // Setup recent videos RecyclerView
         setupRecentVideosRecyclerView()
+        observeNoInternetDuringDownload()
 
         binding.clSetting.setOnClickListener {
             navigateToSettings()
@@ -1700,6 +1701,13 @@ class BrowserHomeFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListen
                 { interHome = it }
             )
             openSocialFragment()
+        }
+    }
+
+    private fun observeNoInternetDuringDownload() {
+        progressViewModel.noInternetDuringDownloadEvent.observe(viewLifecycleOwner) {
+            if (!isAdded) return@observe
+            requireContext().showDownloadDialog(type = DownloadDialogType.INTERNET_ERROR)
         }
     }
 

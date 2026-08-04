@@ -17,7 +17,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_percent="0.65">
+            app:layout_constraintHeight_percent="0.6">
 
             <ImageView
                 android:id="@+id/slider"
@@ -46,7 +46,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_16sdp"
-                android:layout_marginBottom="@dimen/_12sdp"
                 android:fontFamily="@font/poppins_bold"
                 android:gravity="center"
                 android:text="Play video in Multiple Formats"
@@ -60,7 +59,7 @@
                 android:id="@+id/footer"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/_10sdp"
+                android:layout_marginHorizontal="@dimen/_12sdp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
@@ -74,6 +73,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     />
+
                 <TextView
                     android:id="@+id/btnNextOnboarding"
                     android:layout_width="wrap_content"
@@ -86,8 +86,10 @@
                     android:text="@string/next"
                     android:textColor="@color/gSelector_light"
                     android:textSize="@dimen/_14ssp"
+                    app:layout_constraintHorizontal_bias="1"
                     app:layout_constraintBottom_toBottomOf="@id/layoutViews"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/layoutViews"
                     app:layout_constraintTop_toTopOf="@id/layoutViews" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

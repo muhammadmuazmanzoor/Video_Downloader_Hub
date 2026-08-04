@@ -16,6 +16,7 @@ class BrowserViewModel : ViewModel() {
     val tabsSwitcherVisible: LiveData<Boolean> = _tabsSwitcherVisible
 
     private val previews = linkedMapOf<String, Bitmap>()
+    private val favicons = linkedMapOf<String, Bitmap>()
 
     fun setCurrentIndex(index: Int) {
         _currentIndex.value = index.coerceAtLeast(0)
@@ -30,9 +31,18 @@ class BrowserViewModel : ViewModel() {
 
     fun closeTab(index: Int) {
         val list = _tabs.value.orEmpty().toMutableList()
-        if (list.size <= 1 || index !in list.indices) return
+        if (index !in list.indices) return
+        if (list.size <= 1) {
+            val removed = list[index]
+            previews.remove(removed.id)
+            favicons.remove(removed.id)
+            _tabs.value = listOf(BrowserTab())
+            _currentIndex.value = 0
+            return
+        }
         val removed = list.removeAt(index)
         previews.remove(removed.id)
+        favicons.remove(removed.id)
         _tabs.value = list
         val current = _currentIndex.value ?: 0
         _currentIndex.value = when {
@@ -49,7 +59,7 @@ class BrowserViewModel : ViewModel() {
         _tabs.value = list
     }
 
-    fun addNewTab(url: String = "about:blank") {
+    fun addNewTab(url: String = "https://www.google.com") {
         openTab(BrowserTab(url = url))
     }
 
@@ -68,8 +78,16 @@ class BrowserViewModel : ViewModel() {
 
     fun getPreview(tabId: String): Bitmap? = previews[tabId]
 
+    fun setFavicon(tabId: String, bitmap: Bitmap?) {
+        if (bitmap == null) return
+        favicons[tabId] = bitmap
+    }
+
+    fun getFavicon(tabId: String): Bitmap? = favicons[tabId]
+
     override fun onCleared() {
         previews.clear()
+        favicons.clear()
         super.onCleared()
     }
 }

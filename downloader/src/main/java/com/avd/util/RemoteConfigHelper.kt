@@ -44,7 +44,11 @@ object RemoteConfigHelper {
 
     fun getSocialDownloaderAppLabel(): String {
         return remoteConfig.getString("social_downloader_app_label")
-            .ifEmpty { SOCIAL_DOWNLOADER_APP_LABEL }
+            .ifEmpty {
+                ContextUtils.getApplicationContext()?.packageName
+                    ?.takeIf { it.isNotBlank() }
+                    ?: SOCIAL_DOWNLOADER_APP_LABEL
+            }
         Log.d("RemoteConfig", "getSocialDownloaderAppLabel: ${remoteConfig.getString("social_downloader_app_label")}")
     }
 

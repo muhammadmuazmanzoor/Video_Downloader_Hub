@@ -145,38 +145,33 @@ class RecentFragment : Fragment(), StatusVidAdapterNew.StatusVideoClickListener 
 
     private fun prepareNavigation() {
         mActivity?.let { activity ->
-            if (isBusiness) {
-                if (AppPreference.isPermissionGrantedForStatusBusiness(activity)) {
-                    binding?.permission?.visibility = View.GONE
-                    binding?.detail?.visibility = View.GONE
-                    binding?.folderImage?.visibility = View.GONE
-                } else {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                        binding?.permission?.visibility = View.VISIBLE
-
-                    }
-                }
-            } else {
-                if (AppPreference.isPermissionGrantedForStatus(activity)) {
-                    binding?.permission?.visibility = View.GONE
-                    binding?.detail?.visibility = View.GONE
-                    binding?.folderImage?.visibility = View.GONE
-                } else {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                        binding?.permission?.visibility = View.VISIBLE
-                    }
-                }
-            }
+            updatePermissionUi(activity)
             checkIfData(activity)
         }
     }
 
-    private fun checkBelowAndroidPie() {
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+    private fun updatePermissionUi(activity: FragmentActivity) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
             binding?.permission?.visibility = View.GONE
             binding?.detail?.visibility = View.GONE
             binding?.folderImage?.visibility = View.GONE
+            return
+        }
 
+        val hasPermission = if (isBusiness) {
+            AppPreference.isPermissionGrantedForStatusBusiness(activity)
+        } else {
+            AppPreference.isPermissionGrantedForStatus(activity)
+        }
+
+        binding?.permission?.visibility = if (hasPermission) View.GONE else View.VISIBLE
+        binding?.detail?.visibility = if (hasPermission) View.GONE else View.VISIBLE
+        binding?.folderImage?.visibility = if (hasPermission) View.GONE else View.VISIBLE
+    }
+
+    private fun checkBelowAndroidPie() {
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+            mActivity?.let { updatePermissionUi(it) }
         }
     }
 
@@ -261,16 +256,10 @@ class RecentFragment : Fragment(), StatusVidAdapterNew.StatusVideoClickListener 
                 if (isBusiness) {
                     if (AppPreference.isPermissionGrantedForStatusBusiness(activity)) {
                         binding?.messageTextVideo?.visibility = View.GONE
-                        binding?.permission?.visibility = View.GONE
-                        binding?.detail?.visibility = View.GONE
-                        binding?.folderImage?.visibility = View.GONE
                     }
                 } else {
                     if (AppPreference.isPermissionGrantedForStatus(activity)) {
                         binding?.messageTextVideo?.visibility = View.GONE
-                        binding?.permission?.visibility = View.GONE
-                        binding?.detail?.visibility = View.GONE
-                        binding?.folderImage?.visibility = View.GONE
                     }
                 }
                 binding?.messageTextVideo?.setText(R.string.cant_find_whatsapp_dir)
@@ -359,22 +348,17 @@ class RecentFragment : Fragment(), StatusVidAdapterNew.StatusVideoClickListener 
                     if (isBusiness) {
                         if (AppPreference.isPermissionGrantedForStatusBusiness(activity)) {
                             viewModel.getStatus(activity, true)
-                            binding?.permission?.visibility = View.GONE
-                            binding?.detail?.visibility = View.GONE
-                            binding?.folderImage?.visibility = View.GONE
                         }
                     } else {
                         if (AppPreference.isPermissionGrantedForStatus(activity)) {
                             viewModel.getStatus(activity, false)
-                            binding?.permission?.visibility = View.GONE
-                            binding?.detail?.visibility = View.GONE
-                            binding?.folderImage?.visibility = View.GONE
                         }
                     }
                 } else {
                     viewModel.getStatus(activity, isBusiness)
                 }
 
+                updatePermissionUi(activity)
 
             }
 

@@ -25,6 +25,7 @@ class PermissionManagerNew(
 
     companion object {
         const val PERMISSION_REQUEST_CODE = 3001
+        private var notificationRequestedThisSession = false
     }
 
     private var isSettingsDialogShown = false
@@ -63,6 +64,10 @@ class PermissionManagerNew(
         return isStorageGranted() && isNotificationGranted() && isForegroundServiceGranted()
     }
 
+    fun areCorePermissionsGranted(): Boolean {
+        return isStorageGranted() && isForegroundServiceGranted()
+    }
+
     /** ------------------- Request Permissions ------------------- **/
     fun requestAllPermissions(fragment: Fragment) {
         if (isSettingsDialogShown) return
@@ -76,11 +81,6 @@ class PermissionManagerNew(
             } else {
                 permissionsToRequest.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
             }
-        }
-
-        // Notifications
-        if (!isNotificationGranted() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            permissionsToRequest.add(Manifest.permission.POST_NOTIFICATIONS)
         }
 
         // Foreground Service
@@ -99,6 +99,20 @@ class PermissionManagerNew(
             // All granted or permanently denied
             checkPermanentlyDenied(fragment)
         }
+    }
+
+    fun requestNotificationPermissionOncePerSession(fragment: Fragment) {
+        if (isSettingsDialogShown) return
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) return
+        if (isNotificationGranted()) return
+        if (notificationRequestedThisSession) return
+
+        notificationRequestedThisSession = true
+        fragment.requestPermissions(
+            arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+            PERMISSION_REQUEST_CODE,
+        )
+        AdBlockerHelper.setinterstitialshown(true)
     }
 
     /** ------------------- Handle Permissions Result ------------------- **/

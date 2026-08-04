@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/bk_find_in_page"
-        android:textColor="@color/bk_text_primary"
+        android:textColor="@color/black"
         android:textSize="18sp"
         android:textStyle="bold" />
 
@@ -71,7 +71,7 @@
             android:padding="8dp"
             android:scaleType="centerInside"
             android:src="@drawable/bk_ic_chevron_up"
-            app:tint="@color/bk_text_primary" />
+            app:tint="@color/black" />
 
         <ImageButton
             android:id="@+id/btnFindNext"
@@ -83,6 +83,6 @@
             android:padding="8dp"
             android:scaleType="centerInside"
             android:src="@drawable/bk_ic_chevron_down"
-            app:tint="@color/bk_text_primary" />
+            app:tint="@color/black" />
     </LinearLayout>
 </LinearLayout>

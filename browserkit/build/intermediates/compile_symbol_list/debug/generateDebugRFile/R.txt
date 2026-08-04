@@ -28,6 +28,7 @@ int color bk_text_primary 0x0
 int color bk_text_secondary 0x0
 int color bk_url_bar 0x0
 int color bk_youtube_red 0x0
+int color black 0x0
 int drawable bk_bg_bottom_sheet 0x0
 int drawable bk_bg_download_cta 0x0
 int drawable bk_bg_download_fab 0x0

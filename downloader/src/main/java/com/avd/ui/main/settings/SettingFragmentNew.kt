@@ -19,9 +19,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.avd.R
-import com.avd.browserkit.api.BrowserLaunchMode
-import com.avd.browserkit.ui.browser.BrowserHostFragment
 import com.avd.databinding.FragmentSettingNewBinding
+import com.avd.ui.main.home.browser.webTab.BrowserTabFragment
 import com.avd.util.AdBlockerHelper
 import com.avd.util.AdBlockerHelper.browser_native
 import com.avd.util.AdBlockerHelper.exit_native
@@ -199,28 +198,47 @@ class SettingFragmentNew : Fragment() {
     }
     fun navigateToHome() {
         fun returnToPreviousBrowser() {
-            val popped = requireActivity().supportFragmentManager.popBackStackImmediate(
-                "settings",
-                FragmentManager.POP_BACK_STACK_INCLUSIVE
-            )
-            if (popped) {
-                return
-            }
+            val hostActivity = activity ?: return
+            val fragmentManager = hostActivity.supportFragmentManager
 
-            try {
-                val currentFragment = this
-                val activityFragmentContainer = currentFragment.activity?.findViewById<FragmentContainerView>(R.id.fragment_container_view)
-                activityFragmentContainer?.let {
-                    val transaction = currentFragment.requireActivity().supportFragmentManager.beginTransaction()
-                    transaction.replace(
-                        it.id,
-                        BrowserHostFragment.newInstance(BrowserLaunchMode.BLANK, null, null)
+            viewLifecycleOwner.lifecycleScope.launch {
+                if (!isAdded || hostActivity.isFinishing || hostActivity.isDestroyed) return@launch
+
+                val popped = try {
+                    fragmentManager.popBackStackImmediate(
+                        "settings",
+                        FragmentManager.POP_BACK_STACK_INCLUSIVE
                     )
-                    transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                    transaction.commit()
+                } catch (e: Exception) {
+                    AppLogger.d("Failed to pop settings back stack: $e")
+                    false
                 }
-            } catch (e: ClassCastException) {
-                AppLogger.d("Can't get the fragment manager with this")
+
+                if (popped) {
+                    return@launch
+                }
+
+                try {
+                    val activityFragmentContainer =
+                        hostActivity.findViewById<FragmentContainerView>(R.id.fragment_container_view)
+                    activityFragmentContainer?.let {
+                        val transaction = fragmentManager.beginTransaction()
+                            .replace(
+                                it.id,
+                                BrowserTabFragment.newInstance()
+                            )
+                            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+
+                        if (fragmentManager.isStateSaved) {
+                            transaction.commitAllowingStateLoss()
+                        } else {
+                            transaction.commit()
+                        }
+                        fragmentManager.executePendingTransactions()
+                    }
+                } catch (e: Exception) {
+                    AppLogger.d("Can't get the fragment manager with this: $e")
+                }
             }
         }
 

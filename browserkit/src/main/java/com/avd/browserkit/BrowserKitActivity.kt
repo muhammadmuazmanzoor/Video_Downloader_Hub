@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.webkit.WebViewCompat
@@ -39,6 +40,10 @@ class BrowserKitActivity : AppCompatActivity() {
         enableEdgeToEdge()
         val binding = ActivityBrowserKitBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        WindowCompat.getInsetsController(window, binding.root)?.apply {
+            isAppearanceLightStatusBars = true
+            isAppearanceLightNavigationBars = true
+        }
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
             val bars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -60,6 +65,9 @@ class BrowserKitActivity : AppCompatActivity() {
                     BrowserHostFragment.newInstance(mode, query, url),
                 )
                 .commit()
+            if (intent.getBooleanExtra(BrowserKit.EXTRA_ADD_TAB, false)) {
+                browserViewModel.showTabsSwitcher()
+            }
             if (intent.getBooleanExtra(BrowserKit.EXTRA_OPEN_TABS, false)) {
                 browserViewModel.showTabsSwitcher()
             }
@@ -77,6 +85,12 @@ class BrowserKitActivity : AppCompatActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         setIntent(intent)
+
+        if (intent.getBooleanExtra(BrowserKit.EXTRA_ADD_TAB, false)) {
+            browserViewModel.addNewTab()
+            browserViewModel.showTabsSwitcher()
+            return
+        }
 
         if (intent.getBooleanExtra(BrowserKit.EXTRA_OPEN_TABS, false)) {
             browserViewModel.showTabsSwitcher()

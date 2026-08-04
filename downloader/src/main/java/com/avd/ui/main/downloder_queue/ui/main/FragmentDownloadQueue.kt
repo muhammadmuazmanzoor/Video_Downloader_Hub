@@ -13,12 +13,14 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.activityViewModels
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.avd.R
 import com.avd.databinding.FragmentDownloadQueueBinding
 import com.avd.ui.dialog.DownloadDialogManager
 import com.avd.ui.main.downloder_queue.utils.PermissionManagerNew
+import com.avd.ui.main.progress.ProgressViewModel
 import com.avd.util.AdBlockerHelper.showExitScreen
 import com.avd.util.DownloaderModuleNavigator
 
@@ -27,6 +29,7 @@ class FragmentDownloadQueue : Fragment() {
 
     private var mActivity: FragmentActivity? = null
     private lateinit var binding: FragmentDownloadQueueBinding
+    private val progressViewModel: ProgressViewModel by activityViewModels()
 
     private var pagerAdapter: DownloadListPagerAdapter? = null
     private var permissionManager: PermissionManagerNew? = null
@@ -64,6 +67,10 @@ class FragmentDownloadQueue : Fragment() {
 
         binding.waBack.setOnClickListener {
             getActivity()?.onBackPressed()
+        }
+
+        progressViewModel.downloadCompletedEvent.observe(viewLifecycleOwner) {
+            switchToCompletedTab()
         }
 
         activity?.onBackPressedDispatcher?.addCallback(
@@ -209,6 +216,27 @@ class FragmentDownloadQueue : Fragment() {
             customView.isSelected = selected
         }
     }
+
+    private fun switchToCompletedTab() {
+        if (!isAdded || view == null) return
+        if (binding.downloadListViewpager.adapter == null) return
+
+        lastTab = DownloadListPagerAdapter.COMPLETED_FRAG_POS
+        if (binding.downloadListViewpager.currentItem == DownloadListPagerAdapter.COMPLETED_FRAG_POS) {
+            updateTabs(DownloadListPagerAdapter.COMPLETED_FRAG_POS)
+            return
+        }
+
+        binding.downloadListViewpager.post {
+            if (!isAdded || view == null) return@post
+            binding.downloadListViewpager.setCurrentItem(
+                DownloadListPagerAdapter.COMPLETED_FRAG_POS,
+                true
+            )
+            updateTabs(DownloadListPagerAdapter.COMPLETED_FRAG_POS)
+        }
+    }
+
     override fun onResume() {
         super.onResume()
         (activity as? com.avd.util.CommunicateWithActivity)?.showBottomBar()

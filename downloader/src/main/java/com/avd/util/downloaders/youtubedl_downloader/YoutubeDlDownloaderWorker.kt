@@ -375,7 +375,7 @@ class YoutubeDlDownloaderWorker @AssistedInject constructor(
                 // Detect network-related errors
                 val isNetworkError = line?.contains("No internet") == true || line?.contains("network unreachable") == true
                 finishWork(task.also {
-                    it.taskState =  if (isNetworkError) VideoTaskState.PAUSE else VideoTaskState.ERROR
+                    it.taskState =  if (isNetworkError) VideoTaskState.NO_INTERNET else VideoTaskState.ERROR
                     it.errorMessage = if (isNetworkError) "No internet connection"
                     else "Download failed with exit code $exitCode"
                 })
@@ -450,7 +450,7 @@ class YoutubeDlDownloaderWorker @AssistedInject constructor(
 
     private fun handleNetworkError(task: VideoTaskItem) {
         finishWork(task.also {
-            it.taskState = VideoTaskState.ERROR
+            it.taskState = VideoTaskState.NO_INTERNET
             it.errorMessage = "No internet connection"
         })
         Result.retry()

@@ -133,7 +133,6 @@ class SocialPlatformDownloadFragment : BaseWebTabFragment() {
                 runCatching { SocialPlatform.valueOf(platformName) }.getOrNull()
             } ?: SocialPlatform.FACEBOOK
             binding.etVideoLink.text?.clear()
-            viewModel.texturl.value?.takeIf { it.isNotBlank() }?.trim()?.let { lastHandledClipboardUrl = it }
         } else {
             val initialUrl = arguments?.getString(ARG_INITIAL_URL).orEmpty()
             platform = SocialPlatform.fromInput(initialUrl) ?: SocialPlatform.FACEBOOK
@@ -175,6 +174,7 @@ class SocialPlatformDownloadFragment : BaseWebTabFragment() {
         setupNativeAd()
         observeClipboardLink()
         observeDownloadState()
+        observeNoInternetDuringDownload()
     }
 
     override fun onDestroyView() {
@@ -372,6 +372,13 @@ class SocialPlatformDownloadFragment : BaseWebTabFragment() {
                     }
                 }
             }
+        }
+    }
+
+    private fun observeNoInternetDuringDownload() {
+        progressViewModel.noInternetDuringDownloadEvent.observe(viewLifecycleOwner) {
+            if (!isAdded) return@observe
+            requireContext().showDownloadDialog(type = DownloadDialogType.INTERNET_ERROR)
         }
     }
 

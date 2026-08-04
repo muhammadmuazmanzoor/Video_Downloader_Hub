@@ -33,18 +33,18 @@
             android:paddingVertical="8dp">
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:contentDescription="@string/bk_home"
                 android:src="@drawable/bk_ic_home"
-                app:tint="@color/bk_text_primary" />
+                app:tint="@color/black" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
                 android:text="@string/bk_home"
-                android:textColor="@color/bk_text_primary"
+                android:textColor="@color/black"
                 android:textSize="12sp" />
         </LinearLayout>
 
@@ -63,14 +63,14 @@
                 android:layout_height="24dp"
                 android:contentDescription="@string/bk_downloads"
                 android:src="@drawable/bk_ic_download"
-                app:tint="@color/bk_text_primary" />
+                app:tint="@color/black" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
                 android:text="@string/bk_downloads"
-                android:textColor="@color/bk_text_primary"
+                android:textColor="@color/black"
                 android:textSize="12sp" />
         </LinearLayout>
 
@@ -89,14 +89,14 @@
                 android:layout_height="24dp"
                 android:contentDescription="@string/bk_history"
                 android:src="@drawable/bk_ic_history"
-                app:tint="@color/bk_text_primary" />
+                app:tint="@color/black" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
                 android:text="@string/bk_history"
-                android:textColor="@color/bk_text_primary"
+                android:textColor="@color/black"
                 android:textSize="12sp" />
         </LinearLayout>
 
@@ -115,14 +115,14 @@
                 android:layout_height="24dp"
                 android:contentDescription="@string/bk_settings"
                 android:src="@drawable/bk_ic_settings"
-                app:tint="@color/bk_text_primary" />
+                app:tint="@color/black" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
                 android:text="@string/bk_settings"
-                android:textColor="@color/bk_text_primary"
+                android:textColor="@color/black"
                 android:textSize="12sp" />
         </LinearLayout>
     </LinearLayout>
@@ -153,7 +153,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/bk_desktop_mode"
-            android:textColor="@color/bk_text_primary"
+            android:textColor="@color/black"
             android:textSize="15sp" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial

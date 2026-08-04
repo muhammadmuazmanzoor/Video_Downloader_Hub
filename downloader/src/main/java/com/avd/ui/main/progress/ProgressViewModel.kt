@@ -17,6 +17,7 @@ import com.avd.ui.main.base.BaseViewModel
 import com.avd.util.ContextUtils
 import com.avd.util.FileUtil
 import com.avd.util.NetworkUtils
+import com.avd.util.SingleLiveEvent
 import com.avd.util.downloaders.custom_downloader_service.CustomRegularDownloader
 import com.avd.util.downloaders.generic_downloader.models.VideoTaskState
 import com.avd.util.downloaders.youtubedl_downloader.YoutubeDlDownloader
@@ -43,9 +44,13 @@ class ProgressViewModel @Inject constructor(
 
     var progressInfos: ObservableField<List<ProgressInfo>> = ObservableField(emptyList())
     val isLoadingProgress = ObservableField(true)
+    val noInternetDuringDownloadEvent = SingleLiveEvent<String>()
+    val downloadCompletedEvent = SingleLiveEvent<String>()
     private val executor = Executors.newFixedThreadPool(3).asCoroutineDispatcher()
     private val executor2 = Executors.newFixedThreadPool(1).asCoroutineDispatcher()
     private var progressListenJob: Job? = null
+    private val notifiedNoInternetTaskIds = mutableSetOf<String>()
+    private val notifiedCompletedTaskIds = mutableSetOf<String>()
 
     override fun start() {
         if (progressListenJob?.isActive == true) return
@@ -255,9 +260,39 @@ class ProgressViewModel @Inject constructor(
                 viewModelScope.launch(Dispatchers.Main.immediate) {
                     progressInfos.set(progressInfoList.sortedBy { it.id })
                     isLoadingProgress.set(false)
+                    emitNoInternetDownloadEvent(progressInfoList)
+                    emitDownloadCompletedEvent(progressInfoList)
                 }
             }
         }
+    }
+
+    private fun emitNoInternetDownloadEvent(progressInfoList: List<ProgressInfo>) {
+        val noInternetIds = progressInfoList
+            .filter { it.downloadStatus == VideoTaskState.NO_INTERNET }
+            .map { it.id }
+            .toSet()
+
+        notifiedNoInternetTaskIds.retainAll(noInternetIds)
+
+        progressInfoList.firstOrNull {
+            it.downloadStatus == VideoTaskState.NO_INTERNET &&
+                notifiedNoInternetTaskIds.add(it.id)
+        }?.let { noInternetDuringDownloadEvent.value = it.id }
+    }
+
+    private fun emitDownloadCompletedEvent(progressInfoList: List<ProgressInfo>) {
+        val completedIds = progressInfoList
+            .filter { it.downloadStatus == VideoTaskState.SUCCESS }
+            .map { it.id }
+            .toSet()
+
+        notifiedCompletedTaskIds.retainAll(completedIds)
+
+        progressInfoList.firstOrNull {
+            it.downloadStatus == VideoTaskState.SUCCESS &&
+                notifiedCompletedTaskIds.add(it.id)
+        }?.let { downloadCompletedEvent.value = it.id }
     }
 
     private fun progressObservable(): Observable<List<ProgressInfo>> {

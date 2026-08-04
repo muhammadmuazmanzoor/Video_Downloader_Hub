@@ -20,6 +20,7 @@ class BrowserTabsGridAdapter(
     private val onSelect: (Int) -> Unit,
     private val onClose: (Int) -> Unit,
     private val previewProvider: (String) -> Bitmap?,
+    private val faviconProvider: (String) -> Bitmap?,
 ) : RecyclerView.Adapter<BrowserTabsGridAdapter.Holder>() {
 
     private var tabs: List<BrowserTab> = emptyList()
@@ -78,12 +79,18 @@ class BrowserTabsGridAdapter(
             binding.btnCloseTab.setOnClickListener { onClose(index) }
             binding.btnCloseTab.isVisible = true
 
-            loadFavicon(host, tab.id)
+            bindFavicon(host, tab.id)
         }
 
-        private fun loadFavicon(host: String, tabId: String) {
-            binding.ivFavicon.setImageResource(0)
-            binding.ivFaviconSmall.setImageResource(0)
+        private fun bindFavicon(host: String, tabId: String) {
+            val storedFavicon = faviconProvider(tabId)
+            if (storedFavicon != null && !storedFavicon.isRecycled) {
+                binding.ivFavicon.setImageBitmap(storedFavicon)
+                binding.ivFaviconSmall.setImageBitmap(storedFavicon)
+                return
+            }
+            binding.ivFavicon.setImageResource(R.drawable.bk_ic_history_globe)
+            binding.ivFaviconSmall.setImageResource(R.drawable.bk_ic_history_globe)
             if (host.isBlank()) return
             val faviconUrl = "https://www.google.com/s2/favicons?domain=$host&sz=64"
             executor.execute {

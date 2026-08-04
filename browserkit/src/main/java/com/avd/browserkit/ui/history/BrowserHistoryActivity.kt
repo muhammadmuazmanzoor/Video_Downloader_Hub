@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
@@ -58,6 +59,10 @@ class BrowserHistoryActivity : AppCompatActivity() {
         enableEdgeToEdge()
         binding = ActivityBrowserHistoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        WindowCompat.getInsetsController(window, binding.root)?.apply {
+            isAppearanceLightStatusBars = true
+            isAppearanceLightNavigationBars = true
+        }
         repository = BrowserRepository(this)
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->

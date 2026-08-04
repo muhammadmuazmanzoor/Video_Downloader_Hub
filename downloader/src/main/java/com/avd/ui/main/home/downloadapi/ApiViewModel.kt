@@ -2,7 +2,6 @@ package com.avd.ui.main.home.downloadapi
 
 import android.util.Log
 import android.net.Uri
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.avd.data.remote.sealed.ApiState
@@ -10,12 +9,16 @@ import com.avd.data.remote.service.ApiService
 import com.avd.data.remote.service.ApiService2
 import com.avd.data.remote.service.SocialDownloaderService
 import com.avd.util.AdBlockerHelper.isDownloading
+import com.avd.util.ContextUtils
 import com.avd.util.RemoteConfigHelper
+import com.avd.util.SocialDownloaderIdentity
+import com.avd.util.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,8 +31,8 @@ class ApiViewModel @Inject constructor(
     private val _socialDownloadState = MutableStateFlow<ApiState<SocialDownloaderResponse>>(ApiState.Idle)
     val socialDownloadState: StateFlow<ApiState<SocialDownloaderResponse>> get() = _socialDownloadState
 
-
-    val texturl = MutableLiveData<String>()
+    val texturl = SingleLiveEvent<String>()
+    private var activeRequestToken: String? = null
 
     fun socialDownloader(url: String) {
         val logTag = "SocialDownloaderAPI"
@@ -40,15 +43,30 @@ class ApiViewModel @Inject constructor(
             return
         }
         isDownloading=true
+        val requestToken = UUID.randomUUID().toString()
+        activeRequestToken = requestToken
         viewModelScope.launch {
             try {
                 delay(250)
                 _socialDownloadState.value = ApiState.Loading
-                texturl.value = normalizedUrl
 
                 val endpoint = RemoteConfigHelper.getSocialDownloaderEndpoint()
-                Log.d(logTag, "Endpoint: $endpoint")
-                val response = socialDownloaderService.downloadVideo(endpoint, normalizedUrl)
+                val cacheBust = System.currentTimeMillis()
+                val appContext = ContextUtils.getApplicationContext()
+                val installationId = appContext?.let { SocialDownloaderIdentity.getInstallationId(it) }
+                    ?: UUID.randomUUID().toString()
+                Log.d(logTag, "Endpoint: $endpoint requestToken=$requestToken install=${installationId.take(8)}")
+                val response = socialDownloaderService.downloadVideo(
+                    endpoint,
+                    normalizedUrl,
+                    cacheBust,
+                    requestToken,
+                    installationId
+                )
+                if (activeRequestToken != requestToken) {
+                    Log.w(logTag, "Ignoring stale response for requestToken=$requestToken")
+                    return@launch
+                }
                 Log.d(logTag, "Response received: ${response.isSuccessful}")
                 Log.d(logTag, "Response code: ${response.code()}")
                 Log.d(logTag, "Response message: ${response.message()}")
@@ -87,6 +105,10 @@ class ApiViewModel @Inject constructor(
                     )
                 }
             } catch (e: Exception) {
+                if (activeRequestToken != requestToken) {
+                    Log.w(logTag, "Ignoring stale exception for requestToken=$requestToken")
+                    return@launch
+                }
                 Log.e(logTag, "Exception during API call: ${e.localizedMessage}", e)
                 _socialDownloadState.value = ApiState.Error(e.localizedMessage ?: "Unknown error")
             }
@@ -94,6 +116,7 @@ class ApiViewModel @Inject constructor(
     }
 
     fun clearDownloadState() {
+        activeRequestToken = null
         _socialDownloadState.value = ApiState.Idle
     }
 

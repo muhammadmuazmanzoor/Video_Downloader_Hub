@@ -14,6 +14,7 @@ import com.avd.util.downloaders.generic_downloader.models.VideoTaskItem
 import com.avd.util.downloaders.generic_downloader.models.VideoTaskState
 import com.avd.util.downloaders.generic_downloader.workers.GenericDownloadWorkerWrapper
 import com.avd.util.downloaders.generic_downloader.workers.Progress
+import com.avd.util.NetworkUtils
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import io.reactivex.rxjava3.core.Flowable
@@ -333,6 +334,8 @@ class CustomRegularDownloaderWorker @AssistedInject constructor(@Assisted appCon
                                 VideoTaskState.PAUSE
                             } else if (e.message == CustomFileDownloader.CANCELED && isCanceled) {
                                 VideoTaskState.CANCELED
+                            } else if (!NetworkUtils.isOnline(applicationContext)) {
+                                VideoTaskState.NO_INTERNET
                             } else {
                                 VideoTaskState.ERROR
                             }

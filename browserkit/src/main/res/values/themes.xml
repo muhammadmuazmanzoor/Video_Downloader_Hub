@@ -5,6 +5,8 @@
         <item name="colorOnPrimary">@color/bk_on_primary</item>
         <item name="android:statusBarColor">@color/bk_bg</item>
         <item name="android:navigationBarColor">@color/bk_bg</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar">true</item>
         <item name="android:windowBackground">@color/bk_bg</item>
     </style>
 
@@ -33,7 +35,7 @@
         <item name="android:background">?attr/selectableItemBackground</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:paddingHorizontal">20dp</item>
-        <item name="android:textColor">@color/bk_text_primary</item>
+        <item name="android:textColor">@color/black</item>
         <item name="android:textSize">15sp</item>
     </style>
 </resources>

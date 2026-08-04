@@ -14,6 +14,7 @@ object BrowserKit {
 
     /** Open the browser straight into the tabs switcher instead of a page. */
     const val EXTRA_OPEN_TABS = "browserkit_extra_open_tabs"
+    const val EXTRA_ADD_TAB = "browserkit_extra_add_tab"
 
     @Volatile
     private var config: BrowserKitConfig = BrowserKitConfig()
@@ -109,6 +110,18 @@ object BrowserKit {
         context.startActivity(
             createIntent(context, BrowserLaunchRequest(mode = BrowserLaunchMode.BLANK))
                 .putExtra(EXTRA_OPEN_TABS, true),
+        )
+    }
+
+    /**
+     * Adds a new blank tab to the running browser session and opens the tabs switcher.
+     * If the browser session is not running yet, the browser opens with its initial tab
+     * and the tabs switcher visible.
+     */
+    fun launchNewTab(context: Context) {
+        context.startActivity(
+            createIntent(context, BrowserLaunchRequest(mode = BrowserLaunchMode.BLANK))
+                .putExtra(EXTRA_ADD_TAB, true),
         )
     }
 

@@ -10,9 +10,12 @@ import retrofit2.http.Url
 
 interface SocialDownloaderService {
     @POST
-    @Headers("Content-Type: application/json")
+    @Headers("Content-Type: application/json", "Cache-Control: no-cache")
     suspend fun downloadVideo(
         @Url endPoint: String,
-        @Query("url") url: String
+        @Query("url") url: String,
+        @Query("_ts") timestamp: Long,
+        @Query("_rid") requestId: String,
+        @Query("_install") installationId: String
     ): Response<SocialDownloaderResponse>
 }

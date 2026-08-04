@@ -525,46 +525,46 @@ object AdsHelper {
         eventName: String = ""
     ) {
         activity.lifecycleScope.launch {
+            var callbackCalled = false
+
+            fun continueOnce() {
+                if (!callbackCalled) {
+                    callbackCalled = true
+                    continueWhenResumed(activity, onDismissed)
+                }
+            }
+
             try {
                 showLoading(activity)
                 delay(1000)
                 interstitialAd.fullScreenContentCallback =
                     object : FullScreenContentCallback() {
                         override fun onAdShowedFullScreenContent() {
-                            Log.d(TAG, "show Interstitial → SHOW ✔")
+                            Log.d(TAG, "show Interstitial -> SHOW")
                             isShowingAd = true
                         }
 
                         override fun onAdDismissedFullScreenContent() {
-                            Log.d(TAG, "show Interstitial → DISMISSED ✖")
+                            Log.d(TAG, "show Interstitial -> DISMISSED")
                             isShowingAd = false
                             nullifyUsedAd(interstitialAd)
-                            if (!forFragment) {
-                                hideLoading()
-                            }
+                            hideLoading()
+                            continueOnce()
                         }
 
                         override fun onAdFailedToShowFullScreenContent(adError: AdError) {
-                            Log.e(TAG, "show Interstitial SHOW FAILED ❌: ${adError.message}")
+                            Log.e(TAG, "show Interstitial failed to show: ${adError.message}")
                             isShowingAd = false
+                            hideLoading()
+                            continueOnce()
                         }
                     }
 
-                activity.lifecycleScope.launch {
-                    if (forFragment) {
-                        interstitialAd.show(activity)
-                        delay(400)
-                        onDismissed?.invoke()
-                        hideLoading()
-                    } else {
-                        onDismissed?.invoke()
-                        interstitialAd.show(activity)
-                    }
-                }
+                interstitialAd.show(activity)
             } catch (e: Exception) {
                 Log.e("AdsManager", "Error showing interstitial ad", e)
-                onDismissed?.invoke()
-            } finally {
+                hideLoading()
+                continueOnce()
             }
         }
     }
@@ -573,6 +573,18 @@ object AdsHelper {
         when (interAd) {
 //            obInterstitialHigh -> obInterstitialHigh = null
 //            obInterstitialAll -> obInterstitialAll = null
+        }
+    }
+
+    private fun continueWhenResumed(
+        activity: FragmentActivity,
+        onDismissed: (() -> Unit)?
+    ) {
+        if (onDismissed == null) return
+        activity.lifecycleScope.launchWhenResumed {
+            if (!activity.isFinishing && !activity.isDestroyed) {
+                onDismissed.invoke()
+            }
         }
     }
 

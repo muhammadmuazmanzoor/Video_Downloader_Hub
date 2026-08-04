@@ -250,6 +250,12 @@ class WebTabFragment : Fragment() {
                 if (newProgress >= 100) binding.pageProgress.isVisible = false
                 updateNavButtons()
             }
+
+            override fun onReceivedIcon(view: WebView?, icon: Bitmap?) {
+                super.onReceivedIcon(view, icon)
+                val tabId = browserViewModel.tabs.value?.getOrNull(tabIndex)?.id ?: return
+                browserViewModel.setFavicon(tabId, icon)
+            }
         }
         binding.webView.webViewClient = BrowserWebViewClient(
             onPageStarted = pageStarted@{ url ->
@@ -1738,8 +1744,8 @@ class WebTabFragment : Fragment() {
         val b = _binding ?: return
         val context = requireContext()
         val active = ContextCompat.getColor(context, R.color.bk_chrome_active)
-        val icon = ContextCompat.getColor(context, R.color.bk_chrome_icon)
-        val disabled = ContextCompat.getColor(context, R.color.bk_chrome_disabled)
+        val icon = ContextCompat.getColor(context, R.color.black)
+        val disabled = ContextCompat.getColor(context, R.color.black)
         val onBrowserHomeScreen = browserViewModel.tabsSwitcherVisible.value != true
 
         if (onBrowserHomeScreen) {

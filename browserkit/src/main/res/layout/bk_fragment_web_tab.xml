@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bk_bg"
+    android:background="@color/bk_on_primary"
     android:orientation="vertical">
 
     <!-- Top chrome: back + URL pill -->
@@ -25,7 +25,7 @@
             android:padding="10dp"
             android:scaleType="centerInside"
             android:src="@drawable/bk_ic_chevron_left"
-            app:tint="@color/bk_text_primary" />
+            app:tint="@color/black" />
 
         <LinearLayout
             android:id="@+id/urlBar"
@@ -65,7 +65,7 @@
                 android:scaleType="centerInside"
                 android:src="@drawable/bk_ic_close"
                 android:visibility="gone"
-                app:tint="@color/bk_text_secondary" />
+                app:tint="@color/bk_text_primary" />
         </LinearLayout>
     </LinearLayout>
 
@@ -129,7 +129,7 @@
         android:id="@+id/bottomBar"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="@color/bk_tab_footer"
+        android:background="@color/bk_on_primary"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingHorizontal="12dp">
@@ -139,24 +139,24 @@
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_weight="1"
-            android:background="?attr/selectableItemBackgroundBorderless"
+            android:backgroundTint="@android:color/transparent"
             android:contentDescription="@string/bk_back"
             android:padding="12dp"
             android:scaleType="centerInside"
             android:src="@drawable/bk_ic_nav_back"
-            app:tint="@color/bk_chrome_disabled" />
+            app:tint="@color/black" />
 
         <ImageButton
             android:id="@+id/btnWebForward"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_weight="1"
-            android:background="?attr/selectableItemBackgroundBorderless"
+          android:backgroundTint="@android:color/transparent"
             android:contentDescription="@string/bk_forward"
             android:padding="12dp"
             android:scaleType="centerInside"
             android:src="@drawable/bk_ic_nav_forward"
-            app:tint="@color/bk_chrome_disabled" />
+            app:tint="@color/black" />
 
         <ImageButton
             android:id="@+id/btnHome"
@@ -175,23 +175,23 @@
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_weight="1"
-            android:background="?attr/selectableItemBackgroundBorderless"
+          android:backgroundTint="@android:color/transparent"
             android:contentDescription="@string/bk_tabs"
             android:padding="12dp"
             android:scaleType="centerInside"
             android:src="@drawable/bk_ic_tabs_stack"
-            app:tint="@color/bk_chrome_icon" />
+            app:tint="@color/black" />
 
         <ImageButton
             android:id="@+id/btnMenu"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_weight="1"
-            android:background="?attr/selectableItemBackgroundBorderless"
+            android:backgroundTint="@android:color/transparent"
             android:contentDescription="@string/bk_menu"
             android:padding="12dp"
             android:scaleType="centerInside"
             android:src="@drawable/bk_ic_more_horiz"
-            app:tint="@color/bk_chrome_icon" />
+            app:tint="@color/black" />
     </LinearLayout>
 </LinearLayout>

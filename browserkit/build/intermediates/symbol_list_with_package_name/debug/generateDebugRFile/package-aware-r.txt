@@ -29,6 +29,7 @@ color bk_text_primary
 color bk_text_secondary
 color bk_url_bar
 color bk_youtube_red
+color black
 drawable bk_bg_bottom_sheet
 drawable bk_bg_download_cta
 drawable bk_bg_download_fab
