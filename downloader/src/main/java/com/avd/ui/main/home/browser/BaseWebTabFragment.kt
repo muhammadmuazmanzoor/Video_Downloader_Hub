@@ -8,7 +8,9 @@ import androidx.appcompat.view.ContextThemeWrapper
 import androidx.appcompat.widget.PopupMenu
 import androidx.databinding.Observable
 import androidx.fragment.app.FragmentContainerView
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.lifecycleScope
 import com.avd.ui.main.home.browser.social.SocialPlatform
 import com.avd.ui.main.home.browser.social.SocialPlatformDownloadFragment
 import com.avd.R
@@ -27,6 +29,7 @@ import com.avd.util.AdBlockerHelper.showInterstitial
 import com.avd.util.AppLogger
 import com.avd.util.CommunicateWithActivity
 import com.avd.util.DownloaderModuleNavigator
+import kotlinx.coroutines.launch
 
 abstract class BaseWebTabFragment : BaseFragment() {
 
@@ -310,19 +313,40 @@ abstract class BaseWebTabFragment : BaseFragment() {
          } catch (e: Exception) {
              e.printStackTrace()
          }
+         navigateInMainContainer(fragment, SocialPlatformDownloadFragment.TAG)
+     }
+
+     protected fun navigateInMainContainer(fragment: androidx.fragment.app.Fragment, backStackTag: String) {
          try {
+             val hostActivity = activity ?: return
              val activityFragmentContainer =
-                 activity?.findViewById<FragmentContainerView>(R.id.fragment_container_view)
-             activityFragmentContainer?.let { container ->
-                 requireActivity().supportFragmentManager.beginTransaction()
-                     .replace(container.id, fragment, SocialPlatformDownloadFragment.TAG)
-                     .addToBackStack(SocialPlatformDownloadFragment.TAG)
+                 hostActivity.findViewById<FragmentContainerView>(R.id.fragment_container_view) ?: return
+             val fragmentManager = hostActivity.supportFragmentManager
+
+             viewLifecycleOwner.lifecycleScope.launch {
+                 if (!isAdded || hostActivity.isFinishing || hostActivity.isDestroyed) return@launch
+                 val transaction = fragmentManager.beginTransaction()
+                     .replace(activityFragmentContainer.id, fragment, backStackTag)
+                     .addToBackStack(backStackTag)
                      .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                     .commit()
+
+                 commitTransactionSafely(fragmentManager, transaction)
              }
          } catch (e: Exception) {
              AppLogger.d("Can't navigate to social download screen: $e")
          }
+     }
+
+     private fun commitTransactionSafely(
+         fragmentManager: FragmentManager,
+         transaction: FragmentTransaction
+     ) {
+         if (fragmentManager.isStateSaved) {
+             transaction.commitAllowingStateLoss()
+         } else {
+             transaction.commit()
+         }
+         fragmentManager.executePendingTransactions()
      }
 
      fun navigateToHelp() {

@@ -91,7 +91,7 @@ enum class SocialPlatform(
         step3SubtitleRes = R.string.social_step3_subtitle,
       //  step4TitleRes = R.string.social_step4_title,
       //  step4SubtitleRes = R.string.social_step4_subtitle,
-        step1ImageRes = R.drawable.download_guidance1,
+        step1ImageRes = R.drawable.twitter1,
         step2ImageRes = R.drawable.download_guidance2,
         step3ImageRes = R.drawable.download_guidance3,
        // step4ImageRes = R.drawable.fb4,

@@ -24,7 +24,6 @@ import androidx.activity.OnBackPressedCallback
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentContainerView
-import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -63,7 +62,6 @@ import com.avd.util.AdBlockerHelper.isProVersion
 import com.avd.util.AdBlockerHelper.loadFallbackInterstitialAd
 import com.avd.util.AdBlockerHelper.refreshAd
 import com.avd.util.AdBlockerHelper.showInterstitial
-import com.avd.util.AppLogger
 import com.avd.util.CookieUtils
 import com.avd.util.DownloadDialogType
 import com.avd.util.FirebaseEvents.fbEvents
@@ -116,37 +114,13 @@ class SocialPlatformDownloadFragment : BaseWebTabFragment() {
         if(interHome!=null) {
             interHome?.let {
                 showInterstitial(true, it, requireActivity(), {
-                    try {
-                        val currentFragment = this
-                        val activityFragmentContainer = currentFragment.activity?.findViewById<FragmentContainerView>(R.id.fragment_container_view)
-                        activityFragmentContainer?.let {
-                            val transaction = currentFragment.requireActivity().supportFragmentManager.beginTransaction()
-                            transaction.replace(it.id, BrowserHomeFragment.newInstance())
-                            transaction.addToBackStack("home")
-                            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                            transaction.commit()
-                        }
-                    } catch (e: ClassCastException) {
-                        AppLogger.d("Can't get the fragment manager with this")
-                    }
+                    navigateInMainContainer(BrowserHomeFragment.newInstance(), "home")
                 },inter_browser)
             }
 
         }
         else{
-            try {
-                val currentFragment = this
-                val activityFragmentContainer = currentFragment.activity?.findViewById<FragmentContainerView>(R.id.fragment_container_view)
-                activityFragmentContainer?.let {
-                    val transaction = currentFragment.requireActivity().supportFragmentManager.beginTransaction()
-                    transaction.replace(it.id, BrowserHomeFragment.newInstance())
-                    transaction.addToBackStack("home")
-                    transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                    transaction.commit()
-                }
-            } catch (e: ClassCastException) {
-                AppLogger.d("Can't get the fragment manager with this")
-            }
+            navigateInMainContainer(BrowserHomeFragment.newInstance(), "home")
         }
 
     }

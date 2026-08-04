@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="50dp"
-    android:background="@color/card_stroke"
+    android:background="@color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
@@ -45,7 +45,7 @@
         android:iconifiedByDefault="false"
         app:searchIcon="@null"
         app:searchHintIcon="@null"
-        android:textColorHint = "@color/gray_text"
+        android:textColorHint = "@color/black_01"
         app:closeIcon="@drawable/ic_close_searchview"
         app:iconifiedByDefault="false"
         app:queryHint="@string/search"
@@ -61,7 +61,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_sort"
-        app:tint="@color/brand_text_primary"
+        app:tint="@color/black"
         android:visibility="invisible"
         app:layout_constraintTop_toTopOf="@+id/searchView"
         app:layout_constraintBottom_toBottomOf="@+id/searchView"

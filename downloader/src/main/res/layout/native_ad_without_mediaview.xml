@@ -6,7 +6,7 @@
     android:id="@+id/native_ad_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/card_stroke">
+    android:background="@drawable/rounded_ad_background">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

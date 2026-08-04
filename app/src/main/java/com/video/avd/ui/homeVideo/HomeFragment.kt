@@ -50,7 +50,6 @@ import com.video.avd.utils.chromecast.ChromecastConnection
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import androidx.core.net.toUri
-import com.avd.browserkit.api.BrowserKit
 import com.avd.util.AdBlockerHelper
 import com.avd.util.AdBlockerHelper.interHome
 import com.avd.util.AdBlockerHelper.inter_home
@@ -224,9 +223,9 @@ class HomeFragment : Fragment(), ExitDialogListener, OnSortChangedListner{
 
             binding?.imgSearch?.setOnClickListener {
                 AppUtils.firebaseUserAction("search_clicked_HomeScreen", "HomeFragment")
-                mActivity?.let {
-                    BrowserKit.launchBlank(it)
-                }
+                mActivity?.nextNavigateTo(
+                    HomeFragmentDirections.actionHomeFragmentToSearchVideoFragment(false)
+                )
                 AppUtils.firebaseUserAction("searchBtnClicked_HomeFragment", "HomeFragment")
             }
 
