@@ -73,6 +73,7 @@ import javax.inject.Inject
 
 private const val DELETE_PERMISSION_REQUEST = 0x1033
 private const val RENAME_PERMISSION_REQUEST = 0x1876
+private const val VIDEO_ACTIONS_TAG = "SearchVideoActions"
 
 @AndroidEntryPoint
 class SearchVideoFragment : Fragment(),ChromeCastDelegate by ChromeCastDelegateImp() , OnClickListner , VideoListner, VideoAdapter.MenuClickListener,
@@ -222,6 +223,7 @@ class SearchVideoFragment : Fragment(),ChromeCastDelegate by ChromeCastDelegateI
         }
 
         mViewModel.permissionNeededForDelete.observe(viewLifecycleOwner, Observer { intentSender ->
+            Log.d(VIDEO_ACTIONS_TAG, "delete authorization sender received: ${intentSender != null}")
             intentSender?.let {
                 // On Android 10+, if the app doesn't have permission to modify
                 // or delete an item, it returns an `IntentSender` that we can
@@ -277,12 +279,23 @@ class SearchVideoFragment : Fragment(),ChromeCastDelegate by ChromeCastDelegateI
             }
         })
         mViewModel.isForDelete.observe(viewLifecycleOwner) { success ->
-            if (success == true) refreshVideoResults()
+            Log.d(VIDEO_ACTIONS_TAG, "delete result observed: success=$success")
+            if (success == true) {
+                refreshVideoResults()
+            } else if (success == false) {
+                Toast.makeText(requireContext(), "Unable to delete video", Toast.LENGTH_SHORT).show()
+            }
         }
         mViewModel.isForRename.observe(viewLifecycleOwner) { success ->
-            if (success == true) refreshVideoResults()
+            Log.d(VIDEO_ACTIONS_TAG, "rename result observed: success=$success")
+            if (success == true) {
+                refreshVideoResults()
+            } else if (success == false) {
+                Toast.makeText(requireContext(), "Unable to rename video", Toast.LENGTH_SHORT).show()
+            }
         }
         mViewModel.permissionNeededForRename.observe(viewLifecycleOwner){intentSender ->
+            Log.d(VIDEO_ACTIONS_TAG, "rename authorization sender received: ${intentSender != null}")
             AppOpenManager.isShowingAd = true
             intentSender?.let {
                 startIntentSenderForResult(
@@ -322,19 +335,16 @@ class SearchVideoFragment : Fragment(),ChromeCastDelegate by ChromeCastDelegateI
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == DELETE_PERMISSION_REQUEST) {
-            val value=mViewModel.urinew?.let { mActivity?.let { it1 -> AppUtils.deleteVideoFile(it1, it) } }
-            if (value == true){
-                val flow= mActivity?.let { mViewModel.getAllVideos(it) }
-                lifecycleScope.launch {
-                    flow?.collect { videos ->
-                        // Do something with the list of videos
-                        videolist=videos
-                        adaptervideo?.updateList(videos)
-                    }
-                }
-            }
+            Log.d(VIDEO_ACTIONS_TAG, "delete authorization result: RESULT_OK")
+            // MediaStore.createDeleteRequest performs the deletion when the user
+            // confirms. Deleting the URI again returns 0 and previously prevented refresh.
+            refreshVideoResults()
         }
         else if (resultCode == Activity.RESULT_OK && requestCode == RENAME_PERMISSION_REQUEST) {
+            Log.d(
+                VIDEO_ACTIONS_TAG,
+                "rename authorization result: RESULT_OK itemId=${optionsItem?.id} newName=${mViewModel.nameNew}"
+            )
             optionsItem?.let { item ->
                 mActivity?.let { activity ->
                     mViewModel.nameNew?.let { newName ->
@@ -350,6 +360,7 @@ class SearchVideoFragment : Fragment(),ChromeCastDelegate by ChromeCastDelegateI
 
         }
         else if  (resultCode == Activity.RESULT_CANCELED && requestCode == DELETE_PERMISSION_REQUEST){
+            Log.d(VIDEO_ACTIONS_TAG, "delete authorization result: RESULT_CANCELED")
             lifecycleScope.launch {
                 delay(1000)
                 AppOpenManager.isShowingAd =false
@@ -360,8 +371,11 @@ class SearchVideoFragment : Fragment(),ChromeCastDelegate by ChromeCastDelegateI
 
     private fun refreshVideoResults() {
         val activity = mActivity ?: return
+        Log.d(VIDEO_ACTIONS_TAG, "refresh requested")
         lifecycleScope.launch {
+            delay(300)
             mViewModel.getAllVideos(activity).collect { videos ->
+                Log.d(VIDEO_ACTIONS_TAG, "refresh received ${videos.size} videos")
                 videolist = videos
                 adaptervideo?.updateList(videos)
             }
@@ -503,9 +517,17 @@ class SearchVideoFragment : Fragment(),ChromeCastDelegate by ChromeCastDelegateI
     }
 
     override fun onMenuClick(item: Video, position: Int) {
+        Log.d(
+            VIDEO_ACTIONS_TAG,
+            "menu opened: adapterPosition=$position id=${item.id} uri=${item.contentUri} title=${item.title}"
+        )
         val dg = VideoOptionBottomSheetFragment(true, false)
         dg.setOptionSelected(object : VideoOptionBottomSheetFragment.OptionSelectedListener {
             override fun onOptionSelected(selectedPosition: Int) {
+                Log.d(
+                    VIDEO_ACTIONS_TAG,
+                    "menu selected: option=$selectedPosition id=${item.id} uri=${item.contentUri}"
+                )
                 dg.dismiss()
                 when (selectedPosition) {
 //                    0 -> {
@@ -724,6 +746,10 @@ class SearchVideoFragment : Fragment(),ChromeCastDelegate by ChromeCastDelegateI
             alertDialog.window?.attributes = layoutParams
             btnOk.setOnClickListener {
                 val newName = editText.text.toString()
+                Log.d(
+                    VIDEO_ACTIONS_TAG,
+                    "rename confirmed: id=${item.id} uri=${item.contentUri} old=${item.title} new=$newName"
+                )
                 lifecycleScope.launch {
                     mViewModel.renameVideo(activity,item,newName)
                 }
@@ -755,13 +781,15 @@ class SearchVideoFragment : Fragment(),ChromeCastDelegate by ChromeCastDelegateI
     }
 
     private fun resolveVideoUri(item: Video): Uri {
-        return item.contentUri
+        val resolved = item.contentUri
             ?.takeIf { it.isNotBlank() }
             ?.let(Uri::parse)
             ?: ContentUris.withAppendedId(
                 MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
                 item.id
             )
+        Log.d(VIDEO_ACTIONS_TAG, "resolved uri: id=${item.id} uri=$resolved")
+        return resolved
     }
 
     private fun deleteVideoPermanently(uri: Uri, context: Context) {

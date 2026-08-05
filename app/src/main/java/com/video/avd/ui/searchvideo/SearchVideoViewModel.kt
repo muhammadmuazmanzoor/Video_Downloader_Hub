@@ -13,6 +13,7 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
+import android.webkit.MimeTypeMap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -37,6 +38,8 @@ import javax.inject.Inject
 class SearchVideoViewModel @Inject constructor(
     private val repository: Repository
 ) : ViewModel() {
+
+    private val actionsTag = "SearchVideoActions"
 
 
     var nameNew : String? = null
@@ -137,11 +140,12 @@ class SearchVideoViewModel @Inject constructor(
     suspend fun performDeleteImage(uri: Uri, context: Context) {
         withContext(Dispatchers.IO) {
             val mediaUri = resolveVolumeSpecificUri(context, uri)
+            Log.d(actionsTag, "delete started: input=$uri normalized=$mediaUri sdk=${Build.VERSION.SDK_INT}")
             try {
                 if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {
-                    _ForDelete.postValue(
-                        context.contentResolver.delete(mediaUri, null, null) > 0
-                    )
+                    val deletedRows = context.contentResolver.delete(mediaUri, null, null)
+                    Log.d(actionsTag, "delete resolver result: rows=$deletedRows uri=$mediaUri")
+                    _ForDelete.postValue(deletedRows > 0)
 
                 } else {
                     try {
@@ -166,20 +170,22 @@ class SearchVideoViewModel @Inject constructor(
                     }
                 }
             } catch (securityException: SecurityException) {
+                Log.w(actionsTag, "delete needs authorization: uri=$mediaUri", securityException)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     urinew = mediaUri
                     val intentSender = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                        runCatching {
-                            MediaStore.createDeleteRequest(
-                                context.contentResolver,
-                                listOf(mediaUri)
-                            ).intentSender
-                        }.getOrNull()
+                        createMediaRequestSender(context, mediaUri, delete = true)
                     } else {
                         (securityException as? RecoverableSecurityException)
                             ?.userAction?.actionIntent?.intentSender
                     }
-                    _permissionNeededForDelete.postValue(intentSender)
+                    if (intentSender != null) {
+                        Log.d(actionsTag, "delete authorization request created: uri=$mediaUri")
+                        _permissionNeededForDelete.postValue(intentSender)
+                    } else {
+                        Log.e("SearchVideoDelete", "Unable to create delete request for uri=$mediaUri")
+                        _ForDelete.postValue(false)
+                    }
                 } else {
                 }
             }
@@ -197,6 +203,10 @@ class SearchVideoViewModel @Inject constructor(
     suspend fun renameVideo(context: Context, item: Video, newName: String) {
         withContext(Dispatchers.IO){
             nameNew = newName
+            Log.d(
+                actionsTag,
+                "rename started: id=${item.id} uri=${item.contentUri} old=${item.title} new=$newName sdk=${Build.VERSION.SDK_INT}"
+            )
             try {
                 if (!isValidFileName(newName)) {
                     withContext(Dispatchers.Main) {
@@ -205,8 +215,14 @@ class SearchVideoViewModel @Inject constructor(
                     return@withContext
                 }
                 if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
-                    item.contentUri?.let { value ->
+                    val contentUri = item.contentUri
+                    if (contentUri.isNullOrBlank()) {
+                        _ForRename.postValue(false)
+                        return@withContext
+                    }
+                    contentUri.let { value ->
                         val uri = resolveVolumeSpecificUri(context, Uri.parse(value))
+                        Log.d(actionsTag, "rename normalized uri: input=$value normalized=$uri")
                         val oldDisplayName = context.contentResolver.query(
                             uri,
                             arrayOf(MediaStore.MediaColumns.DISPLAY_NAME),
@@ -216,10 +232,16 @@ class SearchVideoViewModel @Inject constructor(
                         )?.use { cursor ->
                             if (cursor.moveToFirst()) cursor.getString(0) else null
                         }
-                        val extension = oldDisplayName
+                        val extensionFromName = oldDisplayName
                             ?.substringAfterLast('.', "")
                             ?.takeIf { it.isNotBlank() }
-                        val displayName = if (extension == null || newName.endsWith(".$extension")) {
+                        val extension = extensionFromName
+                            ?: MimeTypeMap.getSingleton()
+                                .getExtensionFromMimeType(context.contentResolver.getType(uri))
+                            ?: item.orignalpath.substringAfterLast('.', "")
+                                .takeIf { it.isNotBlank() }
+                            ?: "mp4"
+                        val displayName = if (newName.endsWith(".$extension", ignoreCase = true)) {
                             newName
                         } else {
                             "$newName.$extension"
@@ -227,9 +249,12 @@ class SearchVideoViewModel @Inject constructor(
                         val values = ContentValues().apply {
                             put(MediaStore.MediaColumns.DISPLAY_NAME, displayName)
                         }
-                        _ForRename.postValue(
-                            context.contentResolver.update(uri, values, null, null) > 0
+                        val updatedRows = context.contentResolver.update(uri, values, null, null)
+                        Log.d(
+                            "SearchVideoRename",
+                            "uri=$uri old=$oldDisplayName new=$displayName rows=$updatedRows"
                         )
+                        _ForRename.postValue(updatedRows > 0)
                     }
 
                 }else{
@@ -247,25 +272,28 @@ class SearchVideoViewModel @Inject constructor(
                     }
                 }
             }catch (securityException: SecurityException){
+                Log.w(actionsTag, "rename needs authorization: uri=${item.contentUri}", securityException)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     val uri = item.contentUri
                         ?.let(Uri::parse)
                         ?.let { resolveVolumeSpecificUri(context, it) }
                     val intentSender = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && uri != null) {
-                        runCatching {
-                            MediaStore.createWriteRequest(
-                                context.contentResolver,
-                                listOf(uri)
-                            ).intentSender
-                        }.getOrNull()
+                        createMediaRequestSender(context, uri, delete = false)
                     } else {
                         (securityException as? RecoverableSecurityException)
                             ?.userAction?.actionIntent?.intentSender
                     }
-                    _permissionNeededForRename.postValue(intentSender)
+                    if (intentSender != null) {
+                        Log.d(actionsTag, "rename authorization request created: uri=$uri")
+                        _permissionNeededForRename.postValue(intentSender)
+                    } else {
+                        Log.e("SearchVideoRename", "Unable to create write request for uri=$uri")
+                        _ForRename.postValue(false)
+                    }
                 } else {
                 }
             }catch (e: Exception){
+                Log.e(actionsTag, "rename failed unexpectedly", e)
                 e.printStackTrace()
             }
 
@@ -293,7 +321,58 @@ class SearchVideoViewModel @Inject constructor(
                 if (cursor.moveToFirst()) cursor.getString(0) else null
             }
         }.getOrNull() ?: MediaStore.VOLUME_EXTERNAL_PRIMARY
+        val resolved = MediaStore.Video.Media.getContentUri(volumeName, id)
+        Log.d(actionsTag, "volume uri resolved: input=$uri volume=$volumeName id=$id output=$resolved")
+        return resolved
+    }
 
-        return MediaStore.Video.Media.getContentUri(volumeName, id)
+    /**
+     * Some MediaProvider versions expose a row through the video collection but only
+     * accept its equivalent Files-table URI when creating a write/delete request.
+     * Try each representation of the same MediaStore row and use the first one the
+     * provider accepts. No operation is performed until the user confirms the prompt.
+     */
+    private fun createMediaRequestSender(
+        context: Context,
+        uri: Uri,
+        delete: Boolean
+    ): IntentSender? {
+        val id = runCatching { ContentUris.parseId(uri) }.getOrNull() ?: return null
+        val volume = runCatching { MediaStore.getVolumeName(uri) }
+            .getOrDefault(MediaStore.VOLUME_EXTERNAL_PRIMARY)
+        val candidates = linkedSetOf(
+            uri,
+            MediaStore.Video.Media.getContentUri(volume, id),
+            ContentUris.withAppendedId(MediaStore.Files.getContentUri(volume), id),
+            ContentUris.withAppendedId(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, id),
+            ContentUris.withAppendedId(MediaStore.Files.getContentUri("external"), id)
+        )
+
+        candidates.forEach { candidate ->
+            val sender = runCatching {
+                val request = if (delete) {
+                    MediaStore.createDeleteRequest(context.contentResolver, listOf(candidate))
+                } else {
+                    MediaStore.createWriteRequest(context.contentResolver, listOf(candidate))
+                }
+                request.intentSender
+            }.onFailure { error ->
+                Log.w(
+                    actionsTag,
+                    "${if (delete) "delete" else "write"} request rejected: uri=$candidate",
+                    error
+                )
+            }.getOrNull()
+
+            if (sender != null) {
+                urinew = candidate
+                Log.d(
+                    actionsTag,
+                    "${if (delete) "delete" else "write"} request accepted: uri=$candidate"
+                )
+                return sender
+            }
+        }
+        return null
     }
 }
