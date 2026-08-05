@@ -145,6 +145,11 @@ class SearchVideoViewModel @Inject constructor(
                 if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {
                     val deletedRows = context.contentResolver.delete(mediaUri, null, null)
                     Log.d(actionsTag, "delete resolver result: rows=$deletedRows uri=$mediaUri")
+                    if (deletedRows > 0) {
+                        runCatching { ContentUris.parseId(mediaUri) }.getOrNull()?.let { id ->
+                            repository.localRepo.videosDao().deleteDataFromDb(id)
+                        }
+                    }
                     _ForDelete.postValue(deletedRows > 0)
 
                 } else {
@@ -153,6 +158,9 @@ class SearchVideoViewModel @Inject constructor(
                         val file = AppUtils.getPathFromUri(context, uri)?.let { File(it) }
                         if (file?.exists() == true) {
                             if (file.delete()) {
+                                runCatching { ContentUris.parseId(uri) }.getOrNull()?.let { id ->
+                                    repository.localRepo.videosDao().deleteDataFromDb(id)
+                                }
                                 MediaScannerConnection.scanFile(
                                     context, arrayOf(file.parent),
                                     null
@@ -189,6 +197,12 @@ class SearchVideoViewModel @Inject constructor(
                 } else {
                 }
             }
+        }
+    }
+
+    fun deletedatafromdb(id: Long) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.localRepo.videosDao().deleteDataFromDb(id)
         }
     }
 
@@ -254,6 +268,9 @@ class SearchVideoViewModel @Inject constructor(
                             "SearchVideoRename",
                             "uri=$uri old=$oldDisplayName new=$displayName rows=$updatedRows"
                         )
+                        if (updatedRows > 0) {
+                            repository.localRepo.videosDao().updateVideoTitleById(item.id, newName)
+                        }
                         _ForRename.postValue(updatedRows > 0)
                     }
 
@@ -265,6 +282,7 @@ class SearchVideoViewModel @Inject constructor(
                             val newFile = File(currentFile.parentFile, newName.toString()+"."+currentFile.extension)
                             if(currentFile.renameTo(newFile)){
                                 MediaScannerConnection.scanFile(context, arrayOf(newFile.toString()), arrayOf("video/*"), null)
+                                repository.localRepo.videosDao().updateVideoTitleById(item.id, newName)
                                 _ForRename.postValue(true)
 
                             }

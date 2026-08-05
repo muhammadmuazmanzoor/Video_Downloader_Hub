@@ -113,41 +113,41 @@ class SearchVideoFragment : Fragment(),ChromeCastDelegate by ChromeCastDelegateI
     ): View? {
         // Inflate the layout for this fragment
 //        if (binding==null){
-            binding = FragmentSearchVideoBinding.inflate(inflater, container, false)
-            binding?.appHeader?.back?.setOnClickListener {
-                try {
-                    findNavController().popBackStack()
-                }catch (e: Exception){
-                    e.printStackTrace()
-                }
-            }
-            binding?.appHeader?.back?.visibility = View.VISIBLE
-            binding?.searchRv?.hasFixedSize()
-            val spanCount = if (args.isFolder) 3 else GRID_ITEM_SPAN_COUNT
-            binding?.searchRv?.layoutManager= if (VIEW_TYPE.value==0) LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-            else GridLayoutManager(requireContext(), spanCount)
-            if (args.isFolder){
-                adapterfolder= myWeakRefrence.getObjectfolder().let { mActivity?.let { it1 ->
-                    FolderAdapter(it,
-                        it1
-                    )
-                } }
-                binding?.searchRv?.adapter = adapterfolder
-                adapterfolder?.setOnClickListner(this)
-            }else{
-                adaptervideo= myWeakRefrence.getObjectvideo().let { mActivity?.let { it1 ->
-                    videolist=it
-                    VideoAdapter(
-                        context = it1,list =it,listener = this@SearchVideoFragment, showAd = false)
-                } }
-                binding?.searchRv?.adapter = adaptervideo
-                adaptervideo?.setOnClickListner(this)
-                binding?.searchRv?.addItemDecoration(GridSpacingItemDecoration(20))
-            }
-            binding?.appHeader?.back?.setOnClickListener {
+        binding = FragmentSearchVideoBinding.inflate(inflater, container, false)
+        binding?.appHeader?.back?.setOnClickListener {
+            try {
                 findNavController().popBackStack()
+            }catch (e: Exception){
+                e.printStackTrace()
             }
-            binding?.appHeader?.back?.visibility=View.VISIBLE
+        }
+        binding?.appHeader?.back?.visibility = View.VISIBLE
+        binding?.searchRv?.hasFixedSize()
+        val spanCount = if (args.isFolder) 3 else GRID_ITEM_SPAN_COUNT
+        binding?.searchRv?.layoutManager= if (VIEW_TYPE.value==0) LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+        else GridLayoutManager(requireContext(), spanCount)
+        if (args.isFolder){
+            adapterfolder= myWeakRefrence.getObjectfolder().let { mActivity?.let { it1 ->
+                FolderAdapter(it,
+                    it1
+                )
+            } }
+            binding?.searchRv?.adapter = adapterfolder
+            adapterfolder?.setOnClickListner(this)
+        }else{
+            adaptervideo= myWeakRefrence.getObjectvideo().let { mActivity?.let { it1 ->
+                videolist=it
+                VideoAdapter(
+                    context = it1,list =it,listener = this@SearchVideoFragment, showAd = false)
+            } }
+            binding?.searchRv?.adapter = adaptervideo
+            adaptervideo?.setOnClickListner(this)
+            binding?.searchRv?.addItemDecoration(GridSpacingItemDecoration(20))
+        }
+        binding?.appHeader?.back?.setOnClickListener {
+            findNavController().popBackStack()
+        }
+        binding?.appHeader?.back?.visibility=View.VISIBLE
         return binding?.root
     }
 
@@ -176,7 +176,7 @@ class SearchVideoFragment : Fragment(),ChromeCastDelegate by ChromeCastDelegateI
                 if (args.isFolder){
                     adapterfolder?.filter(query)
                 }else{
-                     adaptervideo?.filter(query)
+                    adaptervideo?.filter(query)
                 }
                 return true
             }
@@ -280,17 +280,27 @@ class SearchVideoFragment : Fragment(),ChromeCastDelegate by ChromeCastDelegateI
         })
         mViewModel.isForDelete.observe(viewLifecycleOwner) { success ->
             Log.d(VIDEO_ACTIONS_TAG, "delete result observed: success=$success")
+            if (success == null) return@observe
             if (success == true) {
-                refreshVideoResults()
-            } else if (success == false) {
+                optionsItem?.let { deletedItem ->
+                    videolist = videolist.filter { it.id != deletedItem.id }
+                    adaptervideo?.updateList(videolist)
+                    val query = binding?.appHeader?.searchView?.query?.toString()
+                    if (!query.isNullOrEmpty()) {
+                        adaptervideo?.filter(query)
+                    }
+                    Toast.makeText(requireContext(), "Video deleted", Toast.LENGTH_SHORT).show()
+                }
+            } else {
                 Toast.makeText(requireContext(), "Unable to delete video", Toast.LENGTH_SHORT).show()
             }
         }
         mViewModel.isForRename.observe(viewLifecycleOwner) { success ->
             Log.d(VIDEO_ACTIONS_TAG, "rename result observed: success=$success")
+            if (success == null) return@observe
             if (success == true) {
                 refreshVideoResults()
-            } else if (success == false) {
+            } else {
                 Toast.makeText(requireContext(), "Unable to rename video", Toast.LENGTH_SHORT).show()
             }
         }
@@ -336,9 +346,20 @@ class SearchVideoFragment : Fragment(),ChromeCastDelegate by ChromeCastDelegateI
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == DELETE_PERMISSION_REQUEST) {
             Log.d(VIDEO_ACTIONS_TAG, "delete authorization result: RESULT_OK")
-            // MediaStore.createDeleteRequest performs the deletion when the user
-            // confirms. Deleting the URI again returns 0 and previously prevented refresh.
-            refreshVideoResults()
+            // On Android 11+, MediaStore.createDeleteRequest performs the deletion when the user
+            // confirms the system dialog. The file is already deleted at this point.
+            optionsItem?.let { deletedItem ->
+                // Remove from Room DB
+                mViewModel.deletedatafromdb(deletedItem.id)
+                // Remove from adapter list
+                videolist = videolist.filter { it.id != deletedItem.id }
+                adaptervideo?.updateList(videolist)
+                val query = binding?.appHeader?.searchView?.query?.toString()
+                if (!query.isNullOrEmpty()) {
+                    adaptervideo?.filter(query)
+                }
+                Toast.makeText(requireContext(), "Video deleted", Toast.LENGTH_SHORT).show()
+            }
         }
         else if (resultCode == Activity.RESULT_OK && requestCode == RENAME_PERMISSION_REQUEST) {
             Log.d(
@@ -386,18 +407,18 @@ class SearchVideoFragment : Fragment(),ChromeCastDelegate by ChromeCastDelegateI
 
     @OptIn(ExperimentalCoroutinesApi::class)
     override fun onClickListner(id: String, name: String) {
-            mActivity?.let {
-                AppUtils.firebaseUserAction("onClickListener_SearchVideoFragment", "SearchVideoFragment")
-                AppUtils.getMain(it).hidebottombar()
-                val bundle = Bundle()
-                bundle.putString("id",id)
-                bundle.putString("name",name)
-                try {
-                    findNavController().navigate(R.id.action_global_videosFragment,bundle)
-                }catch (e:Exception){
-                    e.printStackTrace()
-                }
+        mActivity?.let {
+            AppUtils.firebaseUserAction("onClickListener_SearchVideoFragment", "SearchVideoFragment")
+            AppUtils.getMain(it).hidebottombar()
+            val bundle = Bundle()
+            bundle.putString("id",id)
+            bundle.putString("name",name)
+            try {
+                findNavController().navigate(R.id.action_global_videosFragment,bundle)
+            }catch (e:Exception){
+                e.printStackTrace()
             }
+        }
     }
 
     override fun onVideoClick(id: String, list: ArrayList<Video>) {
@@ -699,6 +720,7 @@ class SearchVideoFragment : Fragment(),ChromeCastDelegate by ChromeCastDelegateI
 //                        }
 //                    }
                     0 -> {
+                        optionsItem = item
                         val activity = mActivity ?: return
                         lifecycleScope.launch {
                             tempTitle = item.title.orEmpty()
@@ -937,7 +959,7 @@ class SearchVideoFragment : Fragment(),ChromeCastDelegate by ChromeCastDelegateI
             }
         }
     }
-    
+
     override fun onUserEarnedReward(p0: RewardItem) {
         isuserearned=true
     }
