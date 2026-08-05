@@ -92,6 +92,7 @@ class SearchVideoFragment : Fragment(),ChromeCastDelegate by ChromeCastDelegateI
     var mActivity: FragmentActivity? = null
     private var tempTitle = ""
     private var optionsItem: Video? = null
+    private var pendingNewName: String? = null
     private var selectedVideo : Video?=null
     var isuserearned=false
     val sharedPreferencesManager = mActivity?.let { SharedPreferencesManager(it) }
@@ -299,7 +300,22 @@ class SearchVideoFragment : Fragment(),ChromeCastDelegate by ChromeCastDelegateI
             Log.d(VIDEO_ACTIONS_TAG, "rename result observed: success=$success")
             if (success == null) return@observe
             if (success == true) {
-                refreshVideoResults()
+                // Update the title in memory immediately rather than re-querying MediaStore
+                // (MediaStore propagation is async and slow)
+                val newName = pendingNewName
+                optionsItem?.let { renamedItem ->
+                    if (newName != null) {
+                        videolist = videolist.map { video ->
+                            if (video.id == renamedItem.id) video.copy(title = newName) else video
+                        }
+                        adaptervideo?.updateList(videolist)
+                        val query = binding?.appHeader?.searchView?.query?.toString()
+                        if (!query.isNullOrEmpty()) {
+                            adaptervideo?.filter(query)
+                        }
+                    }
+                    Toast.makeText(requireContext(), "Video renamed", Toast.LENGTH_SHORT).show()
+                }
             } else {
                 Toast.makeText(requireContext(), "Unable to rename video", Toast.LENGTH_SHORT).show()
             }
@@ -369,16 +385,13 @@ class SearchVideoFragment : Fragment(),ChromeCastDelegate by ChromeCastDelegateI
             optionsItem?.let { item ->
                 mActivity?.let { activity ->
                     mViewModel.nameNew?.let { newName ->
+                        pendingNewName = newName
                         lifecycleScope.launch {
                             mViewModel.renameVideo(activity, item, newName)
                         }
-
                     }
-
                 }
-
             }
-
         }
         else if  (resultCode == Activity.RESULT_CANCELED && requestCode == DELETE_PERMISSION_REQUEST){
             Log.d(VIDEO_ACTIONS_TAG, "delete authorization result: RESULT_CANCELED")
@@ -767,13 +780,18 @@ class SearchVideoFragment : Fragment(),ChromeCastDelegate by ChromeCastDelegateI
             layoutParams.width = (resources.displayMetrics.widthPixels * 0.85).toInt()
             alertDialog.window?.attributes = layoutParams
             btnOk.setOnClickListener {
-                val newName = editText.text.toString()
+                val newName = editText.text.toString().trim()
+                if (newName.isEmpty()) {
+                    Toast.makeText(requireContext(), "Please enter a valid name", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
                 Log.d(
                     VIDEO_ACTIONS_TAG,
                     "rename confirmed: id=${item.id} uri=${item.contentUri} old=${item.title} new=$newName"
                 )
+                pendingNewName = newName
                 lifecycleScope.launch {
-                    mViewModel.renameVideo(activity,item,newName)
+                    mViewModel.renameVideo(activity, item, newName)
                 }
                 alertDialog.dismiss()
             }

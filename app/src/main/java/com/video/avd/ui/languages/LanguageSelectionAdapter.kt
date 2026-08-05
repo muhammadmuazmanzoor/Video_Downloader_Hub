@@ -53,8 +53,10 @@ class LanguageSelectionAdapter(private val list: List<LanguageSelectionModel>, p
 
         holder.itemView.setOnClickListener {
             if (startupHighlight) {
+                val oldPos = startupHighlightPosition
                 startupHighlight = false
-                notifyItemChanged(startupHighlightPosition)
+                startupHighlightPosition = -1
+                notifyItemChanged(oldPos)
             }
             val old = list.indexOfFirst { it.isSelected }
             if (old == position) return@setOnClickListener   // already selected
@@ -69,9 +71,8 @@ class LanguageSelectionAdapter(private val list: List<LanguageSelectionModel>, p
             listener.onLanguageClick(item)
         }
 
-        // Handle animation visibility - show on startup highlight position or if this item is selected
-        val shouldShowAnimation = (startupHighlight && position == startupHighlightPosition) || 
-                                  (!startupHighlight && item.isSelected)
+        // Handle animation visibility - show only on startup highlight position
+        val shouldShowAnimation = startupHighlight && position == startupHighlightPosition
         
         if (shouldShowAnimation) {
             holder.item_back?.visibility = View.GONE
