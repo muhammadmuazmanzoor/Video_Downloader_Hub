@@ -17,6 +17,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
@@ -119,6 +120,14 @@ class SplashActivity : AppCompatActivity() {
     }
 
 
+    private fun applyLightSystemBarAppearance() {
+        val root = binding?.root ?: return
+        WindowCompat.getInsetsController(window, root).apply {
+            isAppearanceLightStatusBars = true
+            isAppearanceLightNavigationBars = true
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AppPreference.saveSystemDefaultLanguage(this)
@@ -126,10 +135,12 @@ class SplashActivity : AppCompatActivity() {
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding?.root)
         hideNavigationBar()
+        applyLightSystemBarAppearance()
         fromSplash=true
         tracknotification(intent)
         Log.e("Notifiiis", "internalnotification data: ${intent.data}")
-        changeStatusBarColor(com.avd.R.color.primary_bg, this@SplashActivity, false)
+        changeStatusBarColor(com.avd.R.color.primary_bg, this@SplashActivity, true)
+        applyLightSystemBarAppearance()
         handleBackPress()
         
         // Setup network connectivity monitoring

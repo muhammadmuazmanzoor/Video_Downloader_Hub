@@ -26,6 +26,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
@@ -191,6 +192,7 @@ class MainActivity : AppCompatActivity(), NetworkStateListener, CommunicateWithA
         AppUtils.setLocate(this)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding?.root)
+        applyLightSystemBarAppearance()
         Log.d("checkBaseUrl","end point: ${RemoteConfigHelper.getSocialDownloaderEndpoint()}")
         fromSplash=false
         link=RemoteConfigHelper.getSocialDownloaderEndpoint()
@@ -203,6 +205,7 @@ class MainActivity : AppCompatActivity(), NetworkStateListener, CommunicateWithA
         }
 
         hideNavigationBar()
+        applyLightSystemBarAppearance()
         loadFallbackInterstitialAd(this, BuildConfig.inter_home_high, BuildConfig.inter_home,inter_home_high,inter_home_normal,{
             interHome=it
         },{
@@ -498,6 +501,14 @@ class MainActivity : AppCompatActivity(), NetworkStateListener, CommunicateWithA
         }
     }
 
+    private fun applyLightSystemBarAppearance() {
+        val root = binding?.root ?: return
+        WindowCompat.getInsetsController(window, root).apply {
+            isAppearanceLightStatusBars = true
+            isAppearanceLightNavigationBars = true
+        }
+    }
+
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host)
         return navController.navigateUp() || super.onSupportNavigateUp()
@@ -565,6 +576,7 @@ class MainActivity : AppCompatActivity(), NetworkStateListener, CommunicateWithA
                 if (intent.action != Intent.ACTION_SEND) {
                     window.decorView.postDelayed({
                         hideNavigationBar()
+                        applyLightSystemBarAppearance()
                         viewModel.lastdetctedlink =
                             sharedPreferencesManager?.getLastDetected().toString()
                         showDialogueonlink()
@@ -1204,6 +1216,7 @@ class MainActivity : AppCompatActivity(), NetworkStateListener, CommunicateWithA
             Log.d("ShowDialogueonlink", "hasPrimaryClip: from clipboard url")
             window.decorView.postDelayed({
                 hideNavigationBar()
+                applyLightSystemBarAppearance()
                 isShowingAd=true
                 lifecycleScope.launch(Dispatchers.Main){
                     delay(1500)
