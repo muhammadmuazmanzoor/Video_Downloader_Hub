@@ -186,6 +186,35 @@ class VideoViewModel @Inject constructor(
         refreshJob = null
     }
 
+    /**
+     * Bypass both VideoViewModel and FileUtil caches when a download finishes.
+     * MediaStore publication can trail the SUCCESS state slightly, so retry briefly
+     * before notifying the queue screen that the Completed tab is ready.
+     */
+    fun refreshCompletedDownloads(onRefreshed: () -> Unit = {}) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val previousUris = localVideos.get().orEmpty().map { it.uri }.toSet()
+            var freshList: List<LocalVideo> = emptyList()
+
+            for (attempt in 0..2) {
+                fileUtil.invalidateListFilesCache()
+                freshList = orderForCache(getFilesList())
+                val containsNewVideo = freshList.any { it.uri !in previousUris }
+                if (containsNewVideo || attempt == 2) break
+                delay(if (attempt == 0) 300L else 700L)
+            }
+
+            withContext(Dispatchers.Main.immediate) {
+                cachedFilesList = freshList
+                cachedVideosList?.set(freshList.toMutableList())
+                localVideos.set(orderForCurrentView(freshList).toMutableList())
+                lastCacheTime = System.currentTimeMillis()
+                isLoadingVideos.set(false)
+                onRefreshed()
+            }
+        }
+    }
+
 
     private fun getFilesListOld(): List<LocalVideo> {
         val listVideos: MutableList<LocalVideo> = mutableListOf()

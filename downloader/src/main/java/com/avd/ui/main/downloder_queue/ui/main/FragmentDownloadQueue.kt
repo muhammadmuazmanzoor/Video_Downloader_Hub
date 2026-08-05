@@ -21,6 +21,7 @@ import com.avd.databinding.FragmentDownloadQueueBinding
 import com.avd.ui.dialog.DownloadDialogManager
 import com.avd.ui.main.downloder_queue.utils.PermissionManagerNew
 import com.avd.ui.main.progress.ProgressViewModel
+import com.avd.ui.main.video.VideoViewModel
 import com.avd.util.AdBlockerHelper.showExitScreen
 import com.avd.util.DownloaderModuleNavigator
 
@@ -30,6 +31,7 @@ class FragmentDownloadQueue : Fragment() {
     private var mActivity: FragmentActivity? = null
     private lateinit var binding: FragmentDownloadQueueBinding
     private val progressViewModel: ProgressViewModel by activityViewModels()
+    private val videoViewModel: VideoViewModel by activityViewModels()
 
     private var pagerAdapter: DownloadListPagerAdapter? = null
     private var permissionManager: PermissionManagerNew? = null
@@ -69,8 +71,16 @@ class FragmentDownloadQueue : Fragment() {
             getActivity()?.onBackPressed()
         }
 
-        progressViewModel.downloadCompletedEvent.observe(viewLifecycleOwner) {
-            switchToCompletedTab()
+        progressViewModel.downloadCompletedEvent.observe(viewLifecycleOwner) { downloadId ->
+            Log.d("FragmentDownloadQueue", "Download completed: $downloadId; refreshing completed list")
+            videoViewModel.refreshCompletedDownloads {
+                if (isAdded && viewLifecycleOwner.lifecycle.currentState.isAtLeast(
+                        androidx.lifecycle.Lifecycle.State.STARTED
+                    )
+                ) {
+                    switchToCompletedTab()
+                }
+            }
         }
 
         activity?.onBackPressedDispatcher?.addCallback(

@@ -258,7 +258,12 @@ class ProgressViewModel @Inject constructor(
                 it.printStackTrace()
             }.blockingForEach { progressInfoList ->
                 viewModelScope.launch(Dispatchers.Main.immediate) {
-                    progressInfos.set(progressInfoList.sortedBy { it.id })
+                    // Keep completed items long enough to emit the completion event, but
+                    // never display them in the In Progress list.
+                    val activeDownloads = progressInfoList
+                        .filter { it.downloadStatus != VideoTaskState.SUCCESS }
+                        .sortedBy { it.id }
+                    progressInfos.set(activeDownloads)
                     isLoadingProgress.set(false)
                     emitNoInternetDownloadEvent(progressInfoList)
                     emitDownloadCompletedEvent(progressInfoList)
@@ -303,7 +308,6 @@ class ProgressViewModel @Inject constructor(
     private fun progressObservable(): Observable<List<ProgressInfo>> {
         val youtubeDlDownloads = Observable.interval(0, 300, TimeUnit.MILLISECONDS).flatMap {
             progressRepository.getProgressInfos().take(1).flatMap {
-                val filtered = it.filter { info -> info.downloadStatus != VideoTaskState.SUCCESS }
                 // Don't TOUCH(если убрать это возникнет конфликт ID-ков и не будет показываться прогресс для обычных загрузок)
                 //////////////////////////////
                 val successed = it.filter { info -> info.downloadStatus == VideoTaskState.SUCCESS }
@@ -311,7 +315,9 @@ class ProgressViewModel @Inject constructor(
                     progressRepository.deleteProgressInfo(task)
                 }
                 /////////////////////////////
-                Observable.just(filtered).toFlowable(BackpressureStrategy.LATEST).take(1)
+                // Return the original snapshot. SUCCESS entries are filtered from the
+                // visible list in the collector after they have generated an event.
+                Observable.just(it).toFlowable(BackpressureStrategy.LATEST).take(1)
             }.toObservable().doOnError { error ->
                 error.printStackTrace()
             }
@@ -322,9 +328,7 @@ class ProgressViewModel @Inject constructor(
     }
 
     private fun mergeBrowserkitTasks(dbItems: List<ProgressInfo>): List<ProgressInfo> {
-        val browserItems = BrowserDownloadSharedStore.tasks.value
-            .filter { it.status != com.avd.browserkit.download.BrowserDownloadStatus.COMPLETED }
-            .map { it.toProgressInfo() }
+        val browserItems = BrowserDownloadSharedStore.tasks.value.map { it.toProgressInfo() }
         return (dbItems + browserItems)
             .distinctBy { it.id }
             .sortedBy { it.id }
