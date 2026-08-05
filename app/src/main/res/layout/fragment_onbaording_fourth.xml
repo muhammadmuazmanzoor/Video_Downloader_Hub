@@ -54,7 +54,7 @@
                 android:gravity="center"
                 android:text="@string/onboarding_save_status_reels"
                 android:textColor="@color/brand_text_primary"
-                android:textSize="@dimen/_15ssp"
+                android:textSize="14sp"
                 app:layout_constraintBottom_toTopOf="@id/onboarding_footer"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />

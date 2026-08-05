@@ -4,6 +4,8 @@ package com.video.avd.ui.searchvideo
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
+import android.content.ClipData
+import android.content.ContentUris
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -274,6 +276,12 @@ class SearchVideoFragment : Fragment(),ChromeCastDelegate by ChromeCastDelegateI
                 Toast.makeText(requireContext(), "an error occurred", Toast.LENGTH_SHORT).show()
             }
         })
+        mViewModel.isForDelete.observe(viewLifecycleOwner) { success ->
+            if (success == true) refreshVideoResults()
+        }
+        mViewModel.isForRename.observe(viewLifecycleOwner) { success ->
+            if (success == true) refreshVideoResults()
+        }
         mViewModel.permissionNeededForRename.observe(viewLifecycleOwner){intentSender ->
             AppOpenManager.isShowingAd = true
             intentSender?.let {
@@ -346,6 +354,16 @@ class SearchVideoFragment : Fragment(),ChromeCastDelegate by ChromeCastDelegateI
                 delay(1000)
                 AppOpenManager.isShowingAd =false
                 isSplash = false
+            }
+        }
+    }
+
+    private fun refreshVideoResults() {
+        val activity = mActivity ?: return
+        lifecycleScope.launch {
+            mViewModel.getAllVideos(activity).collect { videos ->
+                videolist = videos
+                adaptervideo?.updateList(videos)
             }
         }
     }
@@ -486,9 +504,6 @@ class SearchVideoFragment : Fragment(),ChromeCastDelegate by ChromeCastDelegateI
 
     override fun onMenuClick(item: Video, position: Int) {
         val dg = VideoOptionBottomSheetFragment(true, false)
-        val bundle = Bundle()
-        bundle.putBoolean("isFromVideoRelated", true)
-        dg.show(parentFragmentManager, "")
         dg.setOptionSelected(object : VideoOptionBottomSheetFragment.OptionSelectedListener {
             override fun onOptionSelected(selectedPosition: Int) {
                 dg.dismiss()
@@ -661,55 +676,33 @@ class SearchVideoFragment : Fragment(),ChromeCastDelegate by ChromeCastDelegateI
 //                            }
 //                        }
 //                    }
-                    4 -> {
+                    0 -> {
+                        val activity = mActivity ?: return
                         lifecycleScope.launch {
-                            tempTitle = item.title.toString()
-                            item.contentUri?.let {
-                                mActivity?.let { it1 ->
-                                    deleteVideoPermanently(Uri.parse(it), it1)
-                                }
-                            }
+                            tempTitle = item.title.orEmpty()
+                            deleteVideoPermanently(resolveVideoUri(item), activity)
                         }
                     }
-                    5 -> {
-                        mActivity?.let {
-                            item.contentUri?.let { it1 ->
-                                AppUtils.getFilePathFromContentUri(Uri.parse(it1), it)?.let { it1 ->
-                                    File(it1)
-                                }?.let { it2 -> shareVideo(it2) }
-                            }
-                        }
+                    1 -> {
+                        shareVideo(item)
                     }
-                    6 -> {
-                        item.contentUri?.let { uri ->
-                            item.title?.let { title ->
-                                mActivity?.let {
-                                    val uriList: List<Uri> = listOf(
-                                        Uri.withAppendedPath(
-                                            MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
-                                            item.id.toString()
-                                        )
-                                    )
-                                    optionsItem = item
-                                    showRenameDialogue(item)
-
-                                }
-                            }
-                        }
+                    2 -> {
+                        optionsItem = item.copy(contentUri = resolveVideoUri(item).toString())
+                        showRenameDialogue(optionsItem!!)
                     }
-                    7 -> {
+                    3 -> {
                         val video=Video(item.id,null,item.title,item.duration,item.date,item.size,item.orignalpath,item.isChecked)
                         val bottomDialog = VideoInfoBottomSheetFragment()
-                        bottomDialog.show(requireActivity().supportFragmentManager, bottomDialog.tag)
                         val bundle = Bundle()
                         bundle.putSerializable("video",video)
                         bundle.putString("uri",item.contentUri.toString())
                         bottomDialog.arguments=bundle
-                        bottomDialog.show(parentFragmentManager,"")
+                        bottomDialog.show(parentFragmentManager, "video_info")
                     }
                 }
             }
         })
+        dg.show(parentFragmentManager, "video_options")
     }
 
     private fun showRenameDialogue(item: Video) {
@@ -744,20 +737,31 @@ class SearchVideoFragment : Fragment(),ChromeCastDelegate by ChromeCastDelegateI
         }
     }
 
-    private fun shareVideo(videoFile: File) {
-        if (videoFile.exists()) {
-            mActivity?.let {
+    private fun shareVideo(item: Video) {
+        mActivity?.let {
+            val videoUri = resolveVideoUri(item)
+            try {
                 val shareIntent = Intent(Intent.ACTION_SEND)
-                shareIntent.type = "video/mp4"
-                val videoUri: Uri = FileProvider.getUriForFile(it, "video.player.videodownloader.storysaver.provider", videoFile)
+                shareIntent.type = it.contentResolver.getType(videoUri) ?: "video/*"
                 shareIntent.putExtra(Intent.EXTRA_STREAM, videoUri)
+                shareIntent.clipData = ClipData.newRawUri("video", videoUri)
                 shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 ContextCompat.startActivity(it, Intent.createChooser(shareIntent, "Share video"), null)
+            } catch (e: Exception) {
+                Log.e("SearchVideoMenu", "Unable to share $videoUri", e)
+                Toast.makeText(context, "Unable to share this video", Toast.LENGTH_SHORT).show()
             }
-        } else {
-            // Handle case when the video file doesn't exist
-            Toast.makeText(context, "File does not exist", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun resolveVideoUri(item: Video): Uri {
+        return item.contentUri
+            ?.takeIf { it.isNotBlank() }
+            ?.let(Uri::parse)
+            ?: ContentUris.withAppendedId(
+                MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
+                item.id
+            )
     }
 
     private fun deleteVideoPermanently(uri: Uri, context: Context) {

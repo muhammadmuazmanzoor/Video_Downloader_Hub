@@ -45,6 +45,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -75,7 +76,6 @@ import com.avd.browserkit.api.BrowserKit
 import com.avd.ui.component.adapter.RecentVideosAdapter
 import com.avd.ui.component.adapter.SuggestionAdapter
 import com.avd.ui.component.adapter.SuggestionListener
-import com.avd.ui.main.downloder_queue.utils.PermissionManagerNew
 import com.avd.ui.main.home.CustomImageView
 import com.avd.ui.main.home.MainViewModel
 import com.avd.ui.main.home.bottomsheet.DefaultBrowserDialogFragment
@@ -239,6 +239,9 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
         fun newInstance() = BrowserTabFragment()
         var BASEURL = "google"
         private const val REQUEST_CODE_DEFAULT_BROWSER = 1001
+        private var notificationPermissionRequestedThisSession = false
+        private var mediaPermissionRequestedThisSession = false
+        private var permissionFlowInFlight = false
 
         // Weak reference to avoid memory leaks
         private var weakActivity: WeakReference<BrowserTabFragment>? = null
@@ -264,7 +267,6 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
 
     private lateinit var viewPagerAdapter: ViewPagerAdapter
 
-    private var permissionManager: PermissionManagerNew? = null
     private lateinit var openPageIProvider: TabManagerProvider
 
     private val homeViewModel: BrowserHomeViewModel by viewModels()
@@ -283,12 +285,18 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
 
     private var isRestoringTiktokSwitchState = false
     private var hasRequestedPermissionsForView = false
-    private var hasRequestedNotificationPermissionForSession = false
     private var lastHandledClipboardUrl: String? = null
     private var clipboardUrlObserver: Observer<String>? = null
     private var expectingDownloadResult = false
     private var isFetchInProgress = false
     private var downloadStateJob: Job? = null
+
+    private val permissionFlowLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { result ->
+        permissionFlowInFlight = false
+        Log.d("Permissions", "Permission results=$result")
+    }
 
 //    private val moviesWebList = listOf(
 //        IconItem(R.drawable.plex_movie_icon, "Plex",R.drawable.plex_thumb),
@@ -323,27 +331,6 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
         } else {
             Log.d("HostCheck", "null")
         }
-        permissionManager = PermissionManagerNew(
-            requireContext(), requireActivity(),
-            object : PermissionManagerNew.Callback {
-                override fun onStorageResult(isGranted: Boolean) {
-                    Log.d("Permissions", "Storage granted=$isGranted")
-                }
-
-                override fun onNotificationResult(isGranted: Boolean) {
-                    Log.d("Permissions", "Notification granted=$isGranted")
-                }
-
-                override fun onForegroundServiceResult(isGranted: Boolean) {
-                    Log.d("Permissions", "Foreground Service granted=$isGranted")
-                }
-            }
-        )
-
-/*// Request permissions
-        if (!permissionManager?.areAllPermissionsGranted()!!) {
-            permissionManager?.requestAllPermissions(this)
-        }*/
     }
 
     fun showFetchingVideoDialog(
@@ -359,20 +346,6 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
 
         return dialog
     }
-
-
-    // In Fragment, override onRequestPermissionsResult
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == PermissionManagerNew.PERMISSION_REQUEST_CODE) {
-            permissionManager?.handlePermissionsResult(this, permissions, grantResults)
-        }
-    }
-
 
 
     private fun observer() {
@@ -640,7 +613,7 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
                         ext = "mp4",
                         vcodec = "",
                         acodec = "",
-                         width = 0,
+                        width = 0,
                         height = 0,
                         tbr = 0,
                         fileSize = 0L,
@@ -670,13 +643,12 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
             } else {
                 Log.d("HostCheck", "null")
             }
-            if (!hasRequestedPermissionsForView && permissionManager?.areCorePermissionsGranted() == false) {
-                hasRequestedPermissionsForView = true
-                if (activity?.let { isPermissionGranted(it) } == false) {
-                    permissionManager?.requestAllPermissions(this)
+            binding.root.post {
+                if (isAdded && isResumed) {
+                    requestMediaThenNotificationPermission()
+                    restoreBackPressedCallback()
                 }
             }
-            requestNotificationPermissionIfNeeded()
         } catch (e: Exception) {
             Log.d("HostCheck", "${e.printStackTrace()}")
             e.printStackTrace()
@@ -758,7 +730,7 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
                 binding.flAdplace.visibility = View.GONE
                 showShimmer(false)
             } else {
-              //  binding.clPremimumNew.visibility = View.VISIBLE
+                //  binding.clPremimumNew.visibility = View.VISIBLE
                 binding.flAdplace.visibility = View.VISIBLE
                 if (browser_native) {
                     showShimmer(true)
@@ -787,9 +759,9 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
             mainViewModel.openedText.set(null)
         }
 
-            binding.tabCount.setOnClickListener {
-                BrowserKit.launchNewTab(requireContext())
-            }
+        binding.tabCount.setOnClickListener {
+            BrowserKit.launchNewTab(requireContext())
+        }
         activity?.onBackPressedDispatcher?.addCallback(
             viewLifecycleOwner,
             onBackPressedCallback
@@ -812,20 +784,20 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
             host?.setbottomseelection()
         }
 
-       /* binding.clPremimumNew.setOnClickListener {
-            try {
-                val activityClass =
-                    Class.forName("com.video.avd.ui.splash_flow.activities.InAppActivity")
-                val intent = Intent(requireContext(), activityClass)
-                intent.putExtra("where", "propanel")
-                startActivity(intent)
-            } catch (e: ClassNotFoundException) {
-                e.printStackTrace()
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
-*/
+        /* binding.clPremimumNew.setOnClickListener {
+             try {
+                 val activityClass =
+                     Class.forName("com.video.avd.ui.splash_flow.activities.InAppActivity")
+                 val intent = Intent(requireContext(), activityClass)
+                 intent.putExtra("where", "propanel")
+                 startActivity(intent)
+             } catch (e: ClassNotFoundException) {
+                 e.printStackTrace()
+             } catch (e: Exception) {
+                 e.printStackTrace()
+             }
+         }
+ */
 
         binding.ivProNew.setOnClickListener {
             try {
@@ -962,244 +934,244 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
     }
 
     private fun showFloatingWidget() {
-            Log.d(TAG, "showFloatingWidget: entered, showWidget=$showWidget")
-            if (showWidget && floatingView?.isAttachedToWindow == true) {
-                Log.d(TAG, "showFloatingWidget: widget already visible, skipping")
-                return
-            }
-            val ctx = context ?: run {
-                Log.e(TAG, "showFloatingWidget: context is null, aborting")
-                return
-            }
-            val act = activity
-            if (act == null) {
-                Log.e(TAG, "showFloatingWidget: activity is null, aborting")
-                return
-            }
-            val hasOverlay = Settings.canDrawOverlays(ctx)
-            if (!hasOverlay) {
-                Log.w(TAG, "showFloatingWidget: overlay permission not granted - widget will show after user grants permission and returns")
-                return
-            }
+        Log.d(TAG, "showFloatingWidget: entered, showWidget=$showWidget")
+        if (showWidget && floatingView?.isAttachedToWindow == true) {
+            Log.d(TAG, "showFloatingWidget: widget already visible, skipping")
+            return
+        }
+        val ctx = context ?: run {
+            Log.e(TAG, "showFloatingWidget: context is null, aborting")
+            return
+        }
+        val act = activity
+        if (act == null) {
+            Log.e(TAG, "showFloatingWidget: activity is null, aborting")
+            return
+        }
+        val hasOverlay = Settings.canDrawOverlays(ctx)
+        if (!hasOverlay) {
+            Log.w(TAG, "showFloatingWidget: overlay permission not granted - widget will show after user grants permission and returns")
+            return
+        }
 
-            Log.d(TAG, "showFloatingWidget: permission OK, creating widget")
-            Prefs[WIDGET_SHOW] = true
-            val windowManager = act.getSystemService(Context.WINDOW_SERVICE) as? WindowManager
-            if (windowManager == null) {
-                Log.e(TAG, "showFloatingWidget: WindowManager is null, aborting")
-                return
-            }
+        Log.d(TAG, "showFloatingWidget: permission OK, creating widget")
+        Prefs[WIDGET_SHOW] = true
+        val windowManager = act.getSystemService(Context.WINDOW_SERVICE) as? WindowManager
+        if (windowManager == null) {
+            Log.e(TAG, "showFloatingWidget: WindowManager is null, aborting")
+            return
+        }
 
-            val layoutParams =
-                WindowManager.LayoutParams(
-                    WindowManager.LayoutParams.WRAP_CONTENT,
-                    WindowManager.LayoutParams.WRAP_CONTENT,
-                    WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
-                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-                    PixelFormat.TRANSLUCENT
-                )
-        val displayMetrics = Resources.getSystem().displayMetrics
-            val screenWidth = displayMetrics.widthPixels
-            val screenHeight = displayMetrics.heightPixels
-
-
-            layoutParams.gravity = Gravity.TOP or Gravity.START
-            layoutParams.x = 0 //screenWidth / 2
-            layoutParams.y = (screenHeight / 3.5).toInt()
-
-            val inflater = LayoutInflater.from(ctx)
-            floatingView = inflater.inflate(R.layout.floating_ball_layout, null)
-            if (floatingView == null) {
-                Log.e(TAG, "showFloatingWidget: failed to inflate floating_ball_layout")
-                return
-            }
-            Log.d(TAG, "showFloatingWidget: inflated floating view")
-
-
-            val shortButton: ImageView = floatingView!!.findViewById(R.id.fabDownload)
-
-            val minAlpha = 0.2f
-            val maxAlpha = 1.0f
-
-            val alphaValue = minAlpha + (50 / 100f) * (maxAlpha - minAlpha)
-            // shortButton.alpha = alphaValue
-
-            try {
-                windowManager.addView(floatingView, layoutParams)
-                Log.d(TAG, "showFloatingWidget: widget view added to WindowManager successfully")
-            } catch (e: Exception) {
-                Log.e(TAG, "showFloatingWidget: addView failed", e)
-                return
-            }
-
-            floatingView?.postDelayed({
-                val targetX = screenWidth
-                val animator = ValueAnimator.ofInt(layoutParams.x, targetX)
-                animator.duration = 600
-                animator.addUpdateListener { animation ->
-                    if (floatingView?.isAttachedToWindow != true) {
-                        animator.cancel()
-                        return@addUpdateListener
-                    }
-                    layoutParams.x = animation.animatedValue as Int
-                    try {
-                        windowManager.updateViewLayout(floatingView, layoutParams)
-                    } catch (e: IllegalArgumentException) {
-                        animator.cancel()
-                    }
-                }
-                animator.start()
-
-                animator.addListener(object : AnimatorListenerAdapter() {
-                    override fun onAnimationEnd(animation: Animator) {
-
-                        if (floatingView != null){
-                            blinkWidget(floatingView!!)
-                        }
-                    }
-                })
-            }, 1000)
-
-            var isDragging = false
-            var initialX = 0
-            var initialY = 0
-            var touchX = 0f
-            var touchY = 0f
-            val dragThreshold = 10
-            val dismissThreshold = screenHeight * 0.85f
-
-            // Dismiss indicator is only added when user starts dragging (so only one overlay view by default)
-            val widthInDp = 55
-            val heightInDp = 55
-            val density = Resources.getSystem().displayMetrics.density
-            val dismissParams = WindowManager.LayoutParams(
-                (widthInDp * density).toInt(),
-                (heightInDp * density).toInt(),
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-                    WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
-                else
-                     WindowManager.LayoutParams.TYPE_PHONE,
+        val layoutParams =
+            WindowManager.LayoutParams(
+                WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                 PixelFormat.TRANSLUCENT
-            ).apply {
-                gravity = Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
-                y = (screenHeight * 0.05).toInt()
-            }
+            )
+        val displayMetrics = Resources.getSystem().displayMetrics
+        val screenWidth = displayMetrics.widthPixels
+        val screenHeight = displayMetrics.heightPixels
 
-            fun addDismissIndicatorIfNeeded() {
-                if (dismissIndicator != null && dismissIndicator?.isAttachedToWindow == true) return
-                val view = LayoutInflater.from(act).inflate(R.layout.widget_close, null) as? ImageView
-                    ?: return
-                view.alpha = 0f
+
+        layoutParams.gravity = Gravity.TOP or Gravity.START
+        layoutParams.x = 0 //screenWidth / 2
+        layoutParams.y = (screenHeight / 3.5).toInt()
+
+        val inflater = LayoutInflater.from(ctx)
+        floatingView = inflater.inflate(R.layout.floating_ball_layout, null)
+        if (floatingView == null) {
+            Log.e(TAG, "showFloatingWidget: failed to inflate floating_ball_layout")
+            return
+        }
+        Log.d(TAG, "showFloatingWidget: inflated floating view")
+
+
+        val shortButton: ImageView = floatingView!!.findViewById(R.id.fabDownload)
+
+        val minAlpha = 0.2f
+        val maxAlpha = 1.0f
+
+        val alphaValue = minAlpha + (50 / 100f) * (maxAlpha - minAlpha)
+        // shortButton.alpha = alphaValue
+
+        try {
+            windowManager.addView(floatingView, layoutParams)
+            Log.d(TAG, "showFloatingWidget: widget view added to WindowManager successfully")
+        } catch (e: Exception) {
+            Log.e(TAG, "showFloatingWidget: addView failed", e)
+            return
+        }
+
+        floatingView?.postDelayed({
+            val targetX = screenWidth
+            val animator = ValueAnimator.ofInt(layoutParams.x, targetX)
+            animator.duration = 600
+            animator.addUpdateListener { animation ->
+                if (floatingView?.isAttachedToWindow != true) {
+                    animator.cancel()
+                    return@addUpdateListener
+                }
+                layoutParams.x = animation.animatedValue as Int
                 try {
-                    windowManager.addView(view, dismissParams)
-                    view.animate().alpha(1f).setDuration(100).start()
-                    dismissIndicator = view
-                } catch (e: Exception) {
-                    Log.w(TAG, "showFloatingWidget: failed to add dismiss indicator", e)
+                    windowManager.updateViewLayout(floatingView, layoutParams)
+                } catch (e: IllegalArgumentException) {
+                    animator.cancel()
                 }
             }
+            animator.start()
 
-            fun removeDismissIndicatorFromWindow() {
-                dismissIndicator?.let { view ->
-                    if (view.isAttachedToWindow) {
-                        try {
-                            windowManager.removeView(view)
-                        } catch (e: IllegalArgumentException) { }
+            animator.addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+
+                    if (floatingView != null){
+                        blinkWidget(floatingView!!)
                     }
-                    dismissIndicator = null
                 }
+            })
+        }, 1000)
+
+        var isDragging = false
+        var initialX = 0
+        var initialY = 0
+        var touchX = 0f
+        var touchY = 0f
+        val dragThreshold = 10
+        val dismissThreshold = screenHeight * 0.85f
+
+        // Dismiss indicator is only added when user starts dragging (so only one overlay view by default)
+        val widthInDp = 55
+        val heightInDp = 55
+        val density = Resources.getSystem().displayMetrics.density
+        val dismissParams = WindowManager.LayoutParams(
+            (widthInDp * density).toInt(),
+            (heightInDp * density).toInt(),
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+            else
+                WindowManager.LayoutParams.TYPE_PHONE,
+            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+            PixelFormat.TRANSLUCENT
+        ).apply {
+            gravity = Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
+            y = (screenHeight * 0.05).toInt()
+        }
+
+        fun addDismissIndicatorIfNeeded() {
+            if (dismissIndicator != null && dismissIndicator?.isAttachedToWindow == true) return
+            val view = LayoutInflater.from(act).inflate(R.layout.widget_close, null) as? ImageView
+                ?: return
+            view.alpha = 0f
+            try {
+                windowManager.addView(view, dismissParams)
+                view.animate().alpha(1f).setDuration(100).start()
+                dismissIndicator = view
+            } catch (e: Exception) {
+                Log.w(TAG, "showFloatingWidget: failed to add dismiss indicator", e)
             }
+        }
 
-            showWidget = true
+        fun removeDismissIndicatorFromWindow() {
+            dismissIndicator?.let { view ->
+                if (view.isAttachedToWindow) {
+                    try {
+                        windowManager.removeView(view)
+                    } catch (e: IllegalArgumentException) { }
+                }
+                dismissIndicator = null
+            }
+        }
 
-            shortButton.setOnTouchListener { v, event ->
-                when (event.action) {
-                    MotionEvent.ACTION_DOWN -> {
-                        initialX = layoutParams.x
-                        initialY = layoutParams.y
-                        touchX = event.rawX
-                        touchY = event.rawY
-                        isDragging = false
-                        true
-                    }
+        showWidget = true
 
-                    MotionEvent.ACTION_MOVE -> {
-                        val deltaX = (event.rawX - touchX).toInt()
-                        val deltaY = (event.rawY - touchY).toInt()
+        shortButton.setOnTouchListener { v, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    initialX = layoutParams.x
+                    initialY = layoutParams.y
+                    touchX = event.rawX
+                    touchY = event.rawY
+                    isDragging = false
+                    true
+                }
 
-                        if (Math.abs(deltaX) > dragThreshold || Math.abs(deltaY) > dragThreshold) {
-                            if (!isDragging) {
-                                isDragging = true
-                                addDismissIndicatorIfNeeded()
-                            }
+                MotionEvent.ACTION_MOVE -> {
+                    val deltaX = (event.rawX - touchX).toInt()
+                    val deltaY = (event.rawY - touchY).toInt()
 
-                            layoutParams.x = initialX + deltaX
-                            layoutParams.y = initialY + deltaY
-                            if (floatingView?.isAttachedToWindow == true) {
-                                try {
-                                    windowManager.updateViewLayout(floatingView, layoutParams)
-                                    floatingView?.alpha =
-                                        if (event.rawY >= screenHeight / 2f) 0.5f else 1.0f
-                                } catch (e: IllegalArgumentException) {
-                                    // View no longer attached to window manager (e.g. dismissed or activity destroyed)
-                                }
+                    if (Math.abs(deltaX) > dragThreshold || Math.abs(deltaY) > dragThreshold) {
+                        if (!isDragging) {
+                            isDragging = true
+                            addDismissIndicatorIfNeeded()
+                        }
+
+                        layoutParams.x = initialX + deltaX
+                        layoutParams.y = initialY + deltaY
+                        if (floatingView?.isAttachedToWindow == true) {
+                            try {
+                                windowManager.updateViewLayout(floatingView, layoutParams)
+                                floatingView?.alpha =
+                                    if (event.rawY >= screenHeight / 2f) 0.5f else 1.0f
+                            } catch (e: IllegalArgumentException) {
+                                // View no longer attached to window manager (e.g. dismissed or activity destroyed)
                             }
                         }
-                        true
                     }
+                    true
+                }
 
-                    MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                        floatingView?.alpha = 1.0f
-                        removeDismissIndicatorFromWindow()
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                    floatingView?.alpha = 1.0f
+                    removeDismissIndicatorFromWindow()
 
-                        if (isDragging) {
-                            if (event.rawY >= dismissThreshold) {
-                                // Dismiss the view
-                                //(getSystemService(Context.VIBRATOR_SERVICE) as? Vibrator)?.vibrate(50)
+                    if (isDragging) {
+                        if (event.rawY >= dismissThreshold) {
+                            // Dismiss the view
+                            //(getSystemService(Context.VIBRATOR_SERVICE) as? Vibrator)?.vibrate(50)
 
-                                val animator = ObjectAnimator.ofFloat(
-                                    floatingView,
-                                    "translationY",
-                                    floatingView?.translationY ?: 0f,
-                                    screenHeight.toFloat()
-                                )
-                                animator.duration = 200
-                                animator.interpolator = AccelerateInterpolator()
-                                animator.addListener(object : AnimatorListenerAdapter() {
-                                    override fun onAnimationEnd(animation: Animator) {
-                                        try {
-                                            floatingView?.let { if (it.isAttachedToWindow) windowManager.removeView(it) }
-                                            dismissIndicator?.let { if (it.isAttachedToWindow) windowManager.removeView(it) }
-                                        } catch (e: IllegalArgumentException) {
-                                            // View not attached to window manager
-                                        }
-                                        floatingView = null
-                                        dismissIndicator = null
-                                        showWidget = false
-                                        Prefs[WIDGET_SHOW] = false
-                                        sharedPrefHelper.setTiktokDownloadEnabled(false)
-                                        binding?.switchTiktokDownload?.isChecked = false
+                            val animator = ObjectAnimator.ofFloat(
+                                floatingView,
+                                "translationY",
+                                floatingView?.translationY ?: 0f,
+                                screenHeight.toFloat()
+                            )
+                            animator.duration = 200
+                            animator.interpolator = AccelerateInterpolator()
+                            animator.addListener(object : AnimatorListenerAdapter() {
+                                override fun onAnimationEnd(animation: Animator) {
+                                    try {
+                                        floatingView?.let { if (it.isAttachedToWindow) windowManager.removeView(it) }
+                                        dismissIndicator?.let { if (it.isAttachedToWindow) windowManager.removeView(it) }
+                                    } catch (e: IllegalArgumentException) {
+                                        // View not attached to window manager
                                     }
-                                })
-                                animator.start()
-                            }
-                        } else {
-                            showAlertDialog()
+                                    floatingView = null
+                                    dismissIndicator = null
+                                    showWidget = false
+                                    Prefs[WIDGET_SHOW] = false
+                                    sharedPrefHelper.setTiktokDownloadEnabled(false)
+                                    binding?.switchTiktokDownload?.isChecked = false
+                                }
+                            })
+                            animator.start()
                         }
-                        true
+                    } else {
+                        showAlertDialog()
                     }
-
-                    else -> false
+                    true
                 }
+
+                else -> false
             }
+        }
     }
 
 
     private fun showAlertDialog() {
-            val intent = Intent(activity, FloatingBallActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            startActivity(intent)
+        val intent = Intent(activity, FloatingBallActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
     }
 
 
@@ -1383,7 +1355,7 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
                 if (indexRoute == 0) {
                     Log.d("exitTag", "onCreate: 2")
                     showExitScreen?.invoke()
-                   // requireActivity().finish()
+                    // requireActivity().finish()
                 } else {
                     mainViewModel.currentItem.set((mainViewModel.currentItem.get() ?: 0) - 1)
                 }
@@ -1393,7 +1365,7 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
                 if (indexRoute == 0) {
                     showExitScreen?.invoke()
                     Log.d("exitTag", "onCreate: 3")
-                   // requireActivity().finish()
+                    // requireActivity().finish()
                 } else {
                     mainViewModel.currentItem.set((mainViewModel.currentItem.get() ?: 0) - 1)
                 }
@@ -1402,7 +1374,7 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
         }
     }
 
-//    private fun moviesItems() {
+    //    private fun moviesItems() {
 //        val recyclerView = binding.recyclerViewMovies
 //        recyclerView.layoutManager =
 //            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -1529,15 +1501,15 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
         val uri = Uri.parse(input)
         val scheme = uri.scheme?.lowercase()
         return (scheme == "http" || scheme == "https") &&
-            !uri.host.isNullOrBlank() &&
-            Patterns.WEB_URL.matcher(input).matches()
+                !uri.host.isNullOrBlank() &&
+                Patterns.WEB_URL.matcher(input).matches()
     }
 
     private fun resolveDirectDownloadUrl(raw: String): String? {
         val normalized = ApiViewModel.normalizeSocialDownloadUrl(raw) ?: return null
         return normalized.takeIf {
             SocialPlatform.isSupportedSocialMediaUrl(it) &&
-                !SocialPlatform.isPlatformHomeUrl(it)
+                    !SocialPlatform.isPlatformHomeUrl(it)
         }
     }
 
@@ -1824,12 +1796,7 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
                 delay(15000)
                 setinterstitialshown(false)
             }
-            if (!permissionManager!!.areCorePermissionsGranted()) {
-                if (!activity?.let { isPermissionGranted(it) }!!) {
-                    permissionManager!!.requestAllPermissions(this)
-                }
-            }
-            requestNotificationPermissionIfNeeded()
+            requestMediaThenNotificationPermission()
         }
     }
 
@@ -1893,11 +1860,60 @@ class BrowserTabFragment : BaseWebTabFragment(), ViewPagerAdapter.onClickListene
         }
     }
 
-    private fun requestNotificationPermissionIfNeeded() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) return
-        if (hasRequestedNotificationPermissionForSession) return
-        hasRequestedNotificationPermissionForSession = true
-        permissionManager?.requestNotificationPermissionOncePerSession(this)
+    private fun requestMediaThenNotificationPermission() {
+        if (permissionFlowInFlight) return
+
+        val permissions = mutableListOf<String>()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (!mediaPermissionRequestedThisSession && ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.READ_MEDIA_VIDEO
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                permissions += Manifest.permission.READ_MEDIA_VIDEO
+            }
+            if (!notificationPermissionRequestedThisSession && ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                permissions += Manifest.permission.POST_NOTIFICATIONS
+            }
+        } else if (!mediaPermissionRequestedThisSession && ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            permissions += Manifest.permission.WRITE_EXTERNAL_STORAGE
+        }
+
+        if (permissions.isEmpty()) return
+
+        permissionFlowInFlight = true
+        hasRequestedPermissionsForView = true
+        mediaPermissionRequestedThisSession = permissions.any {
+            it == Manifest.permission.READ_MEDIA_VIDEO ||
+                it == Manifest.permission.WRITE_EXTERNAL_STORAGE
+        }
+        notificationPermissionRequestedThisSession =
+            Manifest.permission.POST_NOTIFICATIONS in permissions
+        try {
+            permissionFlowLauncher.launch(permissions.toTypedArray())
+        } catch (e: IllegalStateException) {
+            permissionFlowInFlight = false
+            mediaPermissionRequestedThisSession = false
+            notificationPermissionRequestedThisSession = false
+            Log.e("Permissions", "Unable to launch permission flow", e)
+        }
+    }
+
+    private fun restoreBackPressedCallback() {
+        onBackPressedCallback.remove()
+        onBackPressedCallback.isEnabled = true
+        activity?.onBackPressedDispatcher?.addCallback(
+            viewLifecycleOwner,
+            onBackPressedCallback
+        )
     }
 
     private fun showShimmer(show: Boolean) {

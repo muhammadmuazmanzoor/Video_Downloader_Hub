@@ -136,10 +136,12 @@ class SearchVideoViewModel @Inject constructor(
 
     suspend fun performDeleteImage(uri: Uri, context: Context) {
         withContext(Dispatchers.IO) {
+            val mediaUri = resolveVolumeSpecificUri(context, uri)
             try {
                 if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {
-                    // Use MediaStore API to delete files on Android Q and above
-                    AppUtils.deleteVideoFile(context, uri)
+                    _ForDelete.postValue(
+                        context.contentResolver.delete(mediaUri, null, null) > 0
+                    )
 
                 } else {
                     try {
@@ -165,13 +167,19 @@ class SearchVideoViewModel @Inject constructor(
                 }
             } catch (securityException: SecurityException) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    val recoverableSecurityException =
-                        securityException as? RecoverableSecurityException
-
-                    urinew = uri
-                    _permissionNeededForDelete.postValue(
-                        recoverableSecurityException?.userAction?.actionIntent?.intentSender
-                    )
+                    urinew = mediaUri
+                    val intentSender = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                        runCatching {
+                            MediaStore.createDeleteRequest(
+                                context.contentResolver,
+                                listOf(mediaUri)
+                            ).intentSender
+                        }.getOrNull()
+                    } else {
+                        (securityException as? RecoverableSecurityException)
+                            ?.userAction?.actionIntent?.intentSender
+                    }
+                    _permissionNeededForDelete.postValue(intentSender)
                 } else {
                 }
             }
@@ -188,38 +196,40 @@ class SearchVideoViewModel @Inject constructor(
     }
     suspend fun renameVideo(context: Context, item: Video, newName: String) {
         withContext(Dispatchers.IO){
-
+            nameNew = newName
             try {
+                if (!isValidFileName(newName)) {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(context, "Please enter a valid name", Toast.LENGTH_SHORT).show()
+                    }
+                    return@withContext
+                }
                 if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
-                    val currentFile =
-                        item.contentUri?.let { AppUtils.getPathFromUri(context, Uri.parse(it))?.let { File(it) } }
-                    currentFile?.let { currentFile ->
-                        val newName = newName
-                        if (!isValidFileName(newName)){
-                            withContext(Dispatchers.Main) {
-                                Toast.makeText(context, "Please enter a valid name", Toast.LENGTH_SHORT).show()
-                            }
-                            return@withContext
+                    item.contentUri?.let { value ->
+                        val uri = resolveVolumeSpecificUri(context, Uri.parse(value))
+                        val oldDisplayName = context.contentResolver.query(
+                            uri,
+                            arrayOf(MediaStore.MediaColumns.DISPLAY_NAME),
+                            null,
+                            null,
+                            null
+                        )?.use { cursor ->
+                            if (cursor.moveToFirst()) cursor.getString(0) else null
                         }
-                        if (newName != null && currentFile.exists() && newName.isNotEmpty()) {
-                            val newFile =
-                                File(currentFile.parentFile, newName + "." + currentFile.extension)
-                            val fromUri = item.contentUri
-                            fromUri?.let {
-                                ContentValues().also {
-                                    it.put(MediaStore.Files.FileColumns.IS_PENDING, 1)
-                                    context.contentResolver.update(Uri.parse(fromUri), it, null, null)
-                                    it.clear()
-                                    //updating file details
-                                    it.put(MediaStore.Files.FileColumns.DISPLAY_NAME, newName.toString())
-                                    it.put(MediaStore.Files.FileColumns.IS_PENDING, 0)
-                                    context.contentResolver.update(Uri.parse(fromUri), it, null, null)
-                                    _ForRename.postValue(true)
-                                }
-                            }
-
-
+                        val extension = oldDisplayName
+                            ?.substringAfterLast('.', "")
+                            ?.takeIf { it.isNotBlank() }
+                        val displayName = if (extension == null || newName.endsWith(".$extension")) {
+                            newName
+                        } else {
+                            "$newName.$extension"
                         }
+                        val values = ContentValues().apply {
+                            put(MediaStore.MediaColumns.DISPLAY_NAME, displayName)
+                        }
+                        _ForRename.postValue(
+                            context.contentResolver.update(uri, values, null, null) > 0
+                        )
                     }
 
                 }else{
@@ -238,13 +248,21 @@ class SearchVideoViewModel @Inject constructor(
                 }
             }catch (securityException: SecurityException){
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    val recoverableSecurityException =
-                        securityException as? RecoverableSecurityException
-
-                    nameNew = newName
-                    _permissionNeededForRename.postValue(
-                        recoverableSecurityException?.userAction?.actionIntent?.intentSender
-                    )
+                    val uri = item.contentUri
+                        ?.let(Uri::parse)
+                        ?.let { resolveVolumeSpecificUri(context, it) }
+                    val intentSender = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && uri != null) {
+                        runCatching {
+                            MediaStore.createWriteRequest(
+                                context.contentResolver,
+                                listOf(uri)
+                            ).intentSender
+                        }.getOrNull()
+                    } else {
+                        (securityException as? RecoverableSecurityException)
+                            ?.userAction?.actionIntent?.intentSender
+                    }
+                    _permissionNeededForRename.postValue(intentSender)
                 } else {
                 }
             }catch (e: Exception){
@@ -258,5 +276,24 @@ class SearchVideoViewModel @Inject constructor(
     fun isValidFileName(fileName: String): Boolean {
         val forbiddenChars = arrayOf("/", "\\", "?", "%", "*", ":", "|", "\"", "<", ">")
         return fileName.none { it.toString() in forbiddenChars } && fileName.isNotBlank()
+    }
+
+    private fun resolveVolumeSpecificUri(context: Context, uri: Uri): Uri {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) return uri
+
+        val id = runCatching { ContentUris.parseId(uri) }.getOrNull() ?: return uri
+        val volumeName = runCatching {
+            context.contentResolver.query(
+                uri,
+                arrayOf(MediaStore.MediaColumns.VOLUME_NAME),
+                null,
+                null,
+                null
+            )?.use { cursor ->
+                if (cursor.moveToFirst()) cursor.getString(0) else null
+            }
+        }.getOrNull() ?: MediaStore.VOLUME_EXTERNAL_PRIMARY
+
+        return MediaStore.Video.Media.getContentUri(volumeName, id)
     }
 }

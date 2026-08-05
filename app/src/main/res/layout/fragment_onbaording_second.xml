@@ -50,7 +50,7 @@
                 android:gravity="center"
                 android:text="Play video in Multiple Formats"
                 android:textColor="@color/brand_text_primary"
-                android:textSize="@dimen/_15ssp"
+                android:textSize="14sp"
                 app:layout_constraintBottom_toTopOf="@id/footer"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>

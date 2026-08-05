@@ -50,6 +50,12 @@ class SettingFragmentNew : Fragment() {
 
     private var binding : FragmentSettingNewBinding ?= null
 
+    private val backPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            navigateToHome()
+        }
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         Log.d("FragmentLifecycle", "onAttach called")
@@ -62,6 +68,14 @@ class SettingFragmentNew : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        // Other browser fragments also register callbacks when the host activity resumes.
+        // Re-add this callback so Settings remains the top-most Back handler after returning
+        // from an external screen such as language selection.
+        backPressedCallback.remove()
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            backPressedCallback
+        )
         host?.hideBottomBar()
         Log.d("FragmentLifecycle", "onResume: Bottom bar hidden")
         // Prevent app open ad when settings fragment is visible
@@ -101,17 +115,6 @@ class SettingFragmentNew : Fragment() {
             navigateToHome()
             host?.showBottomBar()
         }
-
-        // Handle back press
-        requireActivity().onBackPressedDispatcher.addCallback(
-            viewLifecycleOwner,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    navigateToHome()
-//                    parentFragmentManager.popBackStack()
-                }
-            }
-        )
 
         binding?.toggleButton1?.isChecked = sharedPrefHelper.getDownloadWifi()
 

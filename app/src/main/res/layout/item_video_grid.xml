@@ -106,13 +106,12 @@
 
             <ImageView
                 android:id="@+id/video_menu"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_40sdp"
                 android:src="@drawable/ic_menu"
-                android:paddingStart="@dimen/_5sdp"
-                android:paddingBottom="@dimen/_5sdp"
-                android:layout_marginBottom="@dimen/_3sdp"
+                android:scaleType="center"
                 app:layout_constraintEnd_toEndOf="@id/main_image"
+                app:layout_constraintBottom_toBottomOf="@id/name"
                 app:layout_constraintTop_toTopOf="@id/name"
                 app:tint="@color/brand_text_primary" />
 

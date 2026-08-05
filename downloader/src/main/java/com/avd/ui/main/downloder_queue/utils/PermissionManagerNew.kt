@@ -39,8 +39,10 @@ class PermissionManagerNew(
     /** ------------------- Check Permissions ------------------- **/
     fun isStorageGranted(): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            ContextCompat.checkSelfPermission(context, Manifest.permission.READ_MEDIA_VIDEO) == PackageManager.PERMISSION_GRANTED &&
-                    ContextCompat.checkSelfPermission(context, Manifest.permission.READ_MEDIA_AUDIO) == PackageManager.PERMISSION_GRANTED
+            ContextCompat.checkSelfPermission(
+                context,
+                Manifest.permission.READ_MEDIA_VIDEO
+            ) == PackageManager.PERMISSION_GRANTED
         } else {
             ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
         }
@@ -122,7 +124,8 @@ class PermissionManagerNew(
                 val granted = grantResults.getOrNull(index) == PackageManager.PERMISSION_GRANTED
 
                 when (permission) {
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_MEDIA_VIDEO -> {
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.READ_MEDIA_VIDEO -> {
                         callback.onStorageResult(granted)
                         if (!granted && !fragment.shouldShowRequestPermissionRationale(permission)) {
                             showSettingsDialogOnce("Storage permission permanently denied.")
