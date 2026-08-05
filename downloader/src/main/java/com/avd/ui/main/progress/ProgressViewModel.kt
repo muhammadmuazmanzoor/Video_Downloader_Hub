@@ -292,7 +292,12 @@ class ProgressViewModel @Inject constructor(
         progressInfoList.firstOrNull {
             it.downloadStatus == VideoTaskState.SUCCESS &&
                 notifiedCompletedTaskIds.add(it.id)
-        }?.let { downloadCompletedEvent.value = it.id }
+        }?.let { 
+            downloadCompletedEvent.value = it.id
+            // Remove the completed download from progress list immediately
+            val updatedList = progressInfos.get()?.filterNot { info -> info.id == it.id }?.sortedBy { info -> info.id }
+            progressInfos.set(updatedList)
+        }
     }
 
     private fun progressObservable(): Observable<List<ProgressInfo>> {

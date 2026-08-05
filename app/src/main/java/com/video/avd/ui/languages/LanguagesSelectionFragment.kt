@@ -54,69 +54,56 @@ class LanguagesSelectionFragment : Fragment(), LanguageSelectionAdapter.Language
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        AppUtils.fbEvents("view_language", "Language",mActivity)
-        if(AdBlockerHelper.isProVersion.value == true){
-            binding?.adViewLayout?.visibility = View.GONE
-        }
-       /* mActivity?.let {activity->
-            if (AdBlockerHelper.isProVersion.value != true && NetworkUtils.isOnline(activity)) {
-                if (GlobalValues.is24hourEnabled.value == false) {
-                    showShimmer(true) // Show shimmer before loading
+       super.onViewCreated(view, savedInstanceState)
+       AppUtils.fbEvents("view_language", "Language",mActivity)
+       if(AdBlockerHelper.isProVersion.value == true){
+           binding?.adViewLayout?.visibility = View.GONE
+       }
+       binding?.langLoading?.visibility = View.VISIBLE
+       if (isProVersion.value!=true) {
+           lifecycleScope.launch {
+               delay(1500)
+               binding?.bottomad?.visibility = View.GONE
+               binding?.langLoading?.visibility = View.GONE
+           }
 
-                }
-            }
-        }*/
-        binding?.langLoading?.visibility = View.VISIBLE
-        if (isProVersion.value!=true) {
-            lifecycleScope.launch {
-                delay(1500)
-                binding?.bottomad?.visibility = View.GONE
-                binding?.langLoading?.visibility = View.GONE
-            }
+       } else {
+           binding?.langLoading?.visibility = View.GONE
+           binding?.bottomad?.visibility = View.GONE
+       }
+       mActivity?.let { activity ->
+           setupClickListners()
+           // Load initial data FIRST to determine selected position
+           loadInitialData(activity)
+           // Then create adapter with the correct selected position
+           setDataAndAdapter(activity)
+           showShimmer(false)
 
-        } else {
-            binding?.langLoading?.visibility = View.GONE
-            binding?.bottomad?.visibility = View.GONE
-        }
-        mActivity?.let { activity ->
-            setupClickListners()
-            setDataAndAdapter(activity)
-            getinitialData()
-            showShimmer(false)
-          /*  if (AdBlockerHelper.isProVersion.value != true) {
-                showShimmer(true)
-                loadLanguageNativeAd()
-                loadLanguageNativeAd2()
-            }*/
+       }
+       if (!isSplash && mActivity is MainActivity) {
+           AppUtils.getMain(mActivity).hidebottombar()
+           Log.d("ActivityCheck", "isSplash: $isSplash")
+       }
 
-        }
-        if (!isSplash && mActivity is MainActivity) {
-            AppUtils.getMain(mActivity).hidebottombar()
-            Log.d("ActivityCheck", "isSplash: $isSplash")
-        }
+       setupHeader()
 
-        setupHeader()
+       // Set layout direction based on current locale
+       view.layoutDirection = if (Locale.getDefault().language == "ar") {
+           View.LAYOUT_DIRECTION_RTL
+       } else {
+           View.LAYOUT_DIRECTION_LTR
+       }
 
-        // Set layout direction based on current locale
-        view.layoutDirection = if (Locale.getDefault().language == "ar") {
-            View.LAYOUT_DIRECTION_RTL
-        } else {
-            View.LAYOUT_DIRECTION_LTR
-        }
-
-        binding?.textView20?.setOnClickListener {
-            AppUtils.firebaseUserAction("done_click_Language", "languagescreen")
-            if (selectedLanguage.isNotEmpty()) {
-                applyLanguage()
-            }
-        }
-        binding?.textView21?.setOnClickListener {
-            Toast.makeText(context,
-                getString(R.string.please_select_a_language_first), Toast.LENGTH_SHORT).show()
-        }
-
-        setSelector()
+       binding?.textView20?.setOnClickListener {
+           AppUtils.firebaseUserAction("done_click_Language", "languagescreen")
+           if (selectedLanguage.isNotEmpty()) {
+               applyLanguage()
+           }
+       }
+       binding?.textView21?.setOnClickListener {
+           Toast.makeText(context,
+               getString(R.string.please_select_a_language_first), Toast.LENGTH_SHORT).show()
+       }
     }
 
     private fun setupHeader() {
@@ -127,8 +114,22 @@ class LanguagesSelectionFragment : Fragment(), LanguageSelectionAdapter.Language
         }
         binding?.imageView9?.visibility = View.VISIBLE
         binding?.imageView9?.setOnClickListener {
-            findNavController().popBackStack()
+            try {
+                findNavController().popBackStack()
+            } catch (e: IllegalStateException) {
+                // If NavController is not available, navigate manually
+                mActivity?.onBackPressed()
+            }
         }
+    }
+
+    private fun loadInitialData(activity: FragmentActivity) {
+        // Load saved language from preferences
+        if (AppPreference.getLanguage(activity) != null) {
+            selectedLanguage = AppPreference.getLanguage(activity).toString()
+        }
+        systemLanguage = getAutoLanguage(activity)
+        setSelector()
     }
 
     private fun setDataAndAdapter(activity: FragmentActivity) {
@@ -147,12 +148,14 @@ class LanguagesSelectionFragment : Fragment(), LanguageSelectionAdapter.Language
         list.add(LanguageSelectionModel("ms", "Melayu", false,resources.getDrawable(R.drawable.ic_malaysia)))
         list.add(LanguageSelectionModel("th", "แบบไทย", false,resources.getDrawable(R.drawable.ic_thailand)))
         list.add(LanguageSelectionModel("pl", "Polski", false,resources.getDrawable(R.drawable.ic_poland)))
+        
         for (item in list) {
             if (item.lang == getAutoLanguage(activity)) {
                 item.name += " ( Auto )"
                 break
             }
         }
+        
         val appLanguage = Locale.getDefault().language
         var itemToInsert: LanguageSelectionModel? = null
         for (item in list) {
@@ -162,29 +165,26 @@ class LanguagesSelectionFragment : Fragment(), LanguageSelectionAdapter.Language
                 break
             }
         }
+        
         if (itemToInsert != null) {
             list.remove(itemToInsert)
             list.add(0, itemToInsert)
             itemToInsert = null
         }
-        val currentLang = AppPreference.getLanguage(activity)
-        if (currentLang != null) {
-//            selectedLanguage = currentLang
+        
+        // Mark the currently selected language as selected
+        for (item in list) {
+            if (item.lang == selectedLanguage) {
+                item.isSelected = true
+                break
+            }
         }
-        val adapter = LanguageSelectionAdapter(list, this)
+        
+        // Create adapter with the correct selected position and initial highlight position
+        val adapter = LanguageSelectionAdapter(list, this, selectedPosition)
         languageAdapter = adapter
         binding?.rvLanguage?.layoutManager = LinearLayoutManager(activity)
         binding?.rvLanguage?.adapter = adapter
-    }
-
-    private fun getinitialData() {
-        mActivity?.let { activity ->
-            if (AppPreference.getLanguage(activity) != null) {
-                selectedLanguage = AppPreference.getLanguage(activity).toString()
-            }
-            setSelector()
-            systemLanguage = getAutoLanguage(activity)
-        }
     }
 
     private fun showShimmer(show: Boolean) {
@@ -217,7 +217,12 @@ class LanguagesSelectionFragment : Fragment(), LanguageSelectionAdapter.Language
     private fun setupClickListners() {
         binding?.let { binding ->
             binding.imageView9.setOnClickListener {
-                findNavController().popBackStack()
+                try {
+                    findNavController().popBackStack()
+                } catch (e: IllegalStateException) {
+                    // If NavController is not available, use back press
+                    mActivity?.onBackPressed()
+                }
             }
             binding.textView20.setOnClickListener {
                 AppUtils.firebaseUserAction("Langu_done_click", "languagescreen")

@@ -11,10 +11,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
 import com.video.avd.R
 
-class LanguageSelectionAdapter(private val list: List<LanguageSelectionModel>, private val listener: LanguageSelectionClickListener) : RecyclerView.Adapter<LanguageSelectionAdapter.LanguageSelectionViewHolder>() {
+class LanguageSelectionAdapter(private val list: List<LanguageSelectionModel>, private val listener: LanguageSelectionClickListener, private val selectedPosition: Int = 0) : RecyclerView.Adapter<LanguageSelectionAdapter.LanguageSelectionViewHolder>() {
 
     private var startupHighlight = true
-    private var startupHighlightPosition = 2
+    private var startupHighlightPosition = selectedPosition
 
     inner class LanguageSelectionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var rootLayout: ConstraintLayout? = null
@@ -69,8 +69,11 @@ class LanguageSelectionAdapter(private val list: List<LanguageSelectionModel>, p
             listener.onLanguageClick(item)
         }
 
-        // Handle animation visibility
-        if (startupHighlight && position == startupHighlightPosition) {
+        // Handle animation visibility - show on startup highlight position or if this item is selected
+        val shouldShowAnimation = (startupHighlight && position == startupHighlightPosition) || 
+                                  (!startupHighlight && item.isSelected)
+        
+        if (shouldShowAnimation) {
             holder.item_back?.visibility = View.GONE
             holder.anim?.visibility = View.VISIBLE
             holder.anim?.playAnimation()

@@ -952,6 +952,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
+                android:visibility="gone"
                 android:src="@drawable/ic_cast_player"
                 app:layout_constraintBottom_toBottomOf="@id/btn_play"
                 app:layout_constraintEnd_toStartOf="@id/btn_play"
