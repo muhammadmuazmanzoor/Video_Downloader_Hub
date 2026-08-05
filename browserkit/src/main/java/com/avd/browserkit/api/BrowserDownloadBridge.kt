@@ -1,6 +1,7 @@
 package com.avd.browserkit.api
 
 import com.avd.browserkit.download.BrowserDownloadStatus
+import com.avd.browserkit.detection.DetectedVideoInfo
 
 data class BrowserDownloadSnapshot(
     val taskId: String,
@@ -52,4 +53,9 @@ interface BrowserDownloadBridge {
      * @return true if host accepted the job (browserkit must not start its own worker).
      */
     fun enqueueHostDownload(request: BrowserHostDownloadRequest): Boolean = false
+
+    /**
+     * Called when the home button or home menu option is clicked in the browser.
+     */
+    fun onHomeClicked(activity: androidx.fragment.app.FragmentActivity, info: DetectedVideoInfo?) {}
 }

@@ -2,12 +2,14 @@ package com.video.avd.downloader
 
 import android.content.Context
 import android.util.Log
+import androidx.fragment.app.FragmentActivity
 import com.avd.browserkit.api.BrowserDownloadBridge
 import com.avd.browserkit.api.BrowserDownloadResult
 import com.avd.browserkit.api.BrowserDownloadSharedStore
 import com.avd.browserkit.api.BrowserDownloadSnapshot
 import com.avd.browserkit.api.BrowserHostDownloadRequest
 import com.avd.browserkit.api.BrowserSharedDownloadTask
+import com.avd.browserkit.detection.DetectedVideoInfo
 import com.avd.util.DownloaderModuleNavigator
 object BrowserKitBridge : BrowserDownloadBridge {
     private const val TAG = "BrowserKitBridge"
@@ -47,6 +49,15 @@ object BrowserKitBridge : BrowserDownloadBridge {
         mainViewModel.isBrowserCurrent.set(false)
         mainViewModel.currentItem.set(DOWNLOAD_QUEUE_PAGE_INDEX)
         return true
+    }
+
+    override fun onHomeClicked(activity: FragmentActivity, info: DetectedVideoInfo?) {
+        Log.d(TAG, "onHomeClicked returnTo=BrowserTabFragment page=${info?.pageUrl}")
+        DownloaderModuleNavigator.mainViewModel?.apply {
+            currentItem.set(0)
+            isBrowserCurrent.set(true)
+        }
+        activity.finish()
     }
 
     override fun onTaskUpdated(snapshot: BrowserDownloadSnapshot) {

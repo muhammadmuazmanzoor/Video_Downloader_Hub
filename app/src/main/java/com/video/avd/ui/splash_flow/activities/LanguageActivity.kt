@@ -112,11 +112,9 @@ class LanguageActivity : AppCompatActivity(),
         isSettingsFlow = intent.getBooleanExtra(EXTRA_OPENED_FROM_SETTINGS, false) || !fromSplash
         setupHeader()
         AppUtils.fbEvents("language_view", "Language",this)
-        doneButtonStyle()
+        doneButtonDisableStyle()
         setDataAndAdapter()
         langAltAds()
-        isShow = true
-        loadOB1Ads()
         if (isProVersion.value==true) {
             binding?.clbottom?.visibility = View.GONE
         } else {
@@ -211,8 +209,8 @@ class LanguageActivity : AppCompatActivity(),
             }
         }
         val savedLanguage = AppPreference.getLanguage(this) ?: Locale.getDefault().language
-        selectedLanguage = savedLanguage
-        mSelectedLanguage = savedLanguage
+        selectedLanguage = "none"
+        mSelectedLanguage = "none"
         val appLanguage = Locale.getDefault().language
         var itemToInsert: LanguageSelectionModel? = null
         for (item in list) {

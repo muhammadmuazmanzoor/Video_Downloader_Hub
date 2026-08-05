@@ -1277,10 +1277,7 @@ class WebTabFragment : Fragment() {
         binding.btnBackNav.setOnClickListener { requireActivity().finish() }
         binding.btnWebBack.setOnClickListener { navigateBack() }
         binding.btnWebForward.setOnClickListener { navigateForward() }
-        binding.btnHome.setOnClickListener {
-            browserViewModel.hideTabsSwitcher()
-            refreshChrome()
-        }
+        binding.btnHome.setOnClickListener { navigateToHostHome() }
         binding.btnTabs.setOnClickListener {
             captureAndStorePreview()
             (parentFragment as? BrowserHostFragment)?.openTabsDrawer()
@@ -1399,8 +1396,7 @@ class WebTabFragment : Fragment() {
             desktopMode,
             object : BrowserMenuListener {
                 override fun onMenuHome() {
-                    browserViewModel.hideTabsSwitcher()
-                    refreshChrome()
+                    navigateToHostHome()
                 }
 
                 override fun onMenuDownloads() {
@@ -1450,6 +1446,18 @@ class WebTabFragment : Fragment() {
                 override fun onMenuShare() = shareCurrentPage()
             },
         )
+    }
+
+    /** Return from BrowserKit's standalone activity to the host downloader home screen. */
+    private fun navigateToHostHome() {
+        browserViewModel.hideTabsSwitcher()
+        val activity = requireActivity()
+        BrowserKit.getDownloadBridge()?.onHomeClicked(
+            activity,
+            detectionViewModel.currentDownloadInfo(),
+        )
+        // Keep the browserkit module usable without a host bridge as well.
+        if (!activity.isFinishing) activity.finish()
     }
 
     private fun showSettingsDialog() {
