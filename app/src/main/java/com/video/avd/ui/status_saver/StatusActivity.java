@@ -49,13 +49,17 @@ public class StatusActivity extends AppCompatActivity {
                 if (result.getResultCode() == Activity.RESULT_OK) {
 
                     Intent data = result.getData();
+                    Uri selectedUri = data != null ? data.getData() : null;
+                    if (selectedUri == null) {
+                        Toast.makeText(this, "Folder access was not granted", Toast.LENGTH_SHORT).show();
+                        finish();
+                        return;
+                    }
 
-                    assert data != null;
-
-                    getContentResolver().takePersistableUriPermission(
-                            data.getData(),
-                            Intent.FLAG_GRANT_READ_URI_PERMISSION |
+                    int takeFlags = data.getFlags() &
+                            (Intent.FLAG_GRANT_READ_URI_PERMISSION |
                                     Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                    getContentResolver().takePersistableUriPermission(selectedUri, takeFlags);
                     AppUtils.INSTANCE.setStatusPermission(true);
                     if (isBusiness){
                         AppPreference.INSTANCE.setPermissionForStatusBusiness(this, true);

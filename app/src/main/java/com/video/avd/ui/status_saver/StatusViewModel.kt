@@ -80,16 +80,16 @@ class StatusViewModel @Inject constructor() : ViewModel() {
                         Log.d("URI Permission ss", "URI: ${it.uri}")
                     }
 
-                    val file = list.firstOrNull { permission ->
+                    val file = list.asReversed().firstOrNull { permission ->
                         val uriString = permission.uri.toString()
-                        if (isBusiness) {
+                        permission.isReadPermission && if (isBusiness) {
                             uriString.contains("com.whatsapp.w4b")
                         } else {
                             uriString.contains("com.whatsapp") && !uriString.contains("com.whatsapp.w4b")
                         }
                     }?.let {
                         DocumentFile.fromTreeUri(context, it.uri)
-                    }
+                    }?.let(::findStatusesDirectory)
 
                     if (file == null) {
                         Log.d("URI Permission", "No matching URI found for isBusiness = $isBusiness")
@@ -112,6 +112,31 @@ class StatusViewModel @Inject constructor() : ViewModel() {
                 }
             }
         }
+    }
+
+    /**
+     * The system picker may return .Statuses itself or one of its parents (Media,
+     * WhatsApp, or the package directory). Resolve the actual hidden status folder
+     * instead of assuming the granted tree already points directly at it.
+     */
+    private fun findStatusesDirectory(root: DocumentFile): DocumentFile? {
+        if (root.name.equals(".Statuses", ignoreCase = true)) return root
+
+        var level = listOf(root)
+        repeat(5) {
+            val next = mutableListOf<DocumentFile>()
+            level.forEach { directory ->
+                val children = runCatching { directory.listFiles().toList() }
+                    .getOrDefault(emptyList())
+                children.firstOrNull {
+                    it.isDirectory && it.name.equals(".Statuses", ignoreCase = true)
+                }?.let { return it }
+                next += children.filter { it.isDirectory }
+            }
+            if (next.isEmpty()) return null
+            level = next
+        }
+        return null
     }
 
     private fun executeNew_(context:Context) {
