@@ -56,7 +56,6 @@ import com.video.avd.ui.onbooard.OnboardingActivity
 import com.video.avd.ui.onbooard.SurveyActivity
 import com.video.avd.ui.splash_flow.activities.LanguageActivity
 import com.video.avd.ui.splash_flow.activities.InAppActivity
-import com.video.avd.ui.splash_flow.utils.AppUtils.isOnline
 import com.video.avd.ui.splash_flow.utils.AppUtils.remoteConfigStatus
 import com.video.avd.ui.splash_flow.utils.AppUtils.shouldNavigateToLanguage
 import com.video.avd.ui.splash_flow.utils.AppUtils.shouldNavigateToOnboarding
@@ -96,13 +95,17 @@ class SplashActivity : AppCompatActivity() {
         var fromNoti=false
         var currentActivity: Activity? = null
     }
-     private var networkCallback: android.net.ConnectivityManager.NetworkCallback? = null
+    private var networkCallback: android.net.ConnectivityManager.NetworkCallback? = null
     private var connectivityManager: android.net.ConnectivityManager? = null
     private var splashFlowStarted = false
     private var splashAdsRequested = false
     private var splashTimeoutJob: Job? = null
     private var remoteConfigTimeoutJob: Job? = null
     private var remoteConfigObserver: Observer<Boolean>? = null
+    private var splashInterstitialLoaded = false
+    private var splashInterstitialCompleted = false
+    private var waitingForInternet = false
+    private var splashAdLoadGeneration = 0
 
     fun restartApp(activity: Activity) {
         val intent = activity.packageManager
@@ -142,12 +145,12 @@ class SplashActivity : AppCompatActivity() {
         changeStatusBarColor(com.avd.R.color.primary_bg, this@SplashActivity, true)
         applyLightSystemBarAppearance()
         handleBackPress()
-        
+
         // Setup network connectivity monitoring
         setupNetworkConnectivityMonitoring()
-        
+
         binding?.btnTryAgain?.setOnClickListener {
-            if (isOnline(this)) {
+            if (hasValidatedInternetConnection()) {
                 restartApp(this)
             }
         }
@@ -180,17 +183,17 @@ class SplashActivity : AppCompatActivity() {
 
             }
             else{
-                    getP()
-                    startSplashFlowOnce()
-                    View.VISIBLE
+                getP()
+                startSplashFlowOnce()
+                View.VISIBLE
             }
         }
 
-        if (!isOnline(this)) {
-            binding?.flNoAd?.visibility = View.VISIBLE
+        if (!hasValidatedInternetConnection()) {
+            handleInternetUnavailableBeforeAdLoad()
             return
         } else {
-            binding?.flNoAd?.visibility = View.GONE
+            hideNoInternetView()
         }
 
     }
@@ -219,8 +222,10 @@ class SplashActivity : AppCompatActivity() {
         if (splashFlowStarted) return
         splashFlowStarted = true
         startSplashTimeout()
-        if (isOnline(this@SplashActivity)) {
+        if (hasValidatedInternetConnection()) {
             initConsent()
+        } else {
+            handleInternetUnavailableBeforeAdLoad()
         }
     }
 
@@ -269,6 +274,11 @@ class SplashActivity : AppCompatActivity() {
     private fun requestSplashAdsOnce() {
         if (isFinishing || isDestroyed) return
 
+        if (!hasValidatedInternetConnection()) {
+            handleInternetUnavailableBeforeAdLoad()
+            return
+        }
+
         // Allow retry if called from network recovery
         splashAdsRequested = true
 
@@ -280,6 +290,13 @@ class SplashActivity : AppCompatActivity() {
     }
 
     fun navigateToNext() {
+        if (!hasValidatedInternetConnection()) {
+            if (!splashInterstitialLoaded) {
+                handleInternetUnavailableBeforeAdLoad()
+            }
+            return
+        }
+
         splashTimeoutJob?.cancel()
         if(show) {
             if (NetworkUtils.isOnline(this)) {
@@ -294,8 +311,8 @@ class SplashActivity : AppCompatActivity() {
                 finish()
             }
             if(!fromNoti){
-            show=false
-                }
+                show=false
+            }
         }
     }
 
@@ -329,46 +346,122 @@ class SplashActivity : AppCompatActivity() {
     private fun setupNetworkConnectivityMonitoring() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as? android.net.ConnectivityManager
-            
+
             networkCallback = object : android.net.ConnectivityManager.NetworkCallback() {
                 override fun onAvailable(network: android.net.Network) {
-                    Log.d("NetworkMonitor", "Network available - retrying splash")
                     lifecycleScope.launch {
                         if (isFinishing || isDestroyed) return@launch
-                        
-                        // Hide the no internet view when internet is restored
-                        binding?.flNoAd?.visibility = View.GONE
-                        
-                        // Reset flags to allow retry when internet comes back
-                        if (splashFlowStarted) {
-                            Log.d("NetworkMonitor", "Network restored - resetting splash state and retrying ads")
-                            splashAdsRequested = false
-                            alreadyRequested = false
-                            // Retry loading ads
-                            requestSplashAdsOnce()
-                        } else if (!splashFlowStarted) {
-                            Log.d("NetworkMonitor", "Starting splash flow after internet restored")
-                            // Start splash flow if not already started
-                            startSplashFlowOnce()
+                        if (hasValidatedInternetConnection()) {
+                            handleInternetAvailable()
+                        }
+                    }
+                }
+
+                override fun onCapabilitiesChanged(
+                    network: android.net.Network,
+                    networkCapabilities: android.net.NetworkCapabilities
+                ) {
+                    lifecycleScope.launch {
+                        if (isFinishing || isDestroyed) return@launch
+
+                        val hasValidatedInternet =
+                            networkCapabilities.hasCapability(android.net.NetworkCapabilities.NET_CAPABILITY_INTERNET) &&
+                                    networkCapabilities.hasCapability(android.net.NetworkCapabilities.NET_CAPABILITY_VALIDATED)
+
+                        if (hasValidatedInternet && hasValidatedInternetConnection()) {
+                            handleInternetAvailable()
+                        } else if (!hasValidatedInternetConnection()) {
+                            handleInternetUnavailableBeforeAdLoad()
                         }
                     }
                 }
 
                 override fun onLost(network: android.net.Network) {
-                    Log.d("NetworkMonitor", "Network lost - showing no internet view")
                     lifecycleScope.launch {
                         if (isFinishing || isDestroyed) return@launch
-                        binding?.flNoAd?.visibility = View.VISIBLE
+
+                        // Ignore a Wi-Fi/mobile hand-off when another validated
+                        // default network is already active.
+                        if (!hasValidatedInternetConnection()) {
+                            handleInternetUnavailableBeforeAdLoad()
+                        }
                     }
                 }
             }
-            
+
             connectivityManager?.registerDefaultNetworkCallback(networkCallback!!)
         }
     }
 
+    private fun hasValidatedInternetConnection(): Boolean {
+        val manager = connectivityManager
+            ?: getSystemService(Context.CONNECTIVITY_SERVICE) as? android.net.ConnectivityManager
+            ?: return false
+
+        val activeNetwork = manager.activeNetwork ?: return false
+        val capabilities = manager.getNetworkCapabilities(activeNetwork) ?: return false
+
+        return capabilities.hasCapability(android.net.NetworkCapabilities.NET_CAPABILITY_INTERNET) &&
+                capabilities.hasCapability(android.net.NetworkCapabilities.NET_CAPABILITY_VALIDATED)
+    }
+
+    private fun handleInternetUnavailableBeforeAdLoad() {
+        // Once the interstitial has loaded successfully, connectivity changes
+        // must not interrupt the existing show/dismiss flow.
+        if (splashInterstitialLoaded || isFinishing || isDestroyed) return
+
+        binding?.flNoAd?.visibility = View.VISIBLE
+        splashTimeoutJob?.cancel()
+
+        if (waitingForInternet) return
+
+        waitingForInternet = true
+
+        // Invalidate any callback belonging to the request that was running
+        // when internet access was lost. A fresh request starts on recovery.
+        splashAdLoadGeneration++
+        interstitialSplash = null
+        splashAdsRequested = false
+        alreadyRequested = false
+
+        Log.d("NetworkMonitor", "Internet unavailable before splash interstitial loaded")
+    }
+
+    private fun handleInternetAvailable() {
+        val wasWaitingForInternet = waitingForInternet
+        waitingForInternet = false
+        hideNoInternetView()
+
+        if (splashInterstitialLoaded) {
+            if (splashInterstitialCompleted) {
+                navigateToNext()
+            }
+            return
+        }
+
+        if (!splashFlowStarted) {
+            Log.d("NetworkMonitor", "Starting splash flow after internet restored")
+            startSplashFlowOnce()
+        } else if (wasWaitingForInternet) {
+            Log.d("NetworkMonitor", "Internet restored - retrying splash ads")
+            startSplashTimeout()
+            splashAdsRequested = false
+            alreadyRequested = false
+            requestSplashAdsOnce()
+        }
+    }
+
+    private fun hideNoInternetView() {
+        binding?.flNoAd?.visibility = View.GONE
+    }
+
     private fun requestingAllAds() {
         if (isFinishing || isDestroyed) return
+
+        if (!hasValidatedInternetConnection()) {
+            handleInternetUnavailableBeforeAdLoad()
+            return
+        }
 
         // Reset flag to allow retrying
         alreadyRequested = false
@@ -404,10 +497,10 @@ class SplashActivity : AppCompatActivity() {
                     showNormalfloor = AdsHelper.langNative1Enabled,
                     onAdLoadedHigh = { langNativeAdHigh1 = it
                         native_language.postValue(true)
-                                     },
+                    },
                     onAdLoadedNormal = { langNativeAd1 = it
                         native_language.postValue(true)
-                                       },
+                    },
                     onAdFailed = {
                         native_language.postValue(false)
                     }
@@ -458,6 +551,7 @@ class SplashActivity : AppCompatActivity() {
         }
         if(!alreadyRequested) {
             Log.d("checkInterAd", "request Inter High")
+            val requestGeneration = splashAdLoadGeneration
             val adRequest = AdRequest.Builder().build()
             val adUnitId = BuildConfig.inter_splash_high
             InterstitialAd.load(
@@ -466,6 +560,12 @@ class SplashActivity : AppCompatActivity() {
                 adRequest,
                 object : InterstitialAdLoadCallback() {
                     override fun onAdLoaded(ad: InterstitialAd) {
+                        if (requestGeneration != splashAdLoadGeneration || isFinishing || isDestroyed) return
+
+                        splashInterstitialLoaded = true
+                        splashInterstitialCompleted = false
+                        waitingForInternet = false
+                        hideNoInternetView()
                         interstitialSplash = ad
                         Log.d("checkInterAd", "Loaded Inter High")
                         attachRevenueListener(ad)
@@ -475,9 +575,15 @@ class SplashActivity : AppCompatActivity() {
                     }
 
                     override fun onAdFailedToLoad(error: LoadAdError) {
+                        if (requestGeneration != splashAdLoadGeneration || isFinishing || isDestroyed) return
+
                         interstitialSplash = null
                         alreadyRequested=false
                         Log.e("checkInterAd", "Failed Inter High")
+                        if (!hasValidatedInternetConnection()) {
+                            handleInternetUnavailableBeforeAdLoad()
+                            return
+                        }
                         if (splashInterstitialEnabled) {
                             loadInterSplashNormal(this@SplashActivity)
                         }
@@ -511,6 +617,7 @@ class SplashActivity : AppCompatActivity() {
         }
         if(!alreadyRequested) {
             Log.d("checkInterAd", "request Inter Normal")
+            val requestGeneration = splashAdLoadGeneration
             val adRequest = AdRequest.Builder().build()
             val adUnitId = BuildConfig.inter_splash
             InterstitialAd.load(
@@ -519,6 +626,12 @@ class SplashActivity : AppCompatActivity() {
                 adRequest,
                 object : InterstitialAdLoadCallback() {
                     override fun onAdLoaded(ad: InterstitialAd) {
+                        if (requestGeneration != splashAdLoadGeneration || isFinishing || isDestroyed) return
+
+                        splashInterstitialLoaded = true
+                        splashInterstitialCompleted = false
+                        waitingForInternet = false
+                        hideNoInternetView()
                         interstitialSplash = ad
                         Log.d("checkInterAd", "Loaded Inter Normal")
                         attachRevenueListener(ad)
@@ -528,8 +641,15 @@ class SplashActivity : AppCompatActivity() {
                     }
 
                     override fun onAdFailedToLoad(error: LoadAdError) {
+                        if (requestGeneration != splashAdLoadGeneration || isFinishing || isDestroyed) return
+
                         Log.e("checkInterAd", "Failed Inter Normal")
                         interstitialSplash = null
+                        alreadyRequested = false
+                        if (!hasValidatedInternetConnection()) {
+                            handleInternetUnavailableBeforeAdLoad()
+                            return
+                        }
                         navigateToNext()
                     }
                 })
@@ -555,10 +675,10 @@ class SplashActivity : AppCompatActivity() {
                             object : FullScreenContentCallback() {
                                 override fun onAdShowedFullScreenContent() {
                                     isShowingAd = true
-                                  /*  currentActivity.lifecycleScope.launch {
-                                        delay(1500)
-                                        GlobalLoader.hide(currentActivity)
-                                    }*/
+                                    /*  currentActivity.lifecycleScope.launch {
+                                          delay(1500)
+                                          GlobalLoader.hide(currentActivity)
+                                      }*/
                                 }
 
                                 override fun onAdFailedToShowFullScreenContent(adError: AdError) {
@@ -566,6 +686,7 @@ class SplashActivity : AppCompatActivity() {
                                     interstitialSplash = null
                                     alreadyRequested = false
                                     isShowingAd = false
+                                    splashInterstitialCompleted = true
                                     hideLoading()
                                     navigateToNext()
                                 }
@@ -575,6 +696,7 @@ class SplashActivity : AppCompatActivity() {
                                     interstitialSplash = null
                                     alreadyRequested = false
                                     isShowingAd = false
+                                    splashInterstitialCompleted = true
                                     hideLoading()
                                     navigateToNext()
                                 }
@@ -585,9 +707,9 @@ class SplashActivity : AppCompatActivity() {
                                 }
                             }
                         delay(300)
-                            interstitialSplash?.show(currentActivitys)
+                        interstitialSplash?.show(currentActivitys)
                         Log.d("checkInterAd", "Showing Inter")
-                            interstitialSplash = null
+                        interstitialSplash = null
                         currentActivitys.onBackPressedDispatcher.addCallback(currentActivitys) {
                             if (isAdShowing) {
                                 // Block back press while ad is showing
@@ -602,6 +724,7 @@ class SplashActivity : AppCompatActivity() {
                     } else {
                         Log.e("checkInterAd", "interstitialSplash Null")
                         interstitialSplash = null
+                        splashInterstitialCompleted = splashInterstitialLoaded
                         navigateToNext()
                     }
 
@@ -612,6 +735,7 @@ class SplashActivity : AppCompatActivity() {
             } catch (e: Exception) {
                 e.printStackTrace()
                 Log.e("checkInterAd", "interstitialSplash Exception:$e")
+                splashInterstitialCompleted = splashInterstitialLoaded
                 navigateToNext()
             }
 
@@ -625,7 +749,7 @@ class SplashActivity : AppCompatActivity() {
         remoteConfigTimeoutJob?.cancel()
         remoteConfigObserver?.let { remoteConfigStatus.removeObserver(it) }
         remoteConfigObserver = null
-        
+
         // Unregister network callback
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && networkCallback != null) {
             try {
@@ -634,7 +758,7 @@ class SplashActivity : AppCompatActivity() {
                 Log.e("NetworkMonitor", "Error unregistering network callback: ${e.message}")
             }
         }
-        
+
         super.onDestroy()
     }
 
@@ -720,16 +844,16 @@ class SplashActivity : AppCompatActivity() {
             isinternal = true
             lifecycleScope.launch(Dispatchers.Main){
                 delay(1000)
-                    if (isProVersion.value != true && isIapEnableAfterSplash ) {
-                        Log.d("SplashActivityweee", "Showing in-app purchase screen ${isProVersion.value} ${isIapEnableAfterSplash}")
-                        // Un comment to show in-app purchase screen after splash if needed
-                     //   startActivity(Intent(this@SplashActivity, InAppActivity::class.java))
-                        startActivity(Intent(this@SplashActivity, MainActivity::class.java))
-                        finish()
-                    } else {
-                        startActivity(Intent(this@SplashActivity, MainActivity::class.java))
-                        finish()
-                    }
+                if (isProVersion.value != true && isIapEnableAfterSplash ) {
+                    Log.d("SplashActivityweee", "Showing in-app purchase screen ${isProVersion.value} ${isIapEnableAfterSplash}")
+                    // Un comment to show in-app purchase screen after splash if needed
+                    //   startActivity(Intent(this@SplashActivity, InAppActivity::class.java))
+                    startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+                    finish()
+                } else {
+                    startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+                    finish()
+                }
             }
         } else {
             Log.e("Notifiiis", "internalnotification data: $data")

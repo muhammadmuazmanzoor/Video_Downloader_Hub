@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<paths>
-    <external-files-path name="browser_downloads" path="BrowserDownloads/" />
-    <cache-path name="browser_cache" path="browser/" />
-</paths>

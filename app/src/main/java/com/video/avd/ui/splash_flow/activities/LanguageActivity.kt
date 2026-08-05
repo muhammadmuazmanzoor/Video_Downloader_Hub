@@ -224,10 +224,17 @@ class LanguageActivity : AppCompatActivity(),
             list.add(2, itemToInsert)
         }
 
-        list.firstOrNull { it.lang == savedLanguage }?.isSelected = true
+        val selectedPosition = list.indexOfFirst { it.lang == savedLanguage }
+        if (selectedPosition != -1) {
+            list[selectedPosition].isSelected = true
+        }
 
 
-        val adapter = LanguageSelectionAdapter(list, this)
+        val adapter = LanguageSelectionAdapter(
+            list,
+            this,
+            selectedPosition.coerceAtLeast(0)
+        )
         languageAdapter = adapter
         binding?.rvLanguage?.layoutManager = LinearLayoutManager(this)
         binding?.rvLanguage?.adapter = adapter
