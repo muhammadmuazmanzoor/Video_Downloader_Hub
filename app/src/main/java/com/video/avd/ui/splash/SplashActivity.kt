@@ -95,11 +95,13 @@ class SplashActivity : AppCompatActivity() {
         var fromNoti=false
         var currentActivity: Activity? = null
     }
+     private var networkCallback: android.net.ConnectivityManager.NetworkCallback? = null
+    private var connectivityManager: android.net.ConnectivityManager? = null
+    private var splashFlowStarted = false
+    private var splashAdsRequested = false
     private var splashTimeoutJob: Job? = null
     private var remoteConfigTimeoutJob: Job? = null
     private var remoteConfigObserver: Observer<Boolean>? = null
-    private var splashFlowStarted = false
-    private var splashAdsRequested = false
 
     fun restartApp(activity: Activity) {
         val intent = activity.packageManager
@@ -129,6 +131,10 @@ class SplashActivity : AppCompatActivity() {
         Log.e("Notifiiis", "internalnotification data: ${intent.data}")
         changeStatusBarColor(com.avd.R.color.primary_bg, this@SplashActivity, false)
         handleBackPress()
+        
+        // Setup network connectivity monitoring
+        setupNetworkConnectivityMonitoring()
+        
         binding?.btnTryAgain?.setOnClickListener {
             if (isOnline(this)) {
                 restartApp(this)
@@ -250,8 +256,9 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun requestSplashAdsOnce() {
-        if (splashAdsRequested || isFinishing || isDestroyed) return
+        if (isFinishing || isDestroyed) return
 
+        // Allow retry if called from network recovery
         splashAdsRequested = true
 
         if (!fromNoti) {
@@ -308,9 +315,51 @@ class SplashActivity : AppCompatActivity() {
         onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
     }
 
+    private fun setupNetworkConnectivityMonitoring() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as? android.net.ConnectivityManager
+            
+            networkCallback = object : android.net.ConnectivityManager.NetworkCallback() {
+                override fun onAvailable(network: android.net.Network) {
+                    Log.d("NetworkMonitor", "Network available - retrying splash")
+                    lifecycleScope.launch {
+                        if (isFinishing || isDestroyed) return@launch
+                        
+                        // Hide the no internet view when internet is restored
+                        binding?.flNoAd?.visibility = View.GONE
+                        
+                        // Reset flags to allow retry when internet comes back
+                        if (splashFlowStarted) {
+                            Log.d("NetworkMonitor", "Network restored - resetting splash state and retrying ads")
+                            splashAdsRequested = false
+                            alreadyRequested = false
+                            // Retry loading ads
+                            requestSplashAdsOnce()
+                        } else if (!splashFlowStarted) {
+                            Log.d("NetworkMonitor", "Starting splash flow after internet restored")
+                            // Start splash flow if not already started
+                            startSplashFlowOnce()
+                        }
+                    }
+                }
+
+                override fun onLost(network: android.net.Network) {
+                    Log.d("NetworkMonitor", "Network lost - showing no internet view")
+                    lifecycleScope.launch {
+                        if (isFinishing || isDestroyed) return@launch
+                        binding?.flNoAd?.visibility = View.VISIBLE
+                    }
+                }
+            }
+            
+            connectivityManager?.registerDefaultNetworkCallback(networkCallback!!)
+        }
+    }
+
     private fun requestingAllAds() {
         if (isFinishing || isDestroyed) return
 
+        // Reset flag to allow retrying
         alreadyRequested = false
 
         // Setup bottom banner loader for splash
@@ -565,6 +614,16 @@ class SplashActivity : AppCompatActivity() {
         remoteConfigTimeoutJob?.cancel()
         remoteConfigObserver?.let { remoteConfigStatus.removeObserver(it) }
         remoteConfigObserver = null
+        
+        // Unregister network callback
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && networkCallback != null) {
+            try {
+                connectivityManager?.unregisterNetworkCallback(networkCallback!!)
+            } catch (e: Exception) {
+                Log.e("NetworkMonitor", "Error unregistering network callback: ${e.message}")
+            }
+        }
+        
         super.onDestroy()
     }
 

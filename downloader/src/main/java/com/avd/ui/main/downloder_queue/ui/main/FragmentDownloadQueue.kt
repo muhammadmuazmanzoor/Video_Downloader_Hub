@@ -241,10 +241,18 @@ class FragmentDownloadQueue : Fragment() {
         super.onResume()
         (activity as? com.avd.util.CommunicateWithActivity)?.showBottomBar()
 
+        // Delay permission request to allow ads to fully dismiss
         if (!hasRequestedPermissionsForView && permissionManager?.areAllPermissionsGranted() == false) {
             hasRequestedPermissionsForView = true
-            permissionManager?.requestAllPermissions(this)
+            // Add delay to ensure ad has fully dismissed before requesting permissions
+            binding.root.postDelayed({
+                if (isAdded && permissionManager?.areAllPermissionsGranted() == false) {
+                    Log.d("PermissionManager", "Requesting permissions after ad dismissal")
+                    permissionManager?.requestAllPermissions(this)
+                }
+            }, 500) // 500ms delay to allow ad to dismiss
         }
+        
         try {
             Log.d("FragmentDownloadQueue", "Resumed → switched to tab: $lastTab")
             if (binding.downloadListViewpager.adapter != null &&

@@ -527,7 +527,7 @@ class PlayerVideoActivity : AppCompatActivity(), RewardAdDismissListener,
                 binding?.tvDelete?.visibility = View.INVISIBLE
                 binding?.cast?.visibility = View.GONE
             } else {
-                binding?.cast?.visibility = View.VISIBLE
+              //  binding?.cast?.visibility = View.VISIBLE
             }
 
             if (!viewModel.savedbrightness) {
@@ -2194,7 +2194,7 @@ class PlayerVideoActivity : AppCompatActivity(), RewardAdDismissListener,
                         viewModel.notifyUser(this)
                     } else {
                         if (isOnlineStreaming) {
-                            binding?.cast?.visibility = View.VISIBLE
+                          //  binding?.cast?.visibility = View.VISIBLE
                         }
                         Log.e(
                             "PlayerActivity",
