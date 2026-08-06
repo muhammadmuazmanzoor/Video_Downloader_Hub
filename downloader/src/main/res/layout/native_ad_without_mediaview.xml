@@ -16,7 +16,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/ad_media_layout"
             android:layout_width="wrap_content"
-            android:layout_height="140dp"
+            android:layout_height="120dp"
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginBottom="@dimen/_8sdp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -93,6 +93,7 @@
             android:ellipsize="end"
             android:maxLength="110"
             android:maxLines="2"
+            android:visibility="gone"
             android:textColor="@color/gray_2.1"
             android:textSize="13sp"
             app:layout_constraintEnd_toEndOf="parent"

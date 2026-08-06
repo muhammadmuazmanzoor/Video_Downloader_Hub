@@ -743,6 +743,8 @@
     <string name="platform_instagram">Instagrm</string>
     <string name="platform_tiktok">TikTok</string>
     <string name="platform_twitter">Twitter</string>
+    <string name="whatsapp_messenger_not_installed">WhatsApp Messenger is not installed</string>
+    <string name="whatsapp_business_not_installed">WhatsApp Business is not installed</string>
 
 
 </resources>

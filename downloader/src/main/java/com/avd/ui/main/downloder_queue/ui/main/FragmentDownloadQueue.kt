@@ -1,6 +1,9 @@
 package com.avd.ui.main.downloder_queue.ui.main
 
 import android.content.Context
+import android.content.BroadcastReceiver
+import android.content.Intent
+import android.content.IntentFilter
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.Log
@@ -19,6 +22,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.avd.R
 import com.avd.databinding.FragmentDownloadQueueBinding
 import com.avd.ui.dialog.DownloadDialogManager
+import com.avd.ui.dialog.DownloadCompletionBroadcast
 import com.avd.ui.main.downloder_queue.utils.PermissionManagerNew
 import com.avd.ui.main.progress.ProgressViewModel
 import com.avd.ui.main.video.VideoViewModel
@@ -36,6 +40,7 @@ class FragmentDownloadQueue : Fragment() {
     private var pagerAdapter: DownloadListPagerAdapter? = null
     private var permissionManager: PermissionManagerNew? = null
     private var hasRequestedPermissionsForView = false
+    private var downloadCompletedReceiver: BroadcastReceiver? = null
 
 
     override fun onCreateView(
@@ -72,15 +77,7 @@ class FragmentDownloadQueue : Fragment() {
         }
 
         progressViewModel.downloadCompletedEvent.observe(viewLifecycleOwner) { downloadId ->
-            Log.d("FragmentDownloadQueue", "Download completed: $downloadId; refreshing completed list")
-            videoViewModel.refreshCompletedDownloads {
-                if (isAdded && viewLifecycleOwner.lifecycle.currentState.isAtLeast(
-                        androidx.lifecycle.Lifecycle.State.STARTED
-                    )
-                ) {
-                    switchToCompletedTab()
-                }
-            }
+            refreshCompletedTab("progress event: $downloadId")
         }
 
         activity?.onBackPressedDispatcher?.addCallback(
@@ -88,6 +85,56 @@ class FragmentDownloadQueue : Fragment() {
             onBackPressedCallback
         )
 
+    }
+
+    override fun onStart() {
+        super.onStart()
+        registerDownloadCompletedReceiver()
+    }
+
+    override fun onStop() {
+        unregisterDownloadCompletedReceiver()
+        super.onStop()
+    }
+
+    private fun registerDownloadCompletedReceiver() {
+        if (downloadCompletedReceiver != null) return
+
+        downloadCompletedReceiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context, intent: Intent) {
+                if (intent.action != DownloadCompletionBroadcast.ACTION) return
+                val downloadId = intent.getStringExtra(
+                    DownloadCompletionBroadcast.EXTRA_DOWNLOAD_ID
+                ).orEmpty()
+                refreshCompletedTab("completion broadcast: $downloadId")
+            }
+        }
+
+        ContextCompat.registerReceiver(
+            requireContext(),
+            downloadCompletedReceiver,
+            IntentFilter(DownloadCompletionBroadcast.ACTION),
+            ContextCompat.RECEIVER_NOT_EXPORTED
+        )
+    }
+
+    private fun unregisterDownloadCompletedReceiver() {
+        downloadCompletedReceiver?.let { receiver ->
+            context?.let { runCatching { it.unregisterReceiver(receiver) } }
+        }
+        downloadCompletedReceiver = null
+    }
+
+    private fun refreshCompletedTab(source: String) {
+        Log.d("FragmentDownloadQueue", "Download completed via $source; refreshing completed list")
+        videoViewModel.refreshCompletedDownloads {
+            if (isAdded && viewLifecycleOwner.lifecycle.currentState.isAtLeast(
+                    androidx.lifecycle.Lifecycle.State.STARTED
+                )
+            ) {
+                switchToCompletedTab()
+            }
+        }
     }
 
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {
@@ -301,6 +348,7 @@ class FragmentDownloadQueue : Fragment() {
     }
 
     override fun onDestroyView() {
+        unregisterDownloadCompletedReceiver()
         super.onDestroyView()
         Log.d("FragmentDownloadQueue", "onDestroyView")
         lastTab=0

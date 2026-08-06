@@ -38,6 +38,8 @@ class VideoViewModel @Inject constructor(
     companion object {
         const val FILE_EXIST_ERROR_CODE = 1
         const val FILE_INVALID_ERROR_CODE = 2
+        private const val COMPLETION_REFRESH_ATTEMPTS = 10
+        private const val COMPLETION_REFRESH_RETRY_DELAY_MS = 500L
     }
 
     var localVideos: ObservableField<MutableList<LocalVideo>> = ObservableField(mutableListOf())
@@ -95,6 +97,7 @@ class VideoViewModel @Inject constructor(
         }
     }*/
     private var refreshJob: Job? = null
+    private var completionRefreshJob: Job? = null
 
     override fun start() {
         if (refreshJob?.isActive == true) return
@@ -192,16 +195,20 @@ class VideoViewModel @Inject constructor(
      * before notifying the queue screen that the Completed tab is ready.
      */
     fun refreshCompletedDownloads(onRefreshed: () -> Unit = {}) {
-        viewModelScope.launch(Dispatchers.IO) {
+        // SUCCESS may be persisted before MediaStore exposes the finished file. A
+        // completion broadcast can also arrive while a progress-triggered refresh is
+        // retrying, so cancel the older refresh to prevent stale results winning.
+        completionRefreshJob?.cancel()
+        completionRefreshJob = viewModelScope.launch(Dispatchers.IO) {
             val previousUris = localVideos.get().orEmpty().map { it.uri }.toSet()
             var freshList: List<LocalVideo> = emptyList()
 
-            for (attempt in 0..2) {
+            for (attempt in 0 until COMPLETION_REFRESH_ATTEMPTS) {
                 fileUtil.invalidateListFilesCache()
                 freshList = orderForCache(getFilesList())
                 val containsNewVideo = freshList.any { it.uri !in previousUris }
-                if (containsNewVideo || attempt == 2) break
-                delay(if (attempt == 0) 300L else 700L)
+                if (containsNewVideo || attempt == COMPLETION_REFRESH_ATTEMPTS - 1) break
+                delay(COMPLETION_REFRESH_RETRY_DELAY_MS)
             }
 
             withContext(Dispatchers.Main.immediate) {

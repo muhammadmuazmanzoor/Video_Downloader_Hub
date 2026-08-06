@@ -1,11 +1,14 @@
 package com.video.avd.ui.status_saver.statusnew
 
 import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
@@ -73,16 +76,53 @@ class StatusHomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mActivity?.let { activity ->
+            val messengerInstalled = isPackageInstalled(activity, WHATSAPP_PACKAGE)
+            val businessInstalled = isPackageInstalled(activity, WHATSAPP_BUSINESS_PACKAGE)
+            Log.d(TAG, "installedApps: messenger=$messengerInstalled, business=$businessInstalled")
+
             binding?.waToggle?.setOnCheckedChangeListener { _, isChecked ->
+                Log.d(TAG, "toggle requested: business=$isChecked")
+                if (isChecked && !businessInstalled) {
+                    Toast.makeText(
+                        activity,
+                        getString(R.string.whatsapp_business_not_installed),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    binding?.waToggle?.isChecked = false
+                    return@setOnCheckedChangeListener
+                }
+                if (!isChecked && !messengerInstalled && businessInstalled) {
+                    Toast.makeText(
+                        activity,
+                        getString(R.string.whatsapp_messenger_not_installed),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    binding?.waToggle?.isChecked = true
+                    return@setOnCheckedChangeListener
+                }
                 isBusinessWhatsapp.value = isChecked
                 AppPreference.setWhatsappSelected(activity, isChecked)
                 val text = if (isChecked) getString(R.string.wa_business) else getString(R.string.wa_saver)
                 binding?.tvName?.text = text
             }
 
-            val isBusinessSelected = AppPreference.isWhatsappBusinessSelected(activity)
+            val isBusinessSelected = when {
+                !businessInstalled -> false
+                !messengerInstalled -> true
+                else -> AppPreference.isWhatsappBusinessSelected(activity)
+            }
+            Log.d(TAG, "initial selection: business=$isBusinessSelected")
             isBusinessWhatsapp.value = isBusinessSelected
             binding?.waToggle?.isChecked = isBusinessSelected
+            // Keep the switch tappable so selecting an unavailable variant can
+            // explain why the selection was rejected.
+            binding?.waToggle?.isEnabled = true
+            binding?.tvName?.text = if (isBusinessSelected) {
+                getString(R.string.wa_business)
+            } else {
+                getString(R.string.wa_saver)
+            }
+            AppPreference.setWhatsappSelected(activity, isBusinessSelected)
 
             if (activity is MainActivity) {
                 AppUtils.getMain(activity).showBannerAd()
@@ -230,6 +270,23 @@ class StatusHomeFragment : Fragment() {
         bottomSheetFragment.show(requireActivity().supportFragmentManager, bottomSheetFragment.tag)
     }
 
+    private fun isPackageInstalled(context: Context, packageName: String): Boolean {
+        return try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                context.packageManager.getPackageInfo(
+                    packageName,
+                    PackageManager.PackageInfoFlags.of(0)
+                )
+            } else {
+                @Suppress("DEPRECATION")
+                context.packageManager.getPackageInfo(packageName, 0)
+            }
+            true
+        } catch (_: PackageManager.NameNotFoundException) {
+            false
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
@@ -243,6 +300,9 @@ class StatusHomeFragment : Fragment() {
     }
 
     companion object {
+        private const val TAG = "StatusDebug"
+        private const val WHATSAPP_PACKAGE = "com.whatsapp"
+        private const val WHATSAPP_BUSINESS_PACKAGE = "com.whatsapp.w4b"
         var isBusinessWhatsapp = MutableLiveData(false)
         var howToDownloadClicked = MutableLiveData(false)
         var showInterstitialOnBack = false

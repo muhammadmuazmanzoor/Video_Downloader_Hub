@@ -17,11 +17,14 @@ class ItemViewHoldernew(itemView: View) : RecyclerView.ViewHolder(itemView) {
     @JvmField
     var imageView: ImageView
     @JvmField
+    var playIcon: ImageView
+    @JvmField
     var rootLayout: ConstraintLayout
 
 
     init {
         imageView = itemView.findViewById(R.id.recentImage)
+        playIcon = itemView.findViewById(R.id.recent_play)
         download = itemView.findViewById(R.id.recent_downloadfile)
         share = itemView.findViewById(R.id.recent_share)
         checkBox = itemView.findViewById(R.id.status_check)

@@ -8,6 +8,7 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.UriPermission;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ import java.util.Objects;
 
 
 public class StatusActivity extends AppCompatActivity {
+    private static final String TAG = "StatusDebug";
 
     Boolean isBusiness = false;
 
@@ -46,11 +48,13 @@ public class StatusActivity extends AppCompatActivity {
     ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
+                Log.d(TAG, "folderPickerResult: resultCode=" + result.getResultCode() + ", business=" + isBusiness);
                 if (result.getResultCode() == Activity.RESULT_OK) {
 
                     Intent data = result.getData();
                     Uri selectedUri = data != null ? data.getData() : null;
                     if (selectedUri == null) {
+                        Log.e(TAG, "folderPickerResult: selected URI is null");
                         Toast.makeText(this, "Folder access was not granted", Toast.LENGTH_SHORT).show();
                         finish();
                         return;
@@ -59,7 +63,9 @@ public class StatusActivity extends AppCompatActivity {
                     int takeFlags = data.getFlags() &
                             (Intent.FLAG_GRANT_READ_URI_PERMISSION |
                                     Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                    Log.d(TAG, "folderPickerResult: uri=" + selectedUri + ", flags=" + data.getFlags() + ", takeFlags=" + takeFlags);
                     getContentResolver().takePersistableUriPermission(selectedUri, takeFlags);
+                    Log.d(TAG, "folderPickerResult: persistable permission saved");
                     AppUtils.INSTANCE.setStatusPermission(true);
                     if (isBusiness){
                         AppPreference.INSTANCE.setPermissionForStatusBusiness(this, true);
@@ -82,6 +88,7 @@ public class StatusActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.status_test);
         isBusiness = getIntent().getBooleanExtra("isBusiness", false);
+        Log.d(TAG, "onCreate: sdk=" + Build.VERSION.SDK_INT + ", business=" + isBusiness);
       //  AppUtils.INSTANCE.hideSystemUI(this);
         AppUtils.INSTANCE.hideNavigationBar(this);
     }
@@ -113,6 +120,21 @@ public class StatusActivity extends AppCompatActivity {
 
 
    public Boolean arePermissionDenied(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            String packageName = isBusiness ? "com.whatsapp.w4b" : "com.whatsapp";
+            boolean hasMatchingReadGrant = false;
+            for (UriPermission permission : getContentResolver().getPersistedUriPermissions()) {
+                String uri = permission.getUri().toString().toLowerCase();
+                boolean packageMatches = uri.contains(packageName) &&
+                        (isBusiness || !uri.contains("com.whatsapp.w4b"));
+                if (permission.isReadPermission() && packageMatches) {
+                    hasMatchingReadGrant = true;
+                    break;
+                }
+            }
+            return !hasMatchingReadGrant;
+        }
+
         if (isBusiness){
             if (AppPreference.INSTANCE.isPermissionGrantedForStatusBusiness(this)){
                 return false;
@@ -134,9 +156,10 @@ public class StatusActivity extends AppCompatActivity {
         super.onResume();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && arePermissionDenied()) {
+            Log.d(TAG, "onResume: permission missing, launching request; business=" + isBusiness);
 
             // If Android 10+
-            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 requestPermissionQ();
                 return;
             }
@@ -144,6 +167,7 @@ public class StatusActivity extends AppCompatActivity {
             requestPermissions(PERMISSIONS, REQUEST_PERMISSIONS);
         }
         else {
+            Log.d(TAG, "onResume: matching permission already exists; finishing");
             finish();
         }
 
@@ -179,6 +203,7 @@ public class StatusActivity extends AppCompatActivity {
             scheme += "%3A" + startDir;
             uri = Uri.parse(scheme);
             Log.d("URI", uri.toString());
+            Log.d(TAG, "requestPermissionQ: initialUri=" + uri + ", business=" + isBusiness);
             intent.putExtra("android.provider.extra.INITIAL_URI", uri);
             intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
             activityResultLauncher.launch(intent);

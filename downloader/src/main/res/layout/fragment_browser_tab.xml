@@ -127,12 +127,13 @@
                     android:paddingBottom="6dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/actionbar">
+                    app:layout_constraintTop_toBottomOf="@+id/fl_adplace">
 
                     <ImageView
                         android:id="@+id/img"
                         android:layout_width="120dp"
                         android:layout_height="120dp"
+                        android:visibility="gone"
                         android:src="@drawable/browser_home_img"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -484,7 +485,7 @@
                     android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/dramaLayout">
+                    app:layout_constraintTop_toBottomOf="@+id/actionbar">
 
                     <com.facebook.shimmer.ShimmerFrameLayout
                         android:id="@+id/shimmer_view_container"

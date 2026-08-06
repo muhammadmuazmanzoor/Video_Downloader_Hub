@@ -22,7 +22,7 @@ public class Status {
         this.path = path;
         String MP4 = ".mp4";
         this.isApi30 = false;
-        this.isVideo = file.getName().endsWith(MP4);
+        this.isVideo = file.getName().toLowerCase().endsWith(MP4);
     }
     public Status(File file, String title, String path, Boolean isBusiness) {
         this.file = file;
@@ -30,7 +30,7 @@ public class Status {
         this.path = path;
         String MP4 = ".mp4";
         this.isApi30 = false;
-        this.isVideo = file.getName().endsWith(MP4);
+        this.isVideo = file.getName().toLowerCase().endsWith(MP4);
         this.isBusiness = isBusiness;
     }
 
@@ -38,7 +38,10 @@ public class Status {
         this.isApi30 = true;
         this.documentFile = documentFile;
         String MP4 = ".mp4";
-        this.isVideo = Objects.requireNonNull(documentFile.getName()).endsWith(MP4);
+        String name = documentFile.getName();
+        String mimeType = documentFile.getType();
+        this.isVideo = (name != null && name.toLowerCase().endsWith(MP4)) ||
+                (mimeType != null && mimeType.toLowerCase().startsWith("video/"));
         this.isBusiness = isBusiness;
 
     }
@@ -48,7 +51,7 @@ public class Status {
         this.path = file.getAbsolutePath();
         String MP4 = ".mp4";
         this.isApi30 = false;
-        this.isVideo = file.getName().endsWith(MP4);
+        this.isVideo = file.getName().toLowerCase().endsWith(MP4);
     }
 
     public boolean isSaved() {

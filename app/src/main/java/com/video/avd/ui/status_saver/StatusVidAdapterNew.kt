@@ -38,6 +38,10 @@ class StatusVidAdapterNew(
     override fun onBindViewHolder(holder: ItemViewHoldernew, position: Int) {
         val status = videoList[position]
 
+        // Always set both states because RecyclerView reuses holders between
+        // image and video items.
+        holder.playIcon.visibility = if (status.isVideo) View.VISIBLE else View.GONE
+
         // Load image
         if (status.isApi30) {
             Glide.with(context).load(status.documentFile?.uri).into(holder.imageView)
@@ -86,7 +90,8 @@ class StatusVidAdapterNew(
         holder.share.setOnClickListener {
             if (!isSelectionMode) {
                 val shareIntent = Intent(Intent.ACTION_SEND).apply {
-                    type = "image/mp4"
+                    type = if (status.isVideo) "video/*" else "image/*"
+                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                     putExtra(
                         Intent.EXTRA_STREAM,
                         if (status.isApi30) status.documentFile?.uri

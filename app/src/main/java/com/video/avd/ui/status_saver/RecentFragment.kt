@@ -39,6 +39,9 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class RecentFragment : Fragment(), StatusVidAdapterNew.StatusVideoClickListener {
+    private companion object {
+        const val TAG = "StatusDebug"
+    }
     private val viewModel: StatusViewModel by activityViewModels()
     var binding: FragmentStatusVideosBinding? = null
     private var mActivity: FragmentActivity? = null
@@ -158,11 +161,7 @@ class RecentFragment : Fragment(), StatusVidAdapterNew.StatusVideoClickListener 
             return
         }
 
-        val hasPermission = if (isBusiness) {
-            AppPreference.isPermissionGrantedForStatusBusiness(activity)
-        } else {
-            AppPreference.isPermissionGrantedForStatus(activity)
-        }
+        val hasPermission = viewModel.hasStatusFolderPermission(activity, isBusiness)
 
         binding?.permission?.visibility = if (hasPermission) View.GONE else View.VISIBLE
         binding?.detail?.visibility = if (hasPermission) View.GONE else View.VISIBLE
@@ -191,11 +190,12 @@ class RecentFragment : Fragment(), StatusVidAdapterNew.StatusVideoClickListener 
     private fun observers(activity: FragmentActivity) {
 
         StatusHomeFragment.isBusinessWhatsapp.observe(viewLifecycleOwner) {
+            Log.d(TAG, "Recent observer selection: business=$it")
             if (it) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     viewModel.clearData()
                     isBusiness = true
-                    if (AppPreference.isPermissionGrantedForStatusBusiness(activity)) {
+                    if (viewModel.hasStatusFolderPermission(activity, true)) {
                         viewModel.getStatus(activity, true)
                     }
                     prepareNavigation()
@@ -210,7 +210,7 @@ class RecentFragment : Fragment(), StatusVidAdapterNew.StatusVideoClickListener 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     viewModel.clearData()
                     isBusiness = false
-                    if (AppPreference.isPermissionGrantedForStatus(activity)) {
+                    if (viewModel.hasStatusFolderPermission(activity, false)) {
                         viewModel.getStatus(activity, false)
                     }
                     prepareNavigation()
@@ -225,6 +225,7 @@ class RecentFragment : Fragment(), StatusVidAdapterNew.StatusVideoClickListener 
         }
 
         viewModel.videoList.observe(viewLifecycleOwner) { statusList ->
+            Log.d(TAG, "Recent videoList: selectedBusiness=$isBusiness, received=${statusList?.size ?: -1}")
             if (!statusList.isNullOrEmpty() && statusList.isNotEmpty()) {
                 viewModel.updateHasData(true)
 
@@ -249,21 +250,23 @@ class RecentFragment : Fragment(), StatusVidAdapterNew.StatusVideoClickListener 
                 }
 
                 adapter?.updateData(uniqueList, isBusiness)
+                Log.d(TAG, "Recent adapter updated: filtered=${uniqueList.size}, business=$isBusiness")
 
 
             } else {
                 viewModel.updateHasData(false)
                 if (isBusiness) {
-                    if (AppPreference.isPermissionGrantedForStatusBusiness(activity)) {
+                    if (viewModel.hasStatusFolderPermission(activity, true)) {
                         binding?.messageTextVideo?.visibility = View.GONE
                     }
                 } else {
-                    if (AppPreference.isPermissionGrantedForStatus(activity)) {
+                    if (viewModel.hasStatusFolderPermission(activity, false)) {
                         binding?.messageTextVideo?.visibility = View.GONE
                     }
                 }
                 binding?.messageTextVideo?.setText(R.string.cant_find_whatsapp_dir)
                 adapter?.updateData(emptyList(), isBusiness)
+                Log.w(TAG, "Recent adapter empty: business=$isBusiness")
             }
         }
 
@@ -293,7 +296,7 @@ class RecentFragment : Fragment(), StatusVidAdapterNew.StatusVideoClickListener 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             if (!hasData) {
                 if (isBusiness) {
-                    if (AppPreference.isPermissionGrantedForStatusBusiness(activity)) {
+                    if (viewModel.hasStatusFolderPermission(activity, true)) {
                         binding?.btnOpenWhatsapp?.visibility = View.VISIBLE
                         //binding?.clHowDownload?.visibility = View.VISIBLE
                         binding?.tvWatchVideo?.visibility = View.VISIBLE
@@ -305,7 +308,7 @@ class RecentFragment : Fragment(), StatusVidAdapterNew.StatusVideoClickListener 
                         binding?.folderImage1?.visibility = View.GONE
                     }
                 } else {
-                    if (AppPreference.isPermissionGrantedForStatus(activity)) {
+                    if (viewModel.hasStatusFolderPermission(activity, false)) {
                         binding?.btnOpenWhatsapp?.visibility = View.VISIBLE
                         //binding?.clHowDownload?.visibility = View.VISIBLE
                         binding?.tvWatchVideo?.visibility = View.VISIBLE
@@ -341,16 +344,17 @@ class RecentFragment : Fragment(), StatusVidAdapterNew.StatusVideoClickListener 
     }
 
     override fun onResume() {
+        Log.d(TAG, "Recent onResume: business=$isBusiness")
         try {
             mActivity?.let { activity ->
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
 
                     if (isBusiness) {
-                        if (AppPreference.isPermissionGrantedForStatusBusiness(activity)) {
+                        if (viewModel.hasStatusFolderPermission(activity, true)) {
                             viewModel.getStatus(activity, true)
                         }
                     } else {
-                        if (AppPreference.isPermissionGrantedForStatus(activity)) {
+                        if (viewModel.hasStatusFolderPermission(activity, false)) {
                             viewModel.getStatus(activity, false)
                         }
                     }
@@ -411,6 +415,10 @@ class RecentFragment : Fragment(), StatusVidAdapterNew.StatusVideoClickListener 
     }
 
     override fun onStatusVideoClick(list: List<Status>, position: Int, status: Status) {
+        if (!status.isVideo) {
+            openImageStatus(status)
+            return
+        }
         mActivity?.let {
             showInterstitialHome(activity = it) {
                 videoclick(list,position,status)
@@ -432,7 +440,8 @@ class RecentFragment : Fragment(), StatusVidAdapterNew.StatusVideoClickListener 
             try {
                 AppUtils.firebaseUserAction("onStatusVideoClick_StatusFragment", "StatusFragment")
                 val newList = ArrayList<Video>()
-                for (item in list) {
+                val videoStatuses = list.filter { it.isVideo }
+                for (item in videoStatuses) {
                     val video = Video()
                     var durationsdkHandled: String? = "00:00"
                     video.id = position.toLong()
@@ -460,7 +469,8 @@ class RecentFragment : Fragment(), StatusVidAdapterNew.StatusVideoClickListener 
                 videolistglobal = newList
                 Log.d("app", "size is " + newList.size)
                 val result = Bundle()
-                result.putString("id", position.toString())
+                val selectedVideoPosition = videoStatuses.indexOf(status).coerceAtLeast(0)
+                result.putString("id", selectedVideoPosition.toString())
                 result.putBoolean("isliveuri", false)
                 result.putString("fragmentName", "Status")
                 result.putString("uri", "")
@@ -482,6 +492,24 @@ class RecentFragment : Fragment(), StatusVidAdapterNew.StatusVideoClickListener 
                 mActivity?.let { ToastUtils.showToast(it, "Video is corrupted") }
             }
         }
+    }
+
+    private fun openImageStatus(status: Status) {
+        val uri = if (status.isApi30) {
+            status.documentFile?.uri
+        } else {
+            status.file?.let(Uri::fromFile)
+        } ?: return
+
+        val intent = Intent(Intent.ACTION_VIEW).apply {
+            setDataAndType(uri, "image/*")
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
+        runCatching { startActivity(intent) }
+            .onFailure {
+                Log.e(TAG, "Unable to open image status: $uri", it)
+                Toast.makeText(requireContext(), "Unable to open this status", Toast.LENGTH_SHORT).show()
+            }
     }
 
     override fun onsaveClick(status: Status, context: Context) {
