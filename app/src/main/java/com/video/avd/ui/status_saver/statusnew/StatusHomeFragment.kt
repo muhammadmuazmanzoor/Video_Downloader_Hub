@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
@@ -34,6 +33,7 @@ import com.video.avd.databinding.FragmentStatusSaverBinding
 import com.video.avd.ui.MainActivity
 import com.video.avd.ui.status_saver.RecentFragment
 import com.video.avd.ui.status_saver.StatusViewModel
+import com.video.avd.ui.status_saver.WhatsAppNotInstalledDialog
 import com.video.avd.ui.status_saver.statusnew.guidance.WhatsappGuidanceHolderFragment
 import com.video.avd.utils.AppPreference
 import com.video.avd.utils.AppUtils
@@ -83,20 +83,12 @@ class StatusHomeFragment : Fragment() {
             binding?.waToggle?.setOnCheckedChangeListener { _, isChecked ->
                 Log.d(TAG, "toggle requested: business=$isChecked")
                 if (isChecked && !businessInstalled) {
-                    Toast.makeText(
-                        activity,
-                        getString(R.string.whatsapp_business_not_installed),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    showNotInstalledDialog(getString(R.string.whatsapp_business_not_installed))
                     binding?.waToggle?.isChecked = false
                     return@setOnCheckedChangeListener
                 }
                 if (!isChecked && !messengerInstalled && businessInstalled) {
-                    Toast.makeText(
-                        activity,
-                        getString(R.string.whatsapp_messenger_not_installed),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    showNotInstalledDialog(getString(R.string.whatsapp_messenger_not_installed))
                     binding?.waToggle?.isChecked = true
                     return@setOnCheckedChangeListener
                 }
@@ -136,7 +128,7 @@ class StatusHomeFragment : Fragment() {
                             delay(1000)
                             isClickable = true
                         }
-                            showInterstitialHome(activity = activity, forFragment = true) {
+                        showInterstitialHome(activity = activity, forFragment = true) {
                             try {
                                 findNavController().popBackStack()
                             } catch (e: Exception) {
@@ -173,6 +165,16 @@ class StatusHomeFragment : Fragment() {
                 AppUtils.getMain(activity).hidebottombar()
             }
         }
+    }
+
+    /**
+     * Shows a small centered dialog (transparent, dimmed background) in
+     * place of a Toast to explain why a WhatsApp variant selection was
+     * rejected.
+     */
+    private fun showNotInstalledDialog(message: String) {
+        WhatsAppNotInstalledDialog.newInstance(message)
+            .show(childFragmentManager, "wa_not_installed")
     }
 
     private fun clickListeners() {
@@ -235,7 +237,7 @@ class StatusHomeFragment : Fragment() {
                         .setReorderingAllowed(true)   // recommended for Fragment 1.4.0+
                         .commit()
                 } catch (e: Exception) {
-                   e.printStackTrace()
+                    e.printStackTrace()
                 }
             }
 
