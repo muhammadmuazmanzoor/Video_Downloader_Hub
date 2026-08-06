@@ -748,8 +748,8 @@ object AdBlockerHelper {
     /** Remote config 
 ative_home_variation: 1=download, 2=small, 3=without media. */
     fun getNativeHomeVariation(): Int = when (native_home_variation.toInt()) {
-        1, 2, 3 -> native_home_variation.toInt()
-        else -> 2
+       1, 2, 3 -> native_home_variation.toInt()
+        else ->1
     }
     fun getNativeLayoutRes(variation: Int = getNativeHomeVariation()): Int = when (variation) {
         1 -> R.layout.native_ad_download
@@ -791,7 +791,7 @@ ative_home_variation: 1=download, 2=small, 3=without media. */
     fun hideNativeShimmer(adContainer: FrameLayout?) {
         adContainer?.findViewById<ShimmerFrameLayout>(R.id.shimmer_view_container)?.let { shimmer ->
             shimmer.stopShimmer()
-            shimmer.visibility = View.INVISIBLE
+            shimmer.visibility = View.GONE
         }
     }
 

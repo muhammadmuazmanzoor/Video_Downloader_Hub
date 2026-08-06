@@ -192,8 +192,8 @@
                         android:paddingEnd="0dp"
                         android:singleLine="true"
                         android:textColor="@color/brand_text_primary"
-                        android:textColorHint="#8A8A8A"
                         android:textColorHighlight="#332286F7"
+                        android:textColorHint="#8A8A8A"
                         android:textCursorDrawable="@drawable/search_text_cursor_blue"
                         android:textSelectHandle="@drawable/search_text_select_handle_blue"
                         android:textSelectHandleLeft="@drawable/search_text_select_handle_blue"
@@ -202,8 +202,10 @@
                         app:items="@{viewModel.suggestionItems}"
                         app:layout_constraintBottom_toBottomOf="@+id/view2"
                         app:layout_constraintEnd_toEndOf="@+id/view2"
+                        app:layout_constraintHorizontal_bias="0.878"
                         app:layout_constraintStart_toEndOf="@+id/search_engine"
                         app:layout_constraintTop_toTopOf="@id/view2"
+                        app:layout_constraintVertical_bias="0.0"
                         tools:ignore="RtlSymmetry" />
 
                     <androidx.appcompat.widget.AppCompatImageView
@@ -481,7 +483,6 @@
                     android:layout_margin="@dimen/_12sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:background="@drawable/round_corner"
-                    android:maxHeight="300dp"
                     android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -503,7 +504,7 @@
                             <View
                                 android:id="@+id/shimmer_media"
                                 android:layout_width="0dp"
-                                android:layout_height="180dp"
+                                android:layout_height="120dp"
                                 android:layout_marginHorizontal="@dimen/_5sdp"
                                 android:layout_marginTop="@dimen/_5sdp"
                                 android:layout_marginBottom="12dp"
@@ -521,11 +522,11 @@
                                 android:layout_marginStart="@dimen/_10sdp"
                                 android:background="@drawable/round_corner_ad"
                                 android:backgroundTint="#DDDDDD"
-                                app:layout_constraintBottom_toTopOf="@+id/shimmer_media"
+                                app:layout_constraintBottom_toTopOf="@+id/shimmer_cta"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
-                            <View
+                           <!-- <View
                                 android:id="@+id/shimmer_title"
                                 android:layout_width="0dp"
                                 android:layout_height="@dimen/_15sdp"
@@ -535,7 +536,7 @@
                                 android:backgroundTint="#DDDDDD"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toEndOf="@+id/shimmer_ad_label"
-                                app:layout_constraintTop_toTopOf="@id/shimmer_ad_label" />
+                                app:layout_constraintTop_toTopOf="@id/shimmer_ad_label" />-->
 
                             <View
                                 android:id="@+id/shimmer_cta"

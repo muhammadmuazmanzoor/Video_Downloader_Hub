@@ -213,6 +213,7 @@
                     android:id="@+id/ivAppIcon"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
+                    android:layout_marginLeft="@dimen/_6sdp"
                     android:contentDescription="@null"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

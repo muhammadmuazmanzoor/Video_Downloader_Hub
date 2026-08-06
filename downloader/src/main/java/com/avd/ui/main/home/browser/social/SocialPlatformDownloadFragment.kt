@@ -166,7 +166,9 @@ class SocialPlatformDownloadFragment : BaseWebTabFragment() {
                 }
             })
         binding.btnPaste.setOnClickListener { pasteFromClipboard() }
-        binding.btnDownload.setOnClickListener { startDownloadFlow() }
+        binding.btnDownload.setOnClickListener {
+            startDownloadFlow()
+        }
         binding.btnOpenApp.setOnClickListener { openPlatformApp() }
 
         binding.progressloading.setOnClickListener {}
@@ -221,6 +223,7 @@ class SocialPlatformDownloadFragment : BaseWebTabFragment() {
         if (clip != null && clip.itemCount > 0) {
             val pasted = clip.getItemAt(0).coerceToText(requireContext()).toString().trim()
             if (pasted.isNotEmpty()) {
+                if (!isLinkForOpenedPlatform(pasted, showToast = true)) return
                 lastHandledClipboardUrl = pasted
                 applyUrlToUi(pasted)
             }
@@ -232,11 +235,24 @@ class SocialPlatformDownloadFragment : BaseWebTabFragment() {
     private fun applyUrlToUi(url: String) {
         val normalizedUrl = ApiViewModel.normalizeSocialDownloadUrl(url) ?: url.trim()
         binding.etVideoLink.setText(normalizedUrl)
-        SocialPlatform.fromInput(normalizedUrl)?.let { detected ->
-            platform = detected
-            applyPlatformUi(platform)
-            bindHowToSteps(platform)
+    }
+
+    private fun isLinkForOpenedPlatform(url: String, showToast: Boolean): Boolean {
+        val detectedPlatform = SocialPlatform.fromInput(url) ?: return true
+        if (detectedPlatform == platform) return true
+
+        Log.d(
+            TAG,
+            "Rejected ${detectedPlatform.displayName} URL on ${platform.displayName} screen"
+        )
+        if (showToast && isAdded) {
+            Toast.makeText(
+                requireContext(),
+                getString(R.string.social_platform_mismatch, platform.displayName),
+                Toast.LENGTH_LONG
+            ).show()
         }
+        return false
     }
 
     private fun startDownloadFlow() {
@@ -262,6 +278,7 @@ class SocialPlatformDownloadFragment : BaseWebTabFragment() {
             requireContext().showDownloadDialog(type = DownloadDialogType.INVALID_URL)
             return
         }
+        if (!isLinkForOpenedPlatform(url, showToast = true)) return
         lastHandledClipboardUrl = url
         expectingDownloadResult = true
         viewModel.socialDownloader(url)
@@ -281,6 +298,11 @@ class SocialPlatformDownloadFragment : BaseWebTabFragment() {
             if (url.isNullOrBlank()) return@observe
             val trimmed = url.trim()
             if (trimmed == lastHandledClipboardUrl) return@observe
+
+            if (!isLinkForOpenedPlatform(trimmed, showToast = true)) {
+                lastHandledClipboardUrl = trimmed
+                return@observe
+            }
 
             lastHandledClipboardUrl = trimmed
             applyUrlToUi(trimmed)

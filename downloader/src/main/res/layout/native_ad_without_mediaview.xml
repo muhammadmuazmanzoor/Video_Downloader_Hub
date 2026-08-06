@@ -83,7 +83,7 @@
                 tools:text="Test Ad : Google Ads" />
         </LinearLayout>
 
-        <TextView
+       <!-- <TextView
             android:id="@+id/ad_body"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -100,7 +100,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/llAdsContent"
             tools:text="The Google Ads mobile app helps you stay connected to your campaigns while on the go." />
-
+-->
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/ad_call_to_action"
             style="?android:attr/borderlessButtonStyle"
@@ -116,7 +116,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ad_body"
+            app:layout_constraintTop_toBottomOf="@id/llAdsContent"
             tools:text="INSTALL" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.gms.ads.nativead.NativeAdView>

@@ -217,4 +217,5 @@
     <string name="social_step4_subtitle">Paste the url. Download it and enjoy</string>
 
 
+    <string name="social_platform_mismatch">You can download only %1$s videos on this screen</string>
 </resources>
